@@ -47,6 +47,54 @@ export default function SessionPage({ params }: Props) {
       }
       setUserId(user.id)
 
+      // Special Sandbox PIN (000 or 0000): Always active for testing, bypasses lockout
+      if (pin === '000' || pin === '0000') {
+        const { data: sandboxSession } = await supabase
+          .from('quiz_sessions')
+          .select('id, quiz_id')
+          .in('pin', ['000', '0000'])
+          .limit(1)
+          .maybeSingle()
+
+        if (sandboxSession) {
+          setSessionId(sandboxSession.id)
+        } else {
+          setSessionId(null)
+        }
+
+        const targetQuizId = sandboxSession?.quiz_id || 'sandbox-demo'
+        let res = await fetch(`/api/quiz/${targetQuizId}`)
+        if (!res.ok) {
+          res = await fetch('/api/quiz/mahabharata-variety-demo')
+        }
+        if (!res.ok) {
+          setErrorMsg('Sandbox test quiz definition not found.')
+          setPhase('error')
+          return
+        }
+
+        const quizData: Quiz = await res.json()
+        setQuiz(quizData)
+
+        // Restore saved progress if any
+        const saved = loadProgress(pin, user.id)
+        if (saved) {
+          setInitialAnswers(saved.answers || {})
+          setInitialElapsed(saved.timeElapsed || 0)
+          if (typeof saved.currentIndex === 'number') {
+            setInitialQuestionIndex(saved.currentIndex)
+          }
+          if (saved.answers && Object.keys(saved.answers).length > 0) {
+            setPhase('quiz')
+          } else {
+            setPhase('intro')
+          }
+        } else {
+          setPhase('intro')
+        }
+        return
+      }
+
       // Get active session for this PIN
       const { data: session } = await supabase
         .from('quiz_sessions')
@@ -109,6 +157,20 @@ export default function SessionPage({ params }: Props) {
   }, [pin, authLoading, user])
 
   const handleStart = () => setPhase('quiz')
+
+  const handleRetry = () => {
+    if (userId) {
+      clearProgress(pin, userId)
+    }
+    setInitialAnswers({})
+    setInitialElapsed(0)
+    setInitialQuestionIndex(0)
+    setFinalAnswers({})
+    setScoreResult(null)
+    setTimeTaken(0)
+    submittingRef.current = false
+    setPhase('intro')
+  }
 
   const handleProgress = useCallback(
     (answers: AnswerMap, elapsed: number, currentIndex: number) => {
@@ -204,7 +266,9 @@ export default function SessionPage({ params }: Props) {
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
         <div className="card-gold animate-scaleIn" style={{ padding: '2.5rem', maxWidth: 480, width: '100%' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <span className="badge badge-accent" style={{ marginBottom: '1rem' }}>PIN: {pin}</span>
+            <span className="badge badge-accent" style={{ marginBottom: '1rem' }}>
+              {pin === '000' || pin === '0000' ? '⚡ Demo Quiz Session (PIN: 0000)' : `PIN: ${pin}`}
+            </span>
             <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{quiz.title}</h1>
             <p className="text-muted" style={{ fontSize: '0.9rem' }}>{quiz.description}</p>
           </div>
@@ -269,6 +333,7 @@ export default function SessionPage({ params }: Props) {
         sessionId={sessionId}
         pin={pin}
         userAnswers={finalAnswers}
+        onRetry={pin === '000' || pin === '0000' ? handleRetry : undefined}
       />
     )
   }

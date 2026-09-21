@@ -44,3 +44,13 @@ flowchart LR
 4. Copy the JSON output.
 5. Create a new file, e.g. `quizzes/mahabharata/kurukshetra-heroes.json`, and paste the JSON.
 6. The quiz immediately appears on the platform!
+
+---
+
+## Standardized Points System
+Quizzes in Brahma Jijñāsā follow an authentic academic point scale:
+- **Easy**: 1 pt (simple) / 1.5 pts (analytical) / 2 pts (interactive/multi-select)
+- **Medium**: 2 pts (simple) / 2.5 pts (analytical) / 3 pts (interactive/multi-select)
+- **Hard**: 3 pts (simple) / 3.5 pts (analytical) / 4 pts (interactive/multi-select)
+
+> **Auto-Normalization Guarantee**: Even if an LLM hallucinates arbitrary points (e.g. 100 or 1,000 pts) or omits points entirely, the platform engine automatically normalizes all question points based on `type` and `difficulty` at load time. For full details, see [`docs/SCORING_AND_RATINGS.md`](../docs/SCORING_AND_RATINGS.md).

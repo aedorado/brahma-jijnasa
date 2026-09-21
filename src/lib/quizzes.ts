@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import type { Quiz, QuizMeta, Category } from '@/types/quiz'
+import type { Quiz, QuizMeta, Category, QuestionType, Difficulty } from '@/types/quiz'
 
 const QUIZZES_DIR = path.join(process.cwd(), 'quizzes')
 
@@ -43,6 +43,31 @@ export function getAllQuizMeta(): QuizMeta[] {
   return metas
 }
 
+export function getStandardQuestionPoints(type: QuestionType, difficulty: Difficulty): number {
+  // Tier 1: Direct Recognition (1 pick / boolean)
+  if (['single-choice', 'true-false', 'who-said-this', 'odd-one-out', 'missing-link'].includes(type)) {
+    return difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3
+  }
+  // Tier 2: Analytical Reasoning (Multi-statement / Scenario)
+  if (['assertion-reason', 'cause-effect', 'spot-the-error', 'two-truths-one-false', 'evidence-based', 'case-study', 'what-would-you-do'].includes(type)) {
+    return difficulty === 'easy' ? 1.5 : difficulty === 'medium' ? 2.5 : 3.5
+  }
+  // Tier 3: Multi-Element & Interactive (match-pairs, sequence, multiple-select, who-am-i)
+  return difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4
+}
+
+export function normalizeQuiz(quiz: Quiz): Quiz {
+  return {
+    ...quiz,
+    questions: quiz.questions.map(q => ({
+      ...q,
+      points: (typeof q.points === 'number' && q.points >= 1 && q.points <= 5)
+        ? q.points
+        : getStandardQuestionPoints(q.type, q.difficulty || 'medium'),
+    })),
+  }
+}
+
 // ——— Load a single quiz by ID ———
 export function getQuizById(id: string): Quiz | null {
   if (!fs.existsSync(QUIZZES_DIR)) return null
@@ -60,7 +85,7 @@ export function getQuizById(id: string): Quiz | null {
         const filePath = path.join(categoryDir, file)
         const raw = fs.readFileSync(filePath, 'utf-8')
         const quiz: Quiz = JSON.parse(raw)
-        if (quiz.id === id) return quiz
+        if (quiz.id === id) return normalizeQuiz(quiz)
       } catch {
         continue
       }

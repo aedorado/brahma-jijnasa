@@ -62,7 +62,8 @@ JSON SCHEMA:
   "timeLimit": 1200,
   "onTimeExpiry": "submit-partial",
   "questions": [
-    // 20 question objects with id (1-20), type, question, difficulty, points, explanation, reference, and type fields
+    // 20 question objects with id (1-20), type, question, difficulty ("easy"|"medium"|"hard"), points (1 for easy, 2-2.5 for medium, 3-4 for hard/interactive), explanation, reference, and type fields
+    // (Note: The engine automatically standardizes points based on type and difficulty if omitted).
   ]
 }
 ```

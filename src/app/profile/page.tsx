@@ -165,9 +165,14 @@ export default function ProfilePage() {
         {/* Progress to Next Level */}
         {stats.nextLevel ? (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.4rem', color: 'var(--color-muted)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.4rem', color: 'var(--color-muted)', flexWrap: 'wrap', gap: '0.25rem' }}>
               <span>Progress to Level {stats.nextLevel.level}: <strong>{stats.nextLevel.title}</strong></span>
-              <span><strong>{stats.pointsToNext} pts</strong> needed</span>
+              <span>
+                {stats.pointsToNext > 0 && <span><strong>{stats.pointsToNext} pts</strong></span>}
+                {stats.pointsToNext > 0 && stats.quizzesToNext > 0 && <span> • </span>}
+                {stats.quizzesToNext > 0 && <span><strong>{stats.quizzesToNext} quiz{stats.quizzesToNext > 1 ? 'zes' : ''}</strong> needed</span>}
+                {stats.pointsToNext === 0 && stats.quizzesToNext === 0 && stats.accuracyToNext > 0 && <span><strong>+{stats.accuracyToNext}% accuracy</strong> needed</span>}
+              </span>
             </div>
             <div style={{ height: 8, background: 'rgba(255,255,255,0.1)', borderRadius: 4, overflow: 'hidden' }}>
               <div
@@ -180,6 +185,11 @@ export default function ProfilePage() {
                 }}
               />
             </div>
+            {stats.quizzesToNext > 0 && stats.pointsToNext === 0 && (
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-gold)', marginTop: '0.4rem', marginBottom: 0 }}>
+                🔒 Rating requirement met! Complete {stats.quizzesToNext} more unique quiz{stats.quizzesToNext > 1 ? 'zes' : ''} to unlock Level {stats.nextLevel.level}: {stats.nextLevel.title}.
+              </p>
+            )}
           </div>
         ) : (
           <p style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, margin: 0 }}>

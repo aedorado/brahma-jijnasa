@@ -63,6 +63,15 @@ To ensure the quiz engages multiple learning faculties, your 20 questions MUST b
 
 ---
 
+### STANDARDIZED QUESTION POINTS MATRIX
+Questions follow an authentic academic point scale based on cognitive type and difficulty:
+- **Easy**: 1 pt (simple) / 1.5 pts (analytical) / 2 pts (interactive/multi-select)
+- **Medium**: 2 pts (simple) / 2.5 pts (analytical) / 3 pts (interactive/multi-select)
+- **Hard**: 3 pts (simple) / 3.5 pts (analytical) / 4 pts (interactive/multi-select)
+*(Note: If points are omitted or approximated, the Brahma Jijñāsā engine automatically normalizes all question points based on type and difficulty).*
+
+---
+
 ### JSON SCHEMA TEMPLATE
 Your output MUST be 100% strictly valid JSON matching the following structure without any extra markdown wrapper text outside the JSON code block:
 
@@ -83,7 +92,7 @@ Your output MUST be 100% strictly valid JSON matching the following structure wi
       "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
       "correctIndex": 0,
       "difficulty": "easy",
-      "points": 2,
+      "points": 1,
       "explanation": "Scholarly explanation referencing the exact verse and purport...",
       "reference": "Bhagavad-gītā 2.12 (Bhaktivedanta Purport)",
       "shloka": "न त्वेवाहं जातु नासं न त्वं नेमे जनाधिपाः...",
@@ -106,7 +115,7 @@ Your output MUST be 100% strictly valid JSON matching the following structure wi
       "question": "Philosophical statement.",
       "correct": true,
       "difficulty": "easy",
-      "points": 2,
+      "points": 1,
       "explanation": "Explanation...",
       "reference": "Reference"
     },

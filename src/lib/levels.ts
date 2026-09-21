@@ -15,6 +15,8 @@ export interface DevoteeLevel {
   titleEn: string
   minRating: number
   maxRating: number
+  minQuizzes: number
+  minAccuracy: number
   verseSnippet: string
   verseMeaning: string
   color: string
@@ -32,9 +34,11 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleDevanagari: 'श्रद्धावान्',
     titleEn: 'Faithful Inquirer',
     minRating: 0,
-    maxRating: 249,
+    maxRating: 79,
+    minQuizzes: 0,
+    minAccuracy: 0,
     verseSnippet: 'ādau śraddhā',
-    verseMeaning: 'First, the awakening of genuine faith to inquire into truth',
+    verseMeaning: 'First, the awakening of genuine faith to inquire into transcendent truth',
     color: '#A0AEC0', // Slate Gray
     badgeBg: 'rgba(160, 174, 192, 0.12)',
     badgeBorder: 'rgba(160, 174, 192, 0.35)',
@@ -47,8 +51,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Saṅgī',
     titleDevanagari: 'सङ्गी',
     titleEn: 'Sincere Companion',
-    minRating: 250,
-    maxRating: 499,
+    minRating: 80,
+    maxRating: 199,
+    minQuizzes: 2,
+    minAccuracy: 20,
     verseSnippet: 'tataḥ sādhu-saṅgo',
     verseMeaning: 'Associating with devotee-teachers and learning in satsaṅga',
     color: '#48BB78', // Forest Green
@@ -63,8 +69,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Sādhaka',
     titleDevanagari: 'साधक',
     titleEn: 'Dedicated Practitioner',
-    minRating: 500,
-    maxRating: 999,
+    minRating: 200,
+    maxRating: 449,
+    minQuizzes: 5,
+    minAccuracy: 40,
     verseSnippet: "'tha bhajana-kriyā",
     verseMeaning: 'Active, regular execution of devotional study and quizzes',
     color: '#00B5D8', // Cyan / Turquoise
@@ -79,8 +87,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Vivekī',
     titleDevanagari: 'विवेकी',
     titleEn: 'Discerning Seeker',
-    minRating: 1000,
-    maxRating: 1499,
+    minRating: 450,
+    maxRating: 899,
+    minQuizzes: 10,
+    minAccuracy: 50,
     verseSnippet: "tato 'nartha-nivṛttiḥ syāt",
     verseMeaning: 'Cleansing misconceptions, philosophical errors, and doubts',
     color: '#3182CE', // Oceanic Blue
@@ -95,8 +105,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Niṣṭhāvān',
     titleDevanagari: 'निष्ठावान्',
     titleEn: 'The Steady & Fixed',
-    minRating: 1500,
-    maxRating: 1999,
+    minRating: 900,
+    maxRating: 1699,
+    minQuizzes: 20,
+    minAccuracy: 60,
     verseSnippet: 'tato niṣṭhā',
     verseMeaning: 'Unshakeable stability and sustained mastery across scripture',
     color: '#9F7AEA', // Amethyst Purple
@@ -111,8 +123,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Rucimān',
     titleDevanagari: 'रुचिमान्',
     titleEn: 'Relisher of Truth',
-    minRating: 2000,
-    maxRating: 2499,
+    minRating: 1700,
+    maxRating: 2299,
+    minQuizzes: 40,
+    minAccuracy: 70,
     verseSnippet: 'rucis tataḥ',
     verseMeaning: 'Spontaneous taste and relish for complex purports and verses',
     color: '#ED8936', // Saffron Flame Orange
@@ -127,8 +141,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Āsakta',
     titleDevanagari: 'आसक्त',
     titleEn: 'Deeply Absorbed',
-    minRating: 2500,
-    maxRating: 2999,
+    minRating: 2300,
+    maxRating: 2799,
+    minQuizzes: 50,
+    minAccuracy: 80,
     verseSnippet: 'athāsaktis',
     verseMeaning: 'Profound attachment and intuitive absorption in the Lord’s pastimes',
     color: '#F56565', // Crimson Red
@@ -143,8 +159,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Bhāvuka',
     titleDevanagari: 'भावुक',
     titleEn: 'Illumined Ecstatic',
-    minRating: 3000,
+    minRating: 2800,
     maxRating: 3499,
+    minQuizzes: 60,
+    minAccuracy: 85,
     verseSnippet: 'tato bhāvas',
     verseMeaning: 'Awakening of pure spiritual ecstasy and unexcelled śāstric wisdom',
     color: '#ECC94B', // Solar Brilliant Gold
@@ -160,7 +178,9 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleDevanagari: 'प्रेमी',
     titleEn: 'Transcendental Master',
     minRating: 3500,
-    maxRating: 99999,
+    maxRating: 999999,
+    minQuizzes: 75,
+    minAccuracy: 90,
     verseSnippet: 'tataḥ premābhyudañcati',
     verseMeaning: 'Unalloyed supreme love of Godhead; legendary śāstric mastery',
     color: '#FF416C', // Radiant Aurora Gradient
@@ -171,13 +191,22 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
 ]
 
 /**
- * Get devotee level definition based on rating number
+ * Get devotee level definition based on rating and hard gate criteria (quizzes & accuracy)
  */
-export function getDevoteeLevel(rating: number): DevoteeLevel {
+export function getDevoteeLevel(
+  rating: number,
+  totalQuizzes: number = 0,
+  accuracyPct: number = 0
+): DevoteeLevel {
   const safeRating = Math.max(0, Math.round(rating))
   for (let i = DEVOTEE_LEVELS.length - 1; i >= 0; i--) {
-    if (safeRating >= DEVOTEE_LEVELS[i].minRating) {
-      return DEVOTEE_LEVELS[i]
+    const lvl = DEVOTEE_LEVELS[i]
+    if (
+      safeRating >= lvl.minRating &&
+      totalQuizzes >= lvl.minQuizzes &&
+      accuracyPct >= lvl.minAccuracy
+    ) {
+      return lvl
     }
   }
   return DEVOTEE_LEVELS[0]
@@ -188,6 +217,8 @@ export interface UserRatingStats {
   level: DevoteeLevel
   nextLevel: DevoteeLevel | null
   pointsToNext: number
+  quizzesToNext: number
+  accuracyToNext: number
   progressPct: number
   totalQuizzes: number
   totalEarned: number
@@ -196,9 +227,12 @@ export interface UserRatingStats {
 }
 
 /**
- * Calculate full rating and level statistics from a user's attempt records.
- * Takes the highest score achieved per unique quiz to prevent farming,
- * scales by accuracy %, and awards breadth bonus.
+ * Calculate realistic, grounded rating points from a user's quiz attempts:
+ * - Direct point accumulation based on actual quiz scores earned (scaled by accuracy)
+ * - Standard 50-point budget per 20-question quiz
+ * - 1 quiz with 100% on a 50-pt quiz gives ~60-62 pts
+ * - 1 quiz with score < 100% (e.g. 50%) gives ~25 pts
+ * - Gated progression across 9 levels requiring up to 75 unique quizzes (peak at 3,500+ pts)
  */
 export function calculateUserRating(
   attempts: Array<{
@@ -216,6 +250,8 @@ export function calculateUserRating(
       level,
       nextLevel,
       pointsToNext: nextLevel.minRating,
+      quizzesToNext: nextLevel.minQuizzes,
+      accuracyToNext: nextLevel.minAccuracy,
       progressPct: 0,
       totalQuizzes: 0,
       totalEarned: 0,
@@ -224,46 +260,67 @@ export function calculateUserRating(
     }
   }
 
-  // Deduplicate by quiz_id — keep the best performance per quiz
-  const bestByQuiz = new Map<string, { score: number; max_score: number }>()
+  // Deduplicate by quiz_id — keep the best performance per unique quiz
+  const bestByQuiz = new Map<string, { score: number; max_score: number; time_taken?: number }>()
   attempts.forEach(att => {
     const current = bestByQuiz.get(att.quiz_id)
-    if (!current || (att.score / (att.max_score || 1)) > (current.score / (current.max_score || 1))) {
+    const currentAcc = current ? current.score / (current.max_score || 1) : -1
+    const newAcc = (Number(att.score) || 0) / (Number(att.max_score) || 1)
+    if (!current || newAcc > currentAcc) {
       bestByQuiz.set(att.quiz_id, {
         score: Number(att.score) || 0,
         max_score: Number(att.max_score) || 1,
+        time_taken: att.time_taken,
       })
     }
   })
 
   let totalEarned = 0
   let totalMax = 0
+  let weightedEarnedSum = 0
+  const STANDARD_QUIZ_BUDGET = 50
 
   bestByQuiz.forEach(item => {
     totalEarned += item.score
     totalMax += item.max_score
+
+    const acc = Math.min(1, Math.max(0, item.score / (item.max_score || 1)))
+    // Standardize every quiz to a normalized 50-point budget:
+    const normalizedScore = acc * STANDARD_QUIZ_BUDGET
+    // Scaled by accuracy: 100% accuracy gets 1.2x of score earned, 50% gets 1.0x, 0% gets 0.8x
+    const accuracyMultiplier = 0.8 + 0.4 * acc
+    weightedEarnedSum += normalizedScore * accuracyMultiplier
   })
 
+  const N = bestByQuiz.size
   const accuracyPct = totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0
+  const breadthBonus = N * 2
 
-  // Rating Formula:
-  // Base points earned * (0.6 + 0.4 * accuracy ratio) * 10
-  // Plus milestone bonus for breadth of quizzes explored
-  const accuracyMultiplier = 0.6 + 0.4 * (accuracyPct / 100)
-  const quizBreadthBonus = bestByQuiz.size * 50
+  const calculatedRating = Math.max(0, Math.round(weightedEarnedSum + breadthBonus))
 
-  const calculatedRating = Math.round(totalEarned * 10 * accuracyMultiplier + quizBreadthBonus)
-  const level = getDevoteeLevel(calculatedRating)
+  const level = getDevoteeLevel(calculatedRating, N, accuracyPct)
   const nextLevel = level.level < 9 ? DEVOTEE_LEVELS[level.level] : null
 
   let pointsToNext = 0
+  let quizzesToNext = 0
+  let accuracyToNext = 0
   let progressPct = 100
 
   if (nextLevel) {
-    const range = nextLevel.minRating - level.minRating
-    const currentOverMin = calculatedRating - level.minRating
     pointsToNext = Math.max(0, nextLevel.minRating - calculatedRating)
-    progressPct = Math.min(100, Math.max(0, Math.round((currentOverMin / range) * 100)))
+    quizzesToNext = Math.max(0, nextLevel.minQuizzes - N)
+    accuracyToNext = Math.max(0, nextLevel.minAccuracy - accuracyPct)
+
+    // Progress percentage combines rating progression and quiz count progression
+    const ratingProgress = calculatedRating >= nextLevel.minRating
+      ? 1
+      : Math.max(0, (calculatedRating - level.minRating) / (nextLevel.minRating - level.minRating || 1))
+
+    const quizProgress = N >= nextLevel.minQuizzes
+      ? 1
+      : Math.max(0, (N - level.minQuizzes) / (nextLevel.minQuizzes - level.minQuizzes || 1))
+
+    progressPct = Math.min(100, Math.max(0, Math.round(((ratingProgress + quizProgress) / 2) * 100)))
   }
 
   return {
@@ -271,10 +328,12 @@ export function calculateUserRating(
     level,
     nextLevel,
     pointsToNext,
+    quizzesToNext,
+    accuracyToNext,
     progressPct,
-    totalQuizzes: bestByQuiz.size,
+    totalQuizzes: N,
     totalEarned: Math.round(totalEarned * 10) / 10,
-    totalMax,
+    totalMax: Math.round(totalMax * 10) / 10,
     accuracyPct,
   }
 }

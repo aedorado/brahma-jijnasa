@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { scoreQuestion } from '@/lib/scoring'
 import type { Quiz, QuizMeta, QuizSession, Question } from '@/types/quiz'
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
+import { UserAvatar } from '@/components/UserAvatar'
 
 interface LiveStats {
   joined: number
@@ -581,13 +582,12 @@ export default function AdminPage() {
                           <span className={`rank-badge rank-${i < 3 ? i + 1 : 'n'}`} style={{ width: 32, height: 32, fontSize: '0.85rem' }}>
                             {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
                           </span>
-                          {entry.avatar_url ? (
-                            <img src={entry.avatar_url} alt="" style={{ width: 34, height: 34, borderRadius: '50%', border: '1.5px solid var(--color-gold)' }} />
-                          ) : (
-                            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--color-surface-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem' }}>
-                              👤
-                            </div>
-                          )}
+                          <UserAvatar
+                            name={entry.full_name}
+                            url={entry.avatar_url}
+                            size={34}
+                            border="1.5px solid var(--color-gold)"
+                          />
                           <span style={{ flex: 1, fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text)' }}>
                             {entry.full_name}
                           </span>
@@ -948,17 +948,12 @@ export default function AdminPage() {
                             {/* Student */}
                             <td style={{ padding: '0.85rem 1rem' }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                {att.profiles?.avatar_url ? (
-                                  <img 
-                                    src={att.profiles.avatar_url} 
-                                    alt="" 
-                                    style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid var(--color-gold)' }} 
-                                  />
-                                ) : (
-                                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-surface-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
-                                    👤
-                                  </div>
-                                )}
+                                <UserAvatar
+                                  name={att.profiles?.full_name}
+                                  url={att.profiles?.avatar_url}
+                                  size={32}
+                                  border="1px solid var(--color-gold)"
+                                />
                                 <div>
                                   <p style={{ fontWeight: 600, color: 'var(--color-text)', lineHeight: 1.2 }}>
                                     {att.profiles?.full_name || 'Anonymous Student'}
@@ -1077,17 +1072,12 @@ export default function AdminPage() {
               {/* Modal Header */}
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  {inspectAttempt.profiles?.avatar_url ? (
-                    <img 
-                      src={inspectAttempt.profiles.avatar_url} 
-                      alt="" 
-                      style={{ width: 44, height: 44, borderRadius: '50%', border: '2px solid var(--color-gold)' }} 
-                    />
-                  ) : (
-                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--color-surface-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-                      👤
-                    </div>
-                  )}
+                  <UserAvatar
+                    name={inspectAttempt.profiles?.full_name}
+                    url={inspectAttempt.profiles?.avatar_url}
+                    size={44}
+                    border="2px solid var(--color-gold)"
+                  />
                   <div>
                     <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>
                       {inspectAttempt.profiles?.full_name || 'Anonymous Student'}&apos;s Answers

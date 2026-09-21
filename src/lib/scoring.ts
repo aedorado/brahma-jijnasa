@@ -43,16 +43,20 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
     case 'multiple-select': {
       const selected = (answer as number[]) || []
       const correctSet = new Set(question.correctIndices)
+      const numCorrect = question.correctIndices.length
+      const ptPerOption = numCorrect > 0 ? max / numCorrect : 0
+
       let pts = 0
       selected.forEach(idx => {
-        if (correctSet.has(idx)) pts += 1
-        else pts -= 0.5
+        if (correctSet.has(idx)) pts += ptPerOption
+        else pts -= ptPerOption * 0.5
       })
-      earned = Math.max(0, pts)
+
       correct = (
         selected.length === question.correctIndices.length &&
         selected.every(i => correctSet.has(i))
       )
+      earned = correct ? max : Math.max(0, Math.round(pts * 2) / 2)
       break
     }
 
@@ -66,10 +70,8 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
       }
       correct = true
       const cluesUsed = wa.cluesRevealed
-      if (cluesUsed <= 1) earned = 3
-      else if (cluesUsed === 2) earned = 2
-      else earned = 1
-      earned = Math.min(earned, max) // cap at question.points
+      const ratio = cluesUsed <= 1 ? 1 : cluesUsed === 2 ? 2 / 3 : 1 / 3
+      earned = Math.round(max * ratio * 2) / 2
       break
     }
 
@@ -91,12 +93,13 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
 
     case 'match-pairs': {
       const userPairs = (answer as PairsAnswer) || []
+      const totalPairs = question.correctPairs.length
       let matched = 0
       for (const [l, r] of userPairs) {
         if (question.correctPairs.some(([cl, cr]) => cl === l && cr === r)) matched++
       }
-      earned = matched
-      correct = matched === question.correctPairs.length
+      correct = totalPairs > 0 && matched === totalPairs
+      earned = correct ? max : totalPairs > 0 ? Math.round((matched / totalPairs) * max * 2) / 2 : 0
       break
     }
 

@@ -32,7 +32,7 @@ export const translations = {
     // Home Page
     home: {
       sanskritQuote: 'अथातो ब्रह्म जिज्ञासा',
-      sanskritMeaning: '"Now, therefore, the inquiry into Brahman." — Brahma Sūtras 1.1.1',
+      sanskritMeaning: '"Now, therefore, the inquiry into Brahman."',
       heroTitle: 'Brahma',
       heroTitleHighlight: 'Jijñāsā',
       heroSubtitle: 'A quiz platform for the deep exploration of Sanātana Dharma scriptures — Bhagavad Gītā, Upaniṣads, Vedas, Mahābhārata & more.',
@@ -234,7 +234,7 @@ export const translations = {
     // Home Page
     home: {
       sanskritQuote: 'अथातो ब्रह्म जिज्ञासा',
-      sanskritMeaning: '"Agora, portanto, a investigação sobre o Brahman." — Brahma Sūtras 1.1.1',
+      sanskritMeaning: '"Agora, portanto, a investigação sobre o Brahman."',
       heroTitle: 'Brahma',
       heroTitleHighlight: 'Jijñāsā',
       heroSubtitle: 'Uma plataforma interativa para a exploração profunda das escrituras védicas — Bhagavad Gītā, Upaniṣads, Vedas, Mahābhārata e muito mais.',

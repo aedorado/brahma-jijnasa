@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Brahma Jijñāsā (ब्रह्म जिज्ञासा)
+
+An authentic, interactive Vedic & Śāstric quiz and learning platform inspired by Śrīmad-Bhāgavatam, Bhagavad-gītā, Mahābhārata, and Rāmāyaṇa.
+
+## Documentation
+- 📜 **[Scoring, Ratings & 9 Devotee Levels Specification](docs/SCORING_AND_RATINGS.md)**: Full reference for point normalization, cognitive tiers, negative marking rules, and the 75-quiz gated rating engine.
+- 🎯 **[Prompt Engineering Templates](prompts/README.md)**: Standardized prompts for generating 20-question quizzes via Claude and NotebookLM.
 
 ## Getting Started
 

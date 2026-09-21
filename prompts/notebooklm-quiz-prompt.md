@@ -53,7 +53,8 @@ JSON SCHEMA:
   "questions": [
     // 20 question objects. Each MUST have:
     // id (1-20), type, question, difficulty ("easy"|"medium"|"hard"),
-    // points (2 or 3), explanation, reference, plus the type-specific fields above.
+    // points: 1 (easy), 2-2.5 (medium), 3-4 (hard/interactive), explanation, reference, plus type-specific fields.
+    // (Note: The engine automatically standardizes points based on type and difficulty if omitted).
   ]
 }
 ```

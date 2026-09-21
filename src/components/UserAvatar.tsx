@@ -28,7 +28,6 @@ export function UserAvatar({
         src={url}
         alt=""
         referrerPolicy="no-referrer"
-        crossOrigin="anonymous"
         onError={() => setImgError(true)}
         className={className}
         style={{

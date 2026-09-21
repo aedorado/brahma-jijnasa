@@ -67,7 +67,7 @@ Your entire response must be ONLY valid JSON matching this exact structure:
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correctIndex": 1,
       "difficulty": "easy",
-      "points": 2,
+      "points": 1,
       "explanation": "Scholarly explanation referencing the exact context...",
       "reference": "Mahābhārata, Ādi Parva (Sambhava Parva)"
     },
@@ -88,7 +88,7 @@ Your entire response must be ONLY valid JSON matching this exact structure:
       "question": "Statement text.",
       "correct": true,
       "difficulty": "easy",
-      "points": 2,
+      "points": 1,
       "explanation": "Explanation explaining the authentic fact vs popular TV myths...",
       "reference": "Mahābhārata, Sabhā Parva"
     },

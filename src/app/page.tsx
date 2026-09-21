@@ -17,9 +17,20 @@ export default function HomePage() {
 
   const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (pin.length !== 4) { setError('Please enter a 4-digit PIN'); return }
     setLoading(true)
     setError('')
+
+    // Special Sandbox PIN: Always live for testing (000 or 0000)
+    if (pin === '000' || pin === '0000') {
+      if (!user) {
+        login(`/session/${pin}`)
+        return
+      }
+      router.push(`/session/${pin}`)
+      return
+    }
+
+    if (pin.length !== 4) { setError('Please enter a 4-digit PIN'); setLoading(false); return }
 
     // Check if session exists and is active
     const { data: session } = await supabase
@@ -129,9 +140,31 @@ export default function HomePage() {
                 type="submit"
                 id="join-quiz-btn"
                 className="btn btn-primary btn-lg w-full"
-                disabled={loading || pin.length !== 4}
+                disabled={loading || (pin.length !== 4 && pin !== '000')}
               >
                 {loading ? t.home.checkingPin : t.home.enterInquiryBtn}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setPin('0000')}
+                id="sandbox-pin-hint-btn"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-gold)',
+                  fontSize: '0.85rem',
+                  cursor: 'pointer',
+                  opacity: 0.9,
+                  padding: '0.25rem 0.5rem',
+                  borderRadius: '6px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'opacity 0.2s ease',
+                }}
+              >
+                <span>✨ Want to take a demo? Try PIN 0000</span>
               </button>
             </form>
           </div>

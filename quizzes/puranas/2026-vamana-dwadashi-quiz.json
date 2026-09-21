@@ -12,7 +12,7 @@
       "type": "single-choice",
       "question": "On the northern bank of which sacred river was the sacrificial arena of King Bali (Bhṛgukaccha) situated where Lord Vāmanadeva arrived?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "options": [
         "River Narmadā",
         "River Yamunā",
@@ -28,7 +28,7 @@
       "type": "multiple-select",
       "question": "Which of the following items were presented to Lord Vāmanadeva during His sacred thread (upanayana) ceremony? (Select all that apply)",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "options": [
         "A waterpot (kamaṇḍalu) given by Lord Brahmā",
         "An umbrella given by Dyauḥ (the heavenly deity)",
@@ -48,7 +48,7 @@
       "type": "true-false",
       "question": "True or False: Mother Aditi observed the Payo-vrata vow for twelve consecutive days by subsisting only on milk to worship Lord Vāsudeva.",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "correct": true,
       "reference": "Śrīmad-Bhāgavatam 8.16.25, 8.17.1",
       "explanation": "Śrīmad-Bhāgavatam 8.16.25 and 8.17.1 confirm that Mother Aditi strictly executed the Payo-vrata ritualistic vow for twelve days, subsisting only on milk."
@@ -58,7 +58,7 @@
       "type": "who-am-i",
       "question": "Identify the personality described by these scriptural clues:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "clues": [
         "I am the spiritual master of the demons who revived King Bali after he was defeated.",
         "I conducted the Viśvajit sacrifice for Bali and later warned him that the dwarf brahmacārī was Lord Viṣṇu.",
@@ -79,7 +79,7 @@
       "type": "who-said-this",
       "question": "Who spoke the following words regarding the nature of contentment?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "quote": "If I were not satisfied with three paces of land, then surely I would not be satisfied even with possessing one of the seven islands...",
       "context": "Spoken when King Bali offered to give an entire island instead of just three paces of land.",
       "options": [
@@ -97,7 +97,7 @@
       "type": "sequence",
       "question": "Arrange the following key events from the story of Lord Vāmanadeva in correct chronological order:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "items": [
         "Lord Vāmanadeva appears as a dwarf brahmacārī from Mother Aditi's womb.",
         "Mother Aditi laments the defeat of her demigod sons.",
@@ -118,7 +118,7 @@
       "type": "match-pairs",
       "question": "Match each divine gift offered to Lord Vāmanadeva with the personality who presented it:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "left": [
         "Sun-god (Savitā)",
         "Goddess Sarasvatī",
@@ -157,7 +157,7 @@
       "type": "assertion-reason",
       "question": "Analyze the Assertion and Reason regarding King Bali and Śukrācārya:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "assertion": "Śukrācārya cursed his disciple King Bali to lose all his opulence.",
       "reason": "King Bali refused to obey Śukrācārya's instruction to take back his promise of giving land to Lord Vāmanadeva.",
       "options": [
@@ -175,7 +175,7 @@
       "type": "spot-the-error",
       "question": "Identify and correct the factual error in the following narrative passage:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "passage": "When Lord Vāmanadeva expanded into His universal form, His first step covered the entire earth, and His second step reached the upper planets. Garuda then immediately bound Lord Vāmanadeva with the Varuṇa-pāśa ropes.",
       "options": [
         "Change 'His first step covered the entire earth' to 'His first step covered Indra's palace'.",
@@ -192,7 +192,7 @@
       "type": "missing-link",
       "question": "Identify the missing step in this narrative sequence:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "chain": [
         "King Bali promises to give three paces of land to Lord Vāmanadeva.",
         "Śukrācārya warns King Bali that the dwarf is Lord Viṣṇu and forbids the charity.",
@@ -214,7 +214,7 @@
       "type": "odd-one-out",
       "question": "Which of the following items was NOT given to Lord Vāmanadeva during His upanayana (sacred thread) ceremony?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "options": [
         "An umbrella given by Dyauḥ",
         "A waterpot given by Lord Brahmā",
@@ -230,7 +230,7 @@
       "type": "cause-effect",
       "question": "What was the direct result when Lord Vāmanadeva's toe pierced the universal shell during His second step?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "options": [
         "The entire universe sank into the lower ocean.",
         "Water from the Causal Ocean entered the universe and became the sacred river Ganges.",
@@ -246,7 +246,7 @@
       "type": "two-truths-one-false",
       "question": "Identify the FALSE statement among the options regarding King Bali:",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "options": [
         "Statement 1: King Bali offered his own head for Lord Vāmanadeva's third step.",
         "Statement 2: Lord Vāmanadeva destroyed King Bali and sent him to hell as a punishment.",
@@ -261,7 +261,7 @@
       "type": "case-study",
       "question": "Based on Lord Vāmanadeva's teachings to King Bali, how should one practice contentment in daily life?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "scenario": "When Lord Vāmanadeva asked for only three paces of land, King Bali thought it was too small and offered a whole island. Lord Vāmanadeva explained that someone who cannot be satisfied with three paces of land will never be satisfied even if given an entire continent.",
       "options": [
         "Constantly desire more material possessions to achieve true happiness.",
@@ -278,7 +278,7 @@
       "type": "what-would-you-do",
       "question": "According to the Śrīmad-Bhāgavatam, what is a devotee's highest duty when faced with a choice between worldly self-interest and pleasing the Supreme Lord?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1.5,
       "scenario": "Śukrācārya advised King Bali to break his promise to Vāmanadeva in order to save his wealth and kingdom. King Bali faced a major choice between retaining his material possessions and surrendering fully to Lord Viṣṇu.",
       "options": [
         "Break all promises and save material wealth at any cost.",
@@ -295,7 +295,7 @@
       "type": "single-choice",
       "question": "What is the name of the special realm given to King Bali by Lord Vāmanadeva, which is described as more opulent than heaven?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "options": [
         "Sutala",
         "Pātāla",
@@ -311,7 +311,7 @@
       "type": "multiple-select",
       "question": "Which of the following qualities of King Bali pleased Lord Vāmanadeva? (Select all that apply)",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "options": [
         "His truthful adherence to his promise despite losing his kingdom",
         "His complete surrender of his own body for the third step",
@@ -331,7 +331,7 @@
       "type": "single-choice",
       "question": "Who was the grandfather of King Bali, known as a great devotee who appeared in the sacrificial arena to praise Lord Vāmanadeva?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "options": [
         "Prahlāda Mahārāja",
         "Dhruva Mahārāja",
@@ -347,7 +347,7 @@
       "type": "multiple-select",
       "question": "According to Śrīmad-Bhāgavatam 8.23.16, chanting the holy name of the Supreme Lord rectifies which of the following sacrifice flaws? (Select all that apply)",
       "difficulty": "easy",
-      "points": 10,
+      "points": 2,
       "options": [
         "Errors in chanting mantras (mantrataḥ)",
         "Flaws in ritual execution (tantrataḥ)",
@@ -367,7 +367,7 @@
       "type": "single-choice",
       "question": "Which limb of devotional service (navadhā-bhakti) is King Bali celebrated for exemplifying in Vedic scriptures?",
       "difficulty": "easy",
-      "points": 10,
+      "points": 1,
       "options": [
         "Ātma-nivedanam (complete self-surrender)",
         "Sakhayam (friendship)",

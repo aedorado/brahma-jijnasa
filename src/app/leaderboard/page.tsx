@@ -26,7 +26,6 @@ function DevoteeAvatar({
         src={url}
         alt={name}
         referrerPolicy="no-referrer"
-        crossOrigin="anonymous"
         onError={() => setHasError(true)}
         style={{
           width: size,
@@ -187,7 +186,7 @@ export default function LeaderboardPage() {
                       {lvl.title} <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>({lvl.titleDevanagari})</span>
                     </span>
                     <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-muted)' }}>
-                      {lvl.minRating}+ pts
+                      {lvl.minRating}+ pts {lvl.minQuizzes > 0 ? `• ≥${lvl.minQuizzes} Qs` : ''}
                     </span>
                   </div>
                   <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.4 }}>
@@ -239,7 +238,7 @@ export default function LeaderboardPage() {
                   marginBottom: '0.75rem',
                 }}
               >
-                Level {topThree.silver.level.level}: {topThree.silver.level.title}
+                Level {topThree.silver.level.level}: {topThree.silver.level.title} ({topThree.silver.level.titleDevanagari})
               </span>
               <div style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--color-gold)' }}>
                 {topThree.silver.rating.toLocaleString()} <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 400 }}>pts</span>
@@ -336,7 +335,7 @@ export default function LeaderboardPage() {
                   marginBottom: '0.75rem',
                 }}
               >
-                Level {topThree.bronze.level.level}: {topThree.bronze.level.title}
+                Level {topThree.bronze.level.level}: {topThree.bronze.level.title} ({topThree.bronze.level.titleDevanagari})
               </span>
               <div style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--color-gold)' }}>
                 {topThree.bronze.rating.toLocaleString()} <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 400 }}>pts</span>
@@ -376,7 +375,7 @@ export default function LeaderboardPage() {
               <option value="all">All Levels (1–9)</option>
               {DEVOTEE_LEVELS.map(lvl => (
                 <option key={lvl.level} value={lvl.level}>
-                  Lvl {lvl.level}: {lvl.title} ({lvl.minRating}+)
+                  Lvl {lvl.level}: {lvl.title} ({lvl.minRating}+ pts{lvl.minQuizzes > 0 ? `, ≥${lvl.minQuizzes} Qs` : ''})
                 </option>
               ))}
             </select>

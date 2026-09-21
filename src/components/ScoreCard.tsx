@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getPerformanceLabel, formatTime } from '@/lib/scoring'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/context/LanguageContext'
+import { UserAvatar } from '@/components/UserAvatar'
 import type { Quiz, ScoreResult, LeaderboardEntry, AnswerMap, Question, Answer } from '@/types/quiz'
 
 interface Props {
@@ -14,11 +15,12 @@ interface Props {
   sessionId: string | null
   pin: string
   userAnswers?: AnswerMap
+  onRetry?: () => void
 }
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
 
-export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers = {} }: Props) {
+export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers = {}, onRetry }: Props) {
   const [displayScore, setDisplayScore] = useState(0)
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<number | null>(null)
@@ -482,6 +484,13 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '3rem 1.5rem 5rem' }}>
       {/* Score hero card */}
       <div className="card-gold text-center animate-scaleIn" style={{ padding: '3rem 2rem', marginBottom: '2rem' }}>
+        {(pin === '000' || pin === '0000') && (
+          <div style={{ marginBottom: '0.85rem' }}>
+            <span className="badge badge-accent" style={{ fontSize: '0.82rem', padding: '0.35rem 0.9rem' }}>
+              ⚡ Demo Quiz Session (PIN: 0000)
+            </span>
+          </div>
+        )}
         <p style={{ fontSize: '0.85rem', color: 'var(--color-gold-dim)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 600 }}>
           {t.scoreCard.completedTitle} · {quiz.title}
         </p>
@@ -545,9 +554,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             {leaderboard.slice(0, 5).map(entry => (
               <div key={entry.user_id} className="leaderboard-row">
                 <span className={`rank-badge rank-${entry.rank <= 3 ? entry.rank : 'n'}`}>{entry.rank}</span>
-                {entry.avatar_url && (
-                  <img src={entry.avatar_url} alt="" style={{ width: 30, height: 30, borderRadius: '50%' }} />
-                )}
+                <UserAvatar name={entry.full_name} url={entry.avatar_url} size={30} />
                 <span style={{ flex: 1, fontSize: '0.95rem', fontWeight: 600 }}>{entry.full_name || 'Anonymous'}</span>
                 <span style={{ fontWeight: 800, color: 'var(--color-gold)' }}>
                   {entry.score}/{entry.max_score}
@@ -560,6 +567,16 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
       {/* Quick Action Navigation */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2.5rem' }}>
+        {onRetry && (
+          <button
+            className="btn btn-primary btn-lg w-full"
+            onClick={onRetry}
+            id="retry-quiz-btn"
+            style={{ fontSize: '1.05rem', padding: '1.1rem' }}
+          >
+            🔄 Take Demo Quiz Again
+          </button>
+        )}
         <button
           className="btn btn-gold btn-lg w-full"
           onClick={scrollToReview}

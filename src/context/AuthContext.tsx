@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
 import type { AuthUser } from '@/lib/auth'
 
 interface AuthContextType {
@@ -22,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
+  const isLoggingOutRef = useRef(false)
 
   const refresh = useCallback(async () => {
     try {
@@ -44,18 +45,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refresh])
 
   const login = useCallback((nextUrl?: string) => {
+    if (isLoggingOutRef.current) return
     const target = nextUrl || window.location.pathname
     window.location.href = `/api/auth/google?next=${encodeURIComponent(target)}`
   }, [])
 
   const logout = useCallback(async () => {
+    isLoggingOutRef.current = true
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
     } catch {
       // ignore
     }
-    setUser(null)
-    window.location.href = '/'
+    window.location.replace('/')
   }, [])
 
   return (
