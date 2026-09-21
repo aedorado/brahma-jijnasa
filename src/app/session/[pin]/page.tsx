@@ -128,28 +128,46 @@ export default function SessionPage({ params }: Props) {
   )
 
   const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleSubmit = useCallback(async (answers: AnswerMap, elapsed: number) => {
-    if (!quiz || !userId || !sessionId) return
+    if (!quiz) return
     setTimeTaken(elapsed)
     setFinalAnswers(answers)
+    setIsSubmitting(true)
+    setSubmitError(null)
 
-    const result = scoreQuiz(quiz.questions, answers)
-    setScoreResult(result)
+    try {
+      const res = await fetch('/api/session/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pin,
+          sessionId,
+          quizId: quiz.id,
+          userId,
+          answers,
+          elapsed,
+        }),
+      })
 
-    // Save to Supabase
-    await supabase.from('quiz_attempts').insert({
-      user_id: userId,
-      quiz_id: quiz.id,
-      session_id: sessionId,
-      score: result.totalEarned,
-      max_score: result.totalMax,
-      time_taken: elapsed,
-      answers,
-    })
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to save quiz attempt')
+      }
 
-    clearProgress(pin, userId)
-    setPhase('submitted')
+      setScoreResult(data.scoreResult || scoreQuiz(quiz.questions, answers))
+      clearProgress(pin, userId || 'user')
+      setPhase('submitted')
+    } catch (err: any) {
+      console.error('[Quiz Submission Error]:', err)
+      const msg = err.message || 'Submission could not be saved to server.'
+      setSubmitError(msg)
+      alert(`⚠️ Submission Error: ${msg}\n\nPlease tap Submit again. Your answers are saved locally.`)
+    } finally {
+      setIsSubmitting(false)
+    }
   }, [quiz, userId, sessionId, pin])
 
   if (phase === 'loading') {

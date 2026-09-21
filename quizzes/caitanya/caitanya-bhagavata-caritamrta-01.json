@@ -1,0 +1,91 @@
+{
+  "id": "caitanya-bhagavata-caritamrta-01",
+  "title": "Śrī Caitanya-bhāgavata & Śrī Caitanya-caritāmṛta",
+  "category": "caitanya",
+  "description": "Essential pastimes, vows, associates, and theological milestones from Śrī Caitanya-bhāgavata and Śrī Caitanya-caritāmṛta.",
+  "difficulty": "medium",
+  "timeLimit": 300,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "On which auspicious lunar days did Lord Nityānanda and Lord Gauracandra (Caitanya Mahāprabhu) appear, according to Śrīla Vṛndāvana dāsa Ṭhākura?",
+      "options": [
+        "Nityānanda on Māghī Śuklā Trayodaśī and Gauracandra on Phālgunī Paurṇamāsī",
+        "Nityānanda on Ekādaśī and Gauracandra on Dvādaśī",
+        "Nityānanda on Caitra Pūrṇimā and Gauracandra on Māgha Saptamī",
+        "Nityānanda on Janmāṣṭamī and Gauracandra on Rāma-navamī"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "According to Śrīla Vṛndāvana dāsa Ṭhākura in Śrī Caitanya-bhāgavata, Lord Nityānanda appeared on Māghī Śuklā Trayodaśī (the 13th day of the waxing moon in Māgha) and Lord Gauracandra appeared on Phālgunī Paurṇamāsī (full-moon night in Phālguna).",
+      "reference": "Śrī Caitanya-bhāgavata, Ādi-khaṇḍa 3.45-47"
+    },
+    {
+      "id": 2,
+      "type": "single-choice",
+      "question": "What specific vow did Śrī Caitanya Mahāprabhu request His mother, Śacīdevī, to accept as a gift in charity?",
+      "options": [
+        "To distribute rice to all the brāhmaṇas daily",
+        "Never to eat grains on Ekādaśī",
+        "To prepare twenty varieties of spinach every afternoon",
+        "To travel to Jagannātha Purī immediately"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "In Śrī Caitanya-caritāmṛta, Śrī Caitanya Mahāprabhu fell down at the feet of His mother Śacīdevī and asked her for one gift in charity: never to eat grains on Ekādaśī.",
+      "reference": "Śrī Caitanya-caritāmṛta, Ādi-līlā 15.8-10"
+    },
+    {
+      "id": 3,
+      "type": "single-choice",
+      "question": "How did the great devotee Śrīdhara (Kholāvecā Śrīdhara) earn his daily livelihood in Navadvīpa?",
+      "options": [
+        "By weaving fine silk cloth",
+        "By selling banana leaves, stems, and flowers",
+        "By selling milk and sweetmeats",
+        "By crafting conchshell bangles"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Kholāvecā Śrīdhara maintained his life in Navadvīpa by selling banana trees, leaves, stems, and flowers, spending half of his daily meager profit to worship the River Ganges.",
+      "reference": "Śrī Caitanya-bhāgavata, Ādi-khaṇḍa / Kholāvecā Śrīdhara Caritra"
+    },
+    {
+      "id": 4,
+      "type": "single-choice",
+      "question": "Where was Śrīla Haridāsa Ṭhākura severely whipped by the miscreant guards under the orders of the Kazi?",
+      "options": [
+        "In twelve forest groves of Vṛndāvana",
+        "In twenty-two public marketplaces",
+        "In the royal court of Navadvīpa",
+        "On the bathing ghāṭas of Puri"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "The Kazi ordered guards to beat Haridāsa Ṭhākura in twenty-two marketplaces (bāiśa bājāra) in an attempt to kill him for loudly chanting Kṛṣṇa's holy names.",
+      "reference": "Śrī Caitanya-bhāgavata, Ādi-khaṇḍa / Haridāsa Ṭhākura Pastimes"
+    },
+    {
+      "id": 5,
+      "type": "single-choice",
+      "question": "Which intimate associate broke Śrī Caitanya Mahāprabhu's sannyāsa staff (daṇḍa) into three pieces and threw it into the river?",
+      "options": [
+        "Advaita Ācārya",
+        "Lord Nityānanda Prabhu",
+        "Śrīvāsa Ṭhākura",
+        "Sārvabhauma Bhaṭṭācārya"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "While Śrī Caitanya Mahāprabhu visited the Kapoteśvara Śiva temple, Lord Nityānanda Prabhu broke His sannyāsa staff into three pieces at Kamalapura and threw it into the Bhārgīnadī river.",
+      "reference": "Śrī Caitanya-caritāmṛta, Madhya-līlā 5.140-158"
+    }
+  ]
+}

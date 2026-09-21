@@ -11,6 +11,7 @@ export type Category =
   | 'mahabharata'
   | 'ramayana'
   | 'puranas'
+  | 'caitanya'
   | 'general'
 
 // ——— Question Types ———
@@ -285,6 +286,7 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   'mahabharata':   'Mahābhārata',
   'ramayana':      'Rāmāyaṇa',
   'puranas':       'Purāṇas',
+  'caitanya':      'Śrī Caitanya',
   'general':       'General',
 }
 
@@ -295,5 +297,6 @@ export const CATEGORY_ICONS: Record<Category, string> = {
   'mahabharata':   '⚔️',
   'ramayana':      '🏹',
   'puranas':       '🌺',
+  'caitanya':      '💛',
   'general':       '📚',
 }
