@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
-import { OmSymbol } from '@/components/OmSymbol'
 
 export default function HomePage() {
   const [pin, setPin] = useState('')
@@ -56,9 +55,17 @@ export default function HomePage() {
       {/* Hero */}
       <section style={{ padding: '5rem 0 4rem', textAlign: 'center' }}>
         <div className="container-sm z-above">
-          {/* Sacred Om Invocation */}
-          <div className="animate-diya" style={{ marginBottom: '1.5rem', display: 'inline-block' }}>
-            <OmSymbol size={76} />
+          {/* Om symbol */}
+          <div
+            className="animate-diya"
+            style={{
+              fontSize: '4rem',
+              marginBottom: '1.5rem',
+              display: 'inline-block',
+              filter: 'drop-shadow(0 0 20px rgba(242,128,20,0.5))',
+            }}
+          >
+            🕉️
           </div>
 
           <div className="animate-fadeIn">

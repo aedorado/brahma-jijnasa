@@ -3,9 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
-import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
-import { OmSymbol } from '@/components/OmSymbol'
 import { scoreQuiz, getPerformanceLabel } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
 import { QuizEngine } from '@/components/QuizEngine'
@@ -159,9 +157,7 @@ export default function SessionPage({ params }: Props) {
     return (
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="text-center">
-          <div style={{ marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>
-            <OmSymbol size={52} />
-          </div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>🕉️</div>
           <p className="text-muted">Loading quiz...</p>
         </div>
       </div>

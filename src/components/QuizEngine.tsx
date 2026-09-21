@@ -23,6 +23,8 @@ interface QuizEngineProps {
   onSubmit: (answers: AnswerMap, timeElapsed: number) => void
   initialAnswers?: AnswerMap
   initialElapsed?: number
+  initialQuestionIndex?: number
+  onProgress?: (answers: AnswerMap, timeElapsed: number, currentQuestionIndex: number) => void
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -70,13 +72,32 @@ export function QuizEngine({
   onSubmit,
   initialAnswers = {},
   initialElapsed = 0,
+  initialQuestionIndex = 0,
+  onProgress,
 }: QuizEngineProps) {
   const { t } = useLanguage()
-  const [current, setCurrent] = useState(0)
+  const [current, setCurrent] = useState(
+    initialQuestionIndex >= 0 && initialQuestionIndex < questions.length
+      ? initialQuestionIndex
+      : 0
+  )
   const [answers, setAnswers] = useState<AnswerMap>(initialAnswers)
   const [elapsed, setElapsed] = useState(initialElapsed)
   const [showConfirm, setShowConfirm] = useState(false)
   const [direction, setDirection] = useState<'forward' | 'back'>('forward')
+
+  // Auto-save progress whenever answers or active question changes
+  useEffect(() => {
+    onProgress?.(answers, elapsed, current)
+  }, [answers, current, onProgress])
+
+  // Periodic progress sync every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      onProgress?.(answers, elapsed, current)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [answers, elapsed, current, onProgress])
 
   const hasTimeLimit = timeLimit > 0
   const remaining = hasTimeLimit ? Math.max(0, timeLimit - elapsed) : null

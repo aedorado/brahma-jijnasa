@@ -20,6 +20,7 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     : question.items.map((_, i) => i)
 
   const [order, setOrder] = useState<number[]>(initOrder)
+  const [activeMoved, setActiveMoved] = useState<number | null>(null)
   const dragIndex = useRef<number | null>(null)
   const [dragOver, setDragOver] = useState<number | null>(null)
 
@@ -33,6 +34,7 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
   const handleDragStart = (i: number) => { 
     if (disabled) return
     dragIndex.current = i 
+    setActiveMoved(order[i])
   }
 
   const handleDragOver = (e: React.DragEvent, i: number) => {
@@ -47,6 +49,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     newOrder.splice(i, 0, moved)
     setOrder(newOrder)
     onAnswer(newOrder)
+    setActiveMoved(moved)
+    setTimeout(() => setActiveMoved(null), 350)
     dragIndex.current = null
     setDragOver(null)
   }
@@ -54,12 +58,16 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
   const handleDragEnd = () => { 
     dragIndex.current = null
     setDragOver(null) 
+    setTimeout(() => setActiveMoved(null), 300)
   }
 
   // Touch support for mobile/tablet
   const touchStart = useRef<number | null>(null)
   const handleTouchStart = (i: number) => { 
-    if (!disabled) touchStart.current = i 
+    if (!disabled) {
+      touchStart.current = i
+      setActiveMoved(order[i])
+    }
   }
   const handleTouchEnd = (i: number) => {
     if (touchStart.current === null || touchStart.current === i || disabled) return
@@ -68,10 +76,12 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     newOrder.splice(i, 0, moved)
     setOrder(newOrder)
     onAnswer(newOrder)
+    setActiveMoved(moved)
+    setTimeout(() => setActiveMoved(null), 350)
     touchStart.current = null
   }
 
-  // Keyboard/button move up and down
+  // Keyboard/button move up and down with smooth animation
   const moveItem = (position: number, direction: 'up' | 'down', e: React.MouseEvent) => {
     e.stopPropagation()
     if (disabled) return
@@ -82,6 +92,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     newOrder.splice(target, 0, moved)
     setOrder(newOrder)
     onAnswer(newOrder)
+    setActiveMoved(moved)
+    setTimeout(() => setActiveMoved(null), 380)
   }
 
   return (
@@ -94,54 +106,77 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-        {order.map((itemIdx, position) => (
-          <div
-            key={itemIdx}
-            draggable={!disabled}
-            onDragStart={() => handleDragStart(position)}
-            onDragOver={e => handleDragOver(e, position)}
-            onDrop={() => handleDrop(position)}
-            onDragEnd={handleDragEnd}
-            onTouchStart={() => handleTouchStart(position)}
-            onTouchEnd={() => handleTouchEnd(position)}
-            className={`drag-item option-btn ${dragOver === position ? 'drag-over' : ''}`}
-            id={`sequence-item-${position}`}
-            style={{ 
-              cursor: disabled ? 'default' : 'grab', 
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.85rem',
-              padding: '0.9rem 1.15rem',
-              borderRadius: '12px',
-              transition: 'all 0.15s ease',
-              border: dragOver === position ? '2px dashed var(--color-gold)' : undefined,
-              transform: dragOver === position ? 'scale(1.01)' : 'none',
-            }}
-          >
-            {/* Step Order Badge */}
-            <span
-              style={{
-                width: 32, 
-                height: 32,
-                borderRadius: 8,
-                background: 'var(--color-surface-2)',
-                border: '1.5px solid var(--color-border-gold)',
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                fontSize: '0.85rem', 
-                fontWeight: 800,
-                color: 'var(--color-gold)',
-                flexShrink: 0,
+        {order.map((itemIdx, position) => {
+          const isJustMoved = activeMoved === itemIdx
+          const isDraggedOver = dragOver === position
+
+          return (
+            <div
+              key={itemIdx}
+              draggable={!disabled}
+              onDragStart={() => handleDragStart(position)}
+              onDragOver={e => handleDragOver(e, position)}
+              onDrop={() => handleDrop(position)}
+              onDragEnd={handleDragEnd}
+              onTouchStart={() => handleTouchStart(position)}
+              onTouchEnd={() => handleTouchEnd(position)}
+              className={`drag-item option-btn ${isDraggedOver ? 'drag-over' : ''}`}
+              id={`sequence-item-${position}`}
+              style={{ 
+                cursor: disabled ? 'default' : 'grab', 
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                padding: '0.9rem 1.15rem',
+                borderRadius: '12px',
+                transition: 'transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.2s ease',
+                border: isDraggedOver
+                  ? '2px dashed var(--color-gold)'
+                  : isJustMoved
+                  ? '1.5px solid var(--color-primary)'
+                  : undefined,
+                background: isJustMoved
+                  ? 'rgba(242, 128, 20, 0.08)'
+                  : isDraggedOver
+                  ? 'rgba(212, 175, 55, 0.08)'
+                  : undefined,
+                transform: isDraggedOver
+                  ? 'scale(1.02)'
+                  : isJustMoved
+                  ? 'scale(1.018)'
+                  : 'scale(1)',
+                boxShadow: isJustMoved
+                  ? '0 6px 20px rgba(242, 128, 20, 0.25)'
+                  : undefined,
+                position: 'relative',
+                zIndex: isJustMoved ? 2 : 1,
               }}
             >
-              {position + 1}
-            </span>
+              {/* Step Order Badge */}
+              <span
+                style={{
+                  width: 32, 
+                  height: 32,
+                  borderRadius: 8,
+                  background: isJustMoved ? 'var(--color-primary)' : 'var(--color-surface-2)',
+                  border: isJustMoved ? '1.5px solid var(--color-primary)' : '1.5px solid var(--color-border-gold)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '0.85rem', 
+                  fontWeight: 800,
+                  color: isJustMoved ? '#ffffff' : 'var(--color-gold)',
+                  flexShrink: 0,
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {position + 1}
+              </span>
 
-            {/* Item Text */}
-            <span style={{ flex: 1, fontSize: '1rem', fontWeight: 500, color: 'var(--color-text)' }}>
-              {question.items[itemIdx]}
-            </span>
+              {/* Item Text */}
+              <span style={{ flex: 1, fontSize: '0.96rem', fontWeight: 500, color: 'var(--color-text)', lineHeight: 1.45 }}>
+                {question.items[itemIdx]}
+              </span>
 
             {/* Rearrange Action Controls */}
             {!disabled && (
@@ -211,7 +246,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
               </div>
             )}
           </div>
-        ))}
+        )
+      })}
       </div>
     </div>
   )

@@ -8,7 +8,6 @@ import { scoreQuiz } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
 import { QuizEngine } from '@/components/QuizEngine'
 import { ScoreCard } from '@/components/ScoreCard'
-import { OmSymbol } from '@/components/OmSymbol'
 import type { Quiz, AnswerMap, ScoreResult } from '@/types/quiz'
 
 interface Props {
@@ -129,9 +128,7 @@ export default function DirectQuizPage({ params }: Props) {
   if (phase === 'loading') return (
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="text-center">
-        <div style={{ marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>
-          <OmSymbol size={52} />
-        </div>
+        <div style={{ fontSize: '3rem', marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>🕉️</div>
         <p className="text-muted">Loading...</p>
       </div>
     </div>

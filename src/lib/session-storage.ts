@@ -2,7 +2,7 @@ import type { AnswerMap } from '@/types/quiz'
 
 const PREFIX = 'bj_quiz_'
 
-interface SavedQuizState {
+export interface SavedQuizState {
   pin: string
   quizId: string
   userId: string
@@ -10,6 +10,7 @@ interface SavedQuizState {
   startedAt: number       // timestamp ms
   timeElapsed: number     // seconds
   savedAt: number
+  currentIndex?: number
 }
 
 // ——— Save progress ———
