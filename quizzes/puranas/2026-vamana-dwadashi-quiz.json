@@ -1,0 +1,382 @@
+{
+  "id": "2026-vamana-dwadashi-quiz",
+  "title": "2026 Vāmana Dvādaśī Quiz",
+  "category": "puranas",
+  "description": "Easy introductory quiz on Lord Vāmanadeva and King Bali based on Śrīmad-Bhāgavatam Canto 8, Chapters 15–23.",
+  "difficulty": "easy",
+  "timeLimit": 720,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "On the northern bank of which sacred river was the sacrificial arena of King Bali (Bhṛgukaccha) situated where Lord Vāmanadeva arrived?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "River Narmadā",
+        "River Yamunā",
+        "River Gaṅgā",
+        "River Sarasvatī"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.18.21",
+      "explanation": "Śrīmad-Bhāgavatam 8.18.21 states that Bali Mahārāja was executing the horse sacrifice at the field named Bhṛgukaccha on the northern bank of the Narmadā River."
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following items were presented to Lord Vāmanadeva during His sacred thread (upanayana) ceremony? (Select all that apply)",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "A waterpot (kamaṇḍalu) given by Lord Brahmā",
+        "An umbrella given by Dyauḥ (the heavenly deity)",
+        "A sacred thread (brahma-sūtra) given by Bṛhaspati",
+        "A golden crown given by King Kaṁsa"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 8.18.14-17",
+      "explanation": "During Vāmanadeva's sacred thread ceremony, Bṛhaspati offered the sacred thread, Dyauḥ gave an umbrella, and Lord Brahmā gave a waterpot."
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "True or False: Mother Aditi observed the Payo-vrata vow for twelve consecutive days by subsisting only on milk to worship Lord Vāsudeva.",
+      "difficulty": "easy",
+      "points": 10,
+      "correct": true,
+      "reference": "Śrīmad-Bhāgavatam 8.16.25, 8.17.1",
+      "explanation": "Śrīmad-Bhāgavatam 8.16.25 and 8.17.1 confirm that Mother Aditi strictly executed the Payo-vrata ritualistic vow for twelve days, subsisting only on milk."
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "question": "Identify the personality described by these scriptural clues:",
+      "difficulty": "easy",
+      "points": 10,
+      "clues": [
+        "I am the spiritual master of the demons who revived King Bali after he was defeated.",
+        "I conducted the Viśvajit sacrifice for Bali and later warned him that the dwarf brahmacārī was Lord Viṣṇu.",
+        "When my disciple refused to break his promise of giving land to Vāmanadeva, I cursed him to lose his opulence."
+      ],
+      "options": [
+        "Bṛhaspati",
+        "Śukrācārya",
+        "Nārada Muni",
+        "Vasiṣṭha Muni"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.15.3, 8.19.29, 8.20.14-15",
+      "explanation": "Śukrācārya (Uśanā) was the guru of the demons who warned Bali Mahārāja and cursed him when Bali insisted on fulfilling his promise to Vāmanadeva."
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Who spoke the following words regarding the nature of contentment?",
+      "difficulty": "easy",
+      "points": 10,
+      "quote": "If I were not satisfied with three paces of land, then surely I would not be satisfied even with possessing one of the seven islands...",
+      "context": "Spoken when King Bali offered to give an entire island instead of just three paces of land.",
+      "options": [
+        "Lord Vāmanadeva",
+        "King Bali",
+        "Śukrācārya",
+        "Lord Brahmā"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.19.21",
+      "explanation": "Lord Vāmanadeva spoke these words to King Bali, teaching that an uncontrolled mind cannot be satisfied even by the wealth of all three worlds."
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange the following key events from the story of Lord Vāmanadeva in correct chronological order:",
+      "difficulty": "easy",
+      "points": 10,
+      "items": [
+        "Lord Vāmanadeva appears as a dwarf brahmacārī from Mother Aditi's womb.",
+        "Mother Aditi laments the defeat of her demigod sons.",
+        "Lord Vāmanadeva arrives at King Bali's sacrificial arena on the Narmadā river bank.",
+        "Kaśyapa Muni instructs Mother Aditi in performing the 12-day Payo-vrata vow."
+      ],
+      "correctOrder": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 8.16.1 - 8.18.21",
+      "explanation": "Aditi laments first, Kaśyapa instructs her in Payo-vrata, Lord Vāmanadeva appears, and then He travels to Bali's sacrificial arena."
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "question": "Match each divine gift offered to Lord Vāmanadeva with the personality who presented it:",
+      "difficulty": "easy",
+      "points": 10,
+      "left": [
+        "Sun-god (Savitā)",
+        "Goddess Sarasvatī",
+        "Mother Earth (Bhūmi)",
+        "Lord Brahmā"
+      ],
+      "right": [
+        "Gave a necklace of Rudrākṣa beads",
+        "Gave a waterpot (kamaṇḍalu)",
+        "Chanted the sacred Gāyatrī mantra",
+        "Gave a deerskin garment"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "reference": "Śrīmad-Bhāgavatam 8.18.14-17",
+      "explanation": "Savitā chanted Gāyatrī, Sarasvatī offered Rudrākṣa beads, Bhūmi gave a deerskin, and Brahmā gave a kamaṇḍalu."
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "question": "Analyze the Assertion and Reason regarding King Bali and Śukrācārya:",
+      "difficulty": "easy",
+      "points": 10,
+      "assertion": "Śukrācārya cursed his disciple King Bali to lose all his opulence.",
+      "reason": "King Bali refused to obey Śukrācārya's instruction to take back his promise of giving land to Lord Vāmanadeva.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation for Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation for Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.20.14-15",
+      "explanation": "Śukrācārya cursed King Bali to lose his opulence specifically because Bali disregarded his order and insisted on giving charity to Lord Viṣṇu."
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "question": "Identify and correct the factual error in the following narrative passage:",
+      "difficulty": "easy",
+      "points": 10,
+      "passage": "When Lord Vāmanadeva expanded into His universal form, His first step covered the entire earth, and His second step reached the upper planets. Garuda then immediately bound Lord Vāmanadeva with the Varuṇa-pāśa ropes.",
+      "options": [
+        "Change 'His first step covered the entire earth' to 'His first step covered Indra's palace'.",
+        "Change 'Garuda then immediately bound Lord Vāmanadeva' to 'Garuda then immediately bound King Bali'.",
+        "Change 'His second step reached the upper planets' to 'His second step reached Sutala'.",
+        "Change 'Varuṇa-pāśa ropes' to 'iron chains'."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.21.26",
+      "explanation": "Garuda bound King Bali with the ropes of Varuṇa, not Lord Vāmanadeva."
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "question": "Identify the missing step in this narrative sequence:",
+      "difficulty": "easy",
+      "points": 10,
+      "chain": [
+        "King Bali promises to give three paces of land to Lord Vāmanadeva.",
+        "Śukrācārya warns King Bali that the dwarf is Lord Viṣṇu and forbids the charity.",
+        "?",
+        "Lord Vāmanadeva expands into His universal form (Trivikrama) to measure the universe."
+      ],
+      "options": [
+        "King Bali cancels his sacrifice and orders his guards to arrest Vāmanadeva.",
+        "King Bali rejects Śukrācārya's advice, washes Vāmanadeva's feet, and confirms the gift of land.",
+        "Lord Viṣṇu reveals His four-armed form and defeats Śukrācārya in debate.",
+        "Lord Brahmā descends from heaven to stop King Bali from giving charity."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.20.1-17",
+      "explanation": "After Śukrācārya's warning, King Bali rejected his guru's objection, washed Lord Vāmanadeva's feet, and gave the land."
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Which of the following items was NOT given to Lord Vāmanadeva during His upanayana (sacred thread) ceremony?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "An umbrella given by Dyauḥ",
+        "A waterpot given by Lord Brahmā",
+        "A golden chariot given by King Kaṁsa",
+        "A deerskin given by Mother Earth"
+      ],
+      "correctIndex": 2,
+      "reference": "Śrīmad-Bhāgavatam 8.18.14-17",
+      "explanation": "King Kaṁsa was not present nor did he give a chariot; the other items were presented to Lord Vāmanadeva during His upanayana ceremony."
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "What was the direct result when Lord Vāmanadeva's toe pierced the universal shell during His second step?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "The entire universe sank into the lower ocean.",
+        "Water from the Causal Ocean entered the universe and became the sacred river Ganges.",
+        "King Bali was immediately turned into stone.",
+        "The sun and moon stopped moving in space."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.21.1",
+      "explanation": "When Vāmanadeva's toe pierced the universal shell, water entered from the outer ocean, washed His lotus feet, and flowed down as the Ganges."
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement among the options regarding King Bali:",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Statement 1: King Bali offered his own head for Lord Vāmanadeva's third step.",
+        "Statement 2: Lord Vāmanadeva destroyed King Bali and sent him to hell as a punishment.",
+        "Statement 3: Lord Vāmanadeva personally stands as the doorkeeper at King Bali's residence in Sutala."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.22.31-35, 8.23.1-4",
+      "explanation": "Statement 2 is FALSE. Lord Vāmanadeva did not destroy Bali or send him to hell; He blessed Bali with the realm of Sutala and became his doorkeeper."
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "question": "Based on Lord Vāmanadeva's teachings to King Bali, how should one practice contentment in daily life?",
+      "difficulty": "easy",
+      "points": 10,
+      "scenario": "When Lord Vāmanadeva asked for only three paces of land, King Bali thought it was too small and offered a whole island. Lord Vāmanadeva explained that someone who cannot be satisfied with three paces of land will never be satisfied even if given an entire continent.",
+      "options": [
+        "Constantly desire more material possessions to achieve true happiness.",
+        "Be satisfied with whatever necessities come naturally, avoiding endless material greed.",
+        "Stop eating food and give away all clothes immediately.",
+        "Reject working for family maintenance and live without responsibilities."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.19.21-25",
+      "explanation": "Lord Vāmanadeva teaches that true peace comes from contentment (santoṣa) with what is provided by destiny, rather than chasing endless material accumulation."
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "question": "According to the Śrīmad-Bhāgavatam, what is a devotee's highest duty when faced with a choice between worldly self-interest and pleasing the Supreme Lord?",
+      "difficulty": "easy",
+      "points": 10,
+      "scenario": "Śukrācārya advised King Bali to break his promise to Vāmanadeva in order to save his wealth and kingdom. King Bali faced a major choice between retaining his material possessions and surrendering fully to Lord Viṣṇu.",
+      "options": [
+        "Break all promises and save material wealth at any cost.",
+        "Surrender completely to the Supreme Lord, prioritizing truthfulness and devotion above material gain.",
+        "Run away to the forest without making any decision.",
+        "Blame others for the situation and refuse to participate."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 8.20.1-13",
+      "explanation": "King Bali exemplified the highest duty (ātma-nivedanam) by surrendering everything to Lord Viṣṇu, choosing devotion over material kingdom and wealth."
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "What is the name of the special realm given to King Bali by Lord Vāmanadeva, which is described as more opulent than heaven?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Sutala",
+        "Pātāla",
+        "Atala",
+        "Rasātala"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.22.32",
+      "explanation": "Lord Vāmanadeva granted King Bali the heavenly realm of Sutala, promising to personally protect him there."
+    },
+    {
+      "id": 17,
+      "type": "multiple-select",
+      "question": "Which of the following qualities of King Bali pleased Lord Vāmanadeva? (Select all that apply)",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "His truthful adherence to his promise despite losing his kingdom",
+        "His complete surrender of his own body for the third step",
+        "His firm determination in devotional service despite his guru's curse",
+        "His desire to conquer the demigods through violence"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 8.22.28-31",
+      "explanation": "Lord Vāmanadeva praised King Bali for remaining truthful, surrendering his self (ātma-nivedanam), and standing firm in devotion despite Śukrācārya's curse."
+    },
+    {
+      "id": 18,
+      "type": "single-choice",
+      "question": "Who was the grandfather of King Bali, known as a great devotee who appeared in the sacrificial arena to praise Lord Vāmanadeva?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Prahlāda Mahārāja",
+        "Dhruva Mahārāja",
+        "Ambarīṣa Mahārāja",
+        "Pṛthu Mahārāja"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.23.6-8",
+      "explanation": "Prahlāda Mahārāja, the exalted grandfather of King Bali, arrived at the sacrificial arena and offered heartfelt prayers to Lord Vāmanadeva."
+    },
+    {
+      "id": 19,
+      "type": "multiple-select",
+      "question": "According to Śrīmad-Bhāgavatam 8.23.16, chanting the holy name of the Supreme Lord rectifies which of the following sacrifice flaws? (Select all that apply)",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Errors in chanting mantras (mantrataḥ)",
+        "Flaws in ritual execution (tantrataḥ)",
+        "Defects in place, time, or worship materials (deśa-kālāri-vastutaḥ)",
+        "Intention to commit crime"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 8.23.16",
+      "explanation": "SB 8.23.16 explicitly states that chanting the holy name rectifies errors in mantras, ritual procedures, time, place, and paraphernalia."
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "Which limb of devotional service (navadhā-bhakti) is King Bali celebrated for exemplifying in Vedic scriptures?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Ātma-nivedanam (complete self-surrender)",
+        "Sakhayam (friendship)",
+        "Dāsyam (servitude)",
+        "Arcanam (deity worship)"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 8.22.28-31 & Bhakti-rasāmṛta-sindhu",
+      "explanation": "King Bali is the premier scriptural example of ātma-nivedanam—offering one's entire self, body, mind, and possessions to the Supreme Personality of Godhead."
+    }
+  ]
+}

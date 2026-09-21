@@ -15,8 +15,9 @@ RULES:
 1. Ground every question, option, and explanation directly in the uploaded sources.
 2. In each question, provide an authentic "reference" (Book, Canto/Parva, Chapter, Verse, or Section) and a clear "explanation" citing the source.
 3. Every interactive type appears ONLY ONCE.
-4. Difficulty: exactly 5 "easy" (2 pts), 10 "medium" (3 pts), and 5 "hard" (3 pts).
-5. For Q14 and Q15: in "scenario", provide 2-3 vivid sentences explaining the scriptural story and context before posing the question.
+4. Difficulty: exactly 5 "easy", 10 "medium", and 5 "hard".
+5. In Q6 ("sequence"), "items" must be scrambled (NEVER [0,1,2,3]). In Q7 ("match-pairs"), "right" must be scrambled so "correctPairs" is NEVER [[0,0],[1,1],[2,2],[3,3]].
+6. For Q14 and Q15: in "scenario", provide 2-3 vivid sentences explaining the scriptural story and context before posing the question.
 
 QUESTION TYPES (20 questions in this exact order):
 Q1: "single-choice" (options: 4 strings, correctIndex: 0-3)
