@@ -8,6 +8,7 @@ import { scoreQuiz } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
 import { QuizEngine } from '@/components/QuizEngine'
 import { ScoreCard } from '@/components/ScoreCard'
+import { OmSymbol } from '@/components/OmSymbol'
 import type { Quiz, AnswerMap, ScoreResult } from '@/types/quiz'
 
 interface Props {
@@ -25,6 +26,7 @@ export default function DirectQuizPage({ params }: Props) {
   const [timeTaken, setTimeTaken] = useState(0)
   const [initialAnswers, setInitialAnswers] = useState<AnswerMap>({})
   const [initialElapsed, setInitialElapsed] = useState(0)
+  const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
@@ -59,9 +61,21 @@ export default function DirectQuizPage({ params }: Props) {
       setQuiz(quizData)
 
       const saved = loadProgress(quizId, effectiveUid)
-      if (saved) { setInitialAnswers(saved.answers); setInitialElapsed(saved.timeElapsed) }
-
-      setPhase('intro')
+      if (saved) {
+        setInitialAnswers(saved.answers || {})
+        setInitialElapsed(saved.timeElapsed || 0)
+        if (typeof saved.currentIndex === 'number') {
+          setInitialQuestionIndex(saved.currentIndex)
+        }
+        // If user already started or answered questions, resume immediately
+        if (saved.answers && Object.keys(saved.answers).length > 0) {
+          setPhase('quiz')
+        } else {
+          setPhase('intro')
+        }
+      } else {
+        setPhase('intro')
+      }
     }
     init()
   }, [quizId, authLoading, user])
@@ -95,10 +109,29 @@ export default function DirectQuizPage({ params }: Props) {
     setPhase('submitted')
   }, [quiz, userId, quizId])
 
+  const handleProgress = useCallback(
+    (answers: AnswerMap, elapsed: number, currentIndex: number) => {
+      if (!quiz || !userId) return
+      saveProgress({
+        pin: quizId,
+        quizId: quiz.id,
+        userId,
+        answers,
+        startedAt: Date.now() - elapsed * 1000,
+        timeElapsed: elapsed,
+        savedAt: Date.now(),
+        currentIndex,
+      })
+    },
+    [quiz, userId, quizId]
+  )
+
   if (phase === 'loading') return (
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="text-center">
-        <div style={{ fontSize: '3rem', marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>🕉️</div>
+        <div style={{ marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>
+          <OmSymbol size={52} />
+        </div>
         <p className="text-muted">Loading...</p>
       </div>
     </div>
@@ -150,6 +183,8 @@ export default function DirectQuizPage({ params }: Props) {
       onSubmit={handleSubmit}
       initialAnswers={initialAnswers}
       initialElapsed={initialElapsed}
+      initialQuestionIndex={initialQuestionIndex}
+      onProgress={handleProgress}
     />
   )
 

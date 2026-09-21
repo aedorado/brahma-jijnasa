@@ -1,0 +1,383 @@
+{
+  "id": "mahabharata-authentic-quiz-20",
+  "title": "Mahābhārata Scholarly & Structural Quiz",
+  "category": "mahabharata",
+  "description": "A comprehensive 20-question quiz grounded strictly in Purnaprajna Dasa's Mahabharata presentation, covering key episodes, vows, lineages, philosophy, and real-life ethical applications.",
+  "difficulty": "medium",
+  "timeLimit": 1200,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "How did Upamanyu lose his eyesight while tending the cows of his spiritual master Ayoda-Dhaumya?",
+      "options": [
+        "He ate the pungent leaves of an arka tree out of severe hunger.",
+        "He was struck by lightning sent by Indra during a storm.",
+        "He fell into a thorny thicket while chasing a stray calf.",
+        "He drank toxic froth from a serpent in a dried-up well."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Forbidden by his guru from eating alms, milk, or leftover calf froth, Upamanyu ate pungent arka leaves in desperation, which caused him to go blind and fall into a well.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Story of Upamanyu)"
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following visions seen by Utanka in Nagaloka were correctly interpreted by his guru Veda? Select ALL that apply.",
+      "options": [
+        "The two women weaving black and white threads represented Dhata and Vidhata (day and night).",
+        "The wheel with twelve spokes represented the year, and the six boys turning it represented six seasons.",
+        "The man riding the horse was Agni, and the horse was Indra's thunderbolt.",
+        "The gigantic bull whose dung Utanka ate was Airavata, and its dung was celestial nectar."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Veda explained that Dhata and Vidhata are day/night, the wheel/boys represent the year and six seasons, and the bull was Airavata containing nectar. The man with the horse was Indra and the horse was Agni, making option 3 incorrect.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Paushya Parva)"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "King Yayati accepted his youngest son Puru's youth permanently and never returned it to him.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Yayati enjoyed youth for 1,000 years, realized material desires cannot be quenched by indulgence, returned Puru's youth, crowned Puru king, and retired to the forest.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "question": "Identify the Mahabharata personality based on the clues below.",
+      "clues": [
+        "3pts: I was born prematurely when my mother impatiently broke open one of her two eggs after waiting 500 years.",
+        "2pts: I cursed my mother to become a slave for 500 years because she prematurely exposed my undeveloped lower body.",
+        "1pt: I rose into the sky and eventually became the charioteer of the sun-god Surya."
+      ],
+      "options": [
+        "Garuda",
+        "Aruna",
+        "Kadru",
+        "Vinata"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Aruna was Vinata's first son born with an undeveloped lower body due to Vinata's impatience; he cursed her and became Surya's charioteer.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Astika Parva)"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Who uttered this moral decree after a traumatic event involving his disciple?",
+      "quote": "Let it be from this day onward, any brahmana who cannot resist the temptation of drinking wine shall be considered fallen from his brahminical status.",
+      "context": "Spoken after the Danavas burned his disciple Kaca to ashes, mixed the ashes into wine, and tricked the preceptor into drinking it.",
+      "options": [
+        "Shukracharya",
+        "Brihaspati",
+        "Vashishtha",
+        "Agastya"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Shukracharya enacted this universal prohibition against wine for brahmanas after being tricked by the Danavas into consuming Kaca's ashes in wine.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange these events from Garuda's birth and quest for Amrita in correct chronological order.",
+      "items": [
+        "Vinata loses a wager on Uccaihashrava's tail color and becomes Kadru's slave.",
+        "Garuda carries a 100-yojana banyan branch to save 60,000 Valakhilya rishis hanging from it.",
+        "Garuda extinguishes the celestial fires surrounding the Amrita using 8,100 water-filled mouths.",
+        "Indra hurls his thunderbolt at Garuda, but Garuda drops a single feather in respect."
+      ],
+      "correctOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Vinata was enslaved first; Garuda carried the branch with Valakhilyas while seeking food; he used 8,100 mouths to extinguish celestial fires; and Indra struck him with the thunderbolt as Garuda departed.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Astika Parva)"
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "question": "Match each Mahabharata character on the left with their partial divine or demoniac incarnation on the right.",
+      "left": [
+        "Duryodhana",
+        "Dhrishtadyumna",
+        "Kansa",
+        "Vidura"
+      ],
+      "right": [
+        "Portion of Kali",
+        "Portion of Agni",
+        "Danava Kalanemi",
+        "Yamaraja"
+      ],
+      "correctPairs": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ]
+      ],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Duryodhana appeared from Kali, Dhrishtadyumna from Agni, Kansa from Kalanemi, and Vidura from Yamaraja.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Incarnations Section)"
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "question": "Evaluate the Assertion and Reason regarding King Vasu Uparicara.",
+      "assertion": "King Vasu Uparicara was presented with a crystal chariot that traveled through the sky by King Indra.",
+      "reason": "Vasu Uparicara had agreed to resume his royal duties to protect citizens after Indra requested him not to abandon the kingdom for forest asceticism.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Indra awarded the sky-traveling crystal chariot to King Vasu specifically because Vasu agreed to resume his kingly duties rather than remaining a forest ascetic.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "question": "Spot the factual error in the passage below and select the correct modification.",
+      "passage": "When King Pandu pierced the deer in the forest, the dying sage Kindama cursed him that Pandu would die if he approached his wife sexually. Pandu immediately returned to Hastinapura with his wives, where Madri entered the funeral pyre while Kunti raised the five sons.",
+      "options": [
+        "Pandu did NOT return to Hastinapura; he renounced royal life and remained in the forest as an ascetic until his death years later.",
+        "Kindama did not curse Pandu; the curse was pronounced by Durvasa Muni during a sacrifice.",
+        "Pandu was accompanied only by Kunti, while Madri remained in the royal palace at Hastinapura.",
+        "Madri did not enter the funeral pyre; Kunti entered the pyre while Madri raised the Pandavas."
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Pandu did not return to Hastinapura after the curse; he gave up his kingdom and lived in the forest as an ascetic until his death.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "question": "Identify the missing event in the sequence below.",
+      "chain": [
+        "Ekalavya is rejected by Drona due to his low nishada birth.",
+        "Ekalavya worships a clay statue of Drona and practices incessant archery.",
+        "?",
+        "Arjuna asks Drona why Ekalavya exceeds him, prompting Drona to request Ekalavya's right thumb."
+      ],
+      "options": [
+        "Ekalavya swiftly shoots seven arrows into a barking dog's mouth before it can close its jaws.",
+        "Ekalavya defeats Duryodhana in a mace duel during a royal hunting excursion.",
+        "Ekalavya challenges Drona to an archery contest in the court of Dhritarashtra.",
+        "Ekalavya rescues Arjuna from an attack by a wild boar in the forest."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Ekalavya filled the barking dog's mouth with seven arrows without harming it, astonishing the Kuru princes and causing Arjuna to question Drona.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Three of these descriptions accurately state the source's accounts of Draupadi's five sons, while one contains a factual error. Which is the ODD ONE OUT?",
+      "options": [
+        "Prativindhya - born after Bhima performed 1,000 Soma-yajnas",
+        "Sutasoma - born after Bhima performed 1,000 Soma-yajnas",
+        "Shrutakarma - born after Arjuna performed wonderful feats during exile",
+        "Shrutasena - born under the constellation Krittika"
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Prativindhya was Yudhishthira's son (named because he could bear enemy weapons like the Vindhya mountains). Sutasoma was Bhima's son born after 1,000 Soma-yajnas.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Svaayamvara Parva)"
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "What direct consequence occurred when Queen Gandhari, overcome with jealousy upon hearing Kunti had given birth to Yudhishthira, struck her own abdomen?",
+      "options": [
+        "She delivered a hard, iron-like ball of flesh that Vyasadeva divided into 101 ghee-filled clay pots.",
+        "She gave birth directly to Duryodhana, who immediately brayed like an ass.",
+        "She was cursed by Vyasadeva that all her sons would perish in battle.",
+        "She lost her eyesight permanently, requiring her to wear cloth wrappings."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Striking her stomach produced a hard lump of flesh, which Vyasadeva sprinkled with water and divided into 101 clay pots filled with ghee.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Among the three statements below regarding Sunda and Upasunda, identify the FALSE statement.",
+      "options": [
+        "Sunda and Upasunda received a boon from Lord Brahma that they could only be killed by each other.",
+        "Lord Shiva manifested four extra faces and Indra manifested 1,000 eyes to view Tilottama.",
+        "Sunda and Upasunda peacefully agreed to share Tilottama and rule the three worlds together."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Statement 3 is false! Driven by overwhelming lust, Sunda and Upasunda fought each other with heavy clubs until both died.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Rajya-labha Parva)"
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "scenario": "In the Vana Parva, Draupadī urges Yudhiṣṭhira to take righteous action against the Kauravas rather than remaining passive in exile. To illustrate the proper balance of mercy and authority, she cites the ancient dialogue where Prahlāda Mahārāja instructs his grandson King Bali on the dangers of both unconditional forgiveness (which breeds insolence and exploitation) and perpetual punishment (which breeds terror and hatred).",
+      "question": "A modern department manager oversees team members who deliberately and repeatedly violate crucial team conduct policies. Applying Prahlāda's counsel to Bali, what is the correct leadership decision?",
+      "options": [
+        "Neither perpetual forgiveness nor perpetual punishment is correct: forgive unintentional or first-time errors with compassion, but firmly enforce discipline for deliberate repeat offenders.",
+        "Forgive all violations unconditionally to maintain a conflict-free atmosphere regardless of recurrence.",
+        "Enforce severe, unyielding punishment for every infraction to establish unquestioned fear and control.",
+        "Step down from management altogether to avoid the responsibility of reprimanding others."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Prahlāda instructed Bali that a leader who always forgives is treated with contempt by the wicked, while one who always punishes alienates his allies. True dharma requires discriminating wisdom: forbearance toward inadvertent mistakes, and decisive discipline toward willful repeat offenders.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva (Prahlada and Bali)"
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "scenario": "In the Karṇa Parva, Lord Kṛṣṇa narrates the story of the ascetic sage Kauśika, who had sworn an inflexible vow never to utter a falsehood. When innocent travelers sought refuge in the forest to escape murderous bandits, the armed robbers confronted Kauśika and demanded their hiding spot. Believing that truthfulness superseded all else, Kauśika pointed out the refugees, leading to their slaughter. Kṛṣṇa declared that Kauśika incurred grave sin because protecting innocent life is a supreme dharma that transcends rigid, mechanical truthfulness.",
+      "question": "A security guard who has taken a solemn vow of honesty is cornered by violent criminals demanding the exact room where defenseless people are sheltering. According to Kṛṣṇa's teaching regarding Kauśika, what should the guard do?",
+      "options": [
+        "Mislead or refuse the criminals to protect innocent life, because preserving life and preventing harm supersedes literal verbal accuracy in mortal danger.",
+        "Reveal the exact room immediately, because breaking a vow of literal truthfulness is under all circumstances the greatest possible sin.",
+        "Remain completely silent and allow the criminals to search the building and locate the victims unimpeded.",
+        "Cooperate fully with the criminals in exchange for personal safety."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Lord Kṛṣṇa taught that dharma is subtle (dharma-sūkṣmatā): truthfulness exists to uphold and protect life (ahimsā and rakṣaṇa). When speaking literal fact results in murder or cruelty, silence or strategic deception to save the innocent is the highest righteousness.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Karna Parva (Story of Kaushika)"
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "Why did neutralizing Ashvatthama's Narayanastra require the Pandava army to lay down all weapons and cast away fighting intent?",
+      "options": [
+        "Because the Narayanastra destroys anyone who resists or holds weapons, but pacifies when met with complete surrender.",
+        "Because invoking opposing weapons like Brahmastra is forbidden by celestial law.",
+        "Because Drona had placed a special spell on the weapon to spare unarmed combatants.",
+        "Because Bhima had promised Balarama not to fight on that day."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Krishna explained that opposing the Narayanastra with force increases its destructive power, whereas complete surrender and laying down arms renders it ineffective.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Drona Parva (Narayanastra)"
+    },
+    {
+      "id": 17,
+      "type": "multiple-select",
+      "question": "Which of the following conditions were listed by Markandeya Rishi as making charity futile? Select ALL that apply.",
+      "options": [
+        "Charity given from wealth that is unlawfully earned.",
+        "Charity given to a person who has fallen down from their vows.",
+        "Charity given to a person who recites the Vedas for money.",
+        "Charity given to an ascetic who performs daily Agnihotra sacrifices."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Markandeya listed unlawfully earned wealth, fallen persons, and those who recite Vedas for money as futile charity. Giving to a pure performing ascetic is meritorious.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva (Markandeya Samasya Parva)"
+    },
+    {
+      "id": 18,
+      "type": "single-choice",
+      "question": "Why did Arjuna decline to marry King Virata's daughter Uttara himself, offering her instead as a bride for his son Abhimanyu?",
+      "options": [
+        "Having lived as her dance teacher for a year, accepting her as daughter-in-law testified to her purity and protected them both from false scandal.",
+        "Arjuna had taken a solemn vow of celibacy for the entire 13-year exile period.",
+        "Subhadra had strictly forbidden Arjuna from accepting additional wives.",
+        "King Yudhishthira had decreed that only Abhimanyu should marry within Virata's kingdom."
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Arjuna explained that having lived with her for a year as Brihannala, marrying her himself might cause public doubt, whereas taking her for Abhimanyu proved her immaculate purity.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Virata Parva (Vaivahika Parva)"
+    },
+    {
+      "id": 19,
+      "type": "multiple-select",
+      "question": "Which of the following six sharp swords were explicitly named by Vidura in Vidura-niti as severing human lifespan? Select ALL that apply.",
+      "options": [
+        "Excessive pride",
+        "Over-eating",
+        "Talkativeness",
+        "Family dissension"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Vidura enumerated excessive pride, over-eating, anger, too much lust, talkativeness, and family dissension as the six sharp swords severing human lifespan.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Udyoga Parva (Prajagara Parva / Vidura-niti)"
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "In the dialogue between Yudhishthira and Nahusha (in python form), what truly defines a person as a real brahmana?",
+      "options": [
+        "Virtuous behavior, truthfulness, and spiritual qualities, regardless of birth.",
+        "Being born in a high brahmana lineage and memorizing the sacrificial rituals.",
+        "Performing severe physical austerities in the forest for a century.",
+        "Procuring vast material wealth to distribute in royal sacrifices."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Yudhishthira explained to Nahusha that neither birth nor learning alone makes a brahmana; pure spiritual behavior and realization of truth qualify a true brahmana.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva (Ajagara Parva)"
+    }
+  ]
+}

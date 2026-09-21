@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
+import { OmSymbol } from '@/components/OmSymbol'
 
 export default function HomePage() {
   const [pin, setPin] = useState('')
@@ -55,17 +56,9 @@ export default function HomePage() {
       {/* Hero */}
       <section style={{ padding: '5rem 0 4rem', textAlign: 'center' }}>
         <div className="container-sm z-above">
-          {/* Om symbol */}
-          <div
-            className="animate-diya"
-            style={{
-              fontSize: '4rem',
-              marginBottom: '1.5rem',
-              display: 'inline-block',
-              filter: 'drop-shadow(0 0 20px rgba(242,128,20,0.5))',
-            }}
-          >
-            🕉️
+          {/* Sacred Om Invocation */}
+          <div className="animate-diya" style={{ marginBottom: '1.5rem', display: 'inline-block' }}>
+            <OmSymbol size={76} />
           </div>
 
           <div className="animate-fadeIn">
@@ -134,161 +127,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Quizzes (Direct Link — No PIN Needed) */}
-      <section style={{ padding: '1rem 0 3rem' }}>
-        <div className="container-sm" style={{ maxWidth: 720 }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <span className="badge badge-gold" style={{ marginBottom: '0.5rem' }}>{t.home.directAccess}</span>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{t.home.featuredTitle}</h2>
-            <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-              {t.home.featuredSubtitle}
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {/* Sample Mahābhārata Variety Demo Card */}
-            <div
-              className="card-gold"
-              style={{
-                padding: '1.75rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                position: 'relative',
-                background: 'linear-gradient(135deg, rgba(232,192,69,0.12), rgba(242,128,20,0.08))',
-                border: '1.5px solid var(--color-border-gold)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <div>
-                  <span className="badge badge-gold" style={{ marginBottom: '0.5rem' }}>
-                    ✨ Special Interactive Variety Demo • 20 Questions
-                  </span>
-                  <h3 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0.25rem 0', color: 'var(--color-gold)' }}>
-                    Mahābhārata — Variety Demo
-                  </h3>
-                  <p style={{ color: 'var(--color-lotus)', fontSize: '0.9rem', maxWidth: 520, lineHeight: 1.6 }}>
-                    Full interactive showcase covering Single-choice MCQ, Multi-select, True/False, Who Am I?, Match Pairs, Chronology, Cause-Effect, Odd One Out, Assertion-Reason, Spot the Error, Two Truths One False, and Dharmic Dilemmas.
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700 }}>20 Questions</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>⏱️ 15 min</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', fontSize: '0.75rem' }}>
-                <span className="badge badge-accent">16 Question Types</span>
-                <span className="badge">MCQ</span>
-                <span className="badge">Match Pairs</span>
-                <span className="badge">Who Am I?</span>
-                <span className="badge">Dharmic Dilemmas</span>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                <a
-                  href="/q/mahabharata-variety-demo"
-                  id="start-variety-demo-quiz-btn"
-                  className="btn btn-gold btn-lg"
-                  style={{ textDecoration: 'none', padding: '0.85rem 2rem', fontSize: '1rem', fontWeight: 700 }}
-                >
-                  🚀 Try Sample Quiz Now →
-                </a>
-              </div>
-            </div>
-
-            {/* Mahābhārata Quiz Card */}
-            <div
-              className="card"
-              style={{
-                padding: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <div>
-                  <span className="badge badge-saffron" style={{ marginBottom: '0.5rem' }}>
-                    🏹 Mahābhārata • Purnaprajna Dasa
-                  </span>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0.25rem 0' }}>
-                    Mahābhārata — Authentic Presentation
-                  </h3>
-                  <p style={{ color: 'var(--color-lotus)', fontSize: '0.88rem', maxWidth: 480, lineHeight: 1.6 }}>
-                    20 deep-dive questions testing pastimes, celestial origins, ethical quandaries, Vidura-nīti, and real-life case study applications.
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>20 {t.home.questionsCount}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>⏱️ 15 {t.home.minsLimit}</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                <span className="badge">MCQ</span>
-                <span className="badge">Multi-Select</span>
-                <span className="badge">True/False</span>
-                <span className="badge">Case Studies</span>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                <a
-                  href="/q/mahabharata-authentic-01"
-                  id="start-mahabharata-quiz-btn"
-                  className="btn btn-primary"
-                  style={{ textDecoration: 'none', padding: '0.75rem 1.75rem', fontSize: '0.95rem' }}
-                >
-                  {t.home.startMahabharata}
-                </a>
-              </div>
-            </div>
-
-            {/* Bhagavad Gītā Quiz Card */}
-            <div
-              className="card"
-              style={{
-                padding: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <div>
-                  <span className="badge badge-gold" style={{ marginBottom: '0.5rem' }}>
-                    📿 Bhagavad Gītā
-                  </span>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: '0.25rem 0' }}>
-                    Bhagavad Gītā — Core Teachings
-                  </h3>
-                  <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', maxWidth: 460 }}>
-                    Karma, dharma, ātmā, and the nature of Brahman with authentic Sanskrit verses and translations.
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>10 {t.home.questionsCount}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>⏱️ 10 {t.home.minsLimit}</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
-                <a
-                  href="/q/bhagavad-gita-core-01"
-                  id="start-gita-quiz-btn"
-                  className="btn btn-secondary btn-sm"
-                  style={{ textDecoration: 'none' }}
-                >
-                  {t.home.startGita}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Features */}
-      <section style={{ padding: '3rem 0 5rem' }}>
+      <section style={{ padding: '2rem 0 5rem' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
             {[

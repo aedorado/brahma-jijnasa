@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
+import { OmSymbol } from '@/components/OmSymbol'
 
 interface Attempt {
   id: string
@@ -50,7 +51,9 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontSize: '2.5rem', animation: 'pulse 1.5s infinite' }}>🕉️</div>
+        <div style={{ animation: 'pulse 1.5s infinite' }}>
+          <OmSymbol size={48} />
+        </div>
       </div>
     )
   }

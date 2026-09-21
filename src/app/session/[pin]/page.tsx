@@ -3,7 +3,9 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
+import { OmSymbol } from '@/components/OmSymbol'
 import { scoreQuiz, getPerformanceLabel } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
 import { QuizEngine } from '@/components/QuizEngine'
@@ -89,22 +91,44 @@ export default function SessionPage({ params }: Props) {
       // Restore saved progress if any
       const saved = loadProgress(pin, user.id)
       if (saved) {
-        setInitialAnswers(saved.answers)
-        setInitialElapsed(saved.timeElapsed)
+        setInitialAnswers(saved.answers || {})
+        setInitialElapsed(saved.timeElapsed || 0)
+        if (typeof saved.currentIndex === 'number') {
+          setInitialQuestionIndex(saved.currentIndex)
+        }
+        if (saved.answers && Object.keys(saved.answers).length > 0) {
+          setPhase('quiz')
+        } else {
+          setPhase('intro')
+        }
+      } else {
+        setPhase('intro')
       }
-
-      setPhase('intro')
     }
 
     init()
   }, [pin])
 
+  const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
+
   const handleStart = () => setPhase('quiz')
 
-  const handleAnswer = useCallback((answers: AnswerMap, elapsed: number) => {
-    if (!userId) return
-    saveProgress({ pin, quizId: quiz!.id, userId, answers, startedAt: Date.now() - elapsed * 1000, timeElapsed: elapsed, savedAt: Date.now() })
-  }, [pin, quiz, userId])
+  const handleProgress = useCallback(
+    (answers: AnswerMap, elapsed: number, currentIndex: number) => {
+      if (!userId || !quiz) return
+      saveProgress({
+        pin,
+        quizId: quiz.id,
+        userId,
+        answers,
+        startedAt: Date.now() - elapsed * 1000,
+        timeElapsed: elapsed,
+        savedAt: Date.now(),
+        currentIndex,
+      })
+    },
+    [pin, quiz, userId]
+  )
 
   const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
 
@@ -135,7 +159,9 @@ export default function SessionPage({ params }: Props) {
     return (
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="text-center">
-          <div style={{ fontSize: '3rem', marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>🕉️</div>
+          <div style={{ marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>
+            <OmSymbol size={52} />
+          </div>
           <p className="text-muted">Loading quiz...</p>
         </div>
       </div>
@@ -212,6 +238,8 @@ export default function SessionPage({ params }: Props) {
         onSubmit={handleSubmit}
         initialAnswers={initialAnswers}
         initialElapsed={initialElapsed}
+        initialQuestionIndex={initialQuestionIndex}
+        onProgress={handleProgress}
       />
     )
   }
