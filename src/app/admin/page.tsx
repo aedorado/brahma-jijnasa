@@ -105,7 +105,15 @@ export default function AdminPage() {
         .order('completed_at', { ascending: false })
 
       if (data) {
-        setAllAttempts(data as AttemptRecord[])
+        const uniqueAttempts: AttemptRecord[] = []
+        const seen = new Set<string>()
+        for (const att of (data as AttemptRecord[])) {
+          const key = att.session_id ? `${att.user_id}_${att.session_id}` : att.id
+          if (seen.has(key)) continue
+          seen.add(key)
+          uniqueAttempts.push(att)
+        }
+        setAllAttempts(uniqueAttempts)
       }
     } catch (e) {
       console.warn('Error loading attempts:', e)
@@ -121,17 +129,26 @@ export default function AdminPage() {
         .order('score', { ascending: false })
 
       if (data) {
-        setLiveStats({
-          joined: data.length,
-          completed: data.length,
-          entries: (data as any[]).map(d => ({
+        const uniqueEntries: LiveStats['entries'] = []
+        const seenUsers = new Set<string>()
+
+        for (const d of (data as any[])) {
+          if (seenUsers.has(d.user_id)) continue
+          seenUsers.add(d.user_id)
+          uniqueEntries.push({
             user_id: d.user_id,
             full_name: d.profiles?.full_name || 'Anonymous Student',
             avatar_url: d.profiles?.avatar_url || null,
             score: d.score,
             max_score: d.max_score,
             time_taken: d.time_taken,
-          })),
+          })
+        }
+
+        setLiveStats({
+          joined: uniqueEntries.length,
+          completed: uniqueEntries.length,
+          entries: uniqueEntries,
         })
       }
     } catch (err) {
