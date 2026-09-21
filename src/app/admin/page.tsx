@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
-import { OmSymbol } from '@/components/OmSymbol'
 import { scoreQuestion } from '@/lib/scoring'
 import type { Quiz, QuizMeta, QuizSession, Question } from '@/types/quiz'
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
@@ -390,9 +389,7 @@ export default function AdminPage() {
     return (
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="text-center">
-          <div style={{ marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>
-            <OmSymbol size={52} />
-          </div>
+          <div className="spinner-gold" />
           <p className="text-muted">Loading Admin & Teacher Dashboard...</p>
         </div>
       </div>

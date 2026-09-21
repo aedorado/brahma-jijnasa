@@ -53,23 +53,27 @@ export default function HomePage() {
   return (
     <div style={{ minHeight: '100vh' }}>
       {/* Hero */}
-      <section style={{ padding: '5rem 0 4rem', textAlign: 'center' }}>
+      <section style={{ padding: '4.5rem 0 3.5rem', textAlign: 'center' }}>
         <div className="container-sm z-above">
-          {/* Om symbol */}
-          <div
-            className="animate-diya"
-            style={{
-              fontSize: '4rem',
-              marginBottom: '1.5rem',
-              display: 'inline-block',
-              filter: 'drop-shadow(0 0 20px rgba(242,128,20,0.5))',
-            }}
-          >
-            🕉️
-          </div>
-
           <div className="animate-fadeIn">
-            <p className="sanskrit" style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.35rem 0.95rem',
+                borderRadius: '9999px',
+                background: 'rgba(240, 199, 78, 0.1)',
+                border: '1px solid rgba(240, 199, 78, 0.3)',
+                marginBottom: '1.25rem',
+              }}
+            >
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Vedānta-Sūtra 1.1.1
+              </span>
+            </div>
+
+            <p className="sanskrit" style={{ fontSize: '1.35rem', marginBottom: '0.45rem', color: 'var(--color-gold)' }}>
               {t.home.sanskritQuote}
             </p>
             <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginBottom: '2rem', fontStyle: 'italic' }}>

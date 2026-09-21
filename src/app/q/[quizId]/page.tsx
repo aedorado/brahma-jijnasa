@@ -128,7 +128,7 @@ export default function DirectQuizPage({ params }: Props) {
   if (phase === 'loading') return (
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="text-center">
-        <div style={{ fontSize: '3rem', marginBottom: '1rem', animation: 'pulse 1.5s ease infinite' }}>🕉️</div>
+        <div className="spinner-gold" />
         <p className="text-muted">Loading...</p>
       </div>
     </div>
