@@ -26,6 +26,7 @@ export default function SessionPage({ params }: Props) {
   const [timeTaken, setTimeTaken] = useState(0)
   const [initialAnswers, setInitialAnswers] = useState<AnswerMap>({})
   const [initialElapsed, setInitialElapsed] = useState(0)
+  const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
   const { user, loading: authLoading, login } = useAuth()
@@ -105,9 +106,7 @@ export default function SessionPage({ params }: Props) {
     }
 
     init()
-  }, [pin])
-
-  const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
+  }, [pin, authLoading, user])
 
   const handleStart = () => setPhase('quiz')
 
