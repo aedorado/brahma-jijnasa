@@ -1,0 +1,306 @@
+{
+  "id": "mahabharata-authentic-01",
+  "title": "Mahābhārata — Authentic Presentation",
+  "category": "mahabharata",
+  "description": "Deep dive into the pastimes, philosophy, ethical quandaries, and characters of the Mahābhārata based on Purnaprajna Dasa's authentic retelling.",
+  "difficulty": "medium",
+  "timeLimit": 900,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "According to Purnaprajna Dasa’s text, what specific decree did Māṇḍavya Muni enact after cursing Yamarāja to be born as a śūdra (Vidura)?",
+      "options": [
+        "Any sin committed before the age of seven would carry double karmic penalty.",
+        "Any sin committed by a person below the age of fourteen would not be subject to karmic reaction.",
+        "Piercing any living entity with a blade of grass would result in loss of brahminical status.",
+        "Sins committed in childhood could only be expiated by performing a 1,000-year sacrifice."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "When Māṇḍavya Muni learned that Yamarāja had punished him with impalement on a lance for piercing an insect with a blade of grass during childhood, the sage cursed Yamarāja to be born as a śūdra. He also decreed that from that day onward, any sin committed by a person under fourteen years of age would not incur karmic reaction.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Adi Parva / Story of Mandavya Muni"
+    },
+    {
+      "id": 2,
+      "type": "single-choice",
+      "question": "What specific artifact did Maya Dānava retrieve from the waters of Bindu Lake and present to Bhīma for his use?",
+      "options": [
+        "The Gāṇḍīva bow, previously owned by Lord Śiva",
+        "A gigantic club previously wielded by the Dānava king Vṛṣaparvā, equal to 100,000 ordinary clubs",
+        "The Devadatta conchshell, which resounded like thunder",
+        "An impenetrable golden armor crafted by Viśvakarmā"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "After escaping the burning of the Khāṇḍava forest, Maya Dānava went to Bindu Lake near Mount Maināka. From there, he retrieved jewels from King Vṛṣaparvā's palace, the Devadatta conchshell (which he gave to Arjuna), and a massive club once wielded by Vṛṣaparvā—equal in power to 100,000 ordinary clubs—which he presented to Bhīma.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Sabha Parva / Construction of the Assembly Hall"
+    },
+    {
+      "id": 3,
+      "type": "single-choice",
+      "question": "According to Arjuna’s explanation to Prince Uttara while retrieving the weapons from the śamī tree, who possessed the Gāṇḍīva bow immediately before Varuṇa handed it over to Arjuna?",
+      "options": [
+        "Lord Brahmā",
+        "Lord Śiva",
+        "Indra",
+        "Soma"
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Arjuna detailed the exact lineage of the Gāṇḍīva bow: Lord Śiva held it for 1,000 years, Lord Brahmā for 503 years, Indra for 85 years, Soma for 500 years, and Varuṇa for 100 years before Varuṇa bestowed it upon Arjuna during the burning of the Khāṇḍava forest.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Virata Parva / Unveiling of the Pandavas' Weapons"
+    },
+    {
+      "id": 4,
+      "type": "single-choice",
+      "question": "Why did Mahārāja Yudhiṣṭhira’s chariot wheels touch the ground after he stated to Droṇa that Aśvatthāmā was dead?",
+      "options": [
+        "Because he uttered a direct falsehood to his preceptor Droṇa without any qualification.",
+        "Because he added the inaudible words 'the elephant' to preserve his own truthfulness rather than implicitly obeying Lord Kṛṣṇa's command.",
+        "Because Dhṛṣṭadyumna decapitated Droṇa before the sacrificial rituals were concluded.",
+        "Because the Nārāyaṇāstra was invoked by Aśvatthāmā at that exact moment."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Lord Kṛṣṇa had instructed Yudhiṣṭhira to lie directly to save the army from Droṇa's onslaught. Yudhiṣṭhira hesitated and sought to compromise by adding the word 'the elephant' inaudibly to maintain his personal vow of truthfulness. Because he deviated from implicit obedience to Kṛṣṇa's instruction to preserve his own moral reputation, his chariot wheels immediately dropped to touch the earth.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Drona Parva / Fall of Drona"
+    },
+    {
+      "id": 5,
+      "type": "single-choice",
+      "question": "When Lord Kṛṣṇa was departing Hastināpura after the failed peace mission, Queen Kuntī asked Him to deliver a specific historical narration to Yudhiṣṭhira to rouse his kṣatriya courage. Which dialogue did she cite?",
+      "options": [
+        "The conversation between Prahlāda and his grandson Bali on forgiveness versus strength",
+        "The discourse of the butcher of Vārāṇasī to the brāhmaṇa Kauśika on karma",
+        "The dialogue between Queen Vidulā and her despondent son Sañjaya",
+        "The story of King Dambhodbhava and Nara-Nārāyaṇa Ṛṣis"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Queen Kuntī instructed Lord Kṛṣṇa to remind Yudhiṣṭhira of the historical dialogue between Queen Vidulā and her son Sañjaya, in which Vidulā sharply admonished her despondent, defeated son to cast off cowardice, rise up, and fulfill his kṣatriya duty through valor rather than wallowing in passive acceptance.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Udyoga Parva / Kunti's Message to Her Sons"
+    },
+    {
+      "id": 6,
+      "type": "multiple-select",
+      "question": "According to the source's account of the celestial origins and partial divine/asuric incarnations of Mahābhārata personalities, which of the following statements are correct? (Select all that apply)",
+      "options": [
+        "Duryodhana was an incarnation of a portion of Kali.",
+        "Duryodhana’s brothers were previously the Rākṣasa sons of Pulastya.",
+        "Dhṛṣṭadyumna was an incarnation of a portion of Agni.",
+        "Draupadī was an incarnation of a portion of Indra's wife, Śacī."
+      ],
+      "correctIndices": [0, 1, 2, 3],
+      "difficulty": "hard",
+      "points": 4,
+      "explanation": "All four statements are explicitly listed in the source: Duryodhana appeared from a portion of Kali; his brothers (Duḥśāsana and others) were previously the Rākṣasa sons of Pulastya; Dhṛṣṭadyumna emerged from Agni; and Draupadī was a partial incarnation of Śacī (Indra's wife).",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Section on Incarnations of Demigods and Asuras"
+    },
+    {
+      "id": 7,
+      "type": "multiple-select",
+      "question": "When Arjuna disclosed his ten names to Prince Uttara, how did he explain the origins of his titles? (Select all that apply)",
+      "options": [
+        "He is called Savyasācin because he can draw the Gāṇḍīva bow equally well with both hands.",
+        "He is called Phālgunī because he was born when the Uttara Phālgunī constellation was ascendant.",
+        "He is called Bībhatsu because he has never performed an abominable act on the battlefield.",
+        "He is called Dhanañjaya because he was awarded unlimited jewels by Lord Kuvera."
+      ],
+      "correctIndices": [0, 1, 2],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Statements A, B, and C accurately state the source's descriptions. Statement D is incorrect because Arjuna explained that he was called Dhanañjaya because he procured vast wealth after conquering numerous kings during his military expeditions, not because of a gift from Kuvera.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Virata Parva / The Ten Names of Arjuna"
+    },
+    {
+      "id": 8,
+      "type": "multiple-select",
+      "question": "What were the explicit terms of the second gambling match agreed upon by Yudhiṣṭhira and Śakuni? (Select all that apply)",
+      "options": [
+        "The losing party must retire to the forest for twelve years dressed in deerskin as ascetics.",
+        "The thirteenth year must be spent unrecognized in an inhabited region.",
+        "If discovered during the thirteenth year, the losing party must undergo another twelve years of forest exile.",
+        "The losing party must surrender all personal weapons and chariots to the victor immediately."
+      ],
+      "correctIndices": [0, 1, 2],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Options A, B, and C state the exact terms set by Śakuni for the single roll of the dice in the second match. Option D is incorrect; the Pāṇḍavas retained their personal weapons, chariots, and retinue during their exile.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Sabha Parva / The Second Dice Match"
+    },
+    {
+      "id": 9,
+      "type": "multiple-select",
+      "question": "In Vidura-nīti, which of the following are explicitly listed by Vidura as the 'six sharp swords' that cut short a person's duration of life? (Select all that apply)",
+      "options": [
+        "Excessive pride",
+        "Over-eating",
+        "Talkativeness",
+        "Family dissension"
+      ],
+      "correctIndices": [0, 1, 2, 3],
+      "difficulty": "hard",
+      "points": 4,
+      "explanation": "Vidura explicitly enumerated six sharp swords that sever human lifespan: (1) excessive pride, (2) over-eating, (3) anger, (4) too much lust for sense gratification, (5) talkativeness, and (6) family dissension.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Udyoga Parva / Vidura Niti"
+    },
+    {
+      "id": 10,
+      "type": "multiple-select",
+      "question": "Following the dishonor of Draupadī in the Kuru assembly, King Dhṛtarāṣṭra offered her boons to pacify the situation. Which of the following statements regarding her boons are accurate according to the text? (Select all that apply)",
+      "options": [
+        "Her first boon was the liberation of Yudhiṣṭhira from slavery so her son Prativindhya would not be called the son of a slave.",
+        "Her second boon requested the freedom of Bhīma, Arjuna, Nakula, and Sahadeva along with their weapons and chariots.",
+        "She accepted a third boon to reclaim the kingdom of Indraprastha.",
+        "She declined a third boon, stating that a kṣatriya lady is permitted to accept only two benedictions."
+      ],
+      "correctIndices": [0, 1, 3],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Draupadī used her first boon to free Yudhiṣṭhira and her second to free his four brothers and their weapons. When Dhṛtarāṣṭra offered a third boon, she declined, citing the śāstric code: a vaiśya can ask for one boon, a kṣatriya woman two, a kṣatriya male three, and a brāhmaṇa one hundred.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Sabha Parva / Boons Granted to Draupadi"
+    },
+    {
+      "id": 11,
+      "type": "true-false",
+      "question": "The Mahābhārata was recited for the very first time by Sūta Gosvāmī (Ugraśravā) to the sages gathered at Naimiṣāraṇya.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "The Mahābhārata was recited for the first time by Śrīla Vyāsadeva's disciple, Vaiśampāyana, at the snake-sacrifice (sarpa-satra) of King Janamejaya. Sūta Gosvāmī heard it at Janamejaya's sacrifice and later re-recited it to Śaunaka Ṛṣi and the assembly at Naimiṣāraṇya.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Introduction / Recitation History"
+    },
+    {
+      "id": 12,
+      "type": "true-false",
+      "question": "When King Pāṇḍu died in the forest, Kuntī entered the funeral pyre while Mādrī returned to Hastināpura with the five young Pāṇḍavas.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "It was Mādrī who entered the funeral pyre (sati) with King Pāṇḍu in the forest, entreating Kuntī to stay alive to care for all five sons equally. The ascetics of the forest then escorted Kuntī, the five boys, and the unburnt remnants of Pāṇḍu and Mādrī back to Hastināpura.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Adi Parva / Passing of Pandu and Madri"
+    },
+    {
+      "id": 13,
+      "type": "true-false",
+      "question": "Paraśurāma cursed Karṇa to forget the invocation for the Brahmāstra because Karṇa had insulted his preceptor in public during a tournament.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Paraśurāma cursed Karṇa because Karṇa had falsely claimed to be a brāhmaṇa to obtain the science of weapons. When a flesh-eating insect burrowed into Karṇa's thigh while Paraśurāma slept on his lap, Karṇa endured the agony without flinching. Seeing this superhuman endurance, Paraśurāma deduced Karṇa was a kṣatriya and cursed him for deceiving his guru.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Udyoga Parva / Karna's Curse"
+    },
+    {
+      "id": 14,
+      "type": "true-false",
+      "question": "The counter-measure to neutralize the Nārāyaṇāstra weapon released by Aśvatthāmā was to invoke the Brahmāstra weapon in direct opposition.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "The Nārāyaṇāstra cannot be counteracted by force or opposing weapons; aiming weapons or maintaining fighting intent only amplifies its destructive power. Lord Kṛṣṇa instructed the entire army to dismount, lay down all weapons on the ground, and cast away all thoughts of battle, which pacified the weapon.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Drona Parva / The Narayanastra"
+    },
+    {
+      "id": 15,
+      "type": "true-false",
+      "question": "Lord Balarāma fought on the side of Duryodhana during the Kurukṣhetra War because Duryodhana was his favorite mace-fighting disciple.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Although Balarāma held great affection for Duryodhana as his disciple, he refused to act against Lord Kṛṣṇa’s will or fight against his own family. Consequently, Balarāma chose complete neutrality and went on a pilgrimage to holy places along the Sarasvatī River during the war.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Udyoga Parva & Shalya Parva / Balarama's Neutrality"
+    },
+    {
+      "id": 16,
+      "type": "case-study",
+      "scenario": "An executive manager at a technology firm consistently forgives chronic team members who intentionally violate safety protocols and shirk core duties. As a result, employees begin ignoring directives and taking advantage of company assets.",
+      "question": "Which response best applies the Mahābhārata principle explained by Prahlāda Mahārāja to his grandson Bali (as cited by Draupadī)?",
+      "options": [
+        "Always maintain complete forgiveness regardless of the offense, because forgiveness is the supreme virtue that maintains peace.",
+        "Immediately fire all employees without warning at the first minor infraction to establish absolute fear and authority.",
+        "Exercise strength and forgiveness selectively: forgive genuine first-time errors or unintended faults, but firmly penalize deliberate and repeat offenders.",
+        "Resign from management entirely, as organizational leadership inherently involves coercive actions."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Prahlāda Mahārāja explained to Bali that neither perpetual forgiveness nor perpetual punishment is correct. Always forgiving leads to disrespect and anarchy from subordinates, while always punishing alienates everyone. A leader must extend forgiveness for first-time or unintentional faults, but exert firm discipline/strength against deliberate and repeated wrongdoing.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Vana Parva / Draupadi's Discourse on Prahlada and Bali"
+    },
+    {
+      "id": 17,
+      "type": "case-study",
+      "scenario": "A whistleblower security officer in a hospital is confronted by armed intruders seeking the private room of an innocent refugee under protection. The officer has taken a personal solemn oath never to tell a lie.",
+      "question": "Applying the principle taught by Lord Kṛṣṇa to Arjuna regarding the sage Kauśika, what is the most ethical action for the officer?",
+      "options": [
+        "Disclose the exact room number immediately, because an oath of literal truthfulness must never be broken under any circumstance.",
+        "Mislead or refuse to disclose the location to the intruders to protect innocent human life, recognizing that preserving life supersedes rigid literal truthfulness.",
+        "Remain silent and allow the intruders to search room by room on their own.",
+        "Offer to assist the intruders in exchange for personal safety."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Lord Kṛṣṇa instructed Arjuna using the story of Kauśika Ṛṣi—a sage who truthfully revealed the hiding spot of innocent refugees to bandits, leading to their slaughter. Kṛṣṇa explained that rigid adherence to literal truth when it directly causes the death of innocent people is actually a grave sin (unrighteousness). Protecting innocent life takes precedence over abstract literal truthfulness in times of mortal peril.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Karna Parva / Kausika the Truthful Sage"
+    },
+    {
+      "id": 18,
+      "type": "case-study",
+      "scenario": "A corporate board is tempted to approve a fraudulent financial scheme that yields massive immediate quarterly profits, even though it will inevitably lead to corporate bankruptcy and criminal prosecution within two years.",
+      "question": "Which decision reflects the core principle of wisdom articulated by Vidura to King Dhṛtarāṣṭra?",
+      "options": [
+        "Accept the short-term profit, because future liabilities are uncertain and governed by fate.",
+        "Reject the immediate profitable scheme because a financial gain that ultimately brings total ruin is not a true gain.",
+        "Delegate the decision to junior executives so the board can avoid personal accountability.",
+        "Proceed with the scheme but donate a fraction of the profits to charitable causes to offset the wrongdoing."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Vidura counseled Dhṛtarāṣṭra that any temporary acquisition or victory that leads to the ultimate destruction of one's family and state is an illusionary gain ('That gain which, in the long run, brings about a great loss, is not gain at all'). True strategic wisdom avoids short-term gratification that carries catastrophic long-term consequences.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Udyoga Parva / Vidura Niti"
+    },
+    {
+      "id": 19,
+      "type": "case-study",
+      "scenario": "A senior data analyst is hired as a personal advisor to a sensitive and proud chief executive officer. During a live executive board meeting, the analyst notices a minor calculation error on the CEO's presentation slide.",
+      "question": "According to the guidelines on service etiquette given by the priest Dhaumya to the Pāṇḍavas prior to entering King Virāṭa’s court, how should the analyst handle this situation?",
+      "options": [
+        "Publicly interrupt and correct the CEO during the live board meeting to showcase superior analytical talent.",
+        "Discreetly inform the CEO in private afterward without embarrassing the leader publicly or flaunting superiority.",
+        "Secretly leak the mistake to external journalists to demonstrate personal integrity.",
+        "Claim the entire dataset is invalid so the project is cancelled."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Dhaumya instructed the Pāṇḍavas that when serving a ruler/leader, one must never publicly flaunt superior talent, embarrass the leader in front of others, or disclose sensitive matters publicly. One must maintain discretion, respect the leader's authority in public, and communicate corrections or advice privately and tactfully.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Virata Parva / Dhaumya's Instructions on Etiquette"
+    },
+    {
+      "id": 20,
+      "type": "case-study",
+      "scenario": "An entrepreneur facing a major market slump stops all marketing, operational improvements, and client outreach, claiming, 'If it is my destiny to succeed, the business will flourish automatically without any effort on my part.'",
+      "question": "How does Draupadī’s discourse on action (karma) and destiny (daiva) in the Vana Parva diagnose the entrepreneur's mindset?",
+      "options": [
+        "Praiseworthy, because total passivity and resignation to fate are the highest marks of spiritual wisdom.",
+        "Flawed, because like a farmer who must first plow and sow before expecting rain, human endeavor is required as the primary duty while leaving the ultimate result to Providence.",
+        "Correct, because human actions have zero influence on real-world outcomes in any circumstance.",
+        "Flawed, because human beings possess 100% absolute control over all market forces without any divine or environmental factors."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Draupadī refuted passive fatalism using the analogy of the farmer: a farmer must diligently plow the field and sow seeds before waiting for rain. Human effort is the essential instrument required to execute duty, while destiny/God controls the ultimate fruition. Sitting idly without endeavor leads to inevitable ruin.",
+      "reference": "Purnaprajna Dasa - Mahabharata - An Authentic Presentation, Vana Parva / Draupadi's Discourse on Karma and Endeavor"
+    }
+  ]
+}

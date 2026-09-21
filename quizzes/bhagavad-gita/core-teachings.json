@@ -1,0 +1,161 @@
+{
+  "id": "bhagavad-gita-core-01",
+  "title": "Bhagavad Gītā — Core Teachings",
+  "category": "bhagavad-gita",
+  "description": "Test your understanding of the essential teachings of the Bhagavad Gītā — karma, dharma, ātmā, and the nature of Brahman.",
+  "difficulty": "medium",
+  "timeLimit": 600,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "Who narrated the Bhagavad Gītā to Dhṛtarāṣṭra during the Kurukṣetra war?",
+      "options": ["Bhīṣma", "Sañjaya", "Vidura", "Vyāsa"],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Sañjaya, minister to Dhṛtarāṣṭra, was granted divine vision by Vyāsa to see the battle and narrated the Gītā to the blind king.",
+      "reference": "Bhagavad Gītā 1.1",
+      "shloka": "धृतराष्ट्र उवाच | धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः |",
+      "transliteration": "Dhṛtarāṣṭra uvāca | dharma-kṣetre kuru-kṣetre samavetā yuyutsavaḥ |"
+    },
+    {
+      "id": 2,
+      "type": "true-false",
+      "question": "Kṛṣṇa tells Arjuna that the ātmā (soul) can be destroyed by weapons.",
+      "correct": false,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Kṛṣṇa explicitly states: 'nainaṁ chindanti śastrāṇi' — weapons cannot cut the soul. It is eternal, unborn, and indestructible.",
+      "reference": "Bhagavad Gītā 2.23",
+      "shloka": "नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः |",
+      "transliteration": "nainaṁ chindanti śastrāṇi nainaṁ dahati pāvakaḥ |"
+    },
+    {
+      "id": 3,
+      "type": "who-am-i",
+      "question": "Who am I?",
+      "clues": [
+        "I was born from a pot, not a womb.",
+        "I was the preceptor of both the Pāṇḍavas and the Kauravas.",
+        "I faced my own son on the battlefield of Kurukṣetra."
+      ],
+      "options": ["Droṇācārya", "Paraśurāma", "Kṛpācārya", "Aśvatthāmā"],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Droṇācārya was born from a pot (droṇa), taught both Pāṇḍavas and Kauravas, and his son Aśvatthāmā fought alongside him on the Kaurava side.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 4,
+      "type": "multiple-select",
+      "question": "Which of the following are among the 18 chapters (adhyāyas) of the Bhagavad Gītā?",
+      "options": [
+        "Sāṅkhya Yoga",
+        "Karma Saṁnyāsa Yoga",
+        "Vedānta Yoga",
+        "Vibhūti Yoga",
+        "Mokṣa Saṁnyāsa Yoga"
+      ],
+      "correctIndices": [0, 1, 3, 4],
+      "difficulty": "hard",
+      "points": 4,
+      "explanation": "'Vedānta Yoga' is not a chapter in the Gītā. The 18 chapters include Sāṅkhya Yoga (Ch.2), Karma Saṁnyāsa Yoga (Ch.5), Vibhūti Yoga (Ch.10), and Mokṣa Saṁnyāsa Yoga (Ch.18).",
+      "reference": "Bhagavad Gītā — Table of Contents"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Who spoke these words: \"Yato dharmastato jayaḥ\" — Where there is dharma, there is victory?",
+      "quote": "यतो धर्मस्ततो जयः",
+      "context": "Spoken at the conclusion of the Mahābhārata",
+      "options": ["Vidura", "Sañjaya", "Vyāsa", "Dhṛtarāṣṭra"],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Sañjaya speaks these final words of the Bhagavad Gītā narrative, concluding his report to Dhṛtarāṣṭra.",
+      "reference": "Bhagavad Gītā 18.78"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange these events from the Bhagavad Gītā in the correct order:",
+      "items": [
+        "Arjuna sees his relatives arrayed for battle and despairs",
+        "Kṛṣṇa reveals His Viśvarūpa (Cosmic Form)",
+        "Kṛṣṇa begins teaching with Sāṅkhya — the nature of the ātmā",
+        "Arjuna declares he will not fight and puts down his bow"
+      ],
+      "correctOrder": [3, 0, 2, 1],
+      "difficulty": "hard",
+      "points": 4,
+      "explanation": "Order: (1) Arjuna surveys the battle and despairs seeing relatives, (2) puts down his bow, (3) Kṛṣṇa begins with Sāṅkhya teachings on the soul, (4) reveals Viśvarūpa in Chapter 11.",
+      "reference": "Bhagavad Gītā Ch.1-11"
+    },
+    {
+      "id": 7,
+      "type": "assertion-reason",
+      "question": "Read the Assertion and Reason below:",
+      "assertion": "Kṛṣṇa instructs Arjuna to perform his duty as a Kṣatriya and fight.",
+      "reason": "According to the Gītā, action performed without attachment to results is the highest form of yoga.",
+      "options": [
+        "Both A and R are true — R correctly explains A",
+        "Both A and R are true — R does NOT correctly explain A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Both statements are true. Kṛṣṇa does urge Arjuna to fight as his svadharma, and the principle of naiṣkarmya (acting without attachment to fruits) is the core of Karma Yoga — which directly supports why Arjuna should act.",
+      "reference": "Bhagavad Gītā 3.19, 2.47"
+    },
+    {
+      "id": 8,
+      "type": "match-pairs",
+      "question": "Match each Bhagavad Gītā chapter with its correct yoga:",
+      "left": ["Chapter 2", "Chapter 3", "Chapter 6", "Chapter 12"],
+      "right": ["Dhyāna Yoga", "Sāṅkhya Yoga", "Karma Yoga", "Bhakti Yoga"],
+      "correctPairs": [[0, 1], [1, 2], [2, 0], [3, 3]],
+      "difficulty": "medium",
+      "points": 4,
+      "explanation": "Ch.2 = Sāṅkhya Yoga, Ch.3 = Karma Yoga, Ch.6 = Dhyāna Yoga (Ātma Saṁyama Yoga), Ch.12 = Bhakti Yoga.",
+      "reference": "Bhagavad Gītā Chapter Titles"
+    },
+    {
+      "id": 9,
+      "type": "odd-one-out",
+      "question": "Which of these is the odd one out among the mahāvākyas (great sayings) of the Upaniṣads?",
+      "options": [
+        "Ahaṁ Brahmāsmi — I am Brahman",
+        "Tat Tvam Asi — That thou art",
+        "Dharmo Rakṣati Rakṣitaḥ — Dharma protects those who protect it",
+        "Prajñānaṁ Brahma — Consciousness is Brahman"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "'Dharmo Rakṣati Rakṣitaḥ' is from the Manusmṛti, not an Upaniṣadic mahāvākya. The four mahāvākyas come from the four Vedas (Aitareya, Chāndogya, Bṛhadāraṇyaka, and Māṇḍūkya Upaniṣads).",
+      "reference": "Upaniṣads — Mahāvākyas"
+    },
+    {
+      "id": 10,
+      "type": "case-study",
+      "question": "A soldier is ordered to fight in a war he personally believes is unjust, yet his nation and commander depend on him. Which Bhagavad Gītā teaching most directly applies?",
+      "scenario": "Modern dilemma: duty vs. personal moral conviction",
+      "options": [
+        "Naiṣkarmya — complete renunciation of all action",
+        "Svadharma — fulfilling one's own duty, even if imperfect, over another's duty",
+        "Mokṣa — seek liberation and abandon all worldly roles",
+        "Karma-phala — focus only on the results of action"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Kṛṣṇa teaches: 'śreyān svadharmo viguṇaḥ paradharmāt sv-anuṣṭhitāt' — it is better to perform one's own duty imperfectly than another's duty well (BG 3.35). The soldier's svadharma as a protector is the applicable principle.",
+      "reference": "Bhagavad Gītā 3.35"
+    }
+  ]
+}

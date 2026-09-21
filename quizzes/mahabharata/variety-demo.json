@@ -1,0 +1,363 @@
+{
+  "id": "mahabharata-variety-demo",
+  "title": "Mahābhārata — Variety Demo",
+  "category": "mahabharata",
+  "description": "Experience all interactive question types — MCQ, Multi-Select, True/False, Who Am I?, Match Pairs, Assertion-Reason, Spot the Error, and Dharmic Case Studies.",
+  "difficulty": "medium",
+  "timeLimit": 900,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "Who was primarily responsible for training the Kuru princes in advanced military arts?",
+      "options": [
+        "Kṛpa",
+        "Droṇa",
+        "Vidura",
+        "Śalya"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Droṇācārya, the master of archery and military science, was appointed by Bhīṣma to instruct both the Kaurava and Pāṇḍava princes in advanced weaponry.",
+      "reference": "Mahābhārata, Ādi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following are associated with Arjuna? Select ALL that apply.",
+      "options": [
+        "Gāṇḍīva",
+        "Pāśupatāstra",
+        "Aśvatthāmā",
+        "Matsya kingdom"
+      ],
+      "correctIndices": [0, 1, 3],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Arjuna wielded the celestial bow Gāṇḍīva, won the supreme Pāśupatāstra from Lord Śiva, and resided disguised as Bṛhannalā in King Virāṭa's Matsya kingdom during their incognito exile. Aśvatthāmā was Droṇa's son and fought for the Kauravas.",
+      "reference": "Mahābhārata, Vana Parva & Virāṭa Parva"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Bhīṣma voluntarily chose the time of his death.",
+      "correct": true,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Blessed with the boon of iccha-mṛtyu (death at will) by his father King Śantanu, Bhīṣma lay peacefully on a bed of arrows until the sun entered the auspicious Uttarāyaṇa before departing this world.",
+      "reference": "Mahābhārata, Śānti Parva & Anuśāsana Parva"
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "question": "Identify this famous Mahābhārata figure based on these clues:",
+      "clues": [
+        "I was born under unusual circumstances.",
+        "My identity remained hidden for much of my life.",
+        "I became a close ally of Duryodhana.",
+        "My relationship with the Pāṇḍavas was more complicated than they initially knew."
+      ],
+      "options": [
+        "Karṇa",
+        "Śalya",
+        "Yuyutsu",
+        "Kṛpa"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 4,
+      "explanation": "Karṇa was born to Kuntī through the sun god Sūrya before her marriage, was raised by a charioteer, became Duryodhana's most loyal companion and King of Aṅga, and was secretly the eldest brother of the Pāṇḍavas.",
+      "reference": "Mahābhārata, Ādi Parva & Udyoga Parva"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Who is most closely associated with the statement: “Where there is dharma, there is victory” (यतो धर्मस्ततो जयः)?",
+      "quote": "Where there is dharma, there is victory (Yato dharmas tato jayaḥ).",
+      "options": [
+        "Bhīṣma",
+        "Kṛṣṇa",
+        "Vidura",
+        "Yudhiṣṭhira"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Lord Śrī Kṛṣṇa is celebrated as the personification and protector of dharma. Gāndhārī, Bhīṣma, and Sanjaya repeatedly declare: 'Yato dharmas tato jayaḥ, yataḥ kṛṣṇas tato dharmaḥ' — where there is Kṛṣṇa, there is dharma, and where there is dharma, there is victory.",
+      "reference": "Mahābhārata, Strī Parva & Udyoga Parva"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange these pivotal Mahābhārata events in their correct chronological order:",
+      "items": [
+        "The Pāṇḍavas' exile",
+        "The dice game",
+        "The Kurukṣetra war",
+        "The Pāṇḍavas' return to Hastināpura"
+      ],
+      "correctOrder": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "The correct chronological sequence is: (1) The dice game in Hastināpura ➔ (2) The 13-year exile in the forest and Virāṭa kingdom ➔ (3) The return to claim their rightful kingdom via peace missions ➔ (4) The Kurukṣetra war.",
+      "reference": "Mahābhārata Chronology"
+    },
+    {
+      "id": 7,
+      "type": "cause-effect",
+      "question": "Which of the following best represents a cause-and-effect relationship in the Mahābhārata?",
+      "options": [
+        "A vow influences later political and family events",
+        "A forest journey causes the creation of the Vedas",
+        "A wedding directly ends the Kuru dynasty",
+        "A pilgrimage prevents the Kurukṣetra war"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Bhīṣma's brahmacarya vow of celibacy and throne renunciation directly caused the royal succession crises, the necessity of Vyāsadeva's niyoga, and the eventual polarization between the Kauravas and Pāṇḍavas.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 8,
+      "type": "match-pairs",
+      "question": "Match each person with their associated description:",
+      "left": [
+        "Bhīṣma",
+        "Karṇa",
+        "Yudhiṣṭhira",
+        "Droṇa"
+      ],
+      "right": [
+        "Eldest Pāṇḍava",
+        "Son of Sūrya",
+        "Took a terrible vow",
+        "Teacher of the princes"
+      ],
+      "correctPairs": [
+        [0, 2],
+        [1, 1],
+        [2, 0],
+        [3, 3]
+      ],
+      "difficulty": "medium",
+      "points": 4,
+      "explanation": "1. Bhīṣma ➔ Took a terrible vow; 2. Karṇa ➔ Son of Sūrya; 3. Yudhiṣṭhira ➔ Eldest Pāṇḍava; 4. Droṇa ➔ Teacher of the princes.",
+      "reference": "Mahābhārata Character Profiles"
+    },
+    {
+      "id": 9,
+      "type": "odd-one-out",
+      "question": "Which one does NOT belong with the others?",
+      "options": [
+        "Bhīma",
+        "Arjuna",
+        "Nakula",
+        "Duryodhana"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Bhīma, Arjuna, and Nakula are sons of Pāṇḍu (Pāṇḍavas), whereas Duryodhana is the eldest son of King Dhṛtarāṣṭra (Kaurava).",
+      "reference": "Mahābhārata Genealogy"
+    },
+    {
+      "id": 10,
+      "type": "assertion-reason",
+      "question": "Assess the relationship between the Assertion and Reason:",
+      "assertion": "Bhīṣma's personal vow had consequences far beyond his own life.",
+      "reason": "His vow affected questions of succession and marriage within the Kuru dynasty.",
+      "options": [
+        "Both are true, and the Reason explains the Assertion.",
+        "Both are true, but the Reason does not explain the Assertion.",
+        "Assertion is true, Reason is false.",
+        "Assertion is false, Reason is true."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Both statements are true, and the reason directly explains the assertion: by renouncing his right to rule and childbearing, Bhīṣma created an unprecedented vacuum in the lunar dynasty's succession that sparked future generational strife.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 11,
+      "type": "spot-the-error",
+      "question": "A student writes the following summary. Identify which part contains the factual error:",
+      "passage": "“Arjuna was trained by Droṇa, received the Gāṇḍīva, defeated Karṇa in the first day of the war, and was the eldest of the five Pāṇḍavas.”",
+      "options": [
+        "Arjuna was trained by Droṇa.",
+        "Arjuna received the Gāṇḍīva.",
+        "Arjuna defeated Karṇa on the first day.",
+        "Arjuna was the eldest Pāṇḍava."
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Arjuna was the third Pāṇḍava (after Yudhiṣṭhira and Bhīma), not the eldest. Mahārāja Yudhiṣṭhira was the eldest of the five brothers.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 12,
+      "type": "two-truths-one-false",
+      "question": "Two of the following statements are historically accurate, and one is false. Which statement is FALSE?",
+      "options": [
+        "Kṛṣṇa served as Arjuna's charioteer.",
+        "Bhīṣma fought on the Kaurava side.",
+        "Vidura was one of Dhṛtarāṣṭra's sons."
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Vidura was Dhṛtarāṣṭra's half-brother (born of sage Vyāsadeva and a palace maidservant), renowned for his righteous counsel (Vidura-nīti), not his son.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 13,
+      "type": "missing-link",
+      "question": "Complete the causal chain leading up to the great war:",
+      "chain": [
+        "Dice game",
+        "Exile",
+        "?",
+        "Return & demand for settlement"
+      ],
+      "options": [
+        "Peaceful coronation",
+        "Attempt to negotiate",
+        "Marriage of Draupadī",
+        "Birth of the Pāṇḍavas"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Upon completing their exile, diplomatic missions and attempts to negotiate (including Śrī Kṛṣṇa's peaceful embassy to the Hastināpura court) took place prior to the formal demand and outbreak of war.",
+      "reference": "Mahābhārata, Udyoga Parva"
+    },
+    {
+      "id": 14,
+      "type": "evidence-based",
+      "question": "A person knows what is right but repeatedly chooses an action because of attachment, fear, or personal loyalty. Which Mahābhārata theme is most relevant to this situation?",
+      "principle": "The psychological struggle between inner moral awareness and blind personal attachment.",
+      "options": [
+        "Conflict between personal attachment and duty",
+        "Importance of military technology",
+        "Genealogy of the Kuru dynasty",
+        "Ritual procedures for royal sacrifice"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "This archetype is exemplified by King Dhṛtarāṣṭra, who admitted knowing the righteous path but confessed that his blinding affection for Duryodhana continually overpowered his sense of duty.",
+      "reference": "Mahābhārata, Udyoga Parva"
+    },
+    {
+      "id": 15,
+      "type": "evidence-based",
+      "question": "Which episode provides the strongest evidence for the idea that a person's choices can create consequences extending across generations?",
+      "principle": "Decisions and vows creating systemic multi-generational reverberations.",
+      "options": [
+        "A major vow affecting succession",
+        "A character learning archery",
+        "A king going hunting",
+        "A warrior changing weapons"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Bhīṣma's vow to remain celibate and abdicate the throne permanently changed royal lineage dynamics, directly leading to the succession dispute between the sons of Pāṇḍu and Dhṛtarāṣṭra.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 16,
+      "type": "case-study",
+      "question": "Evaluate the ethical dilemma presented in this leadership case:",
+      "scenario": "A respected leader discovers that a close friend has acted wrongly. The leader is tempted to ignore the behavior because confronting the friend may damage their relationship.",
+      "options": [
+        "Loyalty should always override moral responsibility.",
+        "Personal relationships should never influence difficult decisions.",
+        "Friendship and duty may come into tension and require careful discrimination.",
+        "Difficult problems should always be avoided."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "The Mahābhārata illustrates through figures like Karṇa and Bhīṣma that uncritical loyalty to friends or rulers who commit adharma inevitably leads to catastrophe. Dharma requires higher moral discrimination.",
+      "reference": "Mahābhārata, Udyoga & Karṇa Parva"
+    },
+    {
+      "id": 17,
+      "type": "case-study",
+      "question": "Which situation best illustrates the consequences of making a serious vow without considering its long-term effects?",
+      "scenario": "Examining the institutional gravity and unforeseen future weight of irrevocable vows.",
+      "options": [
+        "Someone promises to complete a small task by evening.",
+        "A leader makes a lifelong commitment that changes the succession of an entire institution.",
+        "A student decides to study for an examination.",
+        "A traveler promises to visit a friend."
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Just as Bhīṣma's oath changed the sovereign succession of the Kuru kingdom for all future eras, monumental lifelong pledges must account for systemic long-term fallout.",
+      "reference": "Mahābhārata, Ādi Parva"
+    },
+    {
+      "id": 18,
+      "type": "what-would-you-do",
+      "question": "A colleague publicly criticizes you. You know responding immediately while angry will probably make the situation worse. Which response best reflects a Mahābhārata-inspired approach to handling the situation?",
+      "scenario": "A sudden public challenge provoking emotional retaliation and wrath.",
+      "options": [
+        "Immediately retaliate so others do not perceive weakness.",
+        "Ignore the issue permanently.",
+        "Pause, understand the situation, and respond according to your responsibility rather than anger.",
+        "Publicly expose the colleague's past mistakes."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Vidura-nīti and the teachings of Yudhiṣṭhira emphasize that forbearance (kṣamā) and deliberate, righteous judgment (viveka) triumph over uncontrolled wrath (krodha).",
+      "reference": "Mahābhārata, Udyoga Parva (Prajāgara Parva)"
+    },
+    {
+      "id": 19,
+      "type": "evidence-based",
+      "question": "Which distinction is most useful when comparing two characters who both possess great power but use it differently?",
+      "principle": "Evaluating capability versus moral purpose and dharmic intentionality.",
+      "options": [
+        "Their physical strength alone",
+        "Their birth alone",
+        "The purposes, choices, and consequences associated with their power",
+        "The number of weapons they possess"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "In comparing warriors such as Arjuna and Karṇa, the true measure is not merely martial mastery, but whether their prowess was deployed in service of righteous order (dharma) or personal ambition and protection of adharma.",
+      "reference": "Mahābhārata, Karṇa Parva"
+    },
+    {
+      "id": 20,
+      "type": "case-study",
+      "question": "🔥 Final Challenge — Synthesis: A person faces a conflict between loyalty to a respected elder, responsibility toward their larger community, personal attachment, and what they understand to be right. Which approach best captures the kind of dilemma repeatedly explored in the Mahābhārata?",
+      "scenario": "A profound moral crossroads where multiple legitimate obligations collide simultaneously.",
+      "options": [
+        "The morally correct choice is always the easiest choice.",
+        "Personal loyalty automatically determines one's duty.",
+        "Dharma can require difficult discrimination when legitimate obligations come into conflict.",
+        "Once a person has made a promise, no other consideration matters."
+      ],
+      "correctIndex": 2,
+      "difficulty": "hard",
+      "points": 4,
+      "explanation": "The defining hallmark of the Mahābhārata is that 'Dharmo hi sūkṣmaḥ' (dharma is exceedingly subtle). Real ethical maturity requires profound discrimination (viveka) when legitimate duties conflict.",
+      "reference": "Mahābhārata, Sabhā Parva & Śānti Parva"
+    }
+  ]
+}
