@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { LanguageSelector } from '@/components/LanguageSelector'
+import { UserAvatar } from '@/components/UserAvatar'
 import { getTheme, setTheme } from '@/lib/session-storage'
 
 export function Navbar() {
@@ -35,6 +36,16 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            <Link
+              href="/leaderboard"
+              className="btn btn-ghost btn-sm"
+              style={{ fontWeight: 600, color: 'var(--color-gold)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+              id="nav-leaderboard-btn"
+            >
+              <span>🏆</span>
+              <span>Leaderboard</span>
+            </Link>
+
             {/* Language dropdown */}
             <LanguageSelector />
 
@@ -57,15 +68,11 @@ export function Navbar() {
                   onClick={() => setMenuOpen(o => !o)}
                   id="user-menu-btn"
                 >
-                  {user.avatar_url ? (
-                    <img
-                      src={user.avatar_url}
-                      alt="avatar"
-                      style={{ width: 24, height: 24, borderRadius: '50%' }}
-                    />
-                  ) : (
-                    <span>👤</span>
-                  )}
+                  <UserAvatar
+                    name={user.full_name}
+                    url={user.avatar_url}
+                    size={24}
+                  />
                   <span style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user.full_name?.split(' ')[0] || 'Profile'}
                   </span>
@@ -96,6 +103,16 @@ export function Navbar() {
                         ⚡ {t.nav.admin}
                       </Link>
                     )}
+
+                    <Link
+                      href="/leaderboard"
+                      className="btn btn-ghost btn-sm w-full"
+                      style={{ justifyContent: 'flex-start', marginBottom: '0.25rem' }}
+                      onClick={() => setMenuOpen(false)}
+                      id="menu-leaderboard-link"
+                    >
+                      🏆 Leaderboard
+                    </Link>
 
                     <Link
                       href="/profile"

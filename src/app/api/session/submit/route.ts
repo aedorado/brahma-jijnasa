@@ -4,7 +4,10 @@ import { verifySession, SESSION_COOKIE_NAME } from '@/lib/auth'
 import { scoreQuiz } from '@/lib/scoring'
 import { getQuizById } from '@/lib/quizzes'
 
+const inFlightSubmissions = new Set<string>()
+
 export async function POST(request: NextRequest) {
+  let lockKey: string | null = null
   try {
     const body = await request.json()
     const { pin, quizId, answers, elapsed } = body
@@ -51,15 +54,26 @@ export async function POST(request: NextRequest) {
 
     const result = scoreQuiz(quiz.questions, answers || {})
 
-    // 4. Avoid duplicate submission error
-    const { data: existing } = await supabase
+    // Concurrency lock: Prevent duplicate requests from the same user/session in-flight
+    lockKey = `${userId}:${sessionId}`
+    if (inFlightSubmissions.has(lockKey)) {
+      return NextResponse.json({
+        success: true,
+        alreadySubmitted: true,
+        scoreResult: result,
+      })
+    }
+    inFlightSubmissions.add(lockKey)
+
+    // 4. Avoid duplicate submission error - use limit(1) to prevent PGRST116 multiple rows error
+    const { data: existingList } = await supabase
       .from('quiz_attempts')
       .select('id, score, max_score')
       .eq('user_id', userId)
       .eq('session_id', sessionId)
-      .maybeSingle()
+      .limit(1)
 
-    if (existing) {
+    if (existingList && existingList.length > 0) {
       return NextResponse.json({
         success: true,
         alreadySubmitted: true,
@@ -97,5 +111,9 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     console.error('[Session Submit Unexpected Error]:', err)
     return NextResponse.json({ error: err.message || 'Server error occurred' }, { status: 500 })
+  } finally {
+    if (lockKey) {
+      inFlightSubmissions.delete(lockKey)
+    }
   }
 }

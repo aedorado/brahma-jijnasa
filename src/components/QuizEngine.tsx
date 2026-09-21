@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useLanguage } from '@/context/LanguageContext'
 import type { Question, AnswerMap, Answer, WhoAmIAnswer, PairsAnswer } from '@/types/quiz'
 import { formatTime } from '@/lib/scoring'
@@ -85,6 +85,8 @@ export function QuizEngine({
   const [elapsed, setElapsed] = useState(initialElapsed)
   const [showConfirm, setShowConfirm] = useState(false)
   const [direction, setDirection] = useState<'forward' | 'back'>('forward')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const submittedRef = useRef(false)
 
   // Auto-save progress whenever answers or active question changes
   useEffect(() => {
@@ -119,19 +121,24 @@ export function QuizEngine({
 
   // Timer
   useEffect(() => {
-    if (!hasTimeLimit) return
+    if (!hasTimeLimit || isSubmitting) return
     const interval = setInterval(() => {
       setElapsed(e => {
         const next = e + 1
         if (next >= timeLimit && onTimeExpiry === 'submit-partial') {
           clearInterval(interval)
-          onSubmit(answers, next)
+          if (!submittedRef.current) {
+            submittedRef.current = true
+            setIsSubmitting(true)
+            setShowConfirm(false)
+            onSubmit(answers, next)
+          }
         }
         return next
       })
     }, 1000)
     return () => clearInterval(interval)
-  }, [hasTimeLimit, timeLimit, onTimeExpiry, answers, onSubmit])
+  }, [hasTimeLimit, timeLimit, onTimeExpiry, answers, onSubmit, isSubmitting])
 
   const setAnswer = useCallback((questionId: number, answer: Answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }))
@@ -163,6 +170,10 @@ export function QuizEngine({
   }
 
   const confirmSubmit = () => {
+    if (submittedRef.current) return
+    submittedRef.current = true
+    setIsSubmitting(true)
+    setShowConfirm(false)
     onSubmit(answers, elapsed)
   }
 
@@ -334,13 +345,39 @@ export function QuizEngine({
               }
             </p>
             <div className="flex gap-2">
-              <button className="btn btn-ghost w-full" onClick={() => setShowConfirm(false)} id="cancel-submit-btn">
+              <button className="btn btn-ghost w-full" onClick={() => setShowConfirm(false)} id="cancel-submit-btn" disabled={isSubmitting}>
                 {t.quizEngine.confirmCancel}
               </button>
-              <button className="btn btn-primary w-full" onClick={confirmSubmit} id="confirm-submit-btn">
-                {t.quizEngine.confirmYes}
+              <button className="btn btn-primary w-full" onClick={confirmSubmit} id="confirm-submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : t.quizEngine.confirmYes}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full-screen submitting loader */}
+      {isSubmitting && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(10,8,20,0.92)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999,
+          }}
+        >
+          <div className="text-center animate-fadeIn" style={{ padding: '2rem' }}>
+            <div className="spinner-gold" style={{ width: 44, height: 44, margin: '0 auto 1.25rem' }} />
+            <h3 style={{ fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.5rem' }}>
+              Submitting Your Answers...
+            </h3>
+            <p className="text-muted" style={{ fontSize: '0.85rem' }}>
+              Calculating your score and recording progress...
+            </p>
           </div>
         </div>
       )}

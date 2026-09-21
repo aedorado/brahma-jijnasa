@@ -55,7 +55,15 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
         .order('score', { ascending: false })
 
       if (data) {
-        const entries: LeaderboardEntry[] = (data as any[]).map((d, i) => ({
+        const uniqueData: any[] = []
+        const seenUsers = new Set<string>()
+        for (const d of (data as any[])) {
+          if (seenUsers.has(d.user_id)) continue
+          seenUsers.add(d.user_id)
+          uniqueData.push(d)
+        }
+
+        const entries: LeaderboardEntry[] = uniqueData.map((d, i) => ({
           rank: i + 1,
           user_id: d.user_id,
           full_name: d.profiles?.full_name || 'Anonymous',

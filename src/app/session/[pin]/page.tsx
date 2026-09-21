@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
@@ -67,9 +67,9 @@ export default function SessionPage({ params }: Props) {
         .select('id')
         .eq('user_id', user.id)
         .eq('session_id', session.id)
-        .single()
+        .limit(1)
 
-      if (existing) {
+      if (existing && existing.length > 0) {
         setErrorMsg("You've already completed this quiz session.")
         setPhase('error')
         return
@@ -130,9 +130,11 @@ export default function SessionPage({ params }: Props) {
   const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const submittingRef = useRef(false)
 
   const handleSubmit = useCallback(async (answers: AnswerMap, elapsed: number) => {
-    if (!quiz) return
+    if (!quiz || submittingRef.current) return
+    submittingRef.current = true
     setTimeTaken(elapsed)
     setFinalAnswers(answers)
     setIsSubmitting(true)
@@ -162,6 +164,7 @@ export default function SessionPage({ params }: Props) {
       setPhase('submitted')
     } catch (err: any) {
       console.error('[Quiz Submission Error]:', err)
+      submittingRef.current = false
       const msg = err.message || 'Submission could not be saved to server.'
       setSubmitError(msg)
       alert(`⚠️ Submission Error: ${msg}\n\nPlease tap Submit again. Your answers are saved locally.`)

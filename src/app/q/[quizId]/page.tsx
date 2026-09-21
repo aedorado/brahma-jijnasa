@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
@@ -30,6 +30,7 @@ export default function DirectQuizPage({ params }: Props) {
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
   const supabase = createClient()
+  const submittingRef = useRef(false)
 
   useEffect(() => {
     params.then(p => setQuizId(p.quizId))
@@ -82,7 +83,8 @@ export default function DirectQuizPage({ params }: Props) {
   const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
 
   const handleSubmit = useCallback(async (answers: AnswerMap, elapsed: number) => {
-    if (!quiz || !userId) return
+    if (!quiz || !userId || submittingRef.current) return
+    submittingRef.current = true
     setTimeTaken(elapsed)
     setFinalAnswers(answers)
     const result = scoreQuiz(quiz.questions, answers)
