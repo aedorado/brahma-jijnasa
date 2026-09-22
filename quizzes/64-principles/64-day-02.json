@@ -1,0 +1,171 @@
+{
+  "id": "64-day-02",
+  "title": "Day 2: Śrī Kṛṣṇa as the Sole Enjoyer",
+  "category": "64-principles",
+  "description": "Authentic study of Principle 2 of Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura: Realizing Śrī Kṛṣṇa as the only Puruṣa and shedding the enjoyer mentality in community.",
+  "difficulty": "medium",
+  "timeLimit": 600,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "What is the exact philosophical formulation of Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura's Principle 2?",
+      "difficulty": "easy",
+      "options": [
+        "The Supreme Personality of Godhead, Śrī Kṛṣṇa, is the only enjoyer. Everyone and everything else is the object of His enjoyment.",
+        "Devotional service should be free from all desire for fruitive gain and mental speculation.",
+        "One should be more tolerant than a tree and offer all respect to others.",
+        "Chanting the holy name is the only process to cross the material ocean."
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "Principle 2 states: 'The Supreme Personality of Godhead, Śrī Kṛṣṇa, is the only enjoyer. Everyone and everything else is the object of His enjoyment.'"
+    },
+    {
+      "id": 2,
+      "type": "assertion-reason",
+      "question": "Consider the relationship between community members and the Supreme Lord:",
+      "difficulty": "medium",
+      "assertion": "Healthy communication and genuine cooperation can only flourish in a community when devotees cease viewing themselves as enjoyers.",
+      "reason": "When individuals operate in a 'salvationist consciousness,' they seek personal peace, self-preservation, and material accumulation rather than centering relationships on pleasing Kṛṣṇa.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion",
+        "Assertion is true, but Reason is false",
+        "Assertion is false, but Reason is true"
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "His Holiness Bhakti Tirtha Swami Maharaja explains that pseudo-community arises when people come to devotee association asking 'what can I get?' rather than 'what can I give?' Only when Kṛṣṇa is recognized as the sole enjoyer (puruṣa) does genuine spiritual community emerge."
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "According to Principle 2 and Bhagavad-gītā 15.7, the living entity (jīva) and the Supreme Lord (Kṛṣṇa) are identical in both quality and quantity.",
+      "difficulty": "easy",
+      "correct": false,
+      "reference": "Reflections on Sacred Teachings V, Principle 2 & BG 15.7",
+      "explanation": "The living entities are acintya-bhedābheda-tattva: qualitatively one with Kṛṣṇa as spirit, but quantitatively different as His eternal infinitesimal fragmental parts (mamaivāṁśo jīva-loke jīva-bhūtaḥ sanātanaḥ)."
+    },
+    {
+      "id": 4,
+      "type": "single-choice",
+      "question": "In the commentary on Principle 2, what term is used to describe a community where members associate primarily to ensure their personal peace, happiness, and material accumulation?",
+      "difficulty": "medium",
+      "options": [
+        "Pseudo-community",
+        "Paramahaṁsa-maṭha",
+        "Daiva-varṇāśrama",
+        "Nitya-saṅga"
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "The text explains that when people join a community to see what they can get out of the situation rather than what they can give, it becomes a 'pseudo-community' because it lacks true communication and selfless cooperation."
+    },
+    {
+      "id": 5,
+      "type": "cause-effect",
+      "question": "What is the primary spiritual consequence when devotees in a community genuinely shift from an enjoyer mentality to recognizing Kṛṣṇa as the sole Puruṣa?",
+      "difficulty": "medium",
+      "options": [
+        "Ego-driven competition dissolves, giving rise to authentic communication, mutual respect, and selfless cooperation in service.",
+        "Devotees abandon all community responsibilities and retire to secluded caves.",
+        "Devotional rules are abandoned because everyone acts purely on personal whim.",
+        "Material opulence increases automatically without the need for any service."
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "When we recognize Kṛṣṇa as the only enjoyer and our godbrothers and godsisters as His beloved servants, possessiveness and friction vanish, creating a true spiritual family."
+    },
+    {
+      "id": 6,
+      "type": "multiple-select",
+      "question": "Which of the following mindsets characterize a 'salvationist consciousness' as criticized in Principle 2? (Select all that apply)",
+      "difficulty": "medium",
+      "options": [
+        "Focusing primarily on self-preservation and personal peace",
+        "Seeking material accumulation under the umbrella of community",
+        "Evaluating devotee association based on 'what can I get?' rather than 'what can I give?'",
+        "Eagerly desiring to be the humble servant of the servant of the Lord"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "Salvationist consciousness centers around self-interest, self-preservation, and personal comfort, which directly obstructs pure unmotivated devotional surrender."
+    },
+    {
+      "id": 7,
+      "type": "single-choice",
+      "question": "Which Sanskrit term designates the Supreme Enjoyer (Lord Śrī Kṛṣṇa) in contrast to all living entities who are prakṛti (the enjoyed)?",
+      "difficulty": "easy",
+      "options": [
+        "Puruṣa",
+        "Māyā",
+        "Guṇa",
+        "Karma"
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "God alone is the Puruṣa (the Supreme Male / Supreme Enjoyer), while all souls and energies are prakṛti (the feminine / enjoyed potency meant for His satisfaction)."
+    },
+    {
+      "id": 8,
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement regarding Principle 2 of Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura:",
+      "difficulty": "medium",
+      "options": [
+        "A devotee should expect the temple community to cater to their personal comfort and validate their false ego.",
+        "Śrī Kṛṣṇa is the only enjoyer, and everyone else is an object of His enjoyment.",
+        "Deep spiritual relationships cannot exist if community members are primarily focused on self-preservation."
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "Statement 1 is false. Expecting others to cater to one's personal comfort is the manifestation of the enjoyer disease that Principle 2 seeks to uproot."
+    },
+    {
+      "id": 9,
+      "type": "match-pairs",
+      "question": "Match each spiritual term from Principle 2 with its proper Vaiṣṇava understanding:",
+      "difficulty": "medium",
+      "left": [
+        "Puruṣa",
+        "Prakṛti",
+        "Pseudo-community",
+        "Authentic Community"
+      ],
+      "right": [
+        "The Supreme Enjoyer — Śrī Kṛṣṇa alone",
+        "The enjoyed potency — all living beings",
+        "Driven by self-interest and 'what can I get'",
+        "Driven by selfless service and 'what can I give'"
+      ],
+      "correctPairs": [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+        [3, 3]
+      ],
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "Principle 2 contrasts genuine community centered on Kṛṣṇa's pleasure with pseudo-community centered on personal exploitation."
+    },
+    {
+      "id": 10,
+      "type": "what-would-you-do",
+      "question": "A devotee feels upset because someone else was selected to lead a prominent service they wanted. Applying Principle 2, how should this devotee process their feelings?",
+      "difficulty": "medium",
+      "options": [
+        "Remember that Kṛṣṇa is the only enjoyer and master of service; enthusiastically assist the devotee who was selected and find joy in Kṛṣṇa's pleasure.",
+        "Complain to everyone in the temple that management is biased and unfair.",
+        "Boycott the program and refuse to participate in any other seva.",
+        "Create a secret group to lobby for personal leadership in the next festival."
+      ],
+      "correctIndex": 0,
+      "reference": "Reflections on Sacred Teachings V, Principle 2",
+      "explanation": "Since Kṛṣṇa is the only enjoyer, any service rendered by any devotee is for His satisfaction. Rejoicing in others' service is the genuine symptom of having internalized Principle 2."
+    }
+  ]
+}

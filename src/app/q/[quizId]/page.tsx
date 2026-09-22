@@ -1,11 +1,14 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
 import { scoreQuiz } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
+import { getSeriesRoundUnlockTime } from '@/lib/series-data'
 import { QuizEngine } from '@/components/QuizEngine'
 import { ScoreCard } from '@/components/ScoreCard'
 import type { Quiz, AnswerMap, ScoreResult } from '@/types/quiz'
@@ -23,14 +26,22 @@ export default function DirectQuizPage({ params }: Props) {
   const [errorMsg, setErrorMsg] = useState('')
   const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null)
   const [timeTaken, setTimeTaken] = useState(0)
+  const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
   const [initialAnswers, setInitialAnswers] = useState<AnswerMap>({})
   const [initialElapsed, setInitialElapsed] = useState(0)
   const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
+  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
+  const { language } = useLanguage()
   const supabase = createClient()
   const submittingRef = useRef(false)
+
+  const initDoneRef = useRef(false)
+  const phaseRef = useRef<Phase>('loading')
+  phaseRef.current = phase
+  const answersRef = useRef<AnswerMap>({})
 
   useEffect(() => {
     params.then(p => setQuizId(p.quizId))
@@ -55,22 +66,99 @@ export default function DirectQuizPage({ params }: Props) {
         effectiveUid = guestId
       }
 
-      const res = await fetch(`/api/quiz/${quizId}`)
+      const res = await fetch(`/api/quiz/${quizId}?lang=${language}`)
       if (!res.ok) { setErrorMsg('Quiz not found.'); setPhase('error'); return }
       const quizData: Quiz = await res.json()
       setQuiz(quizData)
+      initDoneRef.current = true
+
+      // If user is logged in, check if they already submitted this quiz
+      if (user) {
+        try {
+          const { data: existingAttempts } = await supabase
+            .from('quiz_attempts')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('quiz_id', quizId)
+            .order('completed_at', { ascending: false })
+            .limit(1)
+
+          if (existingAttempts && existingAttempts.length > 0) {
+            const attempt = existingAttempts[0]
+            setTimeTaken(attempt.time_taken || 0)
+            setFinalAnswers(attempt.answers || {})
+            answersRef.current = attempt.answers || {}
+            const result = scoreQuiz(quizData.questions, attempt.answers || {})
+            setScoreResult(result)
+            setIsAlreadyCompleted(true)
+            setPhase('submitted')
+            return
+          }
+        } catch (err) {
+          console.warn('Could not check existing quiz attempts:', err)
+        }
+      }
+
+      // If this is a series round, check if it is locked
+      if (quizId.startsWith('64-day-')) {
+        const dayNum = parseInt(quizId.replace('64-day-', ''), 10)
+        if (!isNaN(dayNum)) {
+          const unlockIso = getSeriesRoundUnlockTime(dayNum)
+          if (new Date() < new Date(unlockIso)) {
+            // Check if there is an active live PIN session created by teacher/admin
+            try {
+              const { data: activeSession } = await supabase
+                .from('quiz_sessions')
+                .select('pin')
+                .eq('quiz_id', quizId)
+                .eq('is_active', true)
+                .limit(1)
+
+              if (activeSession && activeSession.length > 0) {
+                router.push(`/session/${activeSession[0].pin}`)
+                return
+              }
+            } catch (err) {
+              console.warn('Could not check active live session:', err)
+            }
+
+            const formattedTime = new Intl.DateTimeFormat('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+              timeZone: 'Asia/Kolkata',
+            }).format(new Date(unlockIso)) + ' IST'
+
+            setErrorMsg(`Day ${dayNum} is scheduled to release on ${formattedTime}. Please check back at the scheduled time or join the live class when active.`)
+            setPhase('error')
+            return
+          }
+        }
+      }
 
       const saved = loadProgress(quizId, effectiveUid)
       if (saved) {
-        setInitialAnswers(saved.answers || {})
-        setInitialElapsed(saved.timeElapsed || 0)
-        if (typeof saved.currentIndex === 'number') {
-          setInitialQuestionIndex(saved.currentIndex)
-        }
-        // If user already started or answered questions, resume immediately
-        if (saved.answers && Object.keys(saved.answers).length > 0) {
-          setPhase('quiz')
+        const currentQuestionIds = new Set(quizData.questions.map(q => String(q.id)))
+        const savedAnswerKeys = Object.keys(saved.answers || {})
+        const isValidForCurrentQuiz = savedAnswerKeys.length === 0 || savedAnswerKeys.every(id => currentQuestionIds.has(id))
+
+        if (isValidForCurrentQuiz) {
+          setInitialAnswers(saved.answers || {})
+          answersRef.current = saved.answers || {}
+          setInitialElapsed(saved.timeElapsed || 0)
+          if (typeof saved.currentIndex === 'number' && saved.currentIndex < quizData.questions.length) {
+            setInitialQuestionIndex(saved.currentIndex)
+          }
+          if (saved.answers && Object.keys(saved.answers).length > 0) {
+            setPhase('quiz')
+          } else {
+            setPhase('intro')
+          }
         } else {
+          clearProgress(quizId, effectiveUid)
           setPhase('intro')
         }
       } else {
@@ -80,7 +168,25 @@ export default function DirectQuizPage({ params }: Props) {
     init()
   }, [quizId, authLoading, user])
 
-  const [finalAnswers, setFinalAnswers] = useState<AnswerMap>({})
+  // Mid-quiz dynamic language reloader
+  useEffect(() => {
+    if (!quizId || !initDoneRef.current || phase === 'loading' || phase === 'error') return
+    const reloadLanguage = async () => {
+      try {
+        const res = await fetch(`/api/quiz/${quizId}?lang=${language}`)
+        if (res.ok) {
+          const quizData: Quiz = await res.json()
+          setQuiz(quizData)
+          if (phaseRef.current === 'submitted') {
+            setScoreResult(scoreQuiz(quizData.questions, answersRef.current))
+          }
+        }
+      } catch (err) {
+        console.warn('Could not reload quiz language:', err)
+      }
+    }
+    reloadLanguage()
+  }, [language, quizId])
 
   const handleSubmit = useCallback(async (answers: AnswerMap, elapsed: number) => {
     if (!quiz || !userId || submittingRef.current) return
@@ -138,11 +244,24 @@ export default function DirectQuizPage({ params }: Props) {
 
   if (phase === 'error') return (
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <div className="card-gold text-center" style={{ padding: '2.5rem', maxWidth: 420 }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🙏</div>
-        <h2 style={{ marginBottom: '0.75rem' }}>Quiz Not Found</h2>
-        <p className="text-muted" style={{ marginBottom: '1.5rem' }}>{errorMsg}</p>
-        <button className="btn btn-primary" onClick={() => router.push('/')} id="back-home-err-btn">Return Home</button>
+      <div className="card-gold text-center" style={{ padding: '2.5rem', maxWidth: 460 }}>
+        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+          {errorMsg.includes('scheduled') ? '🔒' : '🙏'}
+        </div>
+        <h2 style={{ marginBottom: '0.75rem' }}>
+          {errorMsg.includes('scheduled') ? 'Daily Round Scheduled' : 'Quiz Not Found'}
+        </h2>
+        <p className="text-muted" style={{ marginBottom: '1.5rem', fontSize: '0.9rem', lineHeight: 1.5 }}>{errorMsg}</p>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          {errorMsg.includes('scheduled') && (
+            <Link href="/series/64-principles" className="btn btn-primary" id="series-roadmap-btn">
+              Series Roadmap
+            </Link>
+          )}
+          <button className={`btn ${errorMsg.includes('scheduled') ? 'btn-ghost' : 'btn-primary'}`} onClick={() => router.push('/')} id="back-home-err-btn">
+            Return Home
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -188,14 +307,40 @@ export default function DirectQuizPage({ params }: Props) {
   )
 
   if (phase === 'submitted' && quiz && scoreResult) return (
-    <ScoreCard
-      quiz={quiz}
-      result={scoreResult}
-      timeTaken={timeTaken}
-      sessionId={null}
-      pin=""
-      userAnswers={finalAnswers}
-    />
+    <div>
+      {isAlreadyCompleted && (
+        <div className="container" style={{ paddingTop: '1.5rem', maxWidth: 700 }}>
+          <div
+            style={{
+              padding: '0.85rem 1.25rem',
+              borderRadius: 10,
+              background: 'rgba(56, 189, 248, 0.1)',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              color: '#38bdf8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '0.75rem',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+            }}
+          >
+            <span>✅ You have already completed this round. Showing your recorded scorecard and answer review.</span>
+            <Link href="/series/64-principles" style={{ color: 'var(--color-gold)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+              Series Roadmap →
+            </Link>
+          </div>
+        </div>
+      )}
+      <ScoreCard
+        quiz={quiz}
+        result={scoreResult}
+        timeTaken={timeTaken}
+        sessionId={null}
+        pin=""
+        userAnswers={finalAnswers}
+      />
+    </div>
   )
 
   return null

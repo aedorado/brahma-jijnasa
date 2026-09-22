@@ -13,12 +13,17 @@ export interface DevoteeLevel {
   title: string
   titleDevanagari: string
   titleEn: string
+  titleHi?: string
+  titlePt?: string
   minRating: number
   maxRating: number
   minQuizzes: number
   minAccuracy: number
   verseSnippet: string
   verseMeaning: string
+  verseMeaningEn?: string
+  verseMeaningHi?: string
+  verseMeaningPt?: string
   color: string
   badgeBg: string
   badgeBorder: string
@@ -33,12 +38,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Śraddhāvān',
     titleDevanagari: 'श्रद्धावान्',
     titleEn: 'Faithful Inquirer',
+    titleHi: 'श्रद्धावान् खोजी',
+    titlePt: 'Buscador Fiel',
     minRating: 0,
     maxRating: 79,
     minQuizzes: 0,
     minAccuracy: 0,
     verseSnippet: 'ādau śraddhā',
     verseMeaning: 'First, the awakening of genuine faith to inquire into transcendent truth',
+    verseMeaningEn: 'First, the awakening of genuine faith to inquire into transcendent truth',
+    verseMeaningHi: 'सर्वप्रथम, परमतत्व की जिज्ञासा हेतु वास्तविक श्रद्धा का जागरण',
+    verseMeaningPt: 'Primeiro, o despertar da fé genuína para investigar a verdade transcendente',
     color: '#A0AEC0', // Slate Gray
     badgeBg: 'rgba(160, 174, 192, 0.12)',
     badgeBorder: 'rgba(160, 174, 192, 0.35)',
@@ -51,12 +61,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Saṅgī',
     titleDevanagari: 'सङ्गी',
     titleEn: 'Sincere Companion',
+    titleHi: 'सत्सङ्गी साधक',
+    titlePt: 'Companheiro Sincero',
     minRating: 80,
     maxRating: 199,
     minQuizzes: 2,
     minAccuracy: 20,
     verseSnippet: 'tataḥ sādhu-saṅgo',
     verseMeaning: 'Associating with devotee-teachers and learning in satsaṅga',
+    verseMeaningEn: 'Associating with devotee-teachers and learning in satsaṅga',
+    verseMeaningHi: 'भक्त-शिक्षकों का सान्निध्य और सत्सङ्ग में श्रवण-अध्ययन',
+    verseMeaningPt: 'Associação com mestres-devotos e aprendizado no satsaṅga',
     color: '#48BB78', // Forest Green
     badgeBg: 'rgba(72, 187, 120, 0.12)',
     badgeBorder: 'rgba(72, 187, 120, 0.35)',
@@ -69,12 +84,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Sādhaka',
     titleDevanagari: 'साधक',
     titleEn: 'Dedicated Practitioner',
+    titleHi: 'नियमित साधक',
+    titlePt: 'Praticante Dedicado',
     minRating: 200,
     maxRating: 449,
     minQuizzes: 5,
     minAccuracy: 40,
     verseSnippet: "'tha bhajana-kriyā",
     verseMeaning: 'Active, regular execution of devotional study and quizzes',
+    verseMeaningEn: 'Active, regular execution of devotional study and quizzes',
+    verseMeaningHi: 'भक्तिमय स्वाध्याय और क्विज़ का नियमित निष्ठापूर्वक अभ्यास',
+    verseMeaningPt: 'Execução ativa e regular do estudo devocional e questionários',
     color: '#00B5D8', // Cyan / Turquoise
     badgeBg: 'rgba(0, 181, 216, 0.12)',
     badgeBorder: 'rgba(0, 181, 216, 0.35)',
@@ -87,12 +107,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Vivekī',
     titleDevanagari: 'विवेकी',
     titleEn: 'Discerning Seeker',
+    titleHi: 'विवेकशील अन्वेषक',
+    titlePt: 'Buscador Discernente',
     minRating: 450,
     maxRating: 899,
     minQuizzes: 10,
     minAccuracy: 50,
     verseSnippet: "tato 'nartha-nivṛttiḥ syāt",
     verseMeaning: 'Cleansing misconceptions, philosophical errors, and doubts',
+    verseMeaningEn: 'Cleansing misconceptions, philosophical errors, and doubts',
+    verseMeaningHi: 'दार्शनिक भ्रांतियों, अनर्थों और संशयों का निवारण',
+    verseMeaningPt: 'Purificação de equívocos, erros filosóficos e dúvidas',
     color: '#3182CE', // Oceanic Blue
     badgeBg: 'rgba(49, 130, 206, 0.12)',
     badgeBorder: 'rgba(49, 130, 206, 0.35)',
@@ -105,12 +130,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Niṣṭhāvān',
     titleDevanagari: 'निष्ठावान्',
     titleEn: 'The Steady & Fixed',
+    titleHi: 'दृढ़ निष्ठावान्',
+    titlePt: 'Firme e Estabelecido',
     minRating: 900,
     maxRating: 1699,
     minQuizzes: 20,
     minAccuracy: 60,
     verseSnippet: 'tato niṣṭhā',
     verseMeaning: 'Unshakeable stability and sustained mastery across scripture',
+    verseMeaningEn: 'Unshakeable stability and sustained mastery across scripture',
+    verseMeaningHi: 'शास्त्रों में अडिग स्थिरता और निरंतर अधिकार',
+    verseMeaningPt: 'Estabilidade inabalável e domínio sustentado das escrituras',
     color: '#9F7AEA', // Amethyst Purple
     badgeBg: 'rgba(159, 122, 234, 0.12)',
     badgeBorder: 'rgba(159, 122, 234, 0.35)',
@@ -123,12 +153,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Rucimān',
     titleDevanagari: 'रुचिमान्',
     titleEn: 'Relisher of Truth',
+    titleHi: 'शास्त्र-रसज्ञ',
+    titlePt: 'Apreciador da Verdade',
     minRating: 1700,
     maxRating: 2299,
     minQuizzes: 40,
     minAccuracy: 70,
     verseSnippet: 'rucis tataḥ',
     verseMeaning: 'Spontaneous taste and relish for complex purports and verses',
+    verseMeaningEn: 'Spontaneous taste and relish for complex purports and verses',
+    verseMeaningHi: 'गूढ़ श्लोकों और तात्पर्यों के आस्वादन की स्वाभाविक रुचि',
+    verseMeaningPt: 'Gosto espontâneo e apreço por versos e significados profundos',
     color: '#ED8936', // Saffron Flame Orange
     badgeBg: 'rgba(237, 137, 54, 0.12)',
     badgeBorder: 'rgba(237, 137, 54, 0.35)',
@@ -141,12 +176,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Āsakta',
     titleDevanagari: 'आसक्त',
     titleEn: 'Deeply Absorbed',
+    titleHi: 'परम आसक्त',
+    titlePt: 'Profundamente Absorto',
     minRating: 2300,
     maxRating: 2799,
     minQuizzes: 50,
     minAccuracy: 80,
     verseSnippet: 'athāsaktis',
     verseMeaning: 'Profound attachment and intuitive absorption in the Lord’s pastimes',
+    verseMeaningEn: 'Profound attachment and intuitive absorption in the Lord’s pastimes',
+    verseMeaningHi: 'भगवान की लीलाओं और वचनों में प्रगाढ़ आसक्ति',
+    verseMeaningPt: 'Profundo apego e absorção intuitiva nos passatempos do Senhor',
     color: '#F56565', // Crimson Red
     badgeBg: 'rgba(245, 101, 101, 0.12)',
     badgeBorder: 'rgba(245, 101, 101, 0.35)',
@@ -159,12 +199,17 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Bhāvuka',
     titleDevanagari: 'भावुक',
     titleEn: 'Illumined Ecstatic',
+    titleHi: 'भावयुक्त ज्ञानी',
+    titlePt: 'Iluminado em Êxtase',
     minRating: 2800,
     maxRating: 3499,
     minQuizzes: 60,
     minAccuracy: 85,
     verseSnippet: 'tato bhāvas',
     verseMeaning: 'Awakening of pure spiritual ecstasy and unexcelled śāstric wisdom',
+    verseMeaningEn: 'Awakening of pure spiritual ecstasy and unexcelled śāstric wisdom',
+    verseMeaningHi: 'दिव्य आध्यात्मिक भाव का जागरण और अद्वितीय शास्त्रीय प्रज्ञा',
+    verseMeaningPt: 'Despertar do puro êxtase espiritual e inigualável sabedoria das escrituras',
     color: '#ECC94B', // Solar Brilliant Gold
     badgeBg: 'rgba(236, 201, 75, 0.12)',
     badgeBorder: 'rgba(236, 201, 75, 0.45)',
@@ -177,18 +222,42 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     title: 'Premī',
     titleDevanagari: 'प्रेमी',
     titleEn: 'Transcendental Master',
+    titleHi: 'प्रेम-विभूषित आचार्य',
+    titlePt: 'Mestre Transcendental',
     minRating: 3500,
     maxRating: 999999,
     minQuizzes: 75,
     minAccuracy: 90,
     verseSnippet: 'tataḥ premābhyudañcati',
     verseMeaning: 'Unalloyed supreme love of Godhead; legendary śāstric mastery',
+    verseMeaningEn: 'Unalloyed supreme love of Godhead; legendary śāstric mastery',
+    verseMeaningHi: 'परम भगवत्प्रेम का प्राकट्य; सर्वोत्कृष्ट शास्त्रीय सिद्धि',
+    verseMeaningPt: 'Amor supremo e puro a Deus; domínio lendário das escrituras',
     color: '#FF416C', // Radiant Aurora Gradient
     badgeBg: 'linear-gradient(135deg, rgba(255, 65, 108, 0.18), rgba(255, 215, 0, 0.18))',
     badgeBorder: 'rgba(255, 215, 0, 0.65)',
     glow: 'rgba(255, 65, 108, 0.45)',
   },
 ]
+
+export function getLocalizedLevelText(lvl: DevoteeLevel, lang: 'en' | 'hi' | 'pt' = 'en') {
+  const meaning = lang === 'hi'
+    ? lvl.verseMeaningHi || lvl.verseMeaning
+    : lang === 'pt'
+    ? lvl.verseMeaningPt || lvl.verseMeaning
+    : lvl.verseMeaningEn || lvl.verseMeaning
+
+  const titleSecondary = lang === 'hi'
+    ? lvl.titleHi || lvl.titleDevanagari
+    : lang === 'pt'
+    ? lvl.titlePt || lvl.titleEn
+    : lvl.titleEn
+
+  const stageDisplay = lang === 'hi' ? lvl.stageDevanagari : lvl.stage
+  const titleDisplay = lang === 'hi' ? lvl.titleDevanagari : lvl.title
+
+  return { meaning, titleSecondary, stageDisplay, titleDisplay }
+}
 
 /**
  * Get devotee level definition based on rating and hard gate criteria (quizzes & accuracy)

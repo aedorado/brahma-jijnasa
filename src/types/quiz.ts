@@ -12,6 +12,7 @@ export type Category =
   | 'ramayana'
   | 'puranas'
   | 'caitanya'
+  | '64-principles'
   | 'general'
 
 // ——— Question Types ———
@@ -201,12 +202,12 @@ export interface QuizMeta {
 
 // ——— Answer Storage ———
 
-export type SingleAnswer   = number | null          // selected index
-export type MultiAnswer    = number[]               // selected indices
-export type TFAnswer       = boolean | null
+export type SingleAnswer = number | null          // selected index
+export type MultiAnswer = number[]               // selected indices
+export type TFAnswer = boolean | null
 export type SequenceAnswer = number[]               // ordered indices
-export type PairsAnswer    = [number, number][]     // [leftIndex, rightIndex]
-export type WhoAmIAnswer   = { selectedIndex: number | null; cluesRevealed: number }
+export type PairsAnswer = [number, number][]     // [leftIndex, rightIndex]
+export type WhoAmIAnswer = { selectedIndex: number | null; cluesRevealed: number }
 
 export type Answer =
   | SingleAnswer
@@ -281,22 +282,24 @@ export interface LeaderboardEntry {
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   'bhagavad-gita': 'Bhagavad Gītā',
-  'upanishads':    'Upaniṣads',
-  'vedas':         'Vedas',
-  'mahabharata':   'Mahābhārata',
-  'ramayana':      'Rāmāyaṇa',
-  'puranas':       'Purāṇas',
-  'caitanya':      'Śrī Caitanya',
-  'general':       'General',
+  'upanishads': 'Upaniṣads',
+  'vedas': 'Vedas',
+  'mahabharata': 'Mahābhārata',
+  'ramayana': 'Rāmāyaṇa',
+  'puranas': 'Purāṇas',
+  'caitanya': 'Śrī Caitanya',
+  '64-principles': '64 Principles of Community',
+  'general': 'General',
 }
 
 export const CATEGORY_ICONS: Record<Category, string> = {
   'bhagavad-gita': '🪷',
-  'upanishads':    '🕉️',
-  'vedas':         '📜',
-  'mahabharata':   '⚔️',
-  'ramayana':      '🏹',
-  'puranas':       '🌺',
-  'caitanya':      '💛',
-  'general':       '📚',
+  'upanishads': '🕉️',
+  'vedas': '📜',
+  'mahabharata': '⚔️',
+  'ramayana': '🏹',
+  'puranas': '🌺',
+  'caitanya': '💛',
+  '64-principles': '🪷',
+  'general': '📚',
 }

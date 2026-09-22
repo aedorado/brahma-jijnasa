@@ -96,11 +96,18 @@ export async function GET() {
       d.rank = idx + 1
     })
 
-    return NextResponse.json({
-      devotees,
-      totalParticipants: devotees.length,
-      levels: DEVOTEE_LEVELS,
-    })
+    return NextResponse.json(
+      {
+        devotees,
+        totalParticipants: devotees.length,
+        levels: DEVOTEE_LEVELS,
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+        },
+      }
+    )
   } catch (err: any) {
     console.error('[Leaderboard Unexpected Error]:', err)
     return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 })

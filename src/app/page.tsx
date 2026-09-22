@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
@@ -30,7 +31,11 @@ export default function HomePage() {
       return
     }
 
-    if (pin.length !== 4) { setError('Please enter a 4-digit PIN'); setLoading(false); return }
+    if (pin.length !== 4) {
+      setError('Please enter a 4-digit PIN')
+      setLoading(false)
+      return
+    }
 
     // Check if session exists and is active
     const { data: session } = await supabase
@@ -62,129 +67,212 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh' }}>
-      {/* Hero */}
-      <section style={{ padding: '4.5rem 0 3.5rem', textAlign: 'center' }}>
-        <div className="container-sm z-above">
-          <div className="animate-fadeIn">
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.35rem 0.95rem',
-                borderRadius: '9999px',
-                background: 'rgba(240, 199, 78, 0.1)',
-                border: '1px solid rgba(240, 199, 78, 0.3)',
-                marginBottom: '1.25rem',
-              }}
-            >
-              <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Vedānta-Sūtra 1.1.1
-              </span>
+    <div className="home-wrapper">
+      {/* Background ambient lighting */}
+      <div className="home-ambient-glow" />
+
+      {/* Hero Section */}
+      <section className="home-hero-section">
+        <div className="container">
+          <div className="home-hero-inner animate-fadeIn">
+            {/* Vedic Sutra Pill */}
+            <div className="home-sutra-badge">
+              <span className="home-sutra-ref">Vedānta-Sūtra 1.1.1</span>
             </div>
 
-            <p className="sanskrit" style={{ fontSize: '1.35rem', marginBottom: '0.45rem', color: 'var(--color-gold)' }}>
+            <p className="sanskrit home-sutra-quote">
               {t.home.sanskritQuote}
             </p>
-            <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginBottom: '2rem', fontStyle: 'italic' }}>
+            <p className="home-sutra-meaning">
               {t.home.sanskritMeaning}
             </p>
 
-            <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: '1rem', lineHeight: 1.1 }}>
+            <h1 className="home-title">
               {t.home.heroTitle}{' '}
-              <span style={{ background: 'linear-gradient(135deg, var(--color-gold), var(--color-primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span className="home-title-gradient">
                 {t.home.heroTitleHighlight}
               </span>
             </h1>
 
-            <p style={{ fontSize: '1.1rem', color: 'var(--color-text-secondary)', maxWidth: 520, margin: '0 auto 3rem', lineHeight: 1.6 }}>
+            <p className="home-subtitle">
               {t.home.heroSubtitle}
             </p>
-          </div>
 
-          {/* PIN entry card */}
-          <div
-            className="card-gold animate-scaleIn"
-            style={{ padding: '2.5rem 2rem', maxWidth: 400, margin: '0 auto', animationDelay: '0.15s' }}
-          >
-            <h2 style={{ fontSize: '1.1rem', marginBottom: '0.4rem', textAlign: 'center', fontWeight: 700 }}>
-              {t.home.joinLiveQuiz}
-            </h2>
-            <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '1.5rem' }}>
-              {t.home.enterPinPrompt}
-            </p>
-
-            <form onSubmit={handlePinSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-              <input
-                id="pin-entry"
-                type="text"
-                inputMode="numeric"
-                pattern="\d{4}"
-                maxLength={4}
-                className="pin-input"
-                placeholder="0000"
-                value={pin}
-                onChange={handlePinChange}
-                autoFocus
-                autoComplete="off"
-              />
-
-              {error && (
-                <p style={{ color: 'var(--color-error)', fontSize: '0.85rem', textAlign: 'center' }}>
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                id="join-quiz-btn"
-                className="btn btn-primary btn-lg w-full"
-                disabled={loading || (pin.length !== 4 && pin !== '000')}
-              >
-                {loading ? t.home.checkingPin : t.home.enterInquiryBtn}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPin('0000')}
-                id="sandbox-pin-hint-btn"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-gold)',
-                  fontSize: '0.85rem',
-                  cursor: 'pointer',
-                  opacity: 0.9,
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '6px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  transition: 'opacity 0.2s ease',
-                }}
-              >
-                <span>✨ Want to take a demo? Try PIN 0000</span>
-              </button>
-            </form>
+            {/* Platform Highlights Metrics Bar */}
+            <div className="home-stats-bar">
+              <div className="home-stat-item">
+                <span className="home-stat-value">30+</span>
+                <span className="home-stat-label">Daily Rounds</span>
+              </div>
+              <div className="home-stat-divider" />
+              <div className="home-stat-item">
+                <span className="home-stat-value">16</span>
+                <span className="home-stat-label">Interactive Formats</span>
+              </div>
+              <div className="home-stat-divider" />
+              <div className="home-stat-item">
+                <span className="home-stat-value">9</span>
+                <span className="home-stat-label">Bhakti Stages</span>
+              </div>
+              <div className="home-stat-divider" />
+              <div className="home-stat-item">
+                <span className="home-stat-value">3</span>
+                <span className="home-stat-label">Languages</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section style={{ padding: '2rem 0 5rem' }}>
+      {/* Dual Pathways Grid: Live PIN vs Featured Sadhana Series */}
+      <section className="home-pathways-section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+          <div className="home-pathways-grid">
+            {/* Pathway 1: Live PIN Session Entry */}
+            <div className="card-gold home-pathway-card home-pin-card animate-scaleIn">
+              <div className="home-pathway-header">
+                <div className="home-card-icon-badge">⚡</div>
+                <div>
+                  <h2 className="home-pathway-title">{t.home.joinLiveQuiz}</h2>
+                  <p className="home-pathway-subtitle">{t.home.enterPinPrompt}</p>
+                </div>
+              </div>
+
+              <form onSubmit={handlePinSubmit} className="home-pin-form">
+                <input
+                  id="pin-entry"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="\d{4}"
+                  maxLength={4}
+                  className="pin-input"
+                  placeholder="0000"
+                  value={pin}
+                  onChange={handlePinChange}
+                  autoComplete="off"
+                />
+
+                {error && (
+                  <p className="home-pin-error">
+                    {error}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  id="join-quiz-btn"
+                  className="btn btn-primary btn-lg w-full"
+                  disabled={loading || (pin.length !== 4 && pin !== '000')}
+                >
+                  {loading ? t.home.checkingPin : t.home.enterInquiryBtn}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setPin('0000')}
+                  id="sandbox-pin-hint-btn"
+                  className="home-demo-pin-btn"
+                >
+                  <span>✨ Want to take a test round? Try PIN <strong>0000</strong></span>
+                </button>
+              </form>
+            </div>
+
+            {/* Pathway 2: Featured Sadhana Series Spotlight */}
+            <div className="card-gold home-pathway-card home-series-card animate-scaleIn">
+              <div className="home-series-card-top">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
+                    🌟 Featured Series
+                  </span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                    30 Daily Sadhana Rounds
+                  </span>
+                </div>
+
+                <h3 className="home-series-title">
+                  Reflections on Sacred Teachings
+                </h3>
+                <p className="home-series-subheading">
+                  Principles for Community (1–30)
+                </p>
+
+                <p className="home-series-desc">
+                  Immerse in Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura’s sacred community principles from <em>Reflections on Sacred Teachings V</em> by His Holiness Bhakti Tirtha Swami.
+                </p>
+              </div>
+
+              <div className="home-series-actions">
+                <Link
+                  href="/series/sacred-teachings-64-principles"
+                  className="btn btn-primary"
+                  id="explore-series-btn"
+                >
+                  <span>{t.series?.exploreSeries || 'Explore Series →'}</span>
+                </Link>
+                <Link
+                  href="/series"
+                  className="btn btn-ghost"
+                  style={{ border: '1px solid var(--color-border)' }}
+                  id="view-all-series-btn"
+                >
+                  <span>{t.nav.allSeries || 'All Series'}</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Scriptural Spotlight: BG 4.34 */}
+      <section className="home-spotlight-section">
+        <div className="container-sm">
+          <div className="home-shloka-card animate-fadeIn">
+            <div className="home-shloka-header">
+              <span className="home-shloka-badge">Śrīmad Bhagavad Gītā 4.34</span>
+              <span className="home-shloka-theme">The Spirit of Inquiry</span>
+            </div>
+            <p className="sanskrit home-shloka-sanskrit">
+              तद्विद्धि प्रणिपातेन परिप्रश्नेन सेवया।<br />
+              उपदेक्ष्यन्ति ते ज्ञानं ज्ञानिनस्तत्त्वदर्शिनः॥
+            </p>
+            <p className="home-shloka-translation">
+              &quot;Just try to learn the truth by approaching a spiritual master. Inquire from him submissively and render service unto him. The self-realized souls can impart knowledge unto you because they have seen the truth.&quot;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Features Grid */}
+      <section className="home-features-section">
+        <div className="container">
+          <div className="home-features-grid">
             {[
-              { icon: '📜', title: t.home.features.scripture, desc: t.home.features.scriptureDesc },
-              { icon: '🎯', title: t.home.features.types, desc: t.home.features.typesDesc },
-              { icon: '🏆', title: t.home.features.leaderboard, desc: t.home.features.leaderboardDesc },
-              { icon: '📖', title: t.home.features.learn, desc: t.home.features.learnDesc },
+              {
+                icon: '📜',
+                title: t.home.features.scripture,
+                desc: t.home.features.scriptureDesc,
+              },
+              {
+                icon: '🎯',
+                title: t.home.features.types,
+                desc: t.home.features.typesDesc,
+              },
+              {
+                icon: '🏆',
+                title: t.home.features.leaderboard,
+                desc: t.home.features.leaderboardDesc,
+              },
+              {
+                icon: '💡',
+                title: t.home.features.learn,
+                desc: t.home.features.learnDesc,
+              },
             ].map(f => (
-              <div key={f.title} className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>{f.icon}</div>
-                <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', fontWeight: 600 }}>{f.title}</h3>
-                <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', lineHeight: 1.5 }}>{f.desc}</p>
+              <div key={f.title} className="card home-feature-card">
+                <div className="home-feature-icon">{f.icon}</div>
+                <h3 className="home-feature-title">{f.title}</h3>
+                <p className="home-feature-desc">{f.desc}</p>
               </div>
             ))}
           </div>

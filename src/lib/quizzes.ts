@@ -16,7 +16,9 @@ export function getAllQuizMeta(): QuizMeta[] {
 
   for (const category of categories) {
     const categoryDir = path.join(QUIZZES_DIR, category)
-    const files = fs.readdirSync(categoryDir).filter(f => f.endsWith('.json'))
+    const files = fs.readdirSync(categoryDir).filter(f =>
+      f.endsWith('.json') && !f.endsWith('.hi.json') && !f.endsWith('.pt.json')
+    )
 
     for (const file of files) {
       try {
@@ -68,17 +70,41 @@ export function normalizeQuiz(quiz: Quiz): Quiz {
   }
 }
 
-// ——— Load a single quiz by ID ———
-export function getQuizById(id: string): Quiz | null {
+// ——— Load a single quiz by ID (with language fallback) ———
+export function getQuizById(id: string, lang?: string): Quiz | null {
   if (!fs.existsSync(QUIZZES_DIR)) return null
 
   const categories = fs.readdirSync(QUIZZES_DIR).filter(f =>
     fs.statSync(path.join(QUIZZES_DIR, f)).isDirectory()
   )
 
+  // 1. If a specific language is requested (e.g. 'hi' or 'pt'), try to load the localized JSON first
+  if (lang && lang !== 'en') {
+    for (const category of categories) {
+      const categoryDir = path.join(QUIZZES_DIR, category)
+      const files = fs.readdirSync(categoryDir).filter(f =>
+        f.endsWith(`.${lang}.json`) || f.endsWith(`-${lang}.json`)
+      )
+
+      for (const file of files) {
+        try {
+          const filePath = path.join(categoryDir, file)
+          const raw = fs.readFileSync(filePath, 'utf-8')
+          const quiz: Quiz = JSON.parse(raw)
+          if (quiz.id === id) return normalizeQuiz(quiz)
+        } catch (e) {
+          console.warn(`Failed to parse localized quiz ${file}:`, e)
+        }
+      }
+    }
+  }
+
+  // 2. Fallback to default/English quiz
   for (const category of categories) {
     const categoryDir = path.join(QUIZZES_DIR, category)
-    const files = fs.readdirSync(categoryDir).filter(f => f.endsWith('.json'))
+    const files = fs.readdirSync(categoryDir).filter(f =>
+      f.endsWith('.json') && !f.endsWith('.hi.json') && !f.endsWith('.pt.json')
+    )
 
     for (const file of files) {
       try {

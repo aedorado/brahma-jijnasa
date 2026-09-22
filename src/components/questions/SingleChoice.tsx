@@ -1,6 +1,7 @@
 'use client'
 
 import type { SingleChoiceQuestion, CauseEffectQuestion, OddOneOutQuestion, TwoTruthsOneFalseQuestion, EvidenceBasedQuestion } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: SingleChoiceQuestion | CauseEffectQuestion | OddOneOutQuestion | TwoTruthsOneFalseQuestion | EvidenceBasedQuestion
@@ -12,11 +13,15 @@ type Props = {
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
 
 export function SingleChoice({ question, answer, onAnswer, disabled }: Props) {
+  const { language } = useLanguage()
+
   return (
     <div>
       {'principle' in question && (
         <div className="shloka-block" style={{ marginBottom: '1.25rem' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>Principle:</p>
+          <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>
+            {language === 'hi' ? 'सिद्धांत:' : language === 'pt' ? 'Princípio:' : 'Principle:'}
+          </p>
           <p style={{ color: 'var(--color-lotus)', fontStyle: 'italic' }}>{question.principle}</p>
         </div>
       )}

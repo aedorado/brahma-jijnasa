@@ -107,9 +107,9 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
         Tap any matched item or <span style={{ color: 'var(--color-primary)', fontWeight: 600 }}>✕</span> to unpair or change.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
+      <div className="match-pairs-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '0.85rem', alignItems: 'start', width: '100%' }}>
         {/* Left column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0, width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Column A
@@ -129,10 +129,15 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                 onClick={() => handleLeftClick(i)}
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: 'column',
                   justifyContent: 'space-between',
-                  gap: '0.6rem',
+                  alignItems: 'stretch',
+                  gap: '0.45rem',
                   textAlign: 'left',
+                  width: '100%',
+                  minWidth: 0,
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
                   ...(theme
                     ? {
                         background: theme.bg,
@@ -150,54 +155,61 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                 }}
                 title={matchedRight !== null ? 'Click to unpair and change match' : 'Click to select'}
               >
-                <span style={{ fontWeight: 600 }}>{item}</span>
-                {matchedRight !== null && theme ? (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginLeft: 'auto' }}>
-                    <span
-                      style={{
-                        padding: '0.12rem 0.45rem',
-                        borderRadius: '9999px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        background: `${theme.border}33`,
-                        color: theme.text,
-                        border: `1px solid ${theme.border}`,
-                      }}
-                    >
-                      Pair {theme.num}
+                <span style={{ fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: 1.35 }}>
+                  {item}
+                </span>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.35rem', marginTop: 'auto', minHeight: 22 }}>
+                  {matchedRight !== null && theme ? (
+                    <>
+                      <span
+                        style={{
+                          padding: '0.12rem 0.45rem',
+                          borderRadius: '9999px',
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          background: `${theme.border}33`,
+                          color: theme.text,
+                          border: `1px solid ${theme.border}`,
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        Pair {theme.num}
+                      </span>
+                      <span
+                        onClick={(e) => handleExplicitUnpair(e, i)}
+                        title="Unpair"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.18)',
+                          color: 'var(--color-text)',
+                          fontSize: '0.72rem',
+                          cursor: 'pointer',
+                          lineHeight: 1,
+                          flexShrink: 0,
+                        }}
+                      >
+                        ✕
+                      </span>
+                    </>
+                  ) : isSelected ? (
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                      Selected ➜
                     </span>
-                    <span
-                      onClick={(e) => handleExplicitUnpair(e, i)}
-                      title="Unpair"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        background: 'rgba(255, 255, 255, 0.15)',
-                        color: 'var(--color-text)',
-                        fontSize: '0.75rem',
-                        cursor: 'pointer',
-                        lineHeight: 1,
-                      }}
-                    >
-                      ✕
-                    </span>
-                  </div>
-                ) : isSelected ? (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>
-                    Matching →
-                  </span>
-                ) : null}
+                  ) : null}
+                </div>
               </button>
             )
           })}
         </div>
 
         {/* Right column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0, width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Column B
@@ -217,10 +229,15 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                 onClick={() => handleRightClick(j)}
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: 'column',
                   justifyContent: 'space-between',
-                  gap: '0.6rem',
+                  alignItems: 'stretch',
+                  gap: '0.45rem',
                   textAlign: 'left',
+                  width: '100%',
+                  minWidth: 0,
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
                   ...(theme
                     ? {
                         background: theme.bg,
@@ -237,47 +254,54 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                 }}
                 title={matchedLeft !== null ? 'Click to unpair and change match' : isWaiting ? 'Click to pair' : ''}
               >
-                <span style={{ fontWeight: 600 }}>{item}</span>
-                {matchedLeft !== null && theme ? (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginLeft: 'auto' }}>
-                    <span
-                      style={{
-                        padding: '0.12rem 0.45rem',
-                        borderRadius: '9999px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        background: `${theme.border}33`,
-                        color: theme.text,
-                        border: `1px solid ${theme.border}`,
-                      }}
-                    >
-                      Pair {theme.num}
+                <span style={{ fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: 1.35 }}>
+                  {item}
+                </span>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.35rem', marginTop: 'auto', minHeight: 22 }}>
+                  {matchedLeft !== null && theme ? (
+                    <>
+                      <span
+                        style={{
+                          padding: '0.12rem 0.45rem',
+                          borderRadius: '9999px',
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          background: `${theme.border}33`,
+                          color: theme.text,
+                          border: `1px solid ${theme.border}`,
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        Pair {theme.num}
+                      </span>
+                      <span
+                        onClick={(e) => handleExplicitUnpair(e, matchedLeft)}
+                        title="Unpair"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.18)',
+                          color: 'var(--color-text)',
+                          fontSize: '0.72rem',
+                          cursor: 'pointer',
+                          lineHeight: 1,
+                          flexShrink: 0,
+                        }}
+                      >
+                        ✕
+                      </span>
+                    </>
+                  ) : isWaiting ? (
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', opacity: 0.85, whiteSpace: 'nowrap' }}>
+                      Tap to pair
                     </span>
-                    <span
-                      onClick={(e) => handleExplicitUnpair(e, matchedLeft)}
-                      title="Unpair"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        background: 'rgba(255, 255, 255, 0.15)',
-                        color: 'var(--color-text)',
-                        fontSize: '0.75rem',
-                        cursor: 'pointer',
-                        lineHeight: 1,
-                      }}
-                    >
-                      ✕
-                    </span>
-                  </div>
-                ) : isWaiting ? (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', opacity: 0.85 }}>
-                    Tap to pair
-                  </span>
-                ) : null}
+                  ) : null}
+                </div>
               </button>
             )
           })}

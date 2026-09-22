@@ -1,0 +1,366 @@
+{
+  "id": "64-day-01",
+  "title": "Day 1: The Life & Legacy of HH Bhakti Tirtha Swami",
+  "category": "64-principles",
+  "description": "Life, surrender, preaching & teachings of HH Bhakti Tirtha Swami from Black Lotus",
+  "difficulty": "medium",
+  "timeLimit": 720,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single-choice",
+      "question": "In which Cleveland neighborhood was John Favors raised as a child, where despite extreme poverty and discrimination, his mother Mother Pearline nurtured a deep faith in God?",
+      "options": [
+        "Shaker Heights",
+        "The Forgotten Triangle",
+        "Renaissance Heights",
+        "Gates Mills"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Chapter 1",
+      "explanation": "John Favors was raised in 'The Forgotten Triangle' on East 82nd Street and Kinsman Road in Cleveland, Ohio, an impoverished area where his mother Pearline cultivated an atmosphere of prayer and trust in God."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-select",
+      "question": "Which of the following mentors and educators played a formative role in young John Favors' life before he joined college?",
+      "options": [
+        "Ms. Vivian DuBose Jordan (music teacher who directed child evangelism)",
+        "Reverend E. Randel T. Osburn (SCLC leader who introduced him to Dr. King)",
+        "Judge Leodis Harris (juvenile court judge and civic mentor)",
+        "Professor Jan Carew (Pan-African scholar at Princeton)"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "medium",
+      "reference": "Chapter 2",
+      "explanation": "Ms. Vivian DuBose Jordan encouraged his child evangelism, Rev. Osburn introduced him to Dr. Martin Luther King Jr., and Judge Leodis Harris engaged him in social and civic work in Cleveland prior to university."
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "Though young John Favors suffered from a severe stutter in daily speech, his speech impediment completely disappeared whenever he spoke publicly on religious subjects.",
+      "options": [
+        true,
+        false
+      ],
+      "correct": true,
+      "difficulty": "easy",
+      "reference": "Chapter 2",
+      "explanation": "As a child evangelist, John stuttered significantly in ordinary conversation, but when he stood at the lectern to speak about God, his speech became smooth and fluent without stuttering."
+    },
+    {
+      "id": "q4",
+      "type": "who-am-i",
+      "clues": [
+        "I was a Cleveland teenager who was self-taught in spiritual science, Moorish Science, and Eastern metaphysics.",
+        "In 1971, I introduced John Favors and his friends to nonsectarian spiritual concepts and books on yoga.",
+        "Although I did not consider myself a guru, I urged John to pursue Bhakti-yoga as taught by Srila Prabhupada."
+      ],
+      "options": [
+        "Carl B. Stokes",
+        "Norman Anderson ('Uncle Nanda')",
+        "Professor Jan Carew",
+        "Lester Sandifer"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "reference": "Chapter 4",
+      "explanation": "Norman Anderson, known affectionately as 'Uncle Nanda,' was an eclectic spiritual mentor in Cleveland who taught John Favors about Eastern philosophy and encouraged him to seek out Srila Prabhupada.",
+      "question": "Identify this spiritual mentor from the clues below:"
+    },
+    {
+      "id": "q5",
+      "type": "who-said-this",
+      "quote": "KRISHNA IS THE DOER.",
+      "context": "Spoken gravely to Ghanashyam Dasa in London in 1977, right after Ghanashyam read his report on book distribution behind the Iron Curtain, protecting his young disciple from pride.",
+      "options": [
+        "Satsvarupa Dasa Goswami",
+        "Tamal Krishna Goswami",
+        "Srila Prabhupada",
+        "Kirtanananda Swami"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "reference": "Chapter 4",
+      "explanation": "After embracing Ghanashyam with tears of affection, Srila Prabhupada later gave him this profound chastisement to remind him that Krishna is the true doer and to protect him from false ego.",
+      "question": "Who spoke these words to protect his young disciple from pride?"
+    },
+    {
+      "id": "q6",
+      "type": "sequence",
+      "question": "Arrange these major chronological milestones of His Holiness Bhakti Tirtha Swami's life in proper order from earliest to latest.",
+      "items": [
+        "Being coronated as High Chief (Erhumuakpo) in Warri, Nigeria",
+        "Graduating from Princeton University with a degree in psychology",
+        "Receiving first initiation and the name Ghanashyam Dasa from Srila Prabhupada",
+        "Accepting the sannyasa order of life in New Vrindavan"
+      ],
+      "correctOrder": [
+        1,
+        2,
+        3,
+        0
+      ],
+      "difficulty": "medium",
+      "reference": "Timeline & Chapters 3, 4, 5, 6",
+      "explanation": "John Favors graduated from Princeton in 1972, was initiated as Ghanashyam Dasa in February 1973, took sannyasa in March 1979, and was coronated as High Chief in Nigeria in 1990."
+    },
+    {
+      "id": "q7",
+      "type": "match-pairs",
+      "question": "Match each institution or initiative associated with Bhakti Tirtha Swami with its core purpose or description.",
+      "left": [
+        "Institute for Applied Spiritual Technology (IFAST)",
+        "Hari-Nama Press",
+        "BBT Library Party",
+        "Third World Center"
+      ],
+      "right": [
+        "Traveling party placing complete sets of Vedic literature in university libraries and standing orders",
+        "Nonprofit publishing entity established to print Maharaja's books for worldwide distribution",
+        "Cultural and social center co-founded by John Favors at Princeton for minority students",
+        "Organization founded in Washington D.C. to apply spiritual principles to leadership, conflict resolution, and social issues"
+      ],
+      "correctPairs": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "difficulty": "medium",
+      "reference": "Chapters 3, 4, 7 & Timeline",
+      "explanation": "IFAST applied spiritual principles to leadership, Hari-Nama Press published his books, the Library Party placed standing orders in academic libraries, and the Third World Center was founded at Princeton."
+    },
+    {
+      "id": "q8",
+      "type": "assertion-reason",
+      "assertion": "Ghanashyam Dasa risked his life and freedom smuggling transcendental literature into Eastern European communist nations behind the Iron Curtain.",
+      "reason": "Srila Prabhupada had expressed a deep desire that his books be made available to everyone everywhere, inspiring Ghanashyam to brave severe restrictions and surveillance.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion",
+        "Assertion is true, but Reason is false",
+        "Assertion is false, but Reason is true"
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "reference": "Chapter 4",
+      "explanation": "Ghanashyam's fearless book distribution behind the Iron Curtain was directly driven by his desire to fulfill Srila Prabhupada's order to share Vedic literature worldwide despite political danger.",
+      "question": "Evaluate the relationship between the Assertion and the Reason regarding the Iron Curtain mission:"
+    },
+    {
+      "id": "q9",
+      "type": "spot-the-error",
+      "passage": "During his senior year at Hawken School, John Favors participated in a major class debate. In the debate, he assumed the role of Dr. Martin Luther King Jr. running for President of the United States.",
+      "options": [
+        "He assumed the role of Carl B. Stokes running to become America's first black mayor",
+        "He attended East Tech High School during his senior year, not Hawken",
+        "The debate was about the Vietnam War, not political elections",
+        "He played the role of Malcolm X in a debate at Princeton University"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Chapter 3",
+      "explanation": "At Hawken School, John assumed the role of Carl B. Stokes, who was running to become the first black mayor of a major American city (Cleveland), winning the debate easily.",
+      "question": "Identify the factual error in this passage regarding the Hawken School debate:"
+    },
+    {
+      "id": "q10",
+      "type": "missing-link",
+      "chain": [
+        "Child Evangelist in Cleveland",
+        "Civil Rights Activist & Student Leader at Princeton",
+        "?",
+        "Pioneering Book Distributor behind the Iron Curtain"
+      ],
+      "options": [
+        "High Chief Coronation in Warri, Nigeria",
+        "Initiation as Ghanashyam Dasa and Joining the BBT Library Party",
+        "Chairman of the GBC",
+        "Establishing the IFAST Center in Gita Nagari"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "reference": "Chapters 2, 3, 4",
+      "explanation": "After graduating from Princeton, John joined ISKCON, received initiation as Ghanashyam Dasa from Srila Prabhupada in 1973, and joined the BBT Library Party.",
+      "question": "Which pivotal milestone correctly completes this biographical sequence?"
+    },
+    {
+      "id": "q11",
+      "type": "odd-one-out",
+      "question": "Which of the following figures was NOT one of the world leaders or prominent public personalities Bhakti Tirtha Swami met and spiritually counseled during his global preaching?",
+      "options": [
+        "President Nelson Mandela of South Africa",
+        "President Kenneth Kaunda of Zambia",
+        "Boxing Champion Muhammad Ali",
+        "Industrialist John D. Rockefeller"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "reference": "Chapters 6, 8 & Timeline",
+      "explanation": "Bhakti Tirtha Swami met and counseled Nelson Mandela, Kenneth Kaunda, and Muhammad Ali. John D. Rockefeller was a historical 19th-century figure mentioned only in context of Cleveland's industrial history."
+    },
+    {
+      "id": "q12",
+      "type": "cause-effect",
+      "question": "In 1990, the Ohroje (King) of Okpe in Warri, Nigeria, recognized Bhakti Tirtha Swami's extraordinary spiritual and humanitarian contributions to the African people.",
+      "options": [
+        "He awarded him the title 'Erhumuakpo' and coronated him as a High Chief, granting unprecedented access for spiritual preaching",
+        "He appointed him as the Minister of Agriculture for Nigeria",
+        "He required him to renounce his monastic sannyasa vows to join the royal court",
+        "He presented him with a fleet of cars for traveling across West Africa"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Chapter 6",
+      "explanation": "The King of Okpe coronated Bhakti Tirtha Swami as High Chief 'Erhumuakpo' ('The man who stands for the good of the world'), an honor that opened doors for Krishna consciousness across Nigeria."
+    },
+    {
+      "id": "q13",
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement among the three options below regarding Bhakti Tirtha Swami's preaching activities:",
+      "options": [
+        "Statement A: While traveling with the Library Party, Ghanashyam Dasa maintained an intense sadhana, often getting up at 2:30 AM and chanting over 40 rounds daily.",
+        "Statement B: During his tour of Eastern Europe, Ghanashyam Dasa was thrown into prison for five years and banned from ever returning to Europe.",
+        "Statement C: In Nigeria and Ghana, Bhakti Tirtha Swami helped establish over twenty temples, farm communities, schools, and health clinics."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "reference": "Chapters 4 & 6",
+      "explanation": "Statement B is false. While Ghanashyam faced danger and police questioning in Eastern Europe, he was never imprisoned for five years; he successfully placed library orders and continued his international mission."
+    },
+    {
+      "id": "q14",
+      "type": "case-study",
+      "scenario": "On his way to his historic coronation as High Chief in Warri, Nigeria, Bhakti Tirtha Swami's car was struck in a violent accident on the highway that totaled the vehicle and injured several devotees, including one disciple who needed 30 stitches. Although royal court officials and thousands of guests were waiting for him at the palace, Maharaja refused to proceed until every injured devotee was safely brought to the hospital and given medical care.",
+      "question": "What fundamental spiritual principle of leadership did Bhakti Tirtha Swami demonstrate through his decision in this situation?",
+      "options": [
+        "Civic and royal honors should be prioritized over personal relationships",
+        "True servant leadership places the wellbeing and care of dependents above personal glory and prestigious titles",
+        "Spiritual teachers should cancel all public engagements whenever unexpected obstacles arise",
+        "Superstitious curses must be neutralized before attending traditional ceremonies"
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "reference": "Chapter 6",
+      "explanation": "By delaying his historic coronation to ensure his injured disciples received hospital care, Maharaja embodied servant leadership—caring for others before his own prestige."
+    },
+    {
+      "id": "q15",
+      "type": "what-would-you-do",
+      "scenario": "In 2004, Bhakti Tirtha Swami was diagnosed with terminal stage-four melanoma cancer. Recognizing that his time in the physical body was short, he viewed his illness through the lens of spiritual surrender and sought to turn his remaining months into an enduring lesson for his disciples and the world.",
+      "question": "According to 'Black Lotus', how did Maharaja utilize his final months at Gita Nagari to exemplify the mood of a spiritual warrior?",
+      "options": [
+        "He entered solitary meditation (nirjana-bhajan) while openly sharing his realizations on dying to teach devotees how to face mortality with love and detachment",
+        "He ceased all communications with ISKCON and focused strictly on medical litigation",
+        "He demanded that all his followers perform severe physical austerities to reverse his medical condition",
+        "He traveled to twenty more countries to complete his administrative duties as GBC chairman"
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "reference": "Chapter 9",
+      "explanation": "Maharaja spent his final weeks at Gita Nagari in nirjana-bhajan while warmly addressing devotees and writing 'The Beggar IV: Die Before Dying', demonstrating how to leave the world absorbed in Krishna."
+    },
+    {
+      "id": "q16",
+      "type": "single-choice",
+      "question": "What spiritual name was given to John Favors by Srila Prabhupada during his first initiation in February 1973?",
+      "options": [
+        "Bhakti Tirtha Swami",
+        "Ghanashyam Dasa",
+        "Swami Krishnapada",
+        "Rasikananda Dasa"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Chapter 4 & Timeline",
+      "explanation": "Srila Prabhupada named him Ghanashyam Dasa, meaning 'servant of the beautiful dark cloud' (Krishna)."
+    },
+    {
+      "id": "q17",
+      "type": "multiple-select",
+      "question": "Which of the following book series were authored by His Holiness Bhakti Tirtha Swami?",
+      "options": [
+        "The Beggar Series",
+        "Spiritual Warrior Series",
+        "Leadership for an Age of Higher Consciousness Series",
+        "Srimad-Bhagavatam Translation"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "medium",
+      "reference": "Book List & Appendix",
+      "explanation": "Bhakti Tirtha Swami authored the Beggar series, Spiritual Warrior series, and Leadership for an Age of Higher Consciousness series."
+    },
+    {
+      "id": "q18",
+      "type": "single-choice",
+      "question": "In which rural spiritual community in Pennsylvania did Bhakti Tirtha Swami spend his final months and depart from this world on June 27, 2005?",
+      "options": [
+        "New Vrindavan",
+        "Gita Nagari",
+        "Bhaktivedanta Manor",
+        "Radhadesh"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Chapter 9 & Timeline",
+      "explanation": "Gita Nagari in Pennsylvania was Maharaja's home base where he entered nirjana-bhajan and departed this world on June 27, 2005."
+    },
+    {
+      "id": "q19",
+      "type": "multiple-select",
+      "question": "Which of the following unique outreach methods and bridge-building efforts were spearheaded by Bhakti Tirtha Swami during his global mission?",
+      "options": [
+        "Establishing the Institute for Applied Spiritual Technology (IFAST) to address leadership and conflict resolution",
+        "Conducting interfaith dialogue with the Black Hebrews in Dimona, Israel",
+        "Addressing prison officers and government leaders in Ghana on leadership and consciousness",
+        "Creating a commercial political party in West Africa to run for public office"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "hard",
+      "reference": "Chapters 7, 8 & Epilogue",
+      "explanation": "Maharaja founded IFAST, met with the Black Hebrews in Israel, and conducted seminars for Ghana prison officers and government officials. He never ran for political office."
+    },
+    {
+      "id": "q20",
+      "type": "single-choice",
+      "question": "Who is the author of 'Black Lotus: The Spiritual Journey of an Urban Mystic', the biography detailing the life of Bhakti Tirtha Swami?",
+      "options": [
+        "Steven J. Rosen (Satyaraja Dasa)",
+        "Satsvarupa Dasa Goswami",
+        "Radhanath Swami",
+        "Tamal Krishna Goswami"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "reference": "Title & Foreword",
+      "explanation": "The biography 'Black Lotus: The Spiritual Journey of an Urban Mystic' was written by Vaishnava scholar Steven J. Rosen (Satyaraja Dasa)."
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
 import { scoreQuiz, getPerformanceLabel } from '@/lib/scoring'
 import { loadProgress, saveProgress, clearProgress } from '@/lib/session-storage'
@@ -30,7 +31,12 @@ export default function SessionPage({ params }: Props) {
   const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
   const { user, loading: authLoading, login } = useAuth()
+  const { language } = useLanguage()
   const supabase = createClient()
+  const activeQuizIdRef = useRef<string>('')
+  const phaseRef = useRef<Phase>('loading')
+  phaseRef.current = phase
+  const answersRef = useRef<AnswerMap>({})
 
   useEffect(() => {
     params.then(p => setPin(p.pin))
@@ -63,9 +69,11 @@ export default function SessionPage({ params }: Props) {
         }
 
         const targetQuizId = sandboxSession?.quiz_id || 'sandbox-demo'
-        let res = await fetch(`/api/quiz/${targetQuizId}`)
+        activeQuizIdRef.current = targetQuizId
+        let res = await fetch(`/api/quiz/${targetQuizId}?lang=${language}`)
         if (!res.ok) {
-          res = await fetch('/api/quiz/mahabharata-variety-demo')
+          res = await fetch(`/api/quiz/mahabharata-variety-demo?lang=${language}`)
+          if (res.ok) activeQuizIdRef.current = 'mahabharata-variety-demo'
         }
         if (!res.ok) {
           setErrorMsg('Sandbox test quiz definition not found.')
@@ -80,6 +88,7 @@ export default function SessionPage({ params }: Props) {
         const saved = loadProgress(pin, user.id)
         if (saved) {
           setInitialAnswers(saved.answers || {})
+          answersRef.current = saved.answers || {}
           setInitialElapsed(saved.timeElapsed || 0)
           if (typeof saved.currentIndex === 'number') {
             setInitialQuestionIndex(saved.currentIndex)
@@ -124,9 +133,10 @@ export default function SessionPage({ params }: Props) {
       }
 
       setSessionId(session.id)
+      activeQuizIdRef.current = session.quiz_id
 
-      // Load quiz JSON via API
-      const res = await fetch(`/api/quiz/${session.quiz_id}`)
+      // Load quiz JSON via API with language
+      const res = await fetch(`/api/quiz/${session.quiz_id}?lang=${language}`)
       if (!res.ok) {
         setErrorMsg('Quiz data not found.')
         setPhase('error')
@@ -139,6 +149,7 @@ export default function SessionPage({ params }: Props) {
       const saved = loadProgress(pin, user.id)
       if (saved) {
         setInitialAnswers(saved.answers || {})
+        answersRef.current = saved.answers || {}
         setInitialElapsed(saved.timeElapsed || 0)
         if (typeof saved.currentIndex === 'number') {
           setInitialQuestionIndex(saved.currentIndex)
@@ -155,6 +166,26 @@ export default function SessionPage({ params }: Props) {
 
     init()
   }, [pin, authLoading, user])
+
+  // Mid-quiz dynamic language reloader
+  useEffect(() => {
+    if (!activeQuizIdRef.current || phase === 'loading' || phase === 'error') return
+    const reloadLanguage = async () => {
+      try {
+        const res = await fetch(`/api/quiz/${activeQuizIdRef.current}?lang=${language}`)
+        if (res.ok) {
+          const quizData: Quiz = await res.json()
+          setQuiz(quizData)
+          if (phaseRef.current === 'submitted') {
+            setScoreResult(scoreQuiz(quizData.questions, answersRef.current))
+          }
+        }
+      } catch (err) {
+        console.warn('Could not update quiz language mid-session:', err)
+      }
+    }
+    reloadLanguage()
+  }, [language])
 
   const handleStart = () => setPhase('quiz')
 

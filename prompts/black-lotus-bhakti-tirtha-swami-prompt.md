@@ -1,6 +1,6 @@
 # Brahma Jijñāsā — Universal High-Quality NotebookLM Quiz Prompt
 
-> **Character Count:** ~3,250 characters (Strictly under 3,500 characters limit).
+> **Character Count:** ~3,300 characters (Strictly under 3,500 characters limit).
 
 ---
 
@@ -37,6 +37,6 @@ Q15: "what-would-you-do" (scenario: 2-3 sentences of situation, question: spirit
 Q16, Q18, Q20: "single-choice" (options: 4 strings, correctIndex: 0-3)
 Q17, Q19: "multiple-select" (options: 4 strings, correctIndices: array of 2-3 indices)
 
-JSON SCHEMA:
-{"id":"quiz-slug","title":"Descriptive Quiz Title","category":"64-principles","description":"Summary of quiz topic and sources covered","difficulty":"medium","timeLimit":720,"onTimeExpiry":"submit-partial","questions":[{"id":"q1","type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":2,"difficulty":"easy","explanation":"...","reference":"Chapter 1"}]}
+SCHEMA:
+{"id":"64-day-01","title":"Day 1: The Life & Legacy of HH Bhakti Tirtha Swami","category":"64-principles","description":"Life, surrender, preaching & teachings of HH Bhakti Tirtha Swami from Black Lotus","difficulty":"medium","timeLimit":720,"onTimeExpiry":"submit-partial","questions":[{"id":"q1","type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":2,"difficulty":"easy","explanation":"...","reference":"Chapter 1"}]}
 ```

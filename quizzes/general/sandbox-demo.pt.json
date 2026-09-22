@@ -1,0 +1,381 @@
+{
+  "id": "sandbox-demo",
+  "title": "Śrīmad-Bhāgavatam — Questionário de Visão Geral Abrangente",
+  "category": "puranas",
+  "description": "Questionário abrangente cobrindo as principais narrativas, filosofia central e princípios devocionais em todo o Śrīmad-Bhāgavatam.",
+  "difficulty": "medium",
+  "timeLimit": 1200,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "Qual sábio proeminente narrou o Śrīmad-Bhāgavatam ao Rei Parīkṣit nas margens do rio Ganges?",
+      "difficulty": "easy",
+      "points": 1,
+      "options": [
+        "Śrī Śukadeva Gosvāmī",
+        "Nārada Muni",
+        "Maitreya Ṛṣi",
+        "Sūta Gosvāmī"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.3.43 e 1.19.25",
+      "explanation": "O Śrīmad-Bhāgavatam 1.19.25 descreve como Śrī Śukadeva Gosvāmī, o exaltado filho de Vyāsadeva, apareceu nas margens do Ganges e narrou o Bhāgavatam ao Mahārāja Parīkṣit."
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Quais dos seguintes processos fazem parte dos nove ramos do serviço devocional (navadhā-bhakti) ensinados por Prahlāda Mahārāja no Canto 7? (Selecione todos os que se aplicam)",
+      "difficulty": "easy",
+      "points": 2,
+      "options": [
+        "Śravaṇam (Ouvir)",
+        "Kīrtanam (Cantar)",
+        "Smaraṇam (Lembrar)",
+        "Karma-kāṇḍa (Rituais fruitivos)"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 7.5.23",
+      "explanation": "O Śrīmad-Bhāgavatam 7.5.23 lista os nove membros de bhakti: śravaṇaṁ kīrtanaṁ viṣṇoḥ smaraṇaṁ pāda-sevanam arcanaṁ vandanaṁ dāsyaṁ sakhyam ātma-nivedanam. Karma-kāṇḍa é ritualismo fruitivo, não bhakti."
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Verdadeiro ou Falso: Na Era de Kali, a prática espiritual primária recomendada (Yuga-dharma) é o canto congregacional dos santos nomes do Senhor (Saṅkīrtana).",
+      "difficulty": "easy",
+      "points": 1,
+      "correct": true,
+      "reference": "Śrīmad-Bhāgavatam 12.3.51 e 12.3.52",
+      "explanation": "O Śrīmad-Bhāgavatam 12.3.51 afirma que, embora Kali-yuga seja um oceano de falhas, sua única grande qualidade é que, simplesmente por cantar os santos nomes de Kṛṣṇa (kīrtanād eva kṛṣṇasya), a pessoa se liberta do cativeiro material."
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "question": "Identifique a personalidade descrita por estas pistas das escrituras:",
+      "difficulty": "easy",
+      "points": 2,
+      "clues": [
+        "Fui insultado pela minha madrasta Suruci quando era uma criança de cinco anos.",
+        "A conselho de minha mãe Sunīti e do sábio Nārada, fui para a floresta de Madhuvan realizar severas penitências.",
+        "O Senhor Viṣṇu me concedeu um planeta espiritual permanente (Dhruvaloka) que sobrevive à dissolução cósmica."
+      ],
+      "options": [
+        "Prahlāda Mahārāja",
+        "Dhruva Mahārāja",
+        "Ambarīṣa Mahārāja",
+        "Mahārāja Parīkṣit"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam Canto 4 Capítulos 8–9",
+      "explanation": "Dhruva Mahārāja foi insultado pela madrasta Suruci, foi para Madhuvan sob a orientação de Narada, realizou austeridades severas e foi recompensado com Dhruvaloka pelo Senhor Viṣṇu."
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Quem falou o seguinte verso famoso que define o dever ocupacional supremo (para dharma) de toda a humanidade?",
+      "difficulty": "easy",
+      "points": 1,
+      "quote": "sa vai puṁsāṁ paro dharmo yato bhaktir adhokṣaje / ahaituky apratihatā yayātmā suprasīdati",
+      "context": "Falado em Naimiṣāraṇya em resposta às seis perguntas dos sábios liderados por Śaunaka.",
+      "options": [
+        "Sūta Gosvāmī",
+        "Śukadeva Gosvāmī",
+        "Vyāsadeva",
+        "Nārada Muni"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.2.6",
+      "explanation": "Sūta Gosvāmī falou este verso em Naimiṣāraṇya, explicando que o dever supremo de toda a humanidade é o serviço devocional imotivado e ininterrupto ao Senhor."
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Organize os seguintes eventos importantes na vida de Mahārāja Parīkṣit em ordem cronológica correta:",
+      "difficulty": "medium",
+      "points": 3,
+      "items": [
+        "Engrinaldou o sábio silencioso Śamīka Ṛṣi com uma cobra morta depois de ter seu pedido de água negado.",
+        "Jejuou até a morte nas margens do Ganges enquanto ouvia o Śrīmad-Bhāgavatam de Śukadeva Gosvāmī.",
+        "Protegido do calor da arma brahmāstra no ventre da Mãe Uttarā pelo Senhor Kṛṣṇa.",
+        "Amaldiçoado pelo menino brāhmaṇa Śṛṅgī a morrer por uma picada de um pássaro-serpente em sete dias."
+      ],
+      "correctOrder": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "reference": "Śrīmad-Bhāgavatam Canto 1, Capítulos 8, 18 e 19",
+      "explanation": "Sequência cronológica: 1) Protegido no ventre por Kṛṣṇa (item 2), 2) Engrinaldou Śamīka Ṛṣi (item 0), 3) Amaldiçoado por Śṛṅgī (item 3) e 4) Jejuou no Ganges ouvindo o Śrīmad-Bhāgavatam (item 1)."
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "question": "Combine cada Avatāra do Senhor Supremo com seu passatempo proeminente descrito no Śrīmad-Bhāgavatam:",
+      "difficulty": "medium",
+      "points": 3,
+      "left": [
+        "Senhor Varāha",
+        "Senhor Nṛsiṁhadeva",
+        "Senhor Vāmanadeva",
+        "Senhor Kapiladeva"
+      ],
+      "right": [
+        "Pediu três passos de terra ao Rei Bali e atravessou o universo",
+        "Ensinou a filosofia Sāṅkhya e o serviço devocional à Sua mãe Devahūti",
+        "Resgatou a Terra (Bhūmi) do oceano e matou Hiraṇyākṣa",
+        "Protegeu Prahlāda e estripou o demônio Hiraṇyakaśipu"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "reference": "Śrīmad-Bhāgavatam Cantos 3, 7, e 8",
+      "explanation": "O Senhor Varāha resgatou a Terra (item direito 2); O Senhor Nṛsiṁhadeva protegeu Prahlāda (item direito 3); O Senhor Vāmanadeva pediu 3 passos ao Rei Bali (item direito 0); O Senhor Kapiladeva ensinou Sāṅkhya a Devahūti (item direito 1)."
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "question": "Analise a Afirmação e a Razão sobre a libertação de Ajamila no Canto 6:",
+      "difficulty": "medium",
+      "points": 2.5,
+      "assertion": "Os Viṣṇudūtas impediram os Yamadūtas de levar Ajamila para o inferno no momento de sua morte.",
+      "reason": "Ajamila cantou inadvertidamente o santo nome 'Nārāyaṇa' enquanto chamava aflito por seu filho caçula.",
+      "options": [
+        "Tanto a Afirmação quanto a Razão são verdadeiras, e a Razão é a explicação correta para a Afirmação.",
+        "Tanto a Afirmação quanto a Razão são verdadeiras, mas a Razão NÃO é a explicação correta para a Afirmação.",
+        "A Afirmação é verdadeira, mas a Razão é falsa.",
+        "A Afirmação é falsa, mas a Razão é verdadeira."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 6.1.28-31 e 6.2.13",
+      "explanation": "Como Ajamila pronunciou o santo nome 'Nārāyaṇa' na hora da morte, os Viṣṇudūtas intervieram e impediram os Yamadūtas de arrastá-lo para o inferno, provando o poder supremo de purificação do santo nome."
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "question": "Identifique e corrija o erro factual na seguinte passagem que descreve o passatempo de Govardhana do Senhor Kṛṣṇa:",
+      "difficulty": "medium",
+      "points": 2.5,
+      "passage": "Quando o Rei Indra enviou chuvas torrenciais para destruir Vraja, o Senhor Kṛṣṇa ergueu a Colina de Govardhana usando Sua mão direita para abrigar todos os residentes. Ele segurou a colina sem esforço por sete dias como um guarda-chuva.",
+      "options": [
+        "Mude 'O Rei Indra enviou chuvas torrenciais' para 'O Rei Kaṁsa enviou chuvas torrenciais'.",
+        "Mude 'usando Sua mão direita' para 'usando o dedo mindinho de Sua mão esquerda'.",
+        "Mude 'por sete dias' para 'por quarenta e nove dias'.",
+        "Mude 'ergueu a Colina de Govardhana' para 'ergueu o Monte Meru'."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 10.25.19",
+      "explanation": "O Śrīmad-Bhāgavatam 10.25.19 descreve explicitamente que o Senhor Kṛṣṇa ergueu a Colina de Govardhana sem esforço com Sua mão esquerda (karābjenānamadbālaḥ ucchilitam ivāmbujam) como uma criança segurando um cogumelo."
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "question": "Identifique o estágio que falta na realização da Verdade Absoluta, conforme declarado no Śrīmad-Bhāgavatam 1.2.11:",
+      "difficulty": "medium",
+      "points": 2,
+      "chain": [
+        "Brahman Impessoal (Luz que tudo permeia)",
+        "?",
+        "Bhagavān (Suprema Personalidade de Deus)"
+      ],
+      "options": [
+        "Paramātmā Localizado (Superalma no coração)",
+        "Jīvātmā (Alma condicionada individual)",
+        "Virāṭ-puruṣa (Forma cósmica universal)",
+        "Pradhāna (Natureza material imanifesta)"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.2.11",
+      "explanation": "O Śrīmad-Bhāgavatam 1.2.11 afirma: 'vadanti tat tattva-vidas tattvaṁ yaj jñānam advayam / brahmeti paramātmeti bhagavān iti śabdyate'. As três características são Brahman, Paramātmā e Bhagavān."
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Qual das seguintes personalidades NÃO foi salva diretamente pelo Senhor Kṛṣṇa/Viṣṇu de um perigo mortal iminente?",
+      "difficulty": "medium",
+      "points": 2,
+      "options": [
+        "Gajendra, o Rei dos Elefantes",
+        "Prahlāda Mahārāja",
+        "Mahārāja Ambarīṣa",
+        "Rei Dakṣa"
+      ],
+      "correctIndex": 3,
+      "reference": "Śrīmad-Bhāgavatam Canto 4 e Cantos 7, 8, 9",
+      "explanation": "Gajendra foi salvo do crocodilo (Canto 8), Prahlāda de Hiraṇyakaśipu (Canto 7), e Ambarīṣa do demônio de Durvāsā (Canto 9). O Rei Dakṣa foi decapitado por Vīrabhadra devido a ofensas contra o Senhor Śiva antes de ser posteriormente decapitado e receber uma cabeça de bode (Canto 4)."
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "Qual foi o resultado causal direto quando a Mãe Yaśodā tentou amarrar o bebê Kṛṣṇa a um pilão de madeira com uma corda?",
+      "difficulty": "medium",
+      "points": 2.5,
+      "options": [
+        "A corda era repetidamente considerada curta em exatamente dois dedos, não importando quantas cordas ela juntasse.",
+        "O bebê Kṛṣṇa quebrou as cordas instantaneamente usando Seu poder místico.",
+        "O pilão de madeira se transformou em ouro puro ao toque de Kṛṣṇa.",
+        "A Mãe Yaśodā ficou zangada e chamou Nanda Mahārāja para disciplinar Kṛṣṇa."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 10.9.15-18",
+      "explanation": "No Dāmodara-līlā (SB 10.9.15-18), toda vez que a Mãe Yaśodā amarrava as cordas, a corda ficava curta em dois dedos (dvy-aṅgulūnam), representando o esforço humano e a misericórdia do Senhor."
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Identifique a afirmação FALSA entre as opções sobre Mahārāja Ambarīṣa e Durvāsā Muni no Canto 9:",
+      "difficulty": "medium",
+      "points": 2.5,
+      "options": [
+        "Afirmação 1: Mahārāja Ambarīṣa quebrou seu jejum de Ekādaśī bebendo água quando Durvāsā Muni se atrasou para voltar do rio.",
+        "Afirmação 2: Durvāsā Muni criou um demônio de fogo para matar Ambarīṣa, mas o Sudarśana Cakra do Senhor Viṣṇu perseguiu Durvāsā pelo universo.",
+        "Afirmação 3: O Senhor Viṣṇu destruiu pessoalmente Durvāsā Muni com Seu Sudarśana Cakra para proteger Ambarīṣa."
+      ],
+      "correctIndex": 2,
+      "reference": "Śrīmad-Bhāgavatam 9.4 e 9.5",
+      "explanation": "A Afirmação 3 é FALSA. O Senhor Viṣṇu NÃO destruiu Durvāsā Muni. Durvāsā caiu aos pés de Ambarīṣa, e Ambarīṣa orou ao Sudarśana Cakra para poupar a vida de Durvāsā."
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "question": "Com base na transformação do Rei Citraketu em Vṛtrāsura no Canto 6, como um praticante deve lidar com contratempos materiais inesperados ou maldições na vida espiritual?",
+      "difficulty": "medium",
+      "points": 2.5,
+      "scenario": "Quando o Rei Citraketu foi amaldiçoado pela Deusa Pārvatī a nascer como um demônio (Vṛtrāsura) por um comentário inofensivo, ele não ficou com raiva, não contra-amaldiçoou, nem perdeu a fé. Em vez disso, de mãos juntas, aceitou a maldição graciosamente como um decreto da providência e manteve a devoção pura.",
+      "options": [
+        "Culpar os outros e retaliar agressivamente sempre que se sentir injustamente criticado ou penalizado.",
+        "Aceitar todos os resultados agradáveis e desagradáveis como a misericórdia do Senhor (tat te 'nukampāṁ susamīkṣamāṇo), mantendo uma devoção inabalável.",
+        "Desistir completamente das práticas espirituais ao encontrar qualquer dificuldade ou obstáculo inesperado.",
+        "Usar manobras políticas sutis para escapar das consequências cármicas sem rendição espiritual."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 6.17.15-17 e 10.14.8",
+      "explanation": "A resposta de Citraketu demonstra pura tolerância Vaiṣṇava: ver os contratempos como misericórdia do Senhor enquanto continua o serviço devocional com o corpo, mente e palavras."
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "question": "De acordo com os ensinamentos do Śrīmad-Bhāgavatam, qual é o dever mais elevado quando as obrigações sociais entram em conflito com o serviço puro ao Senhor Supremo?",
+      "difficulty": "medium",
+      "points": 2.5,
+      "scenario": "Quando o Senhor Kṛṣṇa tocou Sua flauta encantadora em Vṛndāvana, as jovens gopīs abandonaram seus deveres domésticos, a cozinha e as objeções da família para correr até Kṛṣṇa no meio da noite, colocando o amor transcendental puro acima de todas as convenções mundanas.",
+      "options": [
+        "Priorizar o prestígio material e as convenções mundanas acima do serviço devocional para evitar críticas sociais.",
+        "Priorizar o amor puro e a rendição a Kṛṣṇa (sarva-dharmān parityajya), reconhecendo que servir à Raiz satisfaz todos os deveres.",
+        "Abandonar todas as aspirações espirituais permanentemente para manter a harmonia social.",
+        "Realizar práticas espirituais apenas em segredo enquanto concorda externamente com ideais materialistas."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 10.29 e 11.5.41",
+      "explanation": "O Śrīmad-Bhāgavatam 11.5.41 afirma que quem se rende a Mukunda não é mais devedor de semideuses, sábios ou família; agradar ao Senhor Supremo cumpre todas as obrigações."
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "Qual sábio específico instruiu o Rei Parīkṣit sobre a estrutura dos sistemas planetários cósmicos e os 28 planetas infernais (narakas) no Canto 5?",
+      "difficulty": "hard",
+      "points": 3,
+      "options": [
+        "Śukadeva Gosvāmī",
+        "Maitreya Ṛṣi",
+        "Jaimini Ṛṣi",
+        "Nārada Muni"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 5.26.1-3",
+      "explanation": "Śukadeva Gosvāmī narra a estrutura do universo, Bhū-maṇḍala e os sistemas planetários infernais no 26º capítulo do Canto 5."
+    },
+    {
+      "id": 17,
+      "type": "multiple-select",
+      "question": "De acordo com o Śrīmad-Bhāgavatam 12.12, quais dos seguintes estão entre os dez tópicos centrais (daśa-lakṣaṇa) discutidos em todo o Purāṇa? (Selecione todos os que se aplicam)",
+      "difficulty": "hard",
+      "points": 4,
+      "options": [
+        "Sarga (Criação Primária)",
+        "Visarga (Criação Secundária)",
+        "Stāna/Poṣaṇa (Manutenção/Proteção)",
+        "Karma-vipāka (Quiromancia astrológica)"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 2.10.1 e 12.12.9-10",
+      "explanation": "Os dez temas do Śrīmad-Bhāgavatam são sarga, visarga, sthāna, poṣaṇa, ūtī, manvantara, īśānukathā, nirodha, mukti e āśraya. A quiromancia Karma-vipāka não é um deles."
+    },
+    {
+      "id": 18,
+      "type": "single-choice",
+      "question": "No Canto 11 (Uddhava-gītā), o Senhor Kṛṣṇa descreve o 'Avadhūta' que adotou vinte e quatro gurus da natureza. Quem era esse Avadhūta?",
+      "difficulty": "hard",
+      "points": 3,
+      "options": [
+        "Dattātreya (o brāhmaṇa Avadhūta falando com o Rei Yadu)",
+        "Ṛṣabhadeva",
+        "Sanat-kumāra",
+        "Nara-Nārāyaṇa"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 11.7.24 - 11.9.33",
+      "explanation": "No SB 11.7-9, Dattātreya (o Avadhūta) descreve ao Rei Yadu como ele aprendeu lições espirituais com 24 gurus encontrados na natureza (terra, vento, céu, água, fogo, etc.)."
+    },
+    {
+      "id": 19,
+      "type": "multiple-select",
+      "question": "Quais dos seguintes sintomas são especificamente previstos no Śrīmad-Bhāgavatam Canto 12 Capítulo 2 em relação à Era de Kali? (Selecione todos os que se aplicam)",
+      "difficulty": "hard",
+      "points": 4,
+      "options": [
+        "A riqueza por si só será o sinal de bom nascimento, bom comportamento e belas qualidades.",
+        "A lei e a justiça serão aplicadas apenas com base no poder e na influência de alguém.",
+        "A expectativa de vida máxima dos seres humanos será reduzida a cinquenta anos.",
+        "Os rios transbordarão de leite e as árvores renderão todos os desejos automaticamente."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 12.2.1-11",
+      "explanation": "O Śrīmad-Bhāgavatam 12.2.1-11 prevê explicitamente que, em Kali-yuga, a riqueza determina a nobreza, a justiça depende do poder, e a expectativa de vida humana diminui para 50 anos."
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "De acordo com o Śrīmad-Bhāgavatam 1.1.3, como o Śrīmad-Bhāgavatam é descrito em relação à árvore do conhecimento védico?",
+      "difficulty": "hard",
+      "points": 3,
+      "options": [
+        "O fruto maduro e totalmente amadurecido da árvore dos desejos da literatura védica (nigama-kalpa-taror galitaṁ phalam)",
+        "A raiz robusta da qual brotam todos os Upanishads",
+        "A casca protetora que salvaguarda o dharma eterno",
+        "A flor desabrochando que atrai os trabalhadores fruitivos"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.1.3",
+      "explanation": "O Śrīmad-Bhāgavatam 1.1.3 afirma: 'nigama-kalpa-taror galitaṁ phalam'—o Śrīmad-Bhāgavatam é o fruto maduro e amadurecido da árvore dos desejos da literatura védica."
+    }
+  ]
+}

@@ -28,41 +28,41 @@ interface QuizEngineProps {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  'single-choice':       'Single Choice',
-  'multiple-select':     'Multiple Select',
-  'true-false':          'True or False',
-  'who-am-i':            'Who Am I?',
-  'who-said-this':       'Who Said This?',
-  'sequence':            'Arrange in Order',
-  'cause-effect':        'Cause → Effect',
-  'match-pairs':         'Match the Pairs',
-  'odd-one-out':         'Odd One Out',
-  'assertion-reason':    'Assertion–Reason',
-  'case-study':          'Case Study',
-  'what-would-you-do':   'What Would You Do?',
-  'missing-link':        'Missing Link',
-  'spot-the-error':      'Spot the Error',
-  'two-truths-one-false':'Two Truths, One False',
-  'evidence-based':      'Evidence-Based',
+  'single-choice': 'Single Choice',
+  'multiple-select': 'Multiple Select',
+  'true-false': 'True or False',
+  'who-am-i': 'Who Am I?',
+  'who-said-this': 'Who Said This?',
+  'sequence': 'Arrange in Order',
+  'cause-effect': 'Cause → Effect',
+  'match-pairs': 'Match the Pairs',
+  'odd-one-out': 'Odd One Out',
+  'assertion-reason': 'Assertion–Reason',
+  'case-study': 'Case Study',
+  'what-would-you-do': 'What Would You Do?',
+  'missing-link': 'Missing Link',
+  'spot-the-error': 'Spot the Error',
+  'two-truths-one-false': 'Two Truths, One False',
+  'evidence-based': 'Evidence-Based',
 }
 
 const TYPE_ICONS: Record<string, string> = {
-  'single-choice':       '🎯',
-  'multiple-select':     '☑️',
-  'true-false':          '⚖️',
-  'who-am-i':            '🎭',
-  'who-said-this':       '💬',
-  'sequence':            '📋',
-  'cause-effect':        '⚡',
-  'match-pairs':         '🔗',
-  'odd-one-out':         '🔍',
-  'assertion-reason':    '🧠',
-  'case-study':          '📖',
-  'what-would-you-do':   '🤔',
-  'missing-link':        '🔗',
-  'spot-the-error':      '🔎',
-  'two-truths-one-false':'🕵️',
-  'evidence-based':      '📜',
+  'single-choice': '🎯',
+  'multiple-select': '☑️',
+  'true-false': '⚖️',
+  'who-am-i': '🎭',
+  'who-said-this': '💬',
+  'sequence': '📋',
+  'cause-effect': '⚡',
+  'match-pairs': '🔗',
+  'odd-one-out': '🔍',
+  'assertion-reason': '🧠',
+  'case-study': '📖',
+  'what-would-you-do': '🤔',
+  'missing-link': '🔗',
+  'spot-the-error': '🔎',
+  'two-truths-one-false': '🕵️',
+  'evidence-based': '📜',
 }
 
 export function QuizEngine({
@@ -75,7 +75,7 @@ export function QuizEngine({
   initialQuestionIndex = 0,
   onProgress,
 }: QuizEngineProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [current, setCurrent] = useState(
     initialQuestionIndex >= 0 && initialQuestionIndex < questions.length
       ? initialQuestionIndex
@@ -104,6 +104,39 @@ export function QuizEngine({
   const hasTimeLimit = timeLimit > 0
   const remaining = hasTimeLimit ? Math.max(0, timeLimit - elapsed) : null
   const isWarning = remaining !== null && remaining <= 60 && remaining > 0
+  const isUrgent = remaining !== null && remaining <= 30 && remaining > 0
+
+  const timeFraction = hasTimeLimit && timeLimit > 0 && remaining !== null
+    ? Math.max(0, Math.min(1, remaining / timeLimit))
+    : 1
+  const avgSecPerQ = hasTimeLimit && questions.length > 0 ? Math.round(timeLimit / questions.length) : null
+
+  // Milestone triggers (50%, 25%, 60s, 30s)
+  const [milestoneActive, setMilestoneActive] = useState<string | null>(null)
+  const passedMilestonesRef = useRef<Set<string>>(new Set())
+
+  useEffect(() => {
+    if (!hasTimeLimit || remaining === null || timeLimit <= 0) return
+    const fraction = remaining / timeLimit
+
+    let hit: string | null = null
+    if (fraction <= 0.5 && fraction > 0.45 && !passedMilestonesRef.current.has('50')) {
+      hit = '50'
+    } else if (fraction <= 0.25 && fraction > 0.20 && !passedMilestonesRef.current.has('25')) {
+      hit = '25'
+    } else if (remaining <= 60 && remaining > 56 && !passedMilestonesRef.current.has('60s')) {
+      hit = '60s'
+    } else if (remaining <= 30 && remaining > 26 && !passedMilestonesRef.current.has('30s')) {
+      hit = '30s'
+    }
+
+    if (hit) {
+      passedMilestonesRef.current.add(hit)
+      setMilestoneActive(hit)
+      const timer = setTimeout(() => setMilestoneActive(null), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [remaining, hasTimeLimit, timeLimit])
 
   const allAnswered = questions.every(q => {
     const a = answers[q.id]
@@ -119,13 +152,13 @@ export function QuizEngine({
     return true
   }).length
 
-  // Timer
+  // Timer (tracks elapsed time and enforces timeLimit if set)
   useEffect(() => {
-    if (!hasTimeLimit || isSubmitting) return
+    if (isSubmitting) return
     const interval = setInterval(() => {
       setElapsed(e => {
         const next = e + 1
-        if (next >= timeLimit && onTimeExpiry === 'submit-partial') {
+        if (hasTimeLimit && next >= timeLimit && onTimeExpiry === 'submit-partial') {
           clearInterval(interval)
           if (!submittedRef.current) {
             submittedRef.current = true
@@ -145,44 +178,59 @@ export function QuizEngine({
   }, [])
 
   const setAnswerAndAutoAdvance = useCallback((questionId: number, answer: Answer) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }))
-    if (current < questions.length - 1) {
-      setTimeout(() => {
-        setCurrent(curr => {
-          if (curr < questions.length - 1) {
-            setDirection('forward')
-            return curr + 1
-          }
-          return curr
-        })
-      }, 320)
-    }
-  }, [current, questions.length])
+    setAnswers(prev => {
+      const next = { ...prev, [questionId]: answer }
+      return next
+    })
+    setTimeout(() => {
+      setCurrent(c => {
+        if (c < questions.length - 1) {
+          setDirection('forward')
+          return c + 1
+        }
+        return c
+      })
+    }, 380)
+  }, [questions.length])
 
-  const navigate = (idx: number) => {
-    setDirection(idx > current ? 'forward' : 'back')
-    setCurrent(idx)
+  const navigate = (index: number) => {
+    setDirection(index > current ? 'forward' : 'back')
+    setCurrent(index)
   }
 
   const handleSubmit = () => {
-    if (onTimeExpiry === 'block-submit' && !allAnswered) return
-    setShowConfirm(true)
+    if (allAnswered) {
+      if (!submittedRef.current) {
+        submittedRef.current = true
+        setIsSubmitting(true)
+        onSubmit(answers, elapsed)
+      }
+    } else {
+      setShowConfirm(true)
+    }
   }
 
   const confirmSubmit = () => {
-    if (submittedRef.current) return
-    submittedRef.current = true
-    setIsSubmitting(true)
     setShowConfirm(false)
-    onSubmit(answers, elapsed)
+    if (!submittedRef.current) {
+      submittedRef.current = true
+      setIsSubmitting(true)
+      onSubmit(answers, elapsed)
+    }
   }
 
   const q = questions[current]
+  if (!q) return null
+
+  const isCurrentAnswered =
+    answers[q.id] !== null &&
+    answers[q.id] !== undefined &&
+    !(Array.isArray(answers[q.id]) && (answers[q.id] as unknown[]).length === 0)
 
   const renderQuestion = () => {
     const type = q.type
     if (type === 'single-choice' || type === 'cause-effect' || type === 'odd-one-out' ||
-        type === 'two-truths-one-false' || type === 'evidence-based') {
+      type === 'two-truths-one-false' || type === 'evidence-based') {
       return <SingleChoice question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
     }
     if (type === 'multiple-select') {
@@ -218,18 +266,100 @@ export function QuizEngine({
     return null
   }
 
+  const difficultyLabels: Record<string, string> = {
+    easy: language === 'hi' ? 'सरल' : language === 'pt' ? 'FÁCIL' : 'EASY',
+    medium: language === 'hi' ? 'मध्यम' : language === 'pt' ? 'MÉDIO' : 'MEDIUM',
+    hard: language === 'hi' ? 'कठिन' : language === 'pt' ? 'DIFÍCIL' : 'HARD',
+  }
+
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '2rem 1.5rem' }}>
-      {/* Header bar */}
-      <div className="flex items-center justify-between mb-3">
-        <div style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
-          <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{answeredCount}</span> / {questions.length} answered
+    <div className="quiz-engine-wrapper">
+      {/* Ambient Pervasive Top Time Beam (Always present, 0px intrusive height) */}
+      {hasTimeLimit && (
+        <div
+          className={`quiz-ambient-time-beam-container ${
+            isUrgent ? 'critical' : isWarning ? 'warning' : 'normal'
+          } ${milestoneActive ? 'milestone-flash' : ''}`}
+          aria-hidden="true"
+        >
+          <div
+            className="quiz-ambient-time-beam-fill"
+            style={{ width: `${timeFraction * 100}%` }}
+          />
         </div>
-        {hasTimeLimit && remaining !== null && (
-          <div className={`timer ${isWarning ? 'warning' : ''}`}>
-            ⏱ {formatTime(remaining)}
+      )}
+
+      {/* Header bar */}
+      <div className="quiz-top-bar">
+        <div className="quiz-progress-stat">
+          <span className="quiz-answered-count">{answeredCount}</span>
+          <span className="quiz-total-count">/ {questions.length}</span>
+          <span className="quiz-answered-label">{t.quizEngine.answered || 'answered'}</span>
+        </div>
+
+        {/* Prominent, Unobtrusive Clock Badge with Circular Progress & Pacing */}
+        <div
+          className={`quiz-timer-badge ${
+            hasTimeLimit
+              ? isUrgent
+                ? 'critical'
+                : isWarning
+                  ? 'warning'
+                  : 'normal'
+              : 'untimed'
+          } ${milestoneActive ? 'milestone-pulse' : ''}`}
+          title={
+            hasTimeLimit
+              ? `${t.quizEngine.timeRemaining || 'Time Left'}${avgSecPerQ ? ` • ~${avgSecPerQ}s / ${language === 'hi' ? 'प्रश्न' : language === 'pt' ? 'questão' : 'question'}` : ''}`
+              : 'Time Elapsed'
+          }
+          role="timer"
+          aria-live="polite"
+        >
+          {hasTimeLimit ? (
+            <div className="quiz-timer-ring-wrap" aria-hidden="true">
+              <svg className="quiz-timer-svg" viewBox="0 0 28 28">
+                <circle
+                  className="quiz-timer-ring-bg"
+                  cx="14"
+                  cy="14"
+                  r="11"
+                />
+                <circle
+                  className="quiz-timer-ring-bar"
+                  cx="14"
+                  cy="14"
+                  r="11"
+                  style={{
+                    strokeDasharray: 69.12,
+                    strokeDashoffset: 69.12 * (1 - timeFraction),
+                  }}
+                />
+              </svg>
+              <span className="quiz-timer-ring-icon">
+                {isUrgent ? '⏳' : '⏱️'}
+              </span>
+            </div>
+          ) : (
+            <span className="quiz-timer-icon">⏱️</span>
+          )}
+
+          <div className="quiz-timer-content">
+            <div className="quiz-timer-header-line">
+              <span className="quiz-timer-label">
+                {hasTimeLimit ? (t.quizEngine.timeRemaining || 'Time Left') : 'Time'}
+              </span>
+              {avgSecPerQ && (
+                <span className="quiz-timer-pace-badge" title="Target pacing per question">
+                  ~{avgSecPerQ}s/{language === 'hi' ? 'प्र.' : language === 'pt' ? 'q.' : 'q'}
+                </span>
+              )}
+            </div>
+            <span className="quiz-timer-digits">
+              {hasTimeLimit && remaining !== null ? formatTime(remaining) : formatTime(elapsed)}
+            </span>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Progress bar */}
@@ -247,7 +377,7 @@ export function QuizEngine({
               key={qq.id}
               className={`q-dot ${i === current ? 'current' : answered ? 'answered' : ''}`}
               onClick={() => navigate(i)}
-              title={`Question ${i + 1}`}
+              title={`${language === 'hi' ? 'प्रश्न' : language === 'pt' ? 'Questão' : 'Question'} ${i + 1}`}
               id={`q-dot-${i + 1}`}
               aria-label={`Go to question ${i + 1}`}
             />
@@ -258,8 +388,7 @@ export function QuizEngine({
       {/* Question card */}
       <div
         key={q.id}
-        className="card animate-slideIn"
-        style={{ padding: '2rem', marginBottom: '1.5rem' }}
+        className="card quiz-card animate-slideIn"
       >
         {/* Question header */}
         <div className="flex items-center justify-between mb-3">
@@ -267,8 +396,10 @@ export function QuizEngine({
             {TYPE_ICONS[q.type]} {(t.quizTypes as any)[q.type] || TYPE_LABELS[q.type]}
           </span>
           <div className="flex items-center gap-1">
-            <span className={`badge badge-${q.difficulty}`}>{q.difficulty}</span>
-            <span className="badge badge-gold">+{q.points} pts</span>
+            <span className={`badge badge-${q.difficulty}`}>
+              {difficultyLabels[q.difficulty] || q.difficulty.toUpperCase()}
+            </span>
+            <span className="badge badge-gold">+{q.points} {t.series?.pts || 'pts'}</span>
           </div>
         </div>
 
@@ -314,7 +445,11 @@ export function QuizEngine({
 
       {onTimeExpiry === 'block-submit' && !allAnswered && current === questions.length - 1 && (
         <p className="text-center text-muted mt-2" style={{ fontSize: '0.8rem' }}>
-          Answer all {questions.length - answeredCount} remaining question{questions.length - answeredCount !== 1 ? 's' : ''} to submit
+          {language === 'hi'
+            ? `जमा करने हेतु शेष ${questions.length - answeredCount} प्रश्नों के उत्तर दें`
+            : language === 'pt'
+              ? `Responda a todas as ${questions.length - answeredCount} questões restantes para enviar`
+              : `Answer all ${questions.length - answeredCount} remaining question${questions.length - answeredCount !== 1 ? 's' : ''} to submit`}
         </p>
       )}
 

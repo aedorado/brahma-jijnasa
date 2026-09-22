@@ -48,13 +48,22 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
   // Load leaderboard
   useEffect(() => {
-    if (!sessionId) return
     const load = async () => {
-      const { data } = await supabase
+      let query = supabase
         .from('quiz_attempts')
         .select('user_id, score, max_score, time_taken, profiles(full_name, avatar_url)')
-        .eq('session_id', sessionId)
+
+      if (sessionId) {
+        query = query.eq('session_id', sessionId)
+      } else if (quiz?.id) {
+        query = query.eq('quiz_id', quiz.id)
+      } else {
+        return
+      }
+
+      const { data } = await query
         .order('score', { ascending: false })
+        .order('time_taken', { ascending: true, nullsFirst: false })
 
       if (data) {
         const uniqueData: any[] = []
@@ -64,6 +73,14 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
           seenUsers.add(d.user_id)
           uniqueData.push(d)
         }
+
+        // Tie-breaker: Highest score first; if equal, lowest time_taken first
+        uniqueData.sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score
+          const timeA = (a.time_taken != null && a.time_taken > 0) ? a.time_taken : Number.MAX_SAFE_INTEGER
+          const timeB = (b.time_taken != null && b.time_taken > 0) ? b.time_taken : Number.MAX_SAFE_INTEGER
+          return timeA - timeB
+        })
 
         const entries: LeaderboardEntry[] = uniqueData.map((d, i) => ({
           rank: i + 1,
