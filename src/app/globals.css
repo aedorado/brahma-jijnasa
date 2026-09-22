@@ -465,6 +465,33 @@ a:hover { text-decoration: underline; }
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+.drag-handle {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  cursor: grab;
+  touch-action: none;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  user-select: none;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.drag-handle:hover {
+  color: var(--color-gold);
+  background: rgba(240, 199, 78, 0.12);
+}
+.drag-handle:active,
+.drag-handle.active {
+  cursor: grabbing;
+  color: var(--color-gold);
+  background: rgba(240, 199, 78, 0.22);
+  transform: scale(1.15);
+}
+
 /* ============================================
    PROGRESS
    ============================================ */
