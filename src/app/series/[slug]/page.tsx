@@ -290,7 +290,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.25rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
               {rounds.map((round) => {
                 const userAttempt = userAttempts[round.quiz_id]
                 const isCompleted = !!userAttempt
@@ -542,7 +542,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
               {BHAKTISIDDHANTA_64_PRINCIPLES
                 .filter(p => {
                   if (principleScope === '30' && p.number > 30) return false

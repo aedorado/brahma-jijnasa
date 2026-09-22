@@ -407,123 +407,194 @@ export default function LeaderboardPage() {
             <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>{t.leaderboard?.noDevoteesDesc || 'Try adjusting your search or level filter.'}</p>
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead>
-                <tr style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  <th style={{ padding: '1rem 1.25rem', width: 70, textAlign: 'center' }}>{t.leaderboard?.rank || 'Rank'}</th>
-                  <th style={{ padding: '1rem 1.25rem', minWidth: 220 }}>{t.leaderboard?.devotee || 'Devotee'}</th>
-                  <th style={{ padding: '1rem 1.25rem', minWidth: 180 }}>{t.leaderboard?.bhaktiLevel || 'Bhakti Level'}</th>
-                  <th style={{ padding: '1rem 1.25rem', textAlign: 'right', minWidth: 110 }}>{t.leaderboard?.rating || 'Rating'}</th>
-                  <th style={{ padding: '1rem 1.25rem', textAlign: 'center', minWidth: 90 }}>{t.leaderboard?.quizzes || 'Quizzes'}</th>
-                  <th style={{ padding: '1rem 1.25rem', textAlign: 'right', minWidth: 90 }}>{t.leaderboard?.accuracy || 'Accuracy'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDevotees.map(devotee => {
-                  const isMe = user?.id === devotee.userId
-                  const { titleDisplay, stageDisplay } = getLocalizedLevelText(devotee.level, language)
-                  return (
-                    <tr
-                      key={devotee.userId}
-                      style={{
-                        borderBottom: '1px solid var(--color-border)',
-                        background: isMe ? 'rgba(212,175,55,0.08)' : undefined,
-                        transition: 'background 0.15s ease',
-                      }}
-                      onMouseEnter={e => {
-                        if (!isMe) e.currentTarget.style.background = 'var(--color-surface-2)'
-                      }}
-                      onMouseLeave={e => {
-                        if (!isMe) e.currentTarget.style.background = 'transparent'
-                      }}
-                    >
-                      {/* Rank */}
-                      <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', fontWeight: 800 }}>
-                        {devotee.rank === 1 ? (
-                          <span style={{ fontSize: '1.25rem' }}>🥇</span>
-                        ) : devotee.rank === 2 ? (
-                          <span style={{ fontSize: '1.25rem' }}>🥈</span>
-                        ) : devotee.rank === 3 ? (
-                          <span style={{ fontSize: '1.25rem' }}>🥉</span>
-                        ) : (
-                          <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', fontWeight: 700 }}>
-                            #{devotee.rank}
-                          </span>
-                        )}
-                      </td>
-
-                      {/* Devotee Info */}
-                      <td style={{ padding: '0.9rem 1.25rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <DevoteeAvatar
-                            name={devotee.fullName}
-                            url={devotee.avatarUrl}
-                            size={38}
-                            border={`1.5px solid ${devotee.level.badgeBorder}`}
-                          />
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                              <span style={{ fontWeight: 700, fontSize: '0.95rem', color: devotee.level.color }}>
-                                {devotee.fullName}
-                              </span>
-                              {isMe && (
-                                <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>{t.leaderboard?.youBadge || 'YOU'}</span>
-                              )}
-                            </div>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                              {t.leaderboard?.stage || 'Stage'}: {stageDisplay}
+          <>
+            {/* Desktop Table View */}
+            <div className="leaderboard-table-desktop" style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <th style={{ padding: '1rem 1.25rem', width: 70, textAlign: 'center' }}>{t.leaderboard?.rank || 'Rank'}</th>
+                    <th style={{ padding: '1rem 1.25rem', minWidth: 220 }}>{t.leaderboard?.devotee || 'Devotee'}</th>
+                    <th style={{ padding: '1rem 1.25rem', minWidth: 180 }}>{t.leaderboard?.bhaktiLevel || 'Bhakti Level'}</th>
+                    <th style={{ padding: '1rem 1.25rem', textAlign: 'right', minWidth: 110 }}>{t.leaderboard?.rating || 'Rating'}</th>
+                    <th style={{ padding: '1rem 1.25rem', textAlign: 'center', minWidth: 90 }}>{t.leaderboard?.quizzes || 'Quizzes'}</th>
+                    <th style={{ padding: '1rem 1.25rem', textAlign: 'right', minWidth: 90 }}>{t.leaderboard?.accuracy || 'Accuracy'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredDevotees.map(devotee => {
+                    const isMe = user?.id === devotee.userId
+                    const { titleDisplay, stageDisplay } = getLocalizedLevelText(devotee.level, language)
+                    return (
+                      <tr
+                        key={devotee.userId}
+                        style={{
+                          borderBottom: '1px solid var(--color-border)',
+                          background: isMe ? 'rgba(212,175,55,0.08)' : undefined,
+                          transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={e => {
+                          if (!isMe) e.currentTarget.style.background = 'var(--color-surface-2)'
+                        }}
+                        onMouseLeave={e => {
+                          if (!isMe) e.currentTarget.style.background = 'transparent'
+                        }}
+                      >
+                        {/* Rank */}
+                        <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', fontWeight: 800 }}>
+                          {devotee.rank === 1 ? (
+                            <span style={{ fontSize: '1.25rem' }}>🥇</span>
+                          ) : devotee.rank === 2 ? (
+                            <span style={{ fontSize: '1.25rem' }}>🥈</span>
+                          ) : devotee.rank === 3 ? (
+                            <span style={{ fontSize: '1.25rem' }}>🥉</span>
+                          ) : (
+                            <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', fontWeight: 700 }}>
+                              #{devotee.rank}
                             </span>
+                          )}
+                        </td>
+
+                        {/* Devotee Info */}
+                        <td style={{ padding: '0.9rem 1.25rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <DevoteeAvatar
+                              name={devotee.fullName}
+                              url={devotee.avatarUrl}
+                              size={38}
+                              border={`1.5px solid ${devotee.level.badgeBorder}`}
+                            />
+                            <div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: devotee.level.color }}>
+                                  {devotee.fullName}
+                                </span>
+                                {isMe && (
+                                  <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>{t.leaderboard?.youBadge || 'YOU'}</span>
+                                )}
+                              </div>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                                {t.leaderboard?.stage || 'Stage'}: {stageDisplay}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* Level Badge */}
-                      <td style={{ padding: '0.9rem 1.25rem' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            padding: '0.3rem 0.75rem',
-                            borderRadius: 99,
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            background: devotee.level.badgeBg,
-                            color: devotee.level.color,
-                            border: `1px solid ${devotee.level.badgeBorder}`,
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: devotee.level.color }} />
-                          {t.leaderboard?.lvlPrefix || 'Lvl'} {devotee.level.level}: {titleDisplay}
+                        {/* Level Badge */}
+                        <td style={{ padding: '0.9rem 1.25rem' }}>
+                          <span
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              padding: '0.3rem 0.75rem',
+                              borderRadius: 99,
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              background: devotee.level.badgeBg,
+                              color: devotee.level.color,
+                              border: `1px solid ${devotee.level.badgeBorder}`,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: devotee.level.color }} />
+                            {t.leaderboard?.lvlPrefix || 'Lvl'} {devotee.level.level}: {titleDisplay}
+                          </span>
+                        </td>
+
+                        {/* Rating */}
+                        <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                          <span style={{ fontWeight: 800, fontSize: '1.15rem', color: devotee.level.color }}>
+                            {devotee.rating.toLocaleString()}
+                          </span>
+                        </td>
+
+                        {/* Quizzes Taken */}
+                        <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', fontWeight: 600, color: 'var(--color-text)' }}>
+                          {devotee.totalQuizzes}
+                        </td>
+
+                        {/* Accuracy */}
+                        <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                          <span style={{ fontWeight: 700, color: devotee.accuracyPct >= 75 ? 'var(--color-success)' : devotee.accuracyPct >= 50 ? 'var(--color-gold)' : 'var(--color-muted)' }}>
+                            {devotee.accuracyPct}%
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card-based Roster View */}
+            <div className="leaderboard-cards-mobile" style={{ padding: '0.85rem' }}>
+              {filteredDevotees.map(devotee => {
+                const isMe = user?.id === devotee.userId
+                const { titleDisplay } = getLocalizedLevelText(devotee.level, language)
+                return (
+                  <div
+                    key={devotee.userId}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.65rem',
+                      padding: '0.75rem',
+                      borderRadius: 10,
+                      background: isMe ? 'rgba(212,175,55,0.1)' : 'var(--color-surface-2)',
+                      border: `1px solid ${isMe ? 'var(--color-border-gold)' : 'var(--color-border)'}`,
+                    }}
+                  >
+                    {/* Rank */}
+                    <div style={{ width: 28, textAlign: 'center', fontWeight: 800, flexShrink: 0 }}>
+                      {devotee.rank === 1 ? '🥇' : devotee.rank === 2 ? '🥈' : devotee.rank === 3 ? '🥉' : (
+                        <span style={{ color: 'var(--color-muted)', fontSize: '0.82rem' }}>#{devotee.rank}</span>
+                      )}
+                    </div>
+
+                    {/* Avatar */}
+                    <DevoteeAvatar
+                      name={devotee.fullName}
+                      url={devotee.avatarUrl}
+                      size={32}
+                      border={`1.5px solid ${devotee.level.badgeBorder}`}
+                    />
+
+                    {/* Name & Level Badge */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.88rem', color: devotee.level.color, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {devotee.fullName}
                         </span>
-                      </td>
+                        {isMe && <span className="badge badge-gold" style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem' }}>YOU</span>}
+                      </div>
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          color: devotee.level.color,
+                          marginTop: '0.1rem',
+                        }}
+                      >
+                        {t.leaderboard?.lvlPrefix || 'Lvl'} {devotee.level.level}: {titleDisplay}
+                      </span>
+                    </div>
 
-                      {/* Rating */}
-                      <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
-                        <span style={{ fontWeight: 800, fontSize: '1.15rem', color: devotee.level.color }}>
-                          {devotee.rating.toLocaleString()}
-                        </span>
-                      </td>
-
-                      {/* Quizzes Taken */}
-                      <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', fontWeight: 600, color: 'var(--color-text)' }}>
-                        {devotee.totalQuizzes}
-                      </td>
-
-                      {/* Accuracy */}
-                      <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
-                        <span style={{ fontWeight: 700, color: devotee.accuracyPct >= 75 ? 'var(--color-success)' : devotee.accuracyPct >= 50 ? 'var(--color-gold)' : 'var(--color-muted)' }}>
-                          {devotee.accuracyPct}%
-                        </span>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+                    {/* Score & Stats */}
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--color-gold)' }}>
+                        {devotee.rating.toLocaleString()} <span style={{ fontSize: '0.68rem', fontWeight: 400, color: 'var(--color-muted)' }}>pts</span>
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: 'var(--color-muted)' }}>
+                        {devotee.totalQuizzes} Qs • {devotee.accuracyPct}%
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </>
         )}
       </div>
 
@@ -538,43 +609,29 @@ export default function LeaderboardPage() {
             background: 'rgba(15, 12, 28, 0.95)',
             backdropFilter: 'blur(12px)',
             borderTop: '1px solid var(--color-border-gold)',
-            padding: '0.85rem 1.25rem',
+            padding: '0.75rem 1rem',
             zIndex: 100,
             boxShadow: '0 -4px 20px rgba(0,0,0,0.5)',
           }}
         >
-          <div style={{ maxWidth: 1060, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <span className="badge badge-gold" style={{ fontSize: '0.85rem', fontWeight: 800 }}>
-                {t.leaderboard?.rank || 'Rank'} #{myEntry.rank}
+          <div style={{ maxWidth: 1060, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', minWidth: 0, flex: 1 }}>
+              <span className="badge badge-gold" style={{ fontSize: '0.75rem', fontWeight: 800, flexShrink: 0 }}>
+                #{myEntry.rank}
               </span>
-              <span style={{ fontWeight: 700, color: myEntry.level.color, fontSize: '0.95rem' }}>
+              <span style={{ fontWeight: 700, color: myEntry.level.color, fontSize: '0.88rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {myEntry.fullName}
-              </span>
-              <span
-                style={{
-                  padding: '0.2rem 0.6rem',
-                  borderRadius: 99,
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  background: myEntry.level.badgeBg,
-                  color: myEntry.level.color,
-                  border: `1px solid ${myEntry.level.badgeBorder}`,
-                }}
-              >
-                {t.leaderboard?.levelPrefix || 'Level'} {myEntry.level.level}: {getLocalizedLevelText(myEntry.level, language).titleDisplay}
               </span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>{t.leaderboard?.rating || 'Rating'}</span>
-                <span style={{ fontWeight: 800, color: 'var(--color-gold)', fontSize: '1.1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexShrink: 0 }}>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontWeight: 800, color: 'var(--color-gold)', fontSize: '0.95rem' }}>
                   {myEntry.rating.toLocaleString()} {t.leaderboard?.pts || 'pts'}
                 </span>
               </div>
               <Link href="/" className="btn btn-primary btn-sm">
-                {t.leaderboard?.takeNextQuiz || 'Take Next Quiz ➔'}
+                {t.leaderboard?.takeNextQuiz || 'Next Quiz ➔'}
               </Link>
             </div>
           </div>

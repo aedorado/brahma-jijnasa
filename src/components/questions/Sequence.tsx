@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import type { SequenceQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 type Props = {
   question: SequenceQuestion
@@ -23,6 +25,54 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
   const [activeMoved, setActiveMoved] = useState<number | null>(null)
   const dragIndex = useRef<number | null>(null)
   const [dragOver, setDragOver] = useState<number | null>(null)
+
+  // DOM node references and layout measurement for buttery smooth FLIP animations
+  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
+  const prevPositions = useRef<Map<number, number>>(new Map())
+
+  // Reset tracked positions when question changes
+  useEffect(() => {
+    prevPositions.current.clear()
+  }, [question.id, question.question])
+
+  // FLIP (First, Last, Invert, Play) animation on order change
+  useIsomorphicLayoutEffect(() => {
+    const currentPositions = new Map<number, number>()
+    itemRefs.current.forEach((el, itemIdx) => {
+      if (el) {
+        currentPositions.set(itemIdx, el.getBoundingClientRect().top)
+      }
+    })
+
+    // If we have previous recorded positions, animate items that moved
+    if (prevPositions.current.size > 0) {
+      itemRefs.current.forEach((el, itemIdx) => {
+        if (el && prevPositions.current.has(itemIdx)) {
+          const prevTop = prevPositions.current.get(itemIdx)!
+          const currentTop = currentPositions.get(itemIdx)!
+          const deltaY = prevTop - currentTop
+
+          if (Math.abs(deltaY) > 1) {
+            // Invert: snap immediately to previous visual position
+            el.style.transform = `translateY(${deltaY}px)`
+            el.style.transition = 'none'
+
+            // Force reflow
+            void el.offsetHeight
+
+            // Play: smoothly slide to new destination
+            requestAnimationFrame(() => {
+              el.style.transition = 'transform 280ms cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease, background 0.2s ease'
+              el.style.transform = ''
+            })
+          }
+        }
+      })
+    }
+
+    // Save current positions for next reorder
+    prevPositions.current = currentPositions
+  }, [order])
 
   // Register current order if not yet answered
   useEffect(() => {
@@ -50,7 +100,7 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     setOrder(newOrder)
     onAnswer(newOrder)
     setActiveMoved(moved)
-    setTimeout(() => setActiveMoved(null), 350)
+    setTimeout(() => setActiveMoved(null), 380)
     dragIndex.current = null
     setDragOver(null)
   }
@@ -59,26 +109,6 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
     dragIndex.current = null
     setDragOver(null) 
     setTimeout(() => setActiveMoved(null), 300)
-  }
-
-  // Touch support for mobile/tablet
-  const touchStart = useRef<number | null>(null)
-  const handleTouchStart = (i: number) => { 
-    if (!disabled) {
-      touchStart.current = i
-      setActiveMoved(order[i])
-    }
-  }
-  const handleTouchEnd = (i: number) => {
-    if (touchStart.current === null || touchStart.current === i || disabled) return
-    const newOrder = [...order]
-    const [moved] = newOrder.splice(touchStart.current, 1)
-    newOrder.splice(i, 0, moved)
-    setOrder(newOrder)
-    onAnswer(newOrder)
-    setActiveMoved(moved)
-    setTimeout(() => setActiveMoved(null), 350)
-    touchStart.current = null
   }
 
   // Keyboard/button move up and down with smooth animation
@@ -102,10 +132,10 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
         {question.question}
       </h2>
       <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-        <span>↕</span> {t.quizEngine.dragInstruction || 'Drag cards or use arrows to arrange in correct order.'}
+        <span>↕</span> {t.quizEngine.dragInstruction || 'Use arrows or drag cards to arrange in correct order.'}
       </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', position: 'relative' }}>
         {order.map((itemIdx, position) => {
           const isJustMoved = activeMoved === itemIdx
           const isDraggedOver = dragOver === position
@@ -113,13 +143,15 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
           return (
             <div
               key={itemIdx}
+              ref={el => {
+                if (el) itemRefs.current.set(itemIdx, el)
+                else itemRefs.current.delete(itemIdx)
+              }}
               draggable={!disabled}
               onDragStart={() => handleDragStart(position)}
               onDragOver={e => handleDragOver(e, position)}
               onDrop={() => handleDrop(position)}
               onDragEnd={handleDragEnd}
-              onTouchStart={() => handleTouchStart(position)}
-              onTouchEnd={() => handleTouchEnd(position)}
               className={`drag-item option-btn ${isDraggedOver ? 'drag-over' : ''}`}
               id={`sequence-item-${position}`}
               style={{ 
@@ -129,27 +161,23 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                 gap: '0.85rem',
                 padding: '0.9rem 1.15rem',
                 borderRadius: '12px',
-                transition: 'transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.2s ease',
                 border: isDraggedOver
                   ? '2px dashed var(--color-gold)'
                   : isJustMoved
                   ? '1.5px solid var(--color-primary)'
                   : undefined,
                 background: isJustMoved
-                  ? 'rgba(242, 128, 20, 0.08)'
+                  ? 'rgba(242, 128, 20, 0.12)'
                   : isDraggedOver
                   ? 'rgba(212, 175, 55, 0.08)'
                   : undefined,
-                transform: isDraggedOver
-                  ? 'scale(1.02)'
-                  : isJustMoved
-                  ? 'scale(1.018)'
-                  : 'scale(1)',
                 boxShadow: isJustMoved
-                  ? '0 6px 20px rgba(242, 128, 20, 0.25)'
+                  ? '0 6px 20px rgba(242, 128, 20, 0.28), 0 0 12px rgba(240, 199, 78, 0.2)'
                   : undefined,
                 position: 'relative',
-                zIndex: isJustMoved ? 2 : 1,
+                zIndex: isJustMoved ? 5 : 1,
+                willChange: 'transform',
+                touchAction: 'pan-y',
               }}
             >
               {/* Step Order Badge */}
@@ -167,7 +195,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                   fontWeight: 800,
                   color: isJustMoved ? '#ffffff' : 'var(--color-gold)',
                   flexShrink: 0,
-                  transition: 'all 0.2s ease',
+                  transition: 'background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease',
+                  transform: isJustMoved ? 'scale(1.08)' : 'scale(1)',
                 }}
               >
                 {position + 1}
@@ -178,76 +207,49 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                 {question.items[itemIdx]}
               </span>
 
-            {/* Rearrange Action Controls */}
-            {!disabled && (
-              <div 
-                style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }} 
-                onClick={e => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  disabled={position === 0}
-                  onClick={e => moveItem(position, 'up', e)}
-                  title="Move Up"
-                  aria-label="Move Up"
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 6,
-                    border: '1px solid var(--color-border)',
-                    background: position === 0 ? 'transparent' : 'var(--color-surface-2)',
-                    color: position === 0 ? 'var(--color-muted)' : 'var(--color-gold)',
-                    opacity: position === 0 ? 0.35 : 1,
-                    cursor: position === 0 ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    transition: 'all 0.15s ease',
-                  }}
+              {/* Rearrange Action Controls */}
+              {!disabled && (
+                <div 
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }} 
+                  onClick={e => e.stopPropagation()}
                 >
-                  ▲
-                </button>
-                <button
-                  type="button"
-                  disabled={position === order.length - 1}
-                  onClick={e => moveItem(position, 'down', e)}
-                  title="Move Down"
-                  aria-label="Move Down"
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 6,
-                    border: '1px solid var(--color-border)',
-                    background: position === order.length - 1 ? 'transparent' : 'var(--color-surface-2)',
-                    color: position === order.length - 1 ? 'var(--color-muted)' : 'var(--color-gold)',
-                    opacity: position === order.length - 1 ? 0.35 : 1,
-                    cursor: position === order.length - 1 ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  ▼
-                </button>
-                <span 
-                  style={{ 
-                    color: 'var(--color-muted)', 
-                    fontSize: '1.25rem', 
-                    marginLeft: '0.35rem', 
-                    userSelect: 'none',
-                    lineHeight: 1 
-                  }}
-                >
-                  ⠿
-                </span>
-              </div>
-            )}
-          </div>
-        )
-      })}
+                  <button
+                    type="button"
+                    disabled={position === 0}
+                    onClick={e => moveItem(position, 'up', e)}
+                    title="Move Up"
+                    aria-label="Move Up"
+                    className="sequence-arrow-btn"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    disabled={position === order.length - 1}
+                    onClick={e => moveItem(position, 'down', e)}
+                    title="Move Down"
+                    aria-label="Move Down"
+                    className="sequence-arrow-btn"
+                  >
+                    ▼
+                  </button>
+                  <span 
+                    style={{ 
+                      color: 'var(--color-muted)', 
+                      fontSize: '1.25rem', 
+                      marginLeft: '0.35rem', 
+                      userSelect: 'none',
+                      lineHeight: 1,
+                      opacity: 0.65,
+                    }}
+                  >
+                    ⠿
+                  </span>
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

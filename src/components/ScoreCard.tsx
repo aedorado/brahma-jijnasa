@@ -447,7 +447,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
     const userAns = userAnswers[q.id]
 
     return (
-      <div key={q.id} className="card" style={{ padding: '1.75rem', marginBottom: '1.25rem' }}>
+      <div key={q.id} className="card review-question-card">
         {/* Header */}
         <div className="flex justify-between items-center" style={{ marginBottom: '0.85rem' }}>
           <span className="badge badge-primary" style={{ fontSize: '0.78rem' }}>
@@ -462,7 +462,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
         </div>
 
         {/* Question text */}
-        <p style={{ fontSize: '1.08rem', fontWeight: 600, marginBottom: '0.85rem', lineHeight: 1.55, color: 'var(--color-text)' }}>
+        <p style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.85rem', lineHeight: 1.55, color: 'var(--color-text)' }}>
           {r.correct ? '✅' : r.earned > 0 ? '⚡' : '❌'} {q.question}
         </p>
 
@@ -475,7 +475,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             <p style={{ fontSize: '0.82rem', color: 'var(--color-gold)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
               {t.scoreCard.explanationTitle}
             </p>
-            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'var(--color-lotus)' }}>
+            <p style={{ fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--color-lotus)' }}>
               {q.explanation}
             </p>
           </div>
@@ -498,9 +498,9 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '3rem 1.5rem 5rem' }}>
+    <div className="score-card-page">
       {/* Score hero card */}
-      <div className="card-gold text-center animate-scaleIn" style={{ padding: '3rem 2rem', marginBottom: '2rem' }}>
+      <div className="card-gold text-center animate-scaleIn score-card-hero">
         {(pin === '000' || pin === '0000') && (
           <div style={{ marginBottom: '0.85rem' }}>
             <span className="badge badge-accent" style={{ fontSize: '0.82rem', padding: '0.35rem 0.9rem' }}>
@@ -531,7 +531,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
       </div>
 
       {/* Per-category breakdown */}
-      <div className="card" style={{ padding: '1.75rem', marginBottom: '1.75rem' }}>
+      <div className="card score-card-section">
         <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1.15rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {t.scoreCard.scoreBreakdown}
         </h3>
@@ -563,17 +563,17 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
       {/* Leaderboard snippet */}
       {leaderboard.length > 0 && (
-        <div className="card" style={{ padding: '1.75rem', marginBottom: '1.75rem' }}>
+        <div className="card score-card-section">
           <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1.15rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {t.scoreCard.leaderboard}
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {leaderboard.slice(0, 5).map(entry => (
               <div key={entry.user_id} className="leaderboard-row">
                 <span className={`rank-badge rank-${entry.rank <= 3 ? entry.rank : 'n'}`}>{entry.rank}</span>
-                <UserAvatar name={entry.full_name} url={entry.avatar_url} size={30} />
-                <span style={{ flex: 1, fontSize: '0.95rem', fontWeight: 600 }}>{entry.full_name || 'Anonymous'}</span>
-                <span style={{ fontWeight: 800, color: 'var(--color-gold)' }}>
+                <UserAvatar name={entry.full_name} url={entry.avatar_url} size={28} />
+                <span className="leaderboard-name">{entry.full_name || 'Anonymous'}</span>
+                <span className="leaderboard-score">
                   {entry.score}/{entry.max_score}
                 </span>
               </div>
@@ -589,7 +589,6 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             className="btn btn-primary btn-lg w-full"
             onClick={onRetry}
             id="retry-quiz-btn"
-            style={{ fontSize: '1.05rem', padding: '1.1rem' }}
           >
             🔄 Take Demo Quiz Again
           </button>
@@ -598,7 +597,6 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
           className="btn btn-gold btn-lg w-full"
           onClick={scrollToReview}
           id="review-answers-btn"
-          style={{ fontSize: '1.05rem', padding: '1.1rem' }}
         >
           {t.scoreCard.reviewBtn}
         </button>
