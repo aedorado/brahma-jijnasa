@@ -1,0 +1,361 @@
+{
+  "id": "bhaktivinoda-thakura-appearance",
+  "title": "Śrīla Bhaktivinoda Ṭhākura — The Seventh Goswami",
+  "category": "caitanya",
+  "description": "Appearance day celebration quiz on the life, divine pastimes, and preaching legacy of Śrīla Saccidānanda Bhaktivinoda Ṭhākura from 'The Seventh Goswami'.",
+  "difficulty": "medium",
+  "timeLimit": 660,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "What birth name was given to Śrīla Bhaktivinoda Ṭhākura at his birth in Birnagar in 1838?",
+      "options": [
+        "Sacchidānanda Datta",
+        "Kedāranātha Datta",
+        "Vimala Prasāda Datta",
+        "Gaurāṅga Dāsa Datta"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura was born on September 2, 1838, in Birnagar (Ulāgrām) and was named Kedāranātha Datta by his father, Ānanda-chandra Datta.",
+      "reference": "Chapter 2: Family Lineage"
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following masterworks were composed or compiled by Śrīla Bhaktivinoda Ṭhākura? (Select all that apply)",
+      "options": [
+        "Jaiva-dharma",
+        "Śaraṇāgati",
+        "Caitanya-caritāmṛta",
+        "Gītāvalī"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "difficulty": "easy",
+      "explanation": "Jaiva-dharma, Śaraṇāgati, and Gītāvalī were authored by Śrīla Bhaktivinoda Ṭhākura. Caitanya-caritāmṛta was written by Śrīla Kṛṣṇadāsa Kavirāja Gosvāmī in the 16th century.",
+      "reference": "Chapter 20: A Mighty Pen"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Śrīla Bhaktivinoda Ṭhākura strictly managed his daily schedule as a government magistrate, sleeping from 8 PM to midnight and writing his devotional literatures during the quiet late-night hours.",
+      "correct": true,
+      "difficulty": "easy",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura maintained an extraordinary daily schedule, retiring at 8 PM, rising at midnight to write until 4 AM, and fulfilling his judicial duties punctually during the day.",
+      "reference": "Chapter 28: His Daily Schedule"
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "clues": [
+        "I was a mystic yogī in Orissa who claimed to be an incarnation of Mahā-Viṣṇu.",
+        "I exhibited mystic powers like producing fire from my hair and curing illnesses while plotting a rebellion against the British.",
+        "My mystic powers vanished when District Medical Officer Dr. Walters cut my matted hair following my trial."
+      ],
+      "options": [
+        "Bisakisen",
+        "Jagannātha Dāsa",
+        "Rādhāramaṇa Charaṇa Dāsa",
+        "Balarāma Sādhu"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Bisakisen was an imposter yogī of the Atibārī sect who claimed to be Mahā-Viṣṇu. Śrīla Bhaktivinoda Ṭhākura brought him to justice in Jagannātha Purī in 1871.",
+      "reference": "Chapter 11: The Chastisement of Bisakisen"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "quote": "ei to 'nimāi-janma-bhūmi!",
+      "context": "Spoken in intense spiritual ecstasy upon being brought in a basket to the mound discovered by Śrīla Bhaktivinoda Ṭhākura at Ballāldīghi (Māyāpur).",
+      "options": [
+        "Śrīla Vipina Vihārī Gosvāmī",
+        "Śrīla Jagannātha dāsa Bābājī",
+        "Śrīla Gaura Kiśora dāsa Bābājī",
+        "Śiśir Kumār Ghosh"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "explanation": "The venerable Śrīla Jagannātha dāsa Bābājī Mahārāja, who was over 120 years old, leaped out of his carrying basket and danced in ecstasy at the site, confirming the authentic birthsite of Lord Caitanya.",
+      "reference": "Chapter 18: Discovery of Lord Śrī Caitanya's Birthsite",
+      "question": "Who uttered these ecstatic words upon arriving at the newly discovered birthsite of Lord Caitanya in Māyāpur?"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "items": [
+        "Discovery of Lord Caitanya's birthsite at Yoga-pīṭha in Māyāpur",
+        "Appointment as Special Deputy Registrar and Magistrate in Chāprā",
+        "Establishing the Nāma-haṭṭa marketplace of the Holy Name at Godrumadvīpa",
+        "Chastisement and trial of the imposter yogī Bisakisen in Jagannātha Purī"
+      ],
+      "correctOrder": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "difficulty": "medium",
+      "explanation": "The chronological order is: Chāprā magistrate appointment (1866) -> Trial of Bisakisen in Purī (1871) -> Discovery of Yoga-pīṭha in Māyāpur (1888) -> Establishing Nāma-haṭṭa preaching in Godrumadvīpa (1891).",
+      "reference": "Chapters 8, 11, 18, 19",
+      "question": "Arrange these pivotal events from the life of Śrīla Bhaktivinoda Ṭhākura in chronological order:"
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "left": [
+        "Svānanda-sukhada-kuñja",
+        "Bhakti Bhavan",
+        "Godruma-kalpatavi",
+        "Jaiva-dharma"
+      ],
+      "right": [
+        "Residence at 181 Maniktala Street in Calcutta",
+        "Masterwork novel covering the entire spectrum of Gauḍīya philosophy",
+        "Bhaktivinoda Ṭhākura's devotional residence in Godrumadvīpa",
+        "Essay describing the organization and structure of Nāma-haṭṭa"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "difficulty": "medium",
+      "explanation": "Svānanda-sukhada-kuñja is his residence in Godrumadvīpa; Bhakti Bhavan is at 181 Maniktala Street, Calcutta; Godruma-kalpatavi describes the Nāma-haṭṭa structure; and Jaiva-dharma is his philosophical novel.",
+      "reference": "Chapters 16, 19, 20, 24",
+      "question": "Match each sacred residence or publication of Śrīla Bhaktivinoda Ṭhākura with its correct description:"
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "assertion": "Śrīla Bhaktivinoda Ṭhākura prayed intensely to the Supreme Lord to send a 'ray of Viṣṇu' to assist him in spreading pure Kṛṣṇa consciousness.",
+      "reason": "He recognized that the widespread degradation of Lord Caitanya's teachings by deviant sahajiyā sects required an empowered soul to re-establish pure Gauḍīya Vaiṣṇavism.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura prayed for a divine successor because the true teachings of Lord Caitanya were obscured by deviant sects, leading to the birth of his son Bimala Prasāda (Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura).",
+      "reference": "Chapter 15 & Prologue",
+      "question": "Evaluate the relationship between the Assertion and Reason regarding Śrīla Bhaktivinoda Ṭhākura's prayer for a divine successor:"
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "passage": "In 1894, after retiring from government service, Śrīla Bhaktivinoda Ṭhākura went door-to-door in Calcutta begging five hundred rupees from each wealthy landlord to construct the temple at Yoga-pīṭha. His humble begging campaign was highlighted in the Amrita Bazar Patrika.",
+      "options": [
+        "He begged one rupee (not five hundred rupees) from each Hindu gentleman.",
+        "He retired in 1884 rather than 1894.",
+        "He collected funds in Navadvīpa rather than Calcutta.",
+        "The newspaper report appeared in the Times of India rather than Amrita Bazar Patrika."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "As reported in the Amrita Bazar Patrika on December 6, 1894, Śrīla Bhaktivinoda Ṭhākura humbly went door-to-door in Calcutta begging just one rupee from each Hindu gentleman for the Gaur Vishnupriya Temple Fund.",
+      "reference": "Chapter 21: Retirement and Expansion of Preaching",
+      "question": "Identify the single factual error in this passage describing the fundraising for the Yoga-pīṭha temple:"
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "chain": [
+        "Observing a bright light across the Gaṅgā at Ballāldīghi from the roof of Rāṇī Dharmasālā",
+        "Investigating ancient maps, Bhakti-ratnākara, and local village testimonies",
+        "?",
+        "Installing Deities of Lord Caitanya and Viṣṇupriyā Devī at Yoga-pīṭha on Gaura Pūrṇimā 1895"
+      ],
+      "options": [
+        "Confirmation of the birthsite by Śrīla Jagannātha dāsa Bābājī dancing in ecstasy",
+        "Publishing the journal Sajjana-toṣaṇī in Calcutta",
+        "Writing the Sanskrit work Datta-kaustubha in Purī",
+        "Drafting the legal judgment against Bisakisen"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Following his initial discovery and map research, Śrīla Bhaktivinoda Ṭhākura invited Śrīla Jagannātha dāsa Bābājī, whose ecstatic confirmation verified Yoga-pīṭha beyond all doubt before the temple installation in 1895.",
+      "reference": "Chapters 18 & 21",
+      "question": "Identify the missing link in the historical discovery and verification of Lord Caitanya's birthplace at Yoga-pīṭha:"
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "options": [
+        "Jaiva-dharma",
+        "Śaraṇāgati",
+        "Caitanya-śikṣāmṛta",
+        "Balide Registry Manual in Urdu"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "explanation": "Jaiva-dharma, Śaraṇāgati, and Caitanya-śikṣāmṛta are major devotional literatures written by Śrīla Bhaktivinoda Ṭhākura, whereas the Balide Registry Manual was an official government registration document translated into Urdu during his magistrate service in Chāprā.",
+      "reference": "Chapters 8, 17, 20",
+      "question": "Identify the item that does NOT belong with the others among Śrīla Bhaktivinoda Ṭhākura's writings and service:"
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "When Śrīla Bhaktivinoda Ṭhākura established the Nāma-haṭṭa ('Marketplace of the Holy Name') and traveled extensively through Bengal chanting and lecturing, what was the immediate result?",
+      "options": [
+        "Over 500 Nāma-haṭṭa centers were established, inspiring thousands of ordinary citizens and villagers to take up Harināma-saṅkīrtana.",
+        "The British government immediately revoked his pension and forced him to return to judicial service.",
+        "He was banned from entering the district of Nadia by local caste scholars.",
+        "He stopped writing devotional books to focus exclusively on agriculture."
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "explanation": "Through his structured Nāma-haṭṭa preaching, Śrīla Bhaktivinoda Ṭhākura established more than 500 congregational preaching centers (saṅgas) across Bengal, creating a massive spiritual revival.",
+      "reference": "Chapter 19: Preaching the Holy Name"
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "options": [
+        "In his Nāma-haṭṭa preachings, Śrīla Bhaktivinoda Ṭhākura humbly described himself as the 'sweeper' of the marketplace of the Holy Name.",
+        "Śrīla Bhaktivinoda Ṭhākura published the English booklet 'Shree Chaitanya Mahaprabhu - His Life and Precepts' and sent copies to Western universities including McGill University in Canada.",
+        "Śrīla Bhaktivinoda Ṭhākura retired from government service at the young age of thirty to live as a reclusive hermit in Vrindavan."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "explanation": "Statement 3 is FALSE. Śrīla Bhaktivinoda Ṭhākura retired from government service in 1894 at the age of 56 (not thirty) after decades of active service as a magistrate, and he engaged in dynamic preaching rather than reclusive retirement.",
+      "reference": "Chapters 19, 21, 22",
+      "question": "Which of the following three statements regarding Śrīla Bhaktivinoda Ṭhākura's life and service is FALSE?"
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "scenario": "While serving as magistrate in Chāmparāṇ, Śrīla Bhaktivinoda Ṭhākura noticed that local residents were terrified of an evil spirit (brahma-daitya) living in a Banyan tree that influenced mindsets and court decisions. To free the people from fear without resorting to mundane force, he took a spiritual course of action.",
+      "question": "What decisive spiritual action did Śrīla Bhaktivinoda Ṭhākura take to deliver the place from the ghost?",
+      "options": [
+        "He engaged a learned paṇḍita to recite the Śrīmad-Bhāgavatam under the tree for one month, after which the tree fell and the ghost departed.",
+        "He ordered the British army to cut down the Banyan tree with axes.",
+        "He performed a fire sacrifice with fifty tantric priests to exorcise the spirit.",
+        "He relocated the entire township three miles away to escape the tree's influence."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura engaged a paṇḍita to recite Śrīmad-Bhāgavatam beneath the Banyan tree. Upon completion of the one-month recitation, the tree collapsed and the brahma-daitya was liberated.",
+      "reference": "Chapter 9: Preaching Days Begin"
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "scenario": "When the editor and founder of the Amrita Bazar Patrika, Śiśir Kumār Ghosh, met Śrīla Bhaktivinoda Ṭhākura and observed his saintly scholarly life, he remarked: 'I have not seen the Six Gosvāmīs of Vrindavan, but I consider you to be the Seventh Goswāmī.' How does a genuine Vaiṣṇava practitioner view such praise?",
+      "question": "In accord with Śrīla Bhaktivinoda Ṭhākura's teachings in Śaraṇāgati and Sva-niyama-dvādaśakam, how should a devotee respond to personal honor?",
+      "options": [
+        "Remain deeply humble, attribute all credit to the spiritual master and Lord Gaurāṅga, and avoid taking pride in personal praise.",
+        "Demand financial compensation and titles from religious assemblies.",
+        "Publicly boast about one's achievements to gain political influence.",
+        "Reject all devotional service and cease writing books."
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura exemplified perfect humility (amāninā mānadena), viewing all accomplishments as the mercy of Śrī Caitanya Mahāprabhu and his guru line.",
+      "reference": "Prologue & Chapters 25, 27"
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "Which journal, founded by Śrīla Bhaktivinoda Ṭhākura in 1881, served as the premier monthly Gauḍīya Vaiṣṇava magazine for educating educated society in Bengal?",
+      "options": [
+        "Harmonist",
+        "Sajjana-toṣaṇī",
+        "Amrita Bazar Patrika",
+        "Aryadarśana"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura started the monthly magazine Sajjana-toṣaṇī in 1881, which was later published in English as The Harmonist by Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura.",
+      "reference": "Chapter 14: Kṛṣṇa-saṁhitā and Other Works"
+    },
+    {
+      "id": 17,
+      "type": "multiple-select",
+      "question": "Which of the following key places in the Nadia/Navadvīpa region are intimately associated with Śrīla Bhaktivinoda Ṭhākura's life and preaching? (Select all that apply)",
+      "options": [
+        "Svānanda-sukhada-kuñja in Godrumadvīpa",
+        "Yoga-pīṭha in Māyāpur",
+        "Surabhi-kuñja",
+        "Badrināth Temple in Uttarakhand"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "easy",
+      "explanation": "Svānanda-sukhada-kuñja, Yoga-pīṭha (Lord Caitanya's birthplace), and Surabhi-kuñja are all located in the sacred Navadvīpa-dhāma region where Śrīla Bhaktivinoda Ṭhākura performed his bhajana and preaching.",
+      "reference": "Chapters 18, 19, 24"
+    },
+    {
+      "id": 18,
+      "type": "single-choice",
+      "question": "On what date was Śrīla Bhaktivinoda Ṭhākura born in Birnagar (West Bengal)?",
+      "options": [
+        "September 2, 1838",
+        "February 6, 1874",
+        "June 23, 1914",
+        "December 15, 1888"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "explanation": "Śrīla Bhaktivinoda Ṭhākura was born on Sunday, September 2, 1838, in the ancient village of Birnagar (Ulāgrām) in the Nadia district.",
+      "reference": "Chapter 2: Family Lineage"
+    },
+    {
+      "id": 19,
+      "type": "multiple-select",
+      "question": "Which of the following prominent spiritual songbooks were composed by Śrīla Bhaktivinoda Ṭhākura to express the moods of surrender and devotion? (Select all that apply)",
+      "options": [
+        "Śaraṇāgati",
+        "Kalyāṇa-kalpataru",
+        "Gītāvalī",
+        "Gīta-govinda"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "medium",
+      "explanation": "Śaraṇāgati, Kalyāṇa-kalpataru, and Gītāvalī are songbooks composed by Śrīla Bhaktivinoda Ṭhākura. Gīta-govinda was written in the 12th century by Jayadeva Gosvāmī.",
+      "reference": "Chapters 14 & 20"
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "What title was awarded to Kedāranātha Datta by the Vaiṣṇava scholars (Ācārya Kula) in 1886 in recognition of his extraordinary devotional writings and preaching?",
+      "options": [
+        "Bhakti Siddhānta",
+        "Bhaktivinoda",
+        "Mahātmā",
+        "Vidyābhūṣaṇa"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "In 1886, the Gauḍīya Vaiṣṇava scholars formally awarded Kedāranātha Datta the title 'Bhaktivinoda' ('one who pleases the Lord through devotional service').",
+      "reference": "Chapter 17: Bankim Chandra and a Flow of Books"
+    }
+  ]
+}

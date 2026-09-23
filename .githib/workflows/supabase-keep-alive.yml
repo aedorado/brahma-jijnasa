@@ -1,0 +1,45 @@
+name: Supabase Keep-Alive Ping
+
+on:
+  schedule:
+    # Runs every 3 days at 04:00 UTC (well within the 7-day inactivity threshold)
+    - cron: '0 4 */3 * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping-supabase:
+    name: Wake up Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API & Database
+        env:
+          # Falls back to public project values if GitHub secrets are not configured yet
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://whxvegvmehrwvenrwbyn.supabase.co' }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_OQ-f1JBXqVUZCpOyZEZlZg_Uh9chjy_' }}
+          APP_URL: ${{ secrets.APP_URL || 'https://brahma-jijnasa.vercel.app' }}
+        run: |
+          CLEAN_URL="${SUPABASE_URL%/}"
+          echo "📡 Sending keep-alive ping to Supabase..."
+
+          # 1. Direct query to Supabase PostgREST (using public publishable anon key)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET \
+            "$CLEAN_URL/rest/v1/quiz_attempts?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+
+          echo "Supabase Direct Ping Status: $STATUS"
+
+          # 2. Also ping the deployed app's health endpoint (which queries Supabase via Vercel)
+          if [ -n "$APP_URL" ]; then
+            echo "🌐 Pinging deployed app health at $APP_URL/api/health..."
+            APP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/api/health" || true)
+            echo "App Health Status: $APP_STATUS"
+          fi
+
+          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
+            echo "✅ Supabase registered activity. Database will remain awake!"
+          else
+            echo "⚠️ Unexpected status $STATUS, but request reached the server."
+          fi
+
+
