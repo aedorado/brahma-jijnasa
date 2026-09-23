@@ -7,6 +7,8 @@ import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
 import { calculateUserRating } from '@/lib/levels'
 import { UserAvatar } from '@/components/UserAvatar'
+import { FlashcardReviewModal } from '@/components/FlashcardReviewModal'
+import type { AnswerMap } from '@/types/quiz'
 
 interface Attempt {
   id: string
@@ -15,12 +17,14 @@ interface Attempt {
   max_score: number
   time_taken: number | null
   completed_at: string
+  answers?: AnswerMap
 }
 
 export default function ProfilePage() {
   const { user, loading, logout, login, refresh } = useAuth()
   const [attempts, setAttempts] = useState<Attempt[]>([])
   const [loadingAttempts, setLoadingAttempts] = useState(true)
+  const [selectedReviewAttempt, setSelectedReviewAttempt] = useState<Attempt | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -34,7 +38,7 @@ export default function ProfilePage() {
       try {
         const { data, error } = await supabase
           .from('quiz_attempts')
-          .select('id, quiz_id, score, max_score, time_taken, completed_at')
+          .select('id, quiz_id, score, max_score, time_taken, completed_at, answers')
           .eq('user_id', user.id)
           .order('completed_at', { ascending: false })
 
@@ -237,37 +241,81 @@ export default function ProfilePage() {
             </Link>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
             {attempts.map(att => (
-              <div key={att.id} className="card" style={{ padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <div>
-                  <p style={{ fontWeight: 600, fontSize: '0.95rem' }}>{att.quiz_id}</p>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                    {(() => {
-                      try {
-                        const d = new Date(att.completed_at)
-                        return isNaN(d.getTime()) ? att.completed_at : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                      } catch {
-                        return att.completed_at
-                      }
-                    })()}
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <span className="badge badge-gold" style={{ fontSize: '0.85rem' }}>
+              <div
+                key={att.id}
+                className="card"
+                style={{
+                  padding: '1.25rem 1.4rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.85rem',
+                  borderRadius: 14,
+                }}
+              >
+                {/* Top: Quiz Title, Timestamp & Score */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div style={{ flex: 1, minWidth: 180 }}>
+                    <h3 style={{ fontWeight: 700, fontSize: '1.02rem', marginBottom: '0.3rem', color: 'var(--color-text)' }}>
+                      {att.quiz_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                    </h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', fontSize: '0.78rem', color: 'var(--color-muted)', flexWrap: 'wrap' }}>
+                      <span>
+                        📅 {(() => {
+                          try {
+                            const d = new Date(att.completed_at)
+                            return isNaN(d.getTime()) ? att.completed_at : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                          } catch {
+                            return att.completed_at
+                          }
+                        })()}
+                      </span>
+                      {att.time_taken && (
+                        <span>⏱️ {Math.floor(att.time_taken / 60)}m {att.time_taken % 60}s</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <span className="badge badge-gold" style={{ fontSize: '0.82rem', fontWeight: 800, padding: '0.35rem 0.75rem', flexShrink: 0 }}>
                     {att.score} / {att.max_score} pts
                   </span>
-                  {att.time_taken && (
-                    <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-                      ⏱️ {Math.floor(att.time_taken / 60)}m {att.time_taken % 60}s
-                    </p>
-                  )}
+                </div>
+
+                {/* Bottom: Action Buttons */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.6rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                  <button
+                    type="button"
+                    className="btn btn-gold btn-sm"
+                    onClick={() => setSelectedReviewAttempt(att)}
+                    style={{ fontSize: '0.82rem', fontWeight: 700 }}
+                  >
+                    🎴 Review Flashcards
+                  </button>
+
+                  <Link
+                    href={`/q/${att.quiz_id}`}
+                    className="btn btn-ghost btn-sm"
+                    style={{ fontSize: '0.82rem' }}
+                  >
+                    🏹 Retake
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Flashcard Review Modal */}
+      {selectedReviewAttempt && (
+        <FlashcardReviewModal
+          quizId={selectedReviewAttempt.quiz_id}
+          userAnswers={selectedReviewAttempt.answers || {}}
+          isOpen={true}
+          onClose={() => setSelectedReviewAttempt(null)}
+        />
+      )}
     </div>
   )
 }
