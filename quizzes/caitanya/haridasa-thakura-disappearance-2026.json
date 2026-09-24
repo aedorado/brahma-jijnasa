@@ -1,0 +1,379 @@
+{
+  "id": "haridasa-thakura-disappearance-2026",
+  "title": "Śrīla Haridāsa Ṭhākura — Nāmācārya Disappearance Day",
+  "category": "caitanya",
+  "description": "Disappearance Day celebration quiz on Śrīla Haridāsa Ṭhākura",
+  "difficulty": "medium",
+  "timeLimit": 720,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "According to Śrī Gaura-gaṇoddeśa-dīpikā, Śrīla Haridāsa Ṭhākura is a combined incarnation of which two exalted personalities?",
+      "options": [
+        "Lord Śiva and Nārada Muni",
+        "Lord Brahmā and Prahlāda Mahārāja",
+        "Sage Agastya and Vibhīṣaṇa",
+        "Bhīṣmadeva and Uddhava"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Śrī Gaura-gaṇoddeśa-dīpikā (93) states that Śrīla Haridāsa Ṭhākura is the combined incarnation of Lord Brahmā and Śrī Prahlāda Mahārāja.",
+      "reference": "Chapter 1"
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following places are historically associated with the life and bhajana pastimes of Śrīla Haridāsa Ṭhākura as described in the text? (Select all that apply)",
+      "options": [
+        "Benāpola",
+        "Phuliyā",
+        "Siddha-bakula in Jagannātha Purī",
+        "Kāśī (Varanasi)"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "easy",
+      "explanation": "Śrīla Haridāsa Ṭhākura performed intense chanting and pastimes in Benāpola, Phuliyā, and Siddha-bakula in Purī. He did not reside in Kāśī.",
+      "reference": "Chapter 2, 5, 14"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Śrīla Haridāsa Ṭhākura daily chanted a fixed vow of 300,000 holy names (three lakhs) of Kṛṣṇa.",
+      "correct": true,
+      "difficulty": "easy",
+      "explanation": "Throughout his life in Benāpola, Phuliyā, and Jagannātha Purī, Śrīla Haridāsa Ṭhākura maintained a strict daily vow of chanting three lakhs (300,000) of harināma.",
+      "reference": "Chapter 2, 7, 14"
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "clues": [
+        "I was a wealthy zamindar of Benāpola who grew intensely envious of Śrīla Haridāsa Ṭhākura's fame and devotion.",
+        "I hired a young prostitute to seduce Śrīla Haridāsa Ṭhākura and ruin his vows of renunciation.",
+        "Because of my severe offense against a great Vaiṣṇava and later against Śrī Nityānanda Prabhu, my wealth and village were utterly ruined."
+      ],
+      "options": [
+        "Ramachandra Khan",
+        "Gopāla Cakravartī",
+        "Gorai Kazi",
+        "Hiraṇya Majūmadāra"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Ramachandra Khan was the envious landlord of Benāpola who plotted against Śrīla Haridāsa Ṭhākura and later offended Śrī Nityānanda Prabhu, leading to his complete ruin.",
+      "reference": "Chapter 3"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "quote": "My body may be cut into pieces or I may lose my life, but I will never abandon uttering the holy name.",
+      "context": "Spoken in unflinching conviction before the Muslim king and Kāzī who demanded that he give up chanting the Hindu names of God.",
+      "options": [
+        "Śrī Advaita Ācārya",
+        "Śrīvāsa Paṇḍita",
+        "Śrīla Haridāsa Ṭhākura",
+        "Śrī Nityānanda Prabhu"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "explanation": "Śrīla Haridāsa Ṭhākura declared 'khaṇḍa-khaṇḍa hai deha jāya jadi prāṇa, tabu āmi vadane nā chāḍi harināma' when threatened with severe punishment by the ruler.",
+      "reference": "Chapter 7",
+      "question": "Identify the speaker of this famous declaration of unflinching faith in the holy name:"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange these pivotal events from the life of Śrīla Haridāsa Ṭhākura in chronological order:",
+      "items": [
+        "Being dragged and brutally beaten through twenty-two marketplaces",
+        "Entering samādhi while beholding Śrī Caitanya Mahāprabhu's face in Jagannātha Purī",
+        "Delivering the prostitute Lakṣahīrā in the forest of Benāpola",
+        "Serving as the guardian of Vaikuṇṭha in Mahāprabhu's theatrical dance at Śrīvāsa-aṅgana"
+      ],
+      "correctOrder": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "difficulty": "medium",
+      "explanation": "Chronological order: Benāpola prostitute deliverance -> Twenty-two marketplaces beating -> Navadvīpa theatrical dance as Vaikuṇṭha guard -> Disappearance in Jagannātha Purī.",
+      "reference": "Chapter 3, 7, 12, 18"
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "question": "Match each place or personality associated with Śrīla Haridāsa Ṭhākura with the corresponding pastime:",
+      "left": [
+        "Benāpola",
+        "Cāṅdapura",
+        "Siddha-bakula",
+        "Jagāi and Mādhāi"
+      ],
+      "right": [
+        "Resided in the home of Balarāma Ācārya and illuminated nāma-tattva to Gopāla Cakravartī",
+        "Delivered from sinful life when Nityānanda Prabhu and Haridāsa Ṭhākura preached to them",
+        "Residence in a secluded hut where Lakṣahīrā came to seduce him",
+        "Garden in Purī where a bakula toothbrush twig planted by Mahāprabhu grew into a giant tree"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "difficulty": "medium",
+      "explanation": "Benāpola is the site of the prostitute's deliverance; Cāṅdapura is where Gopāla Cakravartī offended the holy name; Siddha-bakula is the sacred garden in Purī; Jagāi and Mādhāi were two drunkards delivered in Navadvīpa.",
+      "reference": "Chapter 3, 4, 13, 14"
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "question": "Evaluate the Assertion and Reason regarding Śrīla Haridāsa Ṭhākura's response to his persecutors:",
+      "assertion": "When Śrīla Haridāsa Ṭhākura was brutally beaten through twenty-two marketplaces, he felt no hatred or anger toward his attackers.",
+      "reason": "Being filled with compassion, he prayed to Śrī Kṛṣṇa to forgive the guards so that they would not be punished for harming him.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Śrīla Haridāsa Ṭhākura felt great pity for the guards, knowing that beating a devotee would bring severe karmic punishment upon them, and prayed intensely for their forgiveness.",
+      "reference": "Chapter 7"
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "question": "Identify the single factual error in this passage describing the pastime at Cāṅdapura:",
+      "passage": "In Cāṅdapura, Gopāla Cakravartī praised Śrīla Haridāsa Ṭhākura for explaining that nāmābhāsa grants liberation. As a reward for his humility, Gopāla Cakravartī was appointed as the chief priest of Saptagrāma.",
+      "options": [
+        "Gopāla Cakravartī insulted Haridāsa Ṭhākura and challenged that nāmābhāsa could not grant liberation, subsequently contracting leprosy for his offense.",
+        "Gopāla Cakravartī was delivered immediately and became a babaji in Vrindavan.",
+        "The incident took place in Jagannātha Purī rather than Cāṅdapura.",
+        "Gopāla Cakravartī was the landlord of Benāpola who hired prostitutes."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "Gopāla Cakravartī disrespectfully insulted Śrīla Haridāsa Ṭhākura, threatening to cut off his nose if nāmābhāsa gave liberation; within three days he contracted leprosy and his nose melted off.",
+      "reference": "Chapter 4"
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "question": "Identify the missing link in the sequence of events during Śrīla Haridāsa Ṭhākura's departure:",
+      "chain": [
+        "Śrīla Haridāsa Ṭhākura falls sick and is unable to complete his daily vow of 300,000 names",
+        "Śrī Caitanya Mahāprabhu arrives and Haridāsa requests to leave his body before the Lord concludes His manifest pastimes",
+        "?",
+        "Mahāprabhu carries Haridāsa Ṭhākura's body to the ocean, bathes it, and personally covers it with sand at the samādhi site"
+      ],
+      "options": [
+        "Śrīla Haridāsa Ṭhākura fixes his eyes on Mahāprabhu's face, holds His lotus feet to his heart, and leaves his body while chanting 'Śrī Kṛṣṇa-Caitanya'",
+        "Śrīla Haridāsa Ṭhākura travels to Navadvīpa to preach with Nityānanda Prabhu",
+        "Śrīla Haridāsa Ṭhākura writes the book Harināma-cintāmaṇi in his cottage",
+        "Śrīla Haridāsa Ṭhākura defeats Bisakisen in court"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "During his disappearance pastime, Śrīla Haridāsa Ṭhākura held Mahāprabhu's lotus feet to his heart, stared into His moonlike face, and left his body while chanting 'Śrī Kṛṣṇa-Caitanya'.",
+      "reference": "Chapter 18"
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Identify the individual who does NOT belong with the others in relation to Śrīla Haridāsa Ṭhākura:",
+      "options": [
+        "Sanātana Gosvāmī",
+        "Rūpa Gosvāmī",
+        "Gopāla Cakravartī",
+        "Advaita Ācārya"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "explanation": "Śrīla Sanātana Gosvāmī, Śrīla Rūpa Gosvāmī, and Śrī Advaita Ācārya are saintly exaltations and loving associates of Śrīla Haridāsa Ṭhākura, whereas Gopāla Cakravartī was an envious offender who insulted him.",
+      "reference": "Chapter 4, 5, 15, 16"
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "When a venomous snake resided in the same cave as Śrīla Haridāsa Ṭhākura, causing great fear to visiting brāhmaṇas, what was the outcome of Śrīla Haridāsa Ṭhākura's saintly presence?",
+      "options": [
+        "The snake charmer killed the snake with a stick.",
+        "The poisonous snake peacefully slithered out of the cave and left the area of its own accord.",
+        "The snake bit Śrīla Haridāsa Ṭhākura, but he was saved by an herbal potion.",
+        "Śrīla Haridāsa Ṭhākura left the cave and moved to a new village."
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Seeing that the visiting brāhmaṇas were afraid of the snake, Śrīla Haridāsa Ṭhākura announced he would leave if the snake didn't; touched by his spiritual potency, the snake quietly left the cave.",
+      "reference": "Chapter 8"
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Which of the following statements concerning Śrīla Haridāsa Ṭhākura is FALSE?",
+      "options": [
+        "Śrīla Haridāsa Ṭhākura was 35 years older than Śrī Caitanya Mahāprabhu, appearing in the year 1450 AD (1372 Śakabda).",
+        "In Jagannātha Purī, Śrīla Haridāsa Ṭhākura refused to enter the Jagannātha temple out of extreme humility and respect for temple rules.",
+        "Śrīla Haridāsa Ṭhākura was born in a high-caste brāhmaṇa family in Navadvīpa and later converted to Islam."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "explanation": "Statement 3 is FALSE. Śrīla Haridāsa Ṭhākura was born in a Muslim (yavana) family in Būḍhana (Khulna district) by the Lord's desire to demonstrate that devotion transcends caste and birth.",
+      "reference": "Chapter 2"
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "scenario": "During the theatrical performance at Śrīvāsa-aṅgana in Navadvīpa, Śrī Caitanya Mahāprabhu prepared to dance dressed as Goddess Lakṣmī. To ensure that only those with pure and controlled minds entered the venue, a guardian was needed at the gate to maintain sanctity.",
+      "question": "Who was chosen by Mahāprabhu to play the role of the Vaikuṇṭha guard, sporting a fake mustache and a turban while inspiring everyone to chant Kṛṣṇa's name?",
+      "options": [
+        "Jagāi",
+        "Śrīla Haridāsa Ṭhākura",
+        "Gopāla Cakravartī",
+        "Ramachandra Khan"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "explanation": "Śrīla Haridāsa Ṭhākura donned the attire of a Vaikuṇṭha guard with a turban and mustache, joyfully brandishing a stick and telling everyone to chant Kṛṣṇa's holy names.",
+      "reference": "Chapter 12"
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "scenario": "When Śrīla Sanātana Gosvāmī arrived in Purī suffering from weeping skin sores (kaṇḍu), he felt deeply ashamed that his body might touch Śrī Caitanya Mahāprabhu. Out of intense humility and distress, Sanātana contemplated giving up his life under the wheels of Lord Jagannātha's chariot.",
+      "question": "How did Śrīla Haridāsa Ṭhākura guide and enlighten Sanātana Gosvāmī regarding the Lord's intentions?",
+      "options": [
+        "He encouraged Sanātana to commit suicide immediately at the beach.",
+        "He explained that Sanātana's body was the Lord's property, and Mahāprabhu was testing him and using his body to fulfill great mission goals in Vraja.",
+        "He advised Sanātana to leave Vaiṣṇavism and become a doctor.",
+        "He told Sanātana to hide in a cave and never meet Mahāprabhu again."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "explanation": "Śrīla Haridāsa Ṭhākura embraced Sanātana and consoled him, pointing out that Mahāprabhu considered Sanātana's body His sacred property to establish bhakti-siddhānta and rebuild Vrindavan.",
+      "reference": "Chapter 16"
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "What title or epithet is universally accorded to Śrīla Haridāsa Ṭhākura in Gauḍīya Vaiṣṇava tradition due to his supreme mastery and teaching of the Holy Name?",
+      "options": [
+        "Kavirāja",
+        "Nāmācārya",
+        "Bhakti-ratna",
+        "Mahā-yogi"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Śrīla Haridāsa Ṭhākura is revered as the Nāmācārya—the supreme preceptor and ideal teacher of the chanting of the Holy Name.",
+      "reference": "Prologue & Chapter 1"
+    },
+    {
+      "id": 17,
+      "type": "true-false",
+      "question": "Śrī Caitanya Mahāprabhu personally declared that the ocean at Jagannātha Purī became a great place of pilgrimage (mahātīrtha) because it bathed the body of Śrīla Haridāsa Ṭhākura.",
+      "correct": true,
+      "difficulty": "easy",
+      "explanation": "When Mahāprabhu bathed Haridāsa Ṭhākura's body in the sea prior to placing him in samādhi, He proclaimed: 'Today, this ocean has become a great place of pilgrimage (mahātīrtha).'",
+      "reference": "Chapter 18"
+    },
+    {
+      "id": 18,
+      "type": "single-choice",
+      "question": "When the prostitute sent by Ramachandra Khan sat outside Śrīla Haridāsa Ṭhākura's hut for three consecutive nights listening to his loud chanting, what transformation took place in her?",
+      "options": [
+        "She became angry and complained to the king.",
+        "Her heart was purified, she repented at his feet, received the mahā-mantra, and became a famous Vaiṣṇavī saint.",
+        "She stole his chanting beads and fled to Calcutta.",
+        "She persuaded Haridāsa Ṭhākura to abandon his vows and marry her."
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "By hearing the pure chanting for three nights, her heart transformed completely; she gave away her wealth to brāhmaṇas, shaved her head, chanted 300,000 names daily in his former hut, and became a renowned Vaiṣṇavī.",
+      "reference": "Chapter 3"
+    },
+    {
+      "id": 19,
+      "type": "true-false",
+      "question": "When Śrīla Haridāsa Ṭhākura was being beaten in twenty-two marketplaces, he stopped breathing and entered a trance, causing the guards to believe he was dead and throw him into the Gaṅgā.",
+      "correct": true,
+      "difficulty": "easy",
+      "explanation": "To protect the guards from the Kāzī's wrath for failing to kill him, Śrīla Haridāsa Ṭhākura stopped his breath in deep meditation; thinking him dead, the guards threw his body into the Gaṅgā.",
+      "reference": "Chapter 7"
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "Which prominent associate of Śrī Caitanya Mahāprabhu stayed with Śrīla Haridāsa Ṭhākura at Siddha-bakula and read his dramas (such as Vidagdha-mādhava) to him for approval?",
+      "options": [
+        "Śrīla Rūpa Gosvāmī",
+        "Śrīla Raghunātha dāsa Gosvāmī",
+        "Rāmānanda Rāya",
+        "Sārvabhauma Bhaṭṭācārya"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "explanation": "When Śrīla Rūpa Gosvāmī stayed in Purī, Mahāprabhu instructed him to reside with Śrīla Haridāsa Ṭhākura at Siddha-bakula, where they shared deep nectar of kṛṣṇa-kathā.",
+      "reference": "Chapter 15"
+    },
+    {
+      "id": 21,
+      "type": "multiple-select",
+      "question": "According to Chapter 11 ('Śrīla Haridāsa Ṭhākura Proves Loud Chanting to Be Supreme'), what benefits of loud congregational chanting (ucca-saṅkīrtana) did Śrīla Haridāsa Ṭhākura explain from scripture? (Select all that apply)",
+      "options": [
+        "It delivers not only the person chanting, but also animals, birds, insects, and trees who hear the sound.",
+        "It is one hundred times more effective than silent or mental chanting because it performs para-upakāra (welfare for others).",
+        "It requires expensive fire sacrifices and wealth to produce spiritual results.",
+        "It purifies the surrounding atmosphere and bestows true spiritual welfare upon all living entities."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "difficulty": "medium",
+      "explanation": "Śrīla Haridāsa Ṭhākura cited scriptural evidence showing that loud chanting benefits all listening creatures (animals, birds, insects) and is 100 times superior to mental chanting due to its universal mercy.",
+      "reference": "Chapter 11"
+    },
+    {
+      "id": 22,
+      "type": "multiple-select",
+      "question": "Which of the following actions did Śrī Caitanya Mahāprabhu personally perform during the disappearance festival of Śrīla Haridāsa Ṭhākura in Jagannātha Purī? (Select all that apply)",
+      "options": [
+        "He danced with the body of Śrīla Haridāsa Ṭhākura in His arms in ecstatic love.",
+        "He went door-to-door to the shopkeepers of Ānanda Bāzāra begging mahā-prasāda for the feast.",
+        "He personally covered the body of Śrīla Haridāsa Ṭhākura with sand at the samādhi site.",
+        "He scolded Haridāsa Ṭhākura for leaving his body before time."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "easy",
+      "explanation": "Mahāprabhu danced holding Haridāsa's body, personally placed sand on his samādhi, and spread His cloth in Ānanda Bāzāra begging prasāda for Haridāsa's disappearance feast.",
+      "reference": "Chapter 18"
+    }
+  ]
+}
