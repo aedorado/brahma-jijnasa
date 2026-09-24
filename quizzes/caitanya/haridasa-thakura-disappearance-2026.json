@@ -161,21 +161,19 @@
       "explanation": "Śrīla Haridāsa Ṭhākura felt great pity for the guards, knowing that beating a devotee would bring severe karmic punishment upon them, and prayed intensely for their forgiveness.",
       "reference": "Chapter 7"
     },
-    {
-      "id": 9,
-      "type": "spot-the-error",
-      "question": "Identify the single factual error in this passage describing the pastime at Cāṅdapura:",
-      "passage": "In Cāṅdapura, Gopāla Cakravartī praised Śrīla Haridāsa Ṭhākura for explaining that nāmābhāsa grants liberation. As a reward for his humility, Gopāla Cakravartī was appointed as the chief priest of Saptagrāma.",
+    { 
+      "id": "q9", "type": "spot-the-error", 
+      "question": "Which option correctly identifies the factual error in the passage below and provides the true historical fact?", "passage": "When Śrī Caitanya Mahāprabhu dispatched Śrī Nityānanda Prabhu and Śrīla Haridāsa Ṭhākura to preach across Navadvīpa, He instructed them to go door-to-door demanding heavy taxes from every householder for the royal treasury. They threatened to punish anyone who refused to pay.", 
       "options": [
-        "Gopāla Cakravartī insulted Haridāsa Ṭhākura and challenged that nāmābhāsa could not grant liberation, subsequently contracting leprosy for his offense.",
-        "Gopāla Cakravartī was delivered immediately and became a babaji in Vrindavan.",
-        "The incident took place in Jagannātha Purī rather than Cāṅdapura.",
-        "Gopāla Cakravartī was the landlord of Benāpola who hired prostitutes."
-      ],
-      "correctIndex": 0,
-      "difficulty": "medium",
-      "explanation": "Gopāla Cakravartī disrespectfully insulted Śrīla Haridāsa Ṭhākura, threatening to cut off his nose if nāmābhāsa gave liberation; within three days he contracted leprosy and his nose melted off.",
-      "reference": "Chapter 4"
+        "Stating they demanded taxes for the king.", 
+        "Stating they preached in Navadvīpa.", 
+        "Stating Nityānanda Prabhu accompanied him.", 
+        "Stating Mahāprabhu gave the order."
+      ], 
+      "correctIndex": 0, 
+      "difficulty": "easy", 
+      "explanation": "Lord Caitanya Mahāprabhu instructed Nityānanda Prabhu and Haridāsa Ṭhākura with the famous order: 'bolo kṛṣṇa, bhaja kṛṣṇa, karo kṛṣṇa-śikṣā'—begging every household to chant Kṛṣṇa's name, worship Kṛṣṇa, and follow His teachings.", 
+      "reference": "Chapter 13"
     },
     {
       "id": 10,
@@ -340,7 +338,7 @@
     {
       "id": 21,
       "type": "multiple-select",
-      "question": "According to Chapter 11 ('Śrīla Haridāsa Ṭhākura Proves Loud Chanting to Be Supreme'), what benefits of loud congregational chanting (ucca-saṅkīrtana) did Śrīla Haridāsa Ṭhākura explain from scripture? (Select all that apply)",
+      "question": "According to Śrīla Haridāsa Ṭhākura, what benefits of loud congregational chanting (ucca-saṅkīrtana) did Śrīla Haridāsa Ṭhākura explain from scripture? (Select all that apply)",
       "options": [
         "It delivers not only the person chanting, but also animals, birds, insects, and trees who hear the sound.",
         "It is one hundred times more effective than silent or mental chanting because it performs para-upakāra (welfare for others).",
