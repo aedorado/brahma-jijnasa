@@ -304,6 +304,7 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .badge-primary { background: rgba(232,118,10,0.15); color: var(--color-primary); border: 1px solid rgba(232,118,10,0.3); }

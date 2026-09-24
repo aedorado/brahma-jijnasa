@@ -288,7 +288,7 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   'ramayana': 'Rāmāyaṇa',
   'puranas': 'Purāṇas',
   'caitanya': 'Śrī Caitanya',
-  '64-principles': '64 Principles of Community',
+  '64-principles': '64 Principles',
   'general': 'General',
 }
 

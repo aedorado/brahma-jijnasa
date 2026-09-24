@@ -7,19 +7,42 @@ import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://brahma-jijnasa.vercel.app'),
   title: 'Brahma Jijñāsā — Sanātana Dharma Quiz Platform',
   description:
     'An inquiry into Brahman through scripture. Test your knowledge of the Bhagavad Gītā, Upaniṣads, Vedas, Mahābhārata, and more.',
   keywords: ['Sanātana Dharma', 'Bhagavad Gita', 'Vedas', 'Upanishads', 'Hindu scripture quiz'],
   icons: {
-    icon: '/icon.svg',
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '256x256' },
+    ],
     shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    apple: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/logo.jpg', sizes: '1024x1024' },
+    ],
   },
   openGraph: {
     title: 'Brahma Jijñāsā',
     description: 'अथातो ब्रह्म जिज्ञासा — Now, therefore, the inquiry into Brahman.',
+    url: 'https://brahma-jijnasa.vercel.app',
+    siteName: 'Brahma Jijñāsā',
     type: 'website',
+    images: [
+      {
+        url: '/logo.jpg',
+        width: 1024,
+        height: 1024,
+        alt: 'Brahma Jijñāsā — Vedic & Shastric Quiz Platform',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Brahma Jijñāsā',
+    description: 'अथातो ब्रह्म जिज्ञासा — Now, therefore, the inquiry into Brahman.',
+    images: ['/logo.jpg'],
   },
 }
 

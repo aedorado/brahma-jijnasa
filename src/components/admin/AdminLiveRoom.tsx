@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { UserAvatar } from '@/components/UserAvatar'
-import type { QuizSession, QuizMeta } from '@/types/quiz'
+import type { QuizSession, QuizMeta, Category } from '@/types/quiz'
+import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
 
 export interface LiveEntry {
   user_id: string
@@ -15,7 +16,9 @@ export interface LiveEntry {
 }
 
 interface AdminLiveRoomProps {
-  activeSession: QuizSession | null
+  activeSessions: QuizSession[]
+  selectedSessionId: string | null
+  onSelectSession: (sessionId: string) => void
   liveStats: {
     joined: number
     completed: number
@@ -23,12 +26,14 @@ interface AdminLiveRoomProps {
   }
   quizzes: QuizMeta[]
   onStartSession: (quizId: string) => Promise<void>
-  onEndSession: () => Promise<void>
+  onEndSession: (sessionId: string) => Promise<void>
   starting: string | null
 }
 
 export function AdminLiveRoom({
-  activeSession,
+  activeSessions,
+  selectedSessionId,
+  onSelectSession,
   liveStats,
   quizzes,
   onStartSession,
@@ -38,6 +43,8 @@ export function AdminLiveRoom({
   const [copiedPin, setCopiedPin] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
   const [quickSearch, setQuickSearch] = useState('')
+
+  const activeSession = activeSessions.find(s => s.id === selectedSessionId) || activeSessions[0] || null
 
   const handleCopyPin = (pin: string) => {
     navigator.clipboard.writeText(pin)
@@ -53,43 +60,117 @@ export function AdminLiveRoom({
 
   const filteredQuizzes = quizzes.filter(q =>
     q.title.toLowerCase().includes(quickSearch.toLowerCase()) ||
-    q.category.toLowerCase().includes(quickSearch.toLowerCase())
+    q.category.toLowerCase().includes(quickSearch.toLowerCase()) ||
+    q.id.toLowerCase().includes(quickSearch.toLowerCase())
   )
+
+  const activeQuizMeta = activeSession ? quizzes.find(q => q.id === activeSession.quiz_id) : null
 
   return (
     <div className="animate-fadeIn">
-      {/* 1. ACTIVE LIVE SESSION PANEL */}
-      {activeSession ? (
+      {/* 1. MULTI-ROOM SWITCHER TABS (if 1 or more sessions are active) */}
+      {activeSessions.length > 0 && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-gold)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Active Live Rooms ({activeSessions.length})
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                • Click to switch live scoreboard
+              </span>
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+              Multiple rooms running simultaneously
+            </span>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.6rem',
+              overflowX: 'auto',
+              paddingBottom: '0.5rem',
+            }}
+          >
+            {activeSessions.map((session) => {
+              const isSelected = session.id === (activeSession?.id)
+              const sessionQuiz = quizzes.find(q => q.id === session.quiz_id)
+              const title = sessionQuiz?.title || session.quiz_id
+
+              return (
+                <button
+                  key={session.id}
+                  onClick={() => onSelectSession(session.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '0.6rem 1rem',
+                    borderRadius: 12,
+                    border: isSelected ? '1.5px solid var(--color-gold)' : '1px solid var(--color-border)',
+                    background: isSelected ? 'rgba(212, 175, 55, 0.12)' : 'rgba(255, 255, 255, 0.03)',
+                    color: isSelected ? 'var(--color-gold)' : 'var(--color-text)',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: '#4ade80',
+                      display: 'inline-block',
+                      animation: isSelected ? 'pulse 1.5s infinite' : 'none',
+                    }}
+                  />
+                  <span style={{ fontWeight: 700, fontSize: '0.88rem' }}>
+                    PIN {session.pin}
+                  </span>
+                  <span style={{ fontSize: '0.82rem', color: isSelected ? 'var(--color-text)' : 'var(--color-muted)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {title}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 2. SELECTED ACTIVE ROOM SPOTLIGHT */}
+      {activeSession && (
         <div className="card-gold" style={{ padding: '2rem', marginBottom: '2.5rem' }}>
           <div className="flex items-center justify-between" style={{ flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
                 <span className="badge badge-success" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
-                  ACTIVE CLASSROOM SESSION
+                  LIVE CLASSROOM
                 </span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
                   Auto-synced via Supabase Realtime
                 </span>
               </div>
-              <p style={{ fontSize: '1.1rem', color: 'var(--color-text)', fontWeight: 700 }}>
-                Active Quiz: <span style={{ color: 'var(--color-gold)' }}>{activeSession.quiz_id}</span>
-              </p>
+              <h2 style={{ fontSize: '1.3rem', color: 'var(--color-text)', fontWeight: 800 }}>
+                {activeQuizMeta?.title || activeSession.quiz_id}
+              </h2>
             </div>
 
             <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
               <button
                 className="btn btn-danger btn-sm"
-                onClick={onEndSession}
+                onClick={() => onEndSession(activeSession.id)}
                 id="end-session-btn"
                 style={{ fontWeight: 600 }}
               >
-                ⏹ End Live Session
+                ⏹ End This Session
               </button>
             </div>
           </div>
 
-          {/* Big PIN Display Card */}
+          {/* Compact Monospace PIN Card */}
           <div
             style={{
               display: 'flex',
@@ -153,7 +234,7 @@ export function AdminLiveRoom({
 
           {/* Live Attendance Leaderboard */}
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
               <div>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>
                   Live Class Standings
@@ -225,9 +306,11 @@ export function AdminLiveRoom({
             )}
           </div>
         </div>
-      ) : (
-        /* 2. NO ACTIVE SESSION - QUICK LAUNCHER */
-        <div style={{ marginBottom: '2.5rem' }}>
+      )}
+
+      {/* 3. PERSISTENT QUICK LAUNCHER (Always available so teachers can launch multiple rooms) */}
+      <div style={{ marginTop: activeSessions.length > 0 ? '2rem' : '0' }}>
+        {activeSessions.length === 0 && (
           <div
             className="card"
             style={{
@@ -240,37 +323,49 @@ export function AdminLiveRoom({
           >
             <p style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>⚡</p>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-              No Active Classroom Session
+              No Active Classroom Sessions
             </h2>
             <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', maxWidth: 460, margin: '0 auto 1.5rem' }}>
-              Select any quiz from your catalog below to generate a 4-digit PIN for your live classroom.
+              Select any quiz from your catalog below to generate a 4-digit PIN for your live classroom. You can run multiple rooms concurrently!
             </p>
           </div>
+        )}
 
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>
-                Quick Launch Quiz
+                {activeSessions.length > 0 ? '⚡ Launch Another Live Room' : 'Quick Launch Quiz'}
               </h3>
-              <input
-                type="text"
-                placeholder="Search quiz to launch..."
-                value={quickSearch}
-                onChange={e => setQuickSearch(e.target.value)}
-                style={{
-                  padding: '0.5rem 0.9rem',
-                  borderRadius: 8,
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text)',
-                  fontSize: '0.85rem',
-                  width: 240,
-                }}
-              />
+              {activeSessions.length > 0 && (
+                <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
+                  Launch another quiz concurrently. Each room gets its own unique PIN.
+                </p>
+              )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
-              {filteredQuizzes.map(quiz => (
+            <input
+              type="text"
+              placeholder="Search quiz to launch..."
+              value={quickSearch}
+              onChange={e => setQuickSearch(e.target.value)}
+              style={{
+                padding: '0.5rem 0.9rem',
+                borderRadius: 8,
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text)',
+                fontSize: '0.85rem',
+                width: 240,
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+            {filteredQuizzes.map(quiz => {
+              const isAlreadyRunning = activeSessions.some(s => s.quiz_id === quiz.id)
+
+              return (
                 <div
                   key={quiz.id}
                   className="card"
@@ -279,14 +374,26 @@ export function AdminLiveRoom({
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    border: isAlreadyRunning ? '1px solid rgba(74, 222, 128, 0.4)' : undefined,
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>{quiz.category}</span>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>{quiz.totalQuestions} Questions</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span className="badge badge-gold" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {CATEGORY_ICONS[quiz.category as Category] || '📜'} {CATEGORY_LABELS[quiz.category as Category] || quiz.category}
+                      </span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                        {quiz.totalQuestions} Questions
+                      </span>
                     </div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.35rem' }}>{quiz.title}</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem' }}>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>{quiz.title}</h4>
+                      {isAlreadyRunning && (
+                        <span className="badge badge-success" style={{ fontSize: '0.62rem', padding: '0.1rem 0.35rem' }}>
+                          LIVE
+                        </span>
+                      )}
+                    </div>
                     <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', lineHeight: 1.4, marginBottom: '1rem' }}>
                       {quiz.description}
                     </p>
@@ -299,14 +406,14 @@ export function AdminLiveRoom({
                     style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
                   >
                     <span>⚡</span>
-                    {starting === quiz.id ? 'Spawning PIN...' : 'Start Live Classroom Session'}
+                    {starting === quiz.id ? 'Spawning PIN...' : isAlreadyRunning ? 'Spawn Another Room' : 'Start Live Classroom Session'}
                   </button>
                 </div>
-              ))}
-            </div>
+              )
+            })}
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -8,9 +8,10 @@ interface AdminQuizCatalogProps {
   quizzes: QuizMeta[]
   onStartSession: (quizId: string) => Promise<void>
   starting: string | null
+  onOpenCreator?: () => void
 }
 
-export function AdminQuizCatalog({ quizzes, onStartSession, starting }: AdminQuizCatalogProps) {
+export function AdminQuizCatalog({ quizzes, onStartSession, starting, onOpenCreator }: AdminQuizCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards')
@@ -61,7 +62,17 @@ export function AdminQuizCatalog({ quizzes, onStartSession, starting }: AdminQui
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            {onOpenCreator && (
+              <button
+                className="btn btn-gold btn-sm"
+                onClick={onOpenCreator}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700 }}
+              >
+                <span>✨</span> + Create New Quiz
+              </button>
+            )}
+
             <input
               type="text"
               placeholder="Search by title, shastra, or ID..."
@@ -134,11 +145,11 @@ export function AdminQuizCatalog({ quizzes, onStartSession, starting }: AdminQui
               }}
             >
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
-                  <span className="badge badge-gold" style={{ fontSize: '0.72rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  <span className="badge badge-gold" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {CATEGORY_ICONS[quiz.category] || '📜'} {CATEGORY_LABELS[quiz.category] || quiz.category}
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                     {quiz.totalQuestions} Questions
                   </span>
                 </div>

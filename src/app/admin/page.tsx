@@ -10,13 +10,15 @@ import { AdminLiveRoom, type LiveEntry } from '@/components/admin/AdminLiveRoom'
 import { AdminSeriesManager } from '@/components/admin/AdminSeriesManager'
 import { AdminQuizCatalog } from '@/components/admin/AdminQuizCatalog'
 import { AdminAnalytics, type AttemptRecord } from '@/components/admin/AdminAnalytics'
+import { AdminQuizCreator } from '@/components/admin/AdminQuizCreator'
 
-type AdminPillar = 'live' | 'series' | 'catalog' | 'analytics'
+type AdminPillar = 'live' | 'series' | 'catalog' | 'analytics' | 'create'
 
 export default function AdminPage() {
   const [activePillar, setActivePillar] = useState<AdminPillar>('live')
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([])
-  const [activeSession, setActiveSession] = useState<QuizSession | null>(null)
+  const [activeSessions, setActiveSessions] = useState<QuizSession[]>([])
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null)
   const [liveStats, setLiveStats] = useState<{ joined: number; completed: number; entries: LiveEntry[] }>({
     joined: 0,
     completed: 0,
@@ -41,16 +43,21 @@ export default function AdminPage() {
     }
   }
 
-  const loadActiveSession = async () => {
+  const loadActiveSessions = async () => {
     try {
       const { data } = await supabase
         .from('quiz_sessions')
         .select('*')
         .eq('is_active', true)
         .order('started_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
-      setActiveSession(data || null)
+      
+      const list = data || []
+      setActiveSessions(list)
+      if (list.length > 0) {
+        setSelectedSessionId(prev => (list.some(s => s.id === prev) ? prev : list[0].id))
+      } else {
+        setSelectedSessionId(null)
+      }
     } catch {
       // ignore
     }
@@ -141,9 +148,9 @@ export default function AdminPage() {
     setRefreshing(true)
     await Promise.all([
       loadQuizzes(),
-      loadActiveSession(),
+      loadActiveSessions(),
       loadAllAttempts(),
-      activeSession ? loadLiveStats(activeSession.id) : Promise.resolve(),
+      selectedSessionId ? loadLiveStats(selectedSessionId) : Promise.resolve(),
     ])
     setTimeout(() => setRefreshing(false), 400)
   }
@@ -157,29 +164,32 @@ export default function AdminPage() {
     }
 
     const init = async () => {
-      await Promise.all([loadQuizzes(), loadActiveSession(), loadAllAttempts()])
+      await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
       setLoading(false)
     }
     init()
   }, [authLoading, user])
 
-  // Realtime subscription + auto-polling for active live session
+  // Realtime subscription + auto-polling for the selected live session
   useEffect(() => {
-    if (!activeSession?.id) return
-    loadLiveStats(activeSession.id)
+    if (!selectedSessionId) {
+      setLiveStats({ joined: 0, completed: 0, entries: [] })
+      return
+    }
+    loadLiveStats(selectedSessionId)
 
     const interval = setInterval(() => {
-      loadLiveStats(activeSession.id)
+      loadLiveStats(selectedSessionId)
       loadAllAttempts()
     }, 3500)
 
     const channel = supabase
-      .channel(`realtime_session_${activeSession.id}`)
+      .channel(`realtime_session_${selectedSessionId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'quiz_attempts' },
         () => {
-          loadLiveStats(activeSession.id)
+          loadLiveStats(selectedSessionId)
           loadAllAttempts()
         }
       )
@@ -189,36 +199,71 @@ export default function AdminPage() {
       clearInterval(interval)
       supabase.removeChannel(channel)
     }
-  }, [activeSession?.id])
+  }, [selectedSessionId])
 
   const startSession = async (quizId: string) => {
     setStarting(quizId)
     const pin = String(Math.floor(1000 + Math.random() * 9000))
 
-    const { error } = await supabase.from('quiz_sessions').insert({
-      quiz_id: quizId,
-      pin,
-      created_by: user?.id,
-    })
+    const { data, error } = await supabase
+      .from('quiz_sessions')
+      .insert({
+        quiz_id: quizId,
+        pin,
+        created_by: user?.id,
+      })
+      .select()
+      .single()
 
     if (error) {
-      alert('Could not start session. Another session may already be active.')
+      if (error.message.includes('one_active_session')) {
+        const confirmEnd = confirm(
+          'Another quiz session is already active in your database. Would you like to end the previous session and start this new one?\n\n(Tip: Run migration 003 to allow multiple sessions to run simultaneously!)'
+        )
+        if (confirmEnd) {
+          // Deactivate previous active session(s)
+          await supabase
+            .from('quiz_sessions')
+            .update({ is_active: false, ended_at: new Date().toISOString() })
+            .eq('is_active', true)
+
+          // Retry starting the session
+          const { data: retryData, error: retryError } = await supabase
+            .from('quiz_sessions')
+            .insert({
+              quiz_id: quizId,
+              pin,
+              created_by: user?.id,
+            })
+            .select()
+            .single()
+
+          if (retryError) {
+            alert(`Could not start session: ${retryError.message}`)
+          } else {
+            await loadActiveSessions()
+            if (retryData?.id) setSelectedSessionId(retryData.id)
+            setActivePillar('live')
+          }
+        }
+      } else {
+        alert(`Could not start session: ${error.message}`)
+      }
     } else {
-      await loadActiveSession()
+      await loadActiveSessions()
+      if (data?.id) setSelectedSessionId(data.id)
       setActivePillar('live')
     }
     setStarting(null)
   }
 
-  const endSession = async () => {
-    if (!activeSession) return
-    if (!confirm('Are you sure you want to end this live session? Devotees will no longer be able to submit.')) return
+  const endSession = async (sessionId: string) => {
+    if (!confirm('Are you sure you want to end this live session? Devotees in this room will no longer be able to submit.')) return
     await supabase
       .from('quiz_sessions')
       .update({ is_active: false, ended_at: new Date().toISOString() })
-      .eq('id', activeSession.id)
-    setActiveSession(null)
-    setLiveStats({ joined: 0, completed: 0, entries: [] })
+      .eq('id', sessionId)
+    await loadActiveSessions()
     await loadAllAttempts()
   }
 
@@ -266,7 +311,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 4-Pillar Tab Switcher */}
+        {/* 5-Pillar Tab Switcher */}
         <div
           style={{
             display: 'flex',
@@ -283,9 +328,11 @@ export default function AdminPage() {
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
             id="admin-pillar-live"
           >
-            <span>⚡</span> Live Room
-            {activeSession && (
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
+            <span>⚡</span> Live Rooms
+            {activeSessions.length > 0 && (
+              <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                {activeSessions.length} Live
+              </span>
             )}
           </button>
 
@@ -295,7 +342,7 @@ export default function AdminPage() {
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
             id="admin-pillar-series"
           >
-            <span>📚</span> 64 Principles of Community Series
+            <span>📚</span> 64 Principles Series
             <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
               Kārtika
             </span>
@@ -324,12 +371,23 @@ export default function AdminPage() {
               {allAttempts.length}
             </span>
           </button>
+
+          <button
+            onClick={() => setActivePillar('create')}
+            className={`btn btn-sm ${activePillar === 'create' ? 'btn-primary' : 'btn-ghost'}`}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+            id="admin-pillar-create"
+          >
+            <span>✨</span> Create Quiz
+          </button>
         </div>
 
         {/* PILLAR 1: LIVE CLASSROOM ROOM */}
         {activePillar === 'live' && (
           <AdminLiveRoom
-            activeSession={activeSession}
+            activeSessions={activeSessions}
+            selectedSessionId={selectedSessionId}
+            onSelectSession={id => setSelectedSessionId(id)}
             liveStats={liveStats}
             quizzes={quizzes}
             onStartSession={startSession}
@@ -342,7 +400,7 @@ export default function AdminPage() {
         {activePillar === 'series' && (
           <AdminSeriesManager
             onSessionStarted={async () => {
-              await loadActiveSession()
+              await loadActiveSessions()
               setActivePillar('live')
             }}
           />
@@ -354,6 +412,7 @@ export default function AdminPage() {
             quizzes={quizzes}
             onStartSession={startSession}
             starting={starting}
+            onOpenCreator={() => setActivePillar('create')}
           />
         )}
 
@@ -364,6 +423,16 @@ export default function AdminPage() {
             quizzes={quizzes}
             quizDetailsCache={quizDetailsCache}
             onFetchQuizDetails={fetchQuizDetails}
+          />
+        )}
+
+        {/* PILLAR 5: QUIZ CREATOR STUDIO */}
+        {activePillar === 'create' && (
+          <AdminQuizCreator
+            onQuizPublished={async (quizId) => {
+              await loadQuizzes()
+            }}
+            onSwitchToCatalog={() => setActivePillar('catalog')}
           />
         )}
       </div>
