@@ -41,7 +41,7 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleHi: 'श्रद्धावान् खोजी',
     titlePt: 'Buscador Fiel',
     minRating: 0,
-    maxRating: 79,
+    maxRating: 250,
     minQuizzes: 0,
     minAccuracy: 0,
     verseSnippet: 'ādau śraddhā',
@@ -63,9 +63,9 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Sincere Companion',
     titleHi: 'सत्सङ्गी साधक',
     titlePt: 'Companheiro Sincero',
-    minRating: 80,
-    maxRating: 199,
-    minQuizzes: 2,
+    minRating: 251,
+    maxRating: 500,
+    minQuizzes: 5,
     minAccuracy: 20,
     verseSnippet: 'tataḥ sādhu-saṅgo',
     verseMeaning: 'Associating with devotee-teachers and learning in satsaṅga',
@@ -86,9 +86,9 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Dedicated Practitioner',
     titleHi: 'नियमित साधक',
     titlePt: 'Praticante Dedicado',
-    minRating: 200,
-    maxRating: 449,
-    minQuizzes: 5,
+    minRating: 501,
+    maxRating: 750,
+    minQuizzes: 10,
     minAccuracy: 40,
     verseSnippet: "'tha bhajana-kriyā",
     verseMeaning: 'Active, regular execution of devotional study and quizzes',
@@ -109,9 +109,9 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Discerning Seeker',
     titleHi: 'विवेकशील अन्वेषक',
     titlePt: 'Buscador Discernente',
-    minRating: 450,
-    maxRating: 899,
-    minQuizzes: 10,
+    minRating: 751,
+    maxRating: 1250,
+    minQuizzes: 15,
     minAccuracy: 50,
     verseSnippet: "tato 'nartha-nivṛttiḥ syāt",
     verseMeaning: 'Cleansing misconceptions, philosophical errors, and doubts',
@@ -132,9 +132,9 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'The Steady & Fixed',
     titleHi: 'दृढ़ निष्ठावान्',
     titlePt: 'Firme e Estabelecido',
-    minRating: 900,
-    maxRating: 1699,
-    minQuizzes: 20,
+    minRating: 1251,
+    maxRating: 2000,
+    minQuizzes: 25,
     minAccuracy: 60,
     verseSnippet: 'tato niṣṭhā',
     verseMeaning: 'Unshakeable stability and sustained mastery across scripture',
@@ -155,10 +155,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Relisher of Truth',
     titleHi: 'शास्त्र-रसज्ञ',
     titlePt: 'Apreciador da Verdade',
-    minRating: 1700,
-    maxRating: 2299,
+    minRating: 2001,
+    maxRating: 2500,
     minQuizzes: 40,
-    minAccuracy: 70,
+    minAccuracy: 65,
     verseSnippet: 'rucis tataḥ',
     verseMeaning: 'Spontaneous taste and relish for complex purports and verses',
     verseMeaningEn: 'Spontaneous taste and relish for complex purports and verses',
@@ -178,10 +178,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Deeply Absorbed',
     titleHi: 'परम आसक्त',
     titlePt: 'Profundamente Absorto',
-    minRating: 2300,
-    maxRating: 2799,
+    minRating: 2501,
+    maxRating: 3000,
     minQuizzes: 50,
-    minAccuracy: 80,
+    minAccuracy: 70,
     verseSnippet: 'athāsaktis',
     verseMeaning: 'Profound attachment and intuitive absorption in the Lord’s pastimes',
     verseMeaningEn: 'Profound attachment and intuitive absorption in the Lord’s pastimes',
@@ -201,10 +201,10 @@ export const DEVOTEE_LEVELS: DevoteeLevel[] = [
     titleEn: 'Illumined Ecstatic',
     titleHi: 'भावयुक्त ज्ञानी',
     titlePt: 'Iluminado em Êxtase',
-    minRating: 2800,
-    maxRating: 3499,
+    minRating: 3001,
+    maxRating: 3500,
     minQuizzes: 60,
-    minAccuracy: 85,
+    minAccuracy: 75,
     verseSnippet: 'tato bhāvas',
     verseMeaning: 'Awakening of pure spiritual ecstasy and unexcelled śāstric wisdom',
     verseMeaningEn: 'Awakening of pure spiritual ecstasy and unexcelled śāstric wisdom',
@@ -244,14 +244,14 @@ export function getLocalizedLevelText(lvl: DevoteeLevel, lang: 'en' | 'hi' | 'pt
   const meaning = lang === 'hi'
     ? lvl.verseMeaningHi || lvl.verseMeaning
     : lang === 'pt'
-    ? lvl.verseMeaningPt || lvl.verseMeaning
-    : lvl.verseMeaningEn || lvl.verseMeaning
+      ? lvl.verseMeaningPt || lvl.verseMeaning
+      : lvl.verseMeaningEn || lvl.verseMeaning
 
   const titleSecondary = lang === 'hi'
     ? lvl.titleHi || lvl.titleDevanagari
     : lang === 'pt'
-    ? lvl.titlePt || lvl.titleEn
-    : lvl.titleEn
+      ? lvl.titlePt || lvl.titleEn
+      : lvl.titleEn
 
   const stageDisplay = lang === 'hi' ? lvl.stageDevanagari : lvl.stage
   const titleDisplay = lang === 'hi' ? lvl.titleDevanagari : lvl.title

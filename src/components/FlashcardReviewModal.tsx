@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import type { Quiz, Question, AnswerMap, Answer } from '@/types/quiz'
 import { CATEGORY_ICONS, CATEGORY_LABELS } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Props {
   quizId: string
@@ -15,6 +16,7 @@ interface Props {
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
 export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOpen, onClose }: Props) {
+  const { t } = useLanguage()
   const [quiz, setQuiz] = useState<Quiz | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -164,7 +166,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.85rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span className="badge badge-gold" style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              {quiz?.category ? `${CATEGORY_ICONS[quiz.category] || '🪷'} ${CATEGORY_LABELS[quiz.category] || quiz.category}` : 'Vedic Wisdom'}
+              {quiz?.category ? `${CATEGORY_ICONS[quiz.category] || '🪷'} ${t.categories?.[quiz.category] || CATEGORY_LABELS[quiz.category] || quiz.category}` : 'Vedic Wisdom'}
             </span>
             <span className="badge" style={{ fontSize: '0.72rem', background: 'rgba(157, 108, 208, 0.2)', color: 'var(--color-accent-2)', border: '1px solid rgba(157, 108, 208, 0.4)' }}>
               {q.type.replace(/-/g, ' ')}
@@ -228,11 +230,11 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         {q.type === 'assertion-reason' && 'assertion' in q && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.25rem' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '0.75rem 1rem', borderRadius: 8, borderLeft: '3px solid var(--color-primary)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-primary)', textTransform: 'uppercase' }}>Assertion (A): </span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-primary)', textTransform: 'uppercase' }}>{t.questions?.assertionLabel || 'Assertion (A):'} </span>
               <span style={{ fontSize: '0.92rem' }}>{q.assertion}</span>
             </div>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '0.75rem 1rem', borderRadius: 8, borderLeft: '3px solid var(--color-accent)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-accent-2)', textTransform: 'uppercase' }}>Reason (R): </span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-accent-2)', textTransform: 'uppercase' }}>{t.questions?.reasonLabel || 'Reason (R):'} </span>
               <span style={{ fontSize: '0.92rem' }}>{q.reason}</span>
             </div>
           </div>
@@ -263,7 +265,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                     justifyContent: 'space-between',
                   }}>
                     <span>
-                      <strong>Clue #{idx + 1}:</strong> {isRevealed ? clue : '🔒 [Hidden]'}
+                      <strong>{t.questions?.cluePrefix || 'Clue'} #{idx + 1}:</strong> {isRevealed ? clue : '🔒 [Hidden]'}
                     </span>
                     {!isRevealed && (
                       <button
@@ -274,7 +276,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                           setRevealedClues(prev => ({ ...prev, [q.id]: idx + 1 }))
                         }}
                       >
-                        Reveal
+                        {t.questions?.revealClue || 'Reveal'}
                       </button>
                     )}
                   </div>
@@ -288,7 +290,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         {('options' in q && Array.isArray(q.options)) && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-muted)', marginBottom: '0.2rem', textTransform: 'uppercase' }}>
-              💡 Tap an option to test yourself:
+              {t.flashcards?.testYourself || '💡 Tap an option to test yourself:'}
             </p>
             {q.options.map((opt, idx) => {
               const isSelected = practiceAns === idx || (Array.isArray(practiceAns) && practiceAns.includes(idx))
@@ -367,7 +369,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                     cursor: 'pointer',
                   }}
                 >
-                  {val ? '✓ True (सत्य)' : '✗ False (असत्य)'}
+                  {val ? `✓ ${t.quizEngine.true}` : `✗ ${t.quizEngine.false}`}
                 </button>
               )
             })}
@@ -378,7 +380,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         {q.type === 'sequence' && 'items' in q && (
           <div style={{ marginTop: '0.5rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-muted)', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
-              📜 Items to sequence chronologically:
+              {t.flashcards?.sequencePrompt || '📜 Items to sequence chronologically:'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               {q.items.map((item, idx) => (
@@ -394,7 +396,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         {q.type === 'match-pairs' && 'left' in q && (
           <div style={{ marginTop: '0.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <div>
-              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>Left Column</p>
+              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>{t.flashcards?.leftColumn || 'Left Column'}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                 {q.left.map((item, idx) => (
                   <div key={idx} style={{ padding: '0.55rem 0.75rem', background: 'var(--color-surface-2)', borderRadius: 6, fontSize: '0.85rem' }}>
@@ -404,7 +406,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               </div>
             </div>
             <div>
-              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>Right Column</p>
+              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>{t.flashcards?.rightColumn || 'Right Column'}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                 {q.right.map((item, idx) => (
                   <div key={idx} style={{ padding: '0.55rem 0.75rem', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--color-border)', borderRadius: 6, fontSize: '0.85rem' }}>
@@ -420,7 +422,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
         {pastAns !== undefined && (
           <div style={{ marginTop: '1.25rem', padding: '0.6rem 0.85rem', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 8, border: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.8rem', color: 'var(--color-muted)', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
             <span>📝</span>
-            <span>Recorded in your past attempt. Tap <strong>Flip Card 🔄</strong> to inspect authentic śāstric solution.</span>
+            <span>{t.flashcards?.recordedPastAttempt || 'Recorded in your past attempt. Tap Flip Card 🔄 to inspect authentic solution.'}</span>
           </div>
         )}
       </div>
@@ -435,11 +437,11 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{ fontSize: '1.2rem' }}>✨</span>
             <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-success)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Authentic Answer & Purport
+              {t.flashcards?.authenticAnswer || 'Authentic Answer & Purport'}
             </span>
           </div>
           <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-            +{q.points} pt{q.points > 1 ? 's' : ''}
+            +{q.points} {q.points > 1 ? (t.questions?.pts || 'pts') : (t.questions?.ptSingular || 'pt')}
           </span>
         </div>
 
@@ -452,7 +454,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           marginBottom: '1.25rem',
         }}>
           <p style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--color-success)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
-            Correct Answer:
+            {t.flashcards?.correctAnswer || 'Correct Answer:'}
           </p>
 
           {/* Single Choice / Spot the Error / Missing Link / Who Said This */}
@@ -478,7 +480,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           {/* True / False */}
           {q.type === 'true-false' && 'correct' in q && (
             <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-text)' }}>
-              ✓ {q.correct ? 'True (सत्य)' : 'False (असत्य)'}
+              ✓ {q.correct ? t.quizEngine.true : t.quizEngine.false}
             </div>
           )}
 
@@ -526,7 +528,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
             <span style={{ fontSize: '1.1rem' }}>📜</span>
             <div>
               <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-gold)', textTransform: 'uppercase', display: 'block' }}>
-                Scriptural Reference / Śāstra Pramāṇa
+                {t.flashcards?.scripturalReference || 'Scriptural Reference / Śāstra Pramāṇa'}
               </span>
               <span style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--color-text)' }}>
                 {q.reference}
@@ -545,7 +547,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
             marginBottom: '1.25rem',
           }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.4rem' }}>
-              Tātparya (Philosophical Purport & Insight):
+              {t.flashcards?.tatparya || 'Tātparya (Philosophical Purport & Insight):'}
             </p>
             <p style={{ fontSize: '0.92rem', lineHeight: 1.6, color: 'var(--color-text-secondary)', margin: 0 }}>
               {q.explanation}
@@ -562,7 +564,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           borderRadius: 10,
         }}>
           <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.65rem', textAlign: 'center', textTransform: 'uppercase' }}>
-            How well did you recall this?
+            {t.flashcards?.howWellRecall || 'How well did you recall this?'}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <button
@@ -581,7 +583,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                 padding: '0.65rem',
               }}
             >
-              🔴 Need Practice
+              {t.flashcards?.needPractice || '🔴 Need Practice'}
             </button>
             <button
               type="button"
@@ -599,7 +601,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                 padding: '0.65rem',
               }}
             >
-              🟢 Mastered (Got It!)
+              {t.flashcards?.mastered || '🟢 Mastered (Got It!)'}
             </button>
           </div>
         </div>
@@ -616,24 +618,24 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
       <div style={{ padding: '2rem 1.5rem', textAlign: 'center' }}>
         <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🪷</div>
         <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-          Flashcard Review Complete!
+          {t.flashcards?.completeTitle || 'Flashcard Review Complete!'}
         </h2>
         <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginBottom: '1.75rem' }}>
-          Great effort on revising <strong>{quiz?.title || quizTitle || quizId}</strong>.
+          {t.flashcards?.greatEffort || 'Great effort on revising'} <strong>{quiz?.title || quizTitle || quizId}</strong>.
         </p>
 
         {/* Stats Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
           <div className="card" style={{ padding: '1rem', background: 'rgba(82, 196, 133, 0.1)', border: '1px solid var(--color-success)' }}>
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-success)', fontWeight: 700 }}>MASTERED</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-success)', fontWeight: 700 }}>{t.flashcards?.masteredLabel || 'MASTERED'}</p>
             <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-success)' }}>{masteredCount}</p>
           </div>
           <div className="card" style={{ padding: '1rem', background: 'rgba(240, 101, 101, 0.1)', border: '1px solid var(--color-error)' }}>
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-error)', fontWeight: 700 }}>PRACTICE</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-error)', fontWeight: 700 }}>{t.flashcards?.practiceLabel || 'PRACTICE'}</p>
             <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-error)' }}>{practiceCount}</p>
           </div>
           <div className="card" style={{ padding: '1rem', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}>
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 700 }}>TOTAL</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 700 }}>{t.flashcards?.totalLabel || 'TOTAL'}</p>
             <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-gold)' }}>{total}</p>
           </div>
         </div>
@@ -650,7 +652,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                 setShowSummary(false)
               }}
             >
-              🔄 Re-Study {practiceCount} Weak Card{practiceCount > 1 ? 's' : ''}
+              {(t.flashcards?.reStudyWeak || '🔄 Re-Study {count} Weak Card(s)').replace('{count}', String(practiceCount))}
             </button>
           )}
 
@@ -663,11 +665,11 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               setShowSummary(false)
             }}
           >
-            🔁 Review All Cards Again
+            {t.flashcards?.reviewAll || '🔁 Review All Cards Again'}
           </button>
 
           <button className="btn btn-ghost w-full" onClick={onClose}>
-            Done & Close
+            {t.flashcards?.doneClose || 'Done & Close'}
           </button>
         </div>
       </div>
@@ -686,10 +688,10 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
             <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>🎴</span>
             <div style={{ minWidth: 0 }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {quiz?.title || quizTitle || 'Flashcard Review'}
+                {quiz?.title || quizTitle || t.flashcards?.title || 'Flashcard Review'}
               </h2>
               <p style={{ fontSize: '0.72rem', color: 'var(--color-muted)', margin: 0 }}>
-                Active Recall & Śāstric Study
+                {t.flashcards?.subtitle || 'Active Recall & Śāstric Study'}
               </p>
             </div>
           </div>
@@ -705,7 +707,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               className="btn btn-ghost"
               onClick={onClose}
               style={{ padding: '0.35rem 0.65rem', fontSize: '1.1rem', lineHeight: 1 }}
-              title="Close (Esc)"
+              title={t.flashcards?.closeEsc || 'Close (Esc)'}
             >
               ✕
             </button>
@@ -731,12 +733,12 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           {loading ? (
             <div style={{ minHeight: 320, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
               <div className="spinner-gold" />
-              <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem' }}>Loading Flashcards...</p>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem' }}>{t.flashcards?.loading || 'Loading Flashcards...'}</p>
             </div>
           ) : error ? (
             <div style={{ padding: '2rem', textAlign: 'center' }}>
               <p style={{ color: 'var(--color-error)', marginBottom: '1rem' }}>{error}</p>
-              <button className="btn btn-secondary btn-sm" onClick={onClose}>Close</button>
+              <button className="btn btn-secondary btn-sm" onClick={onClose}>{t.flashcards?.doneClose || 'Close'}</button>
             </div>
           ) : showSummary ? (
             renderSummaryView()
@@ -750,7 +752,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                 <div className="flashcard-face flashcard-face-front">
                   {renderQuestionFront(currentQuestion)}
                   <div className="flashcard-flip-prompt">
-                    <span>Tap card or press Space to <strong>Flip & See Answer 🔄</strong></span>
+                    <span>{t.flashcards?.flipPromptFront || 'Tap card or press Space to'} <strong>{t.flashcards?.flipPromptFrontAction || 'Flip & See Answer 🔄'}</strong></span>
                   </div>
                 </div>
 
@@ -758,7 +760,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
                 <div className="flashcard-face flashcard-face-back">
                   {renderQuestionBack(currentQuestion)}
                   <div className="flashcard-flip-prompt">
-                    <span>Tap card to <strong>Flip back to Question 🔄</strong></span>
+                    <span>{t.flashcards?.flipPromptBack || 'Tap card to'} <strong>{t.flashcards?.flipPromptBackAction || 'Flip back to Question 🔄'}</strong></span>
                   </div>
                 </div>
               </div>
@@ -776,7 +778,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               disabled={currentIndex === 0}
               style={{ flex: 1, padding: '0.65rem 0.5rem', fontSize: '0.85rem' }}
             >
-              ← Prev
+              {t.flashcards?.prev || '← Prev'}
             </button>
 
             <button
@@ -785,7 +787,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               onClick={() => setIsFlipped(prev => !prev)}
               style={{ flex: 1.5, padding: '0.65rem 0.5rem', fontSize: '0.9rem', fontWeight: 700 }}
             >
-              {isFlipped ? 'Show Question 🔄' : 'Reveal Answer 💡'}
+              {isFlipped ? (t.flashcards?.showQuestion || 'Show Question 🔄') : (t.flashcards?.revealAnswer || 'Reveal Answer 💡')}
             </button>
 
             <button
@@ -794,7 +796,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               onClick={handleNext}
               style={{ flex: 1, padding: '0.65rem 0.5rem', fontSize: '0.85rem' }}
             >
-              {currentIndex === activeQuestions.length - 1 ? 'Finish 🏁' : 'Next →'}
+              {currentIndex === activeQuestions.length - 1 ? (t.flashcards?.finish || 'Finish 🏁') : (t.flashcards?.next || 'Next →')}
             </button>
           </div>
         )}

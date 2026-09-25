@@ -209,7 +209,7 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
         {question.question}
       </h2>
       <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-        <span>↕</span> {t.quizEngine.dragInstruction || 'Use arrows or drag handle (⠿) to arrange in correct order.'}
+        <span>↕</span> {t.questions?.dragInstruction || t.quizEngine.dragInstruction || 'Use arrows or drag handle (⠿) to arrange in correct order.'}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', position: 'relative' }}>
@@ -302,8 +302,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                     type="button"
                     disabled={position === 0}
                     onClick={e => moveItem(position, 'up', e)}
-                    title="Move Up"
-                    aria-label="Move Up"
+                    title={t.questions?.moveUp || 'Move Up'}
+                    aria-label={t.questions?.moveUp || 'Move Up'}
                     className="sequence-arrow-btn"
                   >
                     ▲
@@ -312,8 +312,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                     type="button"
                     disabled={position === order.length - 1}
                     onClick={e => moveItem(position, 'down', e)}
-                    title="Move Down"
-                    aria-label="Move Down"
+                    title={t.questions?.moveDown || 'Move Down'}
+                    aria-label={t.questions?.moveDown || 'Move Down'}
                     className="sequence-arrow-btn"
                   >
                     ▼
@@ -326,8 +326,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
                     onTouchMove={handleTouchDragMove}
                     onTouchEnd={handleTouchDragEnd}
                     onTouchCancel={handleTouchDragEnd}
-                    title="Drag handle to reorder"
-                    aria-label="Drag handle to reorder"
+                    title={t.questions?.dragHandleAria || 'Drag handle to reorder'}
+                    aria-label={t.questions?.dragHandleAria || 'Drag handle to reorder'}
                   >
                     ⠿
                   </div>

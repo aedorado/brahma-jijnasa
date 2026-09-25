@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { MatchPairsQuestion } from '@/types/quiz'
 import type { PairsAnswer } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: MatchPairsQuestion
@@ -28,6 +29,7 @@ const PAIR_THEMES: PairTheme[] = [
 ]
 
 export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
+  const { t } = useLanguage()
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null)
 
   const getMatchedRight = (leftIdx: number) => answer.find(([l]) => l === leftIdx)?.[1] ?? null
@@ -97,14 +99,18 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
     setSelectedLeft(null)
   }
 
+  const unpairTooltipText = t.questions?.unpairTooltip || 'Click to unpair and change match'
+  const selectTooltipText = t.questions?.selectTooltip || 'Click to select'
+  const pairTooltipText = t.questions?.pairTooltip || 'Click to pair'
+  const removePairTitleText = t.questions?.removePairTitle || 'Unpair'
+
   return (
     <div>
       <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem', lineHeight: 1.5 }}>
         {question.question}
       </h2>
       <p style={{ fontSize: '0.82rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-        Tap an item in <strong>Column A</strong>, then tap its match in <strong>Column B</strong>.
-        Tap any matched item or <span style={{ color: 'var(--color-primary)', fontWeight: 600 }}>✕</span> to unpair or change.
+        {t.questions?.matchPairsInstructionDetailed || 'Tap an item in Column A, then tap its match in Column B. Tap any matched item or ✕ to unpair or change.'}
       </p>
 
       <div className="match-pairs-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '0.85rem', alignItems: 'start', width: '100%' }}>
@@ -112,7 +118,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0, width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Column A
+              {t.questions?.columnA || 'Column A'}
             </p>
           </div>
           {question.left.map((item, i) => {
@@ -153,7 +159,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                       }
                     : {}),
                 }}
-                title={matchedRight !== null ? 'Click to unpair and change match' : 'Click to select'}
+                title={matchedRight !== null ? unpairTooltipText : selectTooltipText}
               >
                 <span style={{ fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: 1.35 }}>
                   {item}
@@ -174,11 +180,11 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        Pair {theme.num}
+                        {t.questions?.pairBadge || 'Pair'} {theme.num}
                       </span>
                       <span
                         onClick={(e) => handleExplicitUnpair(e, i)}
-                        title="Unpair"
+                        title={removePairTitleText}
                         style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -199,7 +205,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                     </>
                   ) : isSelected ? (
                     <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                      Selected ➜
+                      {t.questions?.selectedPrompt || 'Selected ➜'}
                     </span>
                   ) : null}
                 </div>
@@ -212,7 +218,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0, width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Column B
+              {t.questions?.columnB || 'Column B'}
             </p>
           </div>
           {question.right.map((item, j) => {
@@ -252,7 +258,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                       }
                     : {}),
                 }}
-                title={matchedLeft !== null ? 'Click to unpair and change match' : isWaiting ? 'Click to pair' : ''}
+                title={matchedLeft !== null ? unpairTooltipText : isWaiting ? pairTooltipText : ''}
               >
                 <span style={{ fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: 1.35 }}>
                   {item}
@@ -273,11 +279,11 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        Pair {theme.num}
+                        {t.questions?.pairBadge || 'Pair'} {theme.num}
                       </span>
                       <span
                         onClick={(e) => handleExplicitUnpair(e, matchedLeft)}
-                        title="Unpair"
+                        title={removePairTitleText}
                         style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -298,7 +304,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
                     </>
                   ) : isWaiting ? (
                     <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', opacity: 0.85, whiteSpace: 'nowrap' }}>
-                      Tap to pair
+                      {t.questions?.tapToPair || 'Tap to pair'}
                     </span>
                   ) : null}
                 </div>
@@ -311,7 +317,9 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
       {/* Footer bar with status & reset */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1.25rem', padding: '0.5rem 0.25rem' }}>
         <p style={{ fontSize: '0.82rem', color: 'var(--color-muted)' }}>
-          {answer.length} of {question.left.length} pairs matched
+          {(t.questions?.pairsMatchedCount || '{matched} of {total} pairs matched')
+            .replace('{matched}', String(answer.length))
+            .replace('{total}', String(question.left.length))}
         </p>
 
         {answer.length > 0 && !disabled && (
@@ -321,7 +329,7 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
             className="btn btn-ghost btn-sm"
             style={{ fontSize: '0.75rem', color: 'var(--color-muted)', padding: '0.25rem 0.65rem' }}
           >
-            🔄 Reset All Pairs
+            {t.questions?.resetAllPairs || '🔄 Reset All Pairs'}
           </button>
         )}
       </div>

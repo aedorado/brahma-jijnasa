@@ -267,9 +267,9 @@ export function QuizEngine({
   }
 
   const difficultyLabels: Record<string, string> = {
-    easy: language === 'hi' ? 'सरल' : language === 'pt' ? 'FÁCIL' : 'EASY',
-    medium: language === 'hi' ? 'मध्यम' : language === 'pt' ? 'MÉDIO' : 'MEDIUM',
-    hard: language === 'hi' ? 'कठिन' : language === 'pt' ? 'DIFÍCIL' : 'HARD',
+    easy: t.quizEngine.easy || (language === 'hi' ? 'सरल' : language === 'pt' ? 'FÁCIL' : 'EASY'),
+    medium: t.quizEngine.medium || (language === 'hi' ? 'मध्यम' : language === 'pt' ? 'MÉDIO' : 'MEDIUM'),
+    hard: t.quizEngine.hard || (language === 'hi' ? 'कठिन' : language === 'pt' ? 'DIFÍCIL' : 'HARD'),
   }
 
   return (
@@ -347,7 +347,7 @@ export function QuizEngine({
           <div className="quiz-timer-content">
             <div className="quiz-timer-header-line">
               <span className="quiz-timer-label">
-                {hasTimeLimit ? (t.quizEngine.timeRemaining || 'Time Left') : 'Time'}
+                {hasTimeLimit ? (t.quizEngine.timeRemaining || 'Time Left') : (t.quizEngine.time || 'Time')}
               </span>
               {avgSecPerQ && (
                 <span className="quiz-timer-pace-badge" title="Target pacing per question">
@@ -377,7 +377,7 @@ export function QuizEngine({
               key={qq.id}
               className={`q-dot ${i === current ? 'current' : answered ? 'answered' : ''}`}
               onClick={() => navigate(i)}
-              title={`${language === 'hi' ? 'प्रश्न' : language === 'pt' ? 'Questão' : 'Question'} ${i + 1}`}
+              title={`${t.quizEngine.questionDotTitle || (language === 'hi' ? 'प्रश्न' : language === 'pt' ? 'Questão' : 'Question')} ${i + 1}`}
               id={`q-dot-${i + 1}`}
               aria-label={`Go to question ${i + 1}`}
             />
@@ -436,7 +436,7 @@ export function QuizEngine({
             onClick={handleSubmit}
             disabled={onTimeExpiry === 'block-submit' && !allAnswered}
             id="submit-quiz-btn"
-            title={onTimeExpiry === 'block-submit' && !allAnswered ? 'Answer all questions to submit' : ''}
+            title={onTimeExpiry === 'block-submit' && !allAnswered ? (t.quizEngine.answerAllToSubmitTitle || 'Answer all questions to submit') : ''}
           >
             {t.quizEngine.submitQuiz}
           </button>
@@ -445,11 +445,8 @@ export function QuizEngine({
 
       {onTimeExpiry === 'block-submit' && !allAnswered && current === questions.length - 1 && (
         <p className="text-center text-muted mt-2" style={{ fontSize: '0.8rem' }}>
-          {language === 'hi'
-            ? `जमा करने हेतु शेष ${questions.length - answeredCount} प्रश्नों के उत्तर दें`
-            : language === 'pt'
-              ? `Responda a todas as ${questions.length - answeredCount} questões restantes para enviar`
-              : `Answer all ${questions.length - answeredCount} remaining question${questions.length - answeredCount !== 1 ? 's' : ''} to submit`}
+          {(t.quizEngine.remainingBlockSubmit || 'Answer all {count} remaining question(s) to submit')
+            .replace('{count}', String(questions.length - answeredCount))}
         </p>
       )}
 
@@ -475,7 +472,8 @@ export function QuizEngine({
             </h3>
             <p className="text-muted text-center" style={{ fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.5 }}>
               {answeredCount < questions.length
-                ? `You have ${questions.length - answeredCount} unanswered question(s). They will score 0.`
+                ? (t.quizEngine.unansweredWarning || 'You have {count} unanswered question(s). They will score 0.')
+                    .replace('{count}', String(questions.length - answeredCount))
                 : t.quizEngine.confirmSubtitle
               }
             </p>
@@ -484,7 +482,7 @@ export function QuizEngine({
                 {t.quizEngine.confirmCancel}
               </button>
               <button className="btn btn-primary w-full" onClick={confirmSubmit} id="confirm-submit-btn" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : t.quizEngine.confirmYes}
+                {isSubmitting ? (t.quizEngine.submittingBtn || 'Submitting...') : t.quizEngine.confirmYes}
               </button>
             </div>
           </div>
@@ -508,10 +506,10 @@ export function QuizEngine({
           <div className="text-center animate-fadeIn" style={{ padding: '2rem' }}>
             <div className="spinner-gold" style={{ width: 44, height: 44, margin: '0 auto 1.25rem' }} />
             <h3 style={{ fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.5rem' }}>
-              Submitting Your Answers...
+              {t.quizEngine.submittingTitle || 'Submitting Your Answers...'}
             </h3>
             <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-              Calculating your score and recording progress...
+              {t.quizEngine.submittingSubtitle || 'Calculating your score and recording progress...'}
             </p>
           </div>
         </div>

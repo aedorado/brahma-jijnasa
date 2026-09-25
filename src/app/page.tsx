@@ -32,7 +32,7 @@ export default function HomePage() {
     }
 
     if (pin.length !== 4) {
-      setError('Please enter a 4-digit PIN')
+      setError(t.home.enter4DigitPinError || 'Please enter a 4-digit PIN')
       setLoading(false)
       return
     }
@@ -46,7 +46,7 @@ export default function HomePage() {
       .single()
 
     if (!session) {
-      setError('No active quiz found with this PIN. Ask your teacher.')
+      setError(t.home.noActiveSessionError || 'No active quiz found with this PIN. Ask your teacher.')
       setLoading(false)
       return
     }
@@ -102,22 +102,22 @@ export default function HomePage() {
             <div className="home-stats-bar">
               <div className="home-stat-item">
                 <span className="home-stat-value">30+</span>
-                <span className="home-stat-label">Daily Rounds</span>
+                <span className="home-stat-label">{t.home.statsDailyRounds || 'Daily Rounds'}</span>
               </div>
               <div className="home-stat-divider" />
               <div className="home-stat-item">
                 <span className="home-stat-value">16</span>
-                <span className="home-stat-label">Interactive Formats</span>
+                <span className="home-stat-label">{t.home.statsInteractiveFormats || 'Interactive Formats'}</span>
               </div>
               <div className="home-stat-divider" />
               <div className="home-stat-item">
                 <span className="home-stat-value">9</span>
-                <span className="home-stat-label">Bhakti Stages</span>
+                <span className="home-stat-label">{t.home.statsBhaktiStages || 'Bhakti Stages'}</span>
               </div>
               <div className="home-stat-divider" />
               <div className="home-stat-item">
                 <span className="home-stat-value">3</span>
-                <span className="home-stat-label">Languages</span>
+                <span className="home-stat-label">{t.home.statsLanguages || 'Languages'}</span>
               </div>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function HomePage() {
                   id="sandbox-pin-hint-btn"
                   className="home-demo-pin-btn"
                 >
-                  <span>✨ Want to take a test round? Try PIN <strong>0000</strong></span>
+                  <span>{t.home.testRoundHint || '✨ Want to take a test round? Try PIN 0000'}</span>
                 </button>
               </form>
             </div>
@@ -183,22 +183,22 @@ export default function HomePage() {
               <div className="home-series-card-top">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-                    🌟 Featured Series
+                    {t.home.featuredSeriesBadge || '🌟 Featured Series'}
                   </span>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                    30 Daily Sadhana Rounds
+                    {t.home.thirtyDailyRounds || '30 Daily Sadhana Rounds'}
                   </span>
                 </div>
 
                 <h3 className="home-series-title">
-                  Reflections on Sacred Teachings
+                  {t.home.reflectionsTitle || 'Reflections on Sacred Teachings'}
                 </h3>
                 <p className="home-series-subheading">
-                  Principles for Community (1–30)
+                  {t.home.reflectionsSubtitle || 'Principles for Community (1–30)'}
                 </p>
 
                 <p className="home-series-desc">
-                  Immerse in Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura’s sacred community principles from <em>Reflections on Sacred Teachings V</em> by His Holiness Bhakti Tirtha Swami.
+                  {t.home.reflectionsDesc || 'Immerse in Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura’s sacred community principles from Reflections on Sacred Teachings V by His Holiness Bhakti Tirtha Swami.'}
                 </p>
               </div>
 
@@ -230,14 +230,14 @@ export default function HomePage() {
           <div className="home-shloka-card animate-fadeIn">
             <div className="home-shloka-header">
               <span className="home-shloka-badge">Śrīmad Bhagavad Gītā 4.34</span>
-              <span className="home-shloka-theme">The Spirit of Inquiry</span>
+              <span className="home-shloka-theme">{t.home.bgShlokaTheme || 'The Spirit of Inquiry'}</span>
             </div>
             <p className="sanskrit home-shloka-sanskrit">
               तद्विद्धि प्रणिपातेन परिप्रश्नेन सेवया।<br />
               उपदेक्ष्यन्ति ते ज्ञानं ज्ञानिनस्तत्त्वदर्शिनः॥
             </p>
             <p className="home-shloka-translation">
-              &quot;Just try to learn the truth by approaching a spiritual master. Inquire from him submissively and render service unto him. The self-realized souls can impart knowledge unto you because they have seen the truth.&quot;
+              {t.home.bgShlokaTranslation || '"Just try to learn the truth by approaching a spiritual master. Inquire from him submissively and render service unto him. The self-realized souls can impart knowledge unto you because they have seen the truth."'}
             </p>
           </div>
         </div>

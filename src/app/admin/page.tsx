@@ -202,6 +202,19 @@ export default function AdminPage() {
   }, [selectedSessionId])
 
   const startSession = async (quizId: string) => {
+    // Check if session for this quiz is already active
+    const existing = activeSessions.find(s => s.quiz_id === quizId && s.is_active)
+    if (existing) {
+      const shouldGoToExisting = confirm(
+        `A live room is already active for this quiz with PIN ${existing.pin}!\n\nClick OK to open the existing room.\nClick Cancel if you want to start a new, additional room.`
+      )
+      if (shouldGoToExisting) {
+        setSelectedSessionId(existing.id)
+        setActivePillar('live')
+        return
+      }
+    }
+
     setStarting(quizId)
     const pin = String(Math.floor(1000 + Math.random() * 9000))
 
@@ -410,7 +423,12 @@ export default function AdminPage() {
         {activePillar === 'catalog' && (
           <AdminQuizCatalog
             quizzes={quizzes}
+            activeSessions={activeSessions}
             onStartSession={startSession}
+            onSelectSession={(sessionId) => {
+              setSelectedSessionId(sessionId)
+              setActivePillar('live')
+            }}
             starting={starting}
             onOpenCreator={() => setActivePillar('create')}
           />

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { getPerformanceLabel, formatTime } from '@/lib/scoring'
+import { formatTime } from '@/lib/scoring'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/context/LanguageContext'
 import { UserAvatar } from '@/components/UserAvatar'
@@ -28,7 +28,14 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const supabase = createClient()
   const { t } = useLanguage()
-  const { label, emoji } = getPerformanceLabel(result.percentage)
+  const getPerformance = (percentage: number) => {
+    if (percentage >= 90) return { label: t.scoreCard.perfBrahmajnani || 'Exceptional — Brahmajñānī!', emoji: '🌟' }
+    if (percentage >= 75) return { label: t.scoreCard.perfVidvan || 'Excellent — Vidvān!', emoji: '🏆' }
+    if (percentage >= 60) return { label: t.scoreCard.perfJijnasu || 'Good — Jijñāsu!', emoji: '🎯' }
+    if (percentage >= 40) return { label: t.scoreCard.perfSisya || 'Keep Learning — Śiṣya!', emoji: '📖' }
+    return { label: t.scoreCard.perfAbhyasa || 'Seek Guidance — Abhyāsa!', emoji: '🙏' }
+  }
+  const { label, emoji } = getPerformance(result.percentage)
 
   // Animate score counter
   useEffect(() => {
@@ -365,8 +372,8 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
           {(q as any).assertion && (
             <div style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border-gold)', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.92rem' }}>
-              <div><strong style={{ color: 'var(--color-gold)' }}>Assertion:</strong> {(q as any).assertion}</div>
-              <div style={{ marginTop: '0.35rem' }}><strong style={{ color: 'var(--color-gold)' }}>Reason:</strong> {(q as any).reason}</div>
+              <div><strong style={{ color: 'var(--color-gold)' }}>{t.scoreCard.assertionLabel || 'Assertion:'}</strong> {(q as any).assertion}</div>
+              <div style={{ marginTop: '0.35rem' }}><strong style={{ color: 'var(--color-gold)' }}>{t.scoreCard.reasonLabel || 'Reason:'}</strong> {(q as any).reason}</div>
             </div>
           )}
 
@@ -378,7 +385,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
           {(q as any).scenario && (
             <div style={{ background: 'var(--color-surface-2)', borderLeft: '3.5px solid var(--color-accent-2)', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.92rem' }}>
-              <strong style={{ color: 'var(--color-accent-2)' }}>Scenario: </strong> {(q as any).scenario}
+              <strong style={{ color: 'var(--color-accent-2)' }}>{t.scoreCard.scenarioLabel || 'Scenario:'} </strong> {(q as any).scenario}
             </div>
           )}
 
@@ -451,7 +458,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
         {/* Header */}
         <div className="flex justify-between items-center" style={{ marginBottom: '0.85rem' }}>
           <span className="badge badge-primary" style={{ fontSize: '0.78rem' }}>
-            Question {i + 1} · {q.type.toUpperCase().replace(/-/g, ' ')}
+            {t.scoreCard.questionReviewHeader || 'Question'} {i + 1} · {q.type.toUpperCase().replace(/-/g, ' ')}
           </span>
           <span style={{
             fontSize: '0.95rem', fontWeight: 800,
@@ -504,7 +511,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
         {(pin === '000' || pin === '0000') && (
           <div style={{ marginBottom: '0.85rem' }}>
             <span className="badge badge-accent" style={{ fontSize: '0.82rem', padding: '0.35rem 0.9rem' }}>
-              ⚡ Demo Quiz Session (PIN: 0000)
+              {t.scoreCard.demoSessionBadge || '⚡ Demo Quiz Session (PIN: 0000)'}
             </span>
           </div>
         )}
@@ -590,7 +597,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             onClick={onRetry}
             id="retry-quiz-btn"
           >
-            🔄 Take Demo Quiz Again
+            {t.scoreCard.retryDemoQuiz || '🔄 Take Demo Quiz Again'}
           </button>
         )}
         <button
@@ -618,7 +625,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             id="fullscreen-review-btn"
             title="Open in modal view"
           >
-            ⛶ Fullscreen
+            {t.scoreCard.fullscreenBtn || '⛶ Fullscreen'}
           </button>
         </div>
 
@@ -631,7 +638,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             className="btn btn-ghost"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            ↑ Back to Top
+            {t.scoreCard.backToTopBtn || '↑ Back to Top'}
           </button>
         </div>
       </div>

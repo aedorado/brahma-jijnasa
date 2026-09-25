@@ -13,19 +13,19 @@ type Props = {
 const LETTERS = ['A', 'B', 'C', 'D']
 
 export function AssertionReason({ question, answer, onAnswer, disabled }: Props) {
-  const { language } = useLanguage()
+  const { t, language } = useLanguage()
 
-  const defaultPrompt = language === 'hi'
+  const defaultPrompt = t.questions?.assertionReasonDefaultPrompt || (language === 'hi'
     ? 'निम्नलिखित कथन (A) एवं कारण (R) को पढ़ें:'
     : language === 'pt'
     ? 'Leia a seguinte Afirmação (A) e Razão (R):'
-    : 'Read the following Assertion (A) and Reason (R):'
+    : 'Read the following Assertion (A) and Reason (R):')
 
-  const choosePrompt = language === 'hi'
+  const choosePrompt = t.questions?.chooseRelationship || (language === 'hi'
     ? 'सही संबंध का चयन करें:'
     : language === 'pt'
     ? 'Escolha a relação correta:'
-    : 'Choose the correct relationship:'
+    : 'Choose the correct relationship:')
 
   return (
     <div>
@@ -36,13 +36,13 @@ export function AssertionReason({ question, answer, onAnswer, disabled }: Props)
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <div className="card" style={{ padding: '1rem 1.25rem' }}>
           <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
-            {language === 'hi' ? 'कथन (A)' : language === 'pt' ? 'Afirmação (A)' : 'Assertion (A)'}
+            {t.questions?.assertionLabel || (language === 'hi' ? 'कथन (A)' : language === 'pt' ? 'Afirmação (A)' : 'Assertion (A)')}
           </p>
           <p style={{ lineHeight: 1.6 }}>{question.assertion}</p>
         </div>
         <div className="card" style={{ padding: '1rem 1.25rem' }}>
           <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-2)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
-            {language === 'hi' ? 'कारण (R)' : language === 'pt' ? 'Razão (R)' : 'Reason (R)'}
+            {t.questions?.reasonLabel || (language === 'hi' ? 'कारण (R)' : language === 'pt' ? 'Razão (R)' : 'Reason (R)')}
           </p>
           <p style={{ lineHeight: 1.6 }}>{question.reason}</p>
         </div>

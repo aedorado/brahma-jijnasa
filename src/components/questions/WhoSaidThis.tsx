@@ -1,6 +1,7 @@
 'use client'
 
 import type { WhoSaidThisQuestion } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: WhoSaidThisQuestion
@@ -12,6 +13,8 @@ type Props = {
 const LETTERS = ['A', 'B', 'C', 'D']
 
 export function WhoSaidThis({ question, answer, onAnswer, disabled }: Props) {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h2 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem' }}>
@@ -31,7 +34,7 @@ export function WhoSaidThis({ question, answer, onAnswer, disabled }: Props) {
       </div>
 
       <p style={{ fontSize: '0.9rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
-        Who spoke these words?
+        {t.questions?.whoSpokeTheseWords || 'Who spoke these words?'}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

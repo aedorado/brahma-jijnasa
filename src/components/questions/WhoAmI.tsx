@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { WhoAmIQuestion } from '@/types/quiz'
 import type { WhoAmIAnswer } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: WhoAmIQuestion
@@ -15,6 +16,7 @@ const LETTERS = ['A', 'B', 'C', 'D']
 const MAX_POINTS = 3
 
 export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
+  const { t } = useLanguage()
   const [cluesRevealed, setCluesRevealed] = useState(
     answer?.cluesRevealed ?? 1
   )
@@ -45,10 +47,10 @@ export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
       {/* Points indicator */}
       <div className="flex items-center justify-between mb-3">
         <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
-          Answer with fewer clues = more points
+          {t.questions?.fewerCluesMorePoints || 'Answer with fewer clues = more points'}
         </p>
         <span className="badge badge-gold">
-          Current: +{pointsForClues} pt{pointsForClues !== 1 ? 's' : ''}
+          {t.questions?.currentPoints || 'Current'}: +{pointsForClues} {pointsForClues !== 1 ? (t.questions?.pts || 'pts') : (t.questions?.ptSingular || 'pt')}
         </span>
       </div>
 
@@ -56,7 +58,9 @@ export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '1.5rem' }}>
         {question.clues.slice(0, cluesRevealed).map((clue, i) => (
           <div key={i} className="clue-card">
-            <span className="clue-number">Clue {i + 1} {i === 0 ? `(+${MAX_POINTS} pts)` : i === 1 ? `(+${MAX_POINTS - 1} pts)` : `(+${MAX_POINTS - 2} pts)`}</span>
+            <span className="clue-number">
+              {t.questions?.cluePrefix || 'Clue'} {i + 1} {i === 0 ? `(+${MAX_POINTS} ${t.questions?.pts || 'pts'})` : i === 1 ? `(+${MAX_POINTS - 1} ${t.questions?.pts || 'pts'})` : `(+${MAX_POINTS - 2} ${t.questions?.pts || 'pts'})`}
+            </span>
             <p style={{ color: 'var(--color-lotus)', lineHeight: 1.6 }}>{clue}</p>
           </div>
         ))}
@@ -70,7 +74,7 @@ export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
           id="reveal-clue-btn"
           style={{ borderStyle: 'dashed' }}
         >
-          Show Next Clue (−1 point)
+          {t.questions?.showNextClue || 'Show Next Clue (−1 point)'}
         </button>
       )}
 

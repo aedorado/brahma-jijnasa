@@ -62,9 +62,9 @@ export default function SeriesDirectoryPage() {
       <div className="container">
         {/* Breadcrumb */}
         <div style={{ marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-          <Link href="/" style={{ color: 'var(--color-muted)' }}>Home</Link>
+          <Link href="/" style={{ color: 'var(--color-muted)' }}>{t.series.home || 'Home'}</Link>
           <span style={{ margin: '0 0.5rem', color: 'var(--color-border)' }}>/</span>
-          <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>All Scripture Series</span>
+          <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{t.series.allSeriesBreadcrumb || 'All Scripture Series'}</span>
         </div>
 
         {/* Hero Section */}
@@ -110,7 +110,7 @@ export default function SeriesDirectoryPage() {
               {t.series.activeSeries}
             </h2>
             <span className="badge badge-gold" style={{ fontSize: '0.8rem' }}>
-              {seriesList.length} {seriesList.length === 1 ? 'Series Available' : 'Series Available'}
+              {seriesList.length} {t.series.seriesAvailable || 'Series Available'}
             </span>
           </div>
 
@@ -159,7 +159,7 @@ export default function SeriesDirectoryPage() {
                             fontWeight: 700,
                           }}
                         >
-                          {isOngoing ? '🟢 Ongoing Daily Sadhana' : isUpcoming ? '⏳ Upcoming Kārtika Series' : '📚 Series'}
+                          {isOngoing ? (t.series.ongoingSadhana || '🟢 Ongoing Daily Sadhana') : isUpcoming ? (t.series.upcomingSeries || '⏳ Upcoming Kārtika Series') : '📚 Series'}
                         </span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 600 }}>
                           {s.total_days} {t.series.roundsCount}
@@ -197,7 +197,7 @@ export default function SeriesDirectoryPage() {
                     <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '0.75rem', color: 'var(--color-muted)' }}>
                         <span>📅 {formatDateRange(s.start_date, s.end_date)}</span>
-                        <span>⚡ 1 Round / 24h</span>
+                        <span>{t.series.oneRoundPerDay || '⚡ 1 Round / 24h'}</span>
                       </div>
                       <Link
                         href={`/series/${s.slug}`}

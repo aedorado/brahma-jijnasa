@@ -4,8 +4,9 @@ import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
-import { calculateUserRating } from '@/lib/levels'
+import { calculateUserRating, getLocalizedLevelText } from '@/lib/levels'
 import { UserAvatar } from '@/components/UserAvatar'
 import { FlashcardReviewModal } from '@/components/FlashcardReviewModal'
 import type { AnswerMap } from '@/types/quiz'
@@ -22,6 +23,7 @@ interface Attempt {
 
 export default function ProfilePage() {
   const { user, loading, logout, login, refresh } = useAuth()
+  const { language, t } = useLanguage()
   const [attempts, setAttempts] = useState<Attempt[]>([])
   const [loadingAttempts, setLoadingAttempts] = useState(true)
   const [selectedReviewAttempt, setSelectedReviewAttempt] = useState<Attempt | null>(null)
@@ -75,12 +77,12 @@ export default function ProfilePage() {
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
         <div className="card text-center" style={{ maxWidth: 400, padding: '2.5rem 2rem' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🙏</div>
-          <h2 style={{ marginBottom: '0.75rem', fontWeight: 800 }}>Welcome to Brahma Jijñāsā</h2>
+          <h2 style={{ marginBottom: '0.75rem', fontWeight: 800 }}>{t.profile?.welcomeTitle || 'Welcome to Brahma Jijñāsā'}</h2>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-            Sign in with Google to view your profile and saved quiz history.
+            {t.profile?.welcomeSubtitle || 'Sign in with Google to view your profile and saved quiz history.'}
           </p>
           <button className="btn btn-primary w-full" onClick={() => login('/profile')}>
-            Sign In with Google
+            {t.profile?.signInGoogle || 'Sign In with Google'}
           </button>
         </div>
       </div>
@@ -90,6 +92,14 @@ export default function ProfilePage() {
   const totalPoints = attempts.reduce((acc, a) => acc + Number(a.score || 0), 0)
   const totalMax = attempts.reduce((acc, a) => acc + Number(a.max_score || 0), 0)
   const avgPercentage = totalMax > 0 ? Math.round((totalPoints / totalMax) * 100) : 0
+
+  const localizedCurrentLevel = getLocalizedLevelText(stats.level, language)
+  const localizedNextLevel = stats.nextLevel ? getLocalizedLevelText(stats.nextLevel, language) : null
+  const localizedVerseMeaning = language === 'hi'
+    ? (stats.level.verseMeaningHi || stats.level.verseMeaning)
+    : language === 'pt'
+    ? (stats.level.verseMeaningPt || stats.level.verseMeaning)
+    : (stats.level.verseMeaningEn || stats.level.verseMeaning)
 
   return (
     <div className="container-sm" style={{ padding: '3rem 1rem 5rem', maxWidth: 680 }}>
@@ -107,21 +117,21 @@ export default function ProfilePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
             <h1 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{user.full_name}</h1>
             <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-              {user.role === 'admin' ? '👑 Admin' : user.role === 'teacher' ? '⚡ Teacher' : '🎓 Student'}
+              {user.role === 'admin' ? (t.profile?.adminRole || '👑 Admin') : user.role === 'teacher' ? (t.profile?.teacherRole || '⚡ Teacher') : (t.profile?.studentRole || '🎓 Student')}
             </span>
           </div>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>{user.email}</p>
 
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <Link href="/leaderboard" className="btn btn-primary btn-sm">
-              🏆 View Leaderboard
+              {t.profile?.viewLeaderboard || '🏆 View Leaderboard'}
             </Link>
             <button className="btn btn-ghost btn-sm" onClick={logout}>
-              Sign Out
+              {t.profile?.signOut || 'Sign Out'}
             </button>
             {(user.role === 'admin' || user.role === 'teacher') && (
               <Link href="/admin" className="btn btn-ghost btn-sm">
-                ⚡ Teacher Dashboard →
+                {t.profile?.teacherDashboard || '⚡ Teacher Dashboard →'}
               </Link>
             )}
           </div>
@@ -141,11 +151,11 @@ export default function ProfilePage() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
             <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>
-              Devotee Standing • Bhakti-rasāmṛta-sindhu
+              {t.profile?.devoteeStanding || 'Devotee Standing • Bhakti-rasāmṛta-sindhu'}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontSize: '1.4rem', fontWeight: 900, color: stats.level.color }}>
-                Level {stats.level.level}: {stats.level.title}
+                {t.profile?.level || 'Level'} {stats.level.level}: {localizedCurrentLevel.titleDisplay}
               </span>
               <span style={{ fontSize: '1rem', color: stats.level.color, opacity: 0.85 }}>
                 ({stats.level.titleDevanagari})
@@ -154,28 +164,28 @@ export default function ProfilePage() {
           </div>
 
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>Rating Index</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>{t.profile?.ratingIndex || 'Rating Index'}</span>
             <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--color-gold)' }}>
-              {stats.rating.toLocaleString()} <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)', fontWeight: 400 }}>pts</span>
+              {stats.rating.toLocaleString()} <span style={{ fontSize: '0.85rem', color: 'var(--color-muted)', fontWeight: 400 }}>{t.profile?.pts || 'pts'}</span>
             </span>
           </div>
         </div>
 
         {/* Verse snippet */}
         <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'var(--color-text-secondary)', marginBottom: '1rem', lineHeight: 1.5 }}>
-          “{stats.level.verseSnippet}” — {stats.level.verseMeaning}.
+          “{stats.level.verseSnippet}” — {localizedVerseMeaning}.
         </p>
 
         {/* Progress to Next Level */}
-        {stats.nextLevel ? (
+        {stats.nextLevel && localizedNextLevel ? (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.4rem', color: 'var(--color-muted)', flexWrap: 'wrap', gap: '0.25rem' }}>
-              <span>Progress to Level {stats.nextLevel.level}: <strong>{stats.nextLevel.title}</strong></span>
+              <span>{t.profile?.progressToLevel || 'Progress to Level'} {stats.nextLevel.level}: <strong>{localizedNextLevel.titleDisplay}</strong></span>
               <span>
-                {stats.pointsToNext > 0 && <span><strong>{stats.pointsToNext} pts</strong></span>}
+                {stats.pointsToNext > 0 && <span><strong>{stats.pointsToNext} {t.profile?.pts || 'pts'}</strong></span>}
                 {stats.pointsToNext > 0 && stats.quizzesToNext > 0 && <span> • </span>}
-                {stats.quizzesToNext > 0 && <span><strong>{stats.quizzesToNext} quiz{stats.quizzesToNext > 1 ? 'zes' : ''}</strong> needed</span>}
-                {stats.pointsToNext === 0 && stats.quizzesToNext === 0 && stats.accuracyToNext > 0 && <span><strong>+{stats.accuracyToNext}% accuracy</strong> needed</span>}
+                {stats.quizzesToNext > 0 && <span><strong>{stats.quizzesToNext} {language === 'hi' ? 'क्विज़' : language === 'pt' ? 'quiz(zes)' : `quiz${stats.quizzesToNext > 1 ? 'zes' : ''}`}</strong> {t.profile?.needed || 'needed'}</span>}
+                {stats.pointsToNext === 0 && stats.quizzesToNext === 0 && stats.accuracyToNext > 0 && <span><strong>+{stats.accuracyToNext}% {t.profile?.accuracyNeeded || 'accuracy needed'}</strong></span>}
               </span>
             </div>
             <div style={{ height: 8, background: 'rgba(255,255,255,0.1)', borderRadius: 4, overflow: 'hidden' }}>
@@ -191,13 +201,17 @@ export default function ProfilePage() {
             </div>
             {stats.quizzesToNext > 0 && stats.pointsToNext === 0 && (
               <p style={{ fontSize: '0.75rem', color: 'var(--color-gold)', marginTop: '0.4rem', marginBottom: 0 }}>
-                🔒 Rating requirement met! Complete {stats.quizzesToNext} more unique quiz{stats.quizzesToNext > 1 ? 'zes' : ''} to unlock Level {stats.nextLevel.level}: {stats.nextLevel.title}.
+                {(t.profile?.ratingReqMet || 'Rating requirement met! Complete {count} more unique quiz(zes) to unlock Level {lvl}: {title}.')
+                  .replace('{count}', String(stats.quizzesToNext))
+                  .replace('{s}', stats.quizzesToNext > 1 ? 'zes' : '')
+                  .replace('{lvl}', String(stats.nextLevel.level))
+                  .replace('{title}', localizedNextLevel.titleDisplay)}
               </p>
             )}
           </div>
         ) : (
           <p style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, margin: 0 }}>
-            🌟 You have achieved the highest transcendental rating tier (Premī)!
+            {t.profile?.highestTier || '🌟 You have achieved the highest transcendental rating tier (Premī)!'}
           </p>
         )}
       </div>
@@ -205,15 +219,15 @@ export default function ProfilePage() {
       {/* Stats Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2.5rem' }}>
         <div className="card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>Unique Quizzes</p>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>{t.profile?.uniqueQuizzes || 'Unique Quizzes'}</p>
           <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-gold)' }}>{stats.totalQuizzes}</p>
         </div>
         <div className="card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>Best Points</p>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>{t.profile?.bestPoints || 'Best Points'}</p>
           <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-primary)' }}>{stats.totalEarned}</p>
         </div>
         <div className="card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>Mastery Accuracy</p>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.3rem' }}>{t.profile?.masteryAccuracy || 'Mastery Accuracy'}</p>
           <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-accent-2)' }}>
             {attempts.length > 0 ? `${stats.accuracyPct}%` : '—'}
           </p>
@@ -223,21 +237,21 @@ export default function ProfilePage() {
       {/* Attempt History */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: 700 }}>📜 Attempt History</h2>
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 700 }}>{t.profile?.attemptHistory || '📜 Attempt History'}</h2>
           <Link href="/" className="btn btn-secondary btn-sm">
-            Take Another Quiz →
+            {t.profile?.takeAnotherQuiz || 'Take Another Quiz →'}
           </Link>
         </div>
 
         {loadingAttempts ? (
-          <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem' }}>Loading past attempts...</p>
+          <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem' }}>{t.profile?.loadingAttempts || 'Loading past attempts...'}</p>
         ) : attempts.length === 0 ? (
           <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
             <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-              You haven't completed any quizzes yet.
+              {t.profile?.noAttemptsYet || 'You have not completed any quizzes yet.'}
             </p>
             <Link href="/q/mahabharata-authentic-01" className="btn btn-primary btn-sm">
-              🏹 Start Mahābhārata Quiz
+              {t.profile?.startMahabharata || '🏹 Start Mahābhārata Quiz'}
             </Link>
           </div>
         ) : (
@@ -278,7 +292,7 @@ export default function ProfilePage() {
                   </div>
 
                   <span className="badge badge-gold" style={{ fontSize: '0.82rem', fontWeight: 800, padding: '0.35rem 0.75rem', flexShrink: 0 }}>
-                    {att.score} / {att.max_score} pts
+                    {att.score} / {att.max_score} {t.profile?.pts || 'pts'}
                   </span>
                 </div>
 
@@ -290,7 +304,7 @@ export default function ProfilePage() {
                     onClick={() => setSelectedReviewAttempt(att)}
                     style={{ fontSize: '0.82rem', fontWeight: 700 }}
                   >
-                    🎴 Review Flashcards
+                    {t.profile?.reviewFlashcards || '🎴 Review Flashcards'}
                   </button>
 
                   <Link
@@ -298,7 +312,7 @@ export default function ProfilePage() {
                     className="btn btn-ghost btn-sm"
                     style={{ fontSize: '0.82rem' }}
                   >
-                    🏹 Retake
+                    {t.profile?.retake || '🏹 Retake'}
                   </Link>
                 </div>
               </div>

@@ -1,17 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import type { Quiz, QuizMeta, Category } from '@/types/quiz'
+import type { Quiz, QuizMeta, Category, QuizSession } from '@/types/quiz'
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
 
 interface AdminQuizCatalogProps {
   quizzes: QuizMeta[]
+  activeSessions?: QuizSession[]
   onStartSession: (quizId: string) => Promise<void>
+  onSelectSession?: (sessionId: string) => void
   starting: string | null
   onOpenCreator?: () => void
 }
 
-export function AdminQuizCatalog({ quizzes, onStartSession, starting, onOpenCreator }: AdminQuizCatalogProps) {
+export function AdminQuizCatalog({
+  quizzes,
+  activeSessions = [],
+  onStartSession,
+  onSelectSession,
+  starting,
+  onOpenCreator,
+}: AdminQuizCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards')
@@ -133,66 +142,110 @@ export function AdminQuizCatalog({ quizzes, onStartSession, starting, onOpenCrea
       {/* CARDS VIEW */}
       {viewMode === 'cards' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.25rem' }}>
-          {filteredQuizzes.map(quiz => (
-            <div
-              key={quiz.id}
-              className="card"
-              style={{
-                padding: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                  <span className="badge badge-gold" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {CATEGORY_ICONS[quiz.category] || '📜'} {CATEGORY_LABELS[quiz.category] || quiz.category}
-                  </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                    {quiz.totalQuestions} Questions
-                  </span>
+          {filteredQuizzes.map(quiz => {
+            const activeSession = activeSessions.find(s => s.quiz_id === quiz.id && s.is_active)
+            return (
+              <div
+                key={quiz.id}
+                className="card"
+                style={{
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  border: activeSession ? '1px solid rgba(74, 222, 128, 0.4)' : undefined,
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', minWidth: 0 }}>
+                      <span className="badge badge-gold" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {CATEGORY_ICONS[quiz.category] || '📜'} {CATEGORY_LABELS[quiz.category] || quiz.category}
+                      </span>
+                      {activeSession && (
+                        <span className="badge badge-success" style={{ fontSize: '0.68rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.15rem 0.45rem' }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                          LIVE PIN: {activeSession.pin}
+                        </span>
+                      )}
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                      {quiz.totalQuestions} Questions
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem', lineHeight: 1.35 }}>
+                    {quiz.title}
+                  </h3>
+
+                  <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                    {quiz.description}
+                  </p>
                 </div>
 
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem', lineHeight: 1.35 }}>
-                  {quiz.title}
-                </h3>
+                <div>
+                  <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.75rem' }}>
+                    <button
+                      className="btn btn-ghost btn-xs w-full"
+                      onClick={() => handleInspectQuestions(quiz.id)}
+                      style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
+                    >
+                      <span>👁</span> Preview ({quiz.totalQuestions})
+                    </button>
 
-                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
-                  {quiz.description}
-                </p>
-              </div>
+                    <button
+                      className="btn btn-ghost btn-xs"
+                      onClick={() => handleCopyLink(quiz.id)}
+                      style={{ border: '1px solid var(--color-border)', whiteSpace: 'nowrap' }}
+                    >
+                      {copiedId === quiz.id ? '✓ Copied' : '🔗 Link'}
+                    </button>
+                  </div>
 
-              <div>
-                <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.75rem' }}>
-                  <button
-                    className="btn btn-ghost btn-xs w-full"
-                    onClick={() => handleInspectQuestions(quiz.id)}
-                    style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
-                  >
-                    <span>👁</span> Preview ({quiz.totalQuestions})
-                  </button>
-
-                  <button
-                    className="btn btn-ghost btn-xs"
-                    onClick={() => handleCopyLink(quiz.id)}
-                    style={{ border: '1px solid var(--color-border)', whiteSpace: 'nowrap' }}
-                  >
-                    {copiedId === quiz.id ? '✓ Copied' : '🔗 Link'}
-                  </button>
+                  {activeSession ? (
+                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                      <button
+                        className="btn btn-sm w-full"
+                        onClick={() => onSelectSession?.(activeSession.id)}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          background: 'rgba(74, 222, 128, 0.15)',
+                          border: '1px solid #4ade80',
+                          color: '#4ade80',
+                          fontWeight: 700,
+                        }}
+                        title="This quiz is currently live. Click to view live classroom room."
+                      >
+                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                        Live Room (PIN: {activeSession.pin})
+                      </button>
+                      <button
+                        className="btn btn-ghost btn-sm"
+                        onClick={() => onStartSession(quiz.id)}
+                        disabled={starting === quiz.id}
+                        title="Start an additional live session with a new PIN"
+                        style={{ border: '1px solid var(--color-border)', padding: '0 0.6rem', whiteSpace: 'nowrap' }}
+                      >
+                        + New
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn-primary btn-sm w-full"
+                      onClick={() => onStartSession(quiz.id)}
+                      disabled={starting === quiz.id}
+                      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
+                    >
+                      <span>⚡</span> {starting === quiz.id ? 'Starting...' : 'Start Live Classroom Session'}
+                    </button>
+                  )}
                 </div>
-
-                <button
-                  className="btn btn-primary btn-sm w-full"
-                  onClick={() => onStartSession(quiz.id)}
-                  disabled={starting === quiz.id}
-                  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
-                >
-                  <span>⚡</span> {starting === quiz.id ? 'Starting...' : 'Start Live Classroom Session'}
-                </button>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
@@ -211,50 +264,82 @@ export function AdminQuizCatalog({ quizzes, onStartSession, starting, onOpenCrea
                 </tr>
               </thead>
               <tbody>
-                {filteredQuizzes.map(quiz => (
-                  <tr key={quiz.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <td style={{ padding: '0.85rem 1rem' }}>
-                      <div style={{ fontWeight: 600, color: 'var(--color-text)' }}>{quiz.title}</div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>{quiz.description}</div>
-                    </td>
-                    <td style={{ padding: '0.85rem 1rem' }}>
-                      <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
-                        {quiz.category}
-                      </span>
-                    </td>
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                      {quiz.totalQuestions}
-                    </td>
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                      <span className="text-muted" style={{ textTransform: 'capitalize' }}>{quiz.difficulty}</span>
-                    </td>
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
-                        <button
-                          className="btn btn-ghost btn-xs"
-                          onClick={() => handleInspectQuestions(quiz.id)}
-                          style={{ border: '1px solid var(--color-border)' }}
-                        >
-                          👁 Preview
-                        </button>
-                        <button
-                          className="btn btn-ghost btn-xs"
-                          onClick={() => handleCopyLink(quiz.id)}
-                          style={{ border: '1px solid var(--color-border)' }}
-                        >
-                          {copiedId === quiz.id ? '✓ Copied' : '🔗'}
-                        </button>
-                        <button
-                          className="btn btn-primary btn-xs"
-                          onClick={() => onStartSession(quiz.id)}
-                          disabled={starting === quiz.id}
-                        >
-                          ⚡ Live
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {filteredQuizzes.map(quiz => {
+                  const activeSession = activeSessions.find(s => s.quiz_id === quiz.id && s.is_active)
+                  return (
+                    <tr key={quiz.id} style={{ borderBottom: '1px solid var(--color-border)', background: activeSession ? 'rgba(74, 222, 128, 0.03)' : undefined }}>
+                      <td style={{ padding: '0.85rem 1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                          <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>{quiz.title}</span>
+                          {activeSession && (
+                            <span className="badge badge-success" style={{ fontSize: '0.65rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.1rem 0.4rem' }}>
+                              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                              PIN {activeSession.pin}
+                            </span>
+                          )}
+                        </div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>{quiz.description}</div>
+                      </td>
+                      <td style={{ padding: '0.85rem 1rem' }}>
+                        <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
+                          {quiz.category}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                        {quiz.totalQuestions}
+                      </td>
+                      <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                        <span className="text-muted" style={{ textTransform: 'capitalize' }}>{quiz.difficulty}</span>
+                      </td>
+                      <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <button
+                            className="btn btn-ghost btn-xs"
+                            onClick={() => handleInspectQuestions(quiz.id)}
+                            style={{ border: '1px solid var(--color-border)' }}
+                          >
+                            👁 Preview
+                          </button>
+                          <button
+                            className="btn btn-ghost btn-xs"
+                            onClick={() => handleCopyLink(quiz.id)}
+                            style={{ border: '1px solid var(--color-border)' }}
+                          >
+                            {copiedId === quiz.id ? '✓ Copied' : '🔗'}
+                          </button>
+                          {activeSession ? (
+                            <button
+                              className="btn btn-xs"
+                              onClick={() => onSelectSession?.(activeSession.id)}
+                              style={{
+                                background: 'rgba(74, 222, 128, 0.15)',
+                                border: '1px solid #4ade80',
+                                color: '#4ade80',
+                                fontWeight: 700,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                padding: '0.35rem 0.65rem',
+                              }}
+                              title={`Live room is running with PIN ${activeSession.pin}. Click to view room.`}
+                            >
+                              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                              Live ({activeSession.pin})
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-primary btn-xs"
+                              onClick={() => onStartSession(quiz.id)}
+                              disabled={starting === quiz.id}
+                            >
+                              ⚡ Live
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

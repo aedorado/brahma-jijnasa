@@ -100,7 +100,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="text-center">
           <div className="spinner-gold" />
-          <p className="text-muted" style={{ marginTop: '1rem' }}>Loading Sacred Teachings Series...</p>
+          <p className="text-muted" style={{ marginTop: '1rem' }}>{t.series.loadingSeries || 'Loading Sacred Teachings Series...'}</p>
         </div>
       </div>
     )
@@ -109,9 +109,9 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   if (!series) {
     return (
       <div className="container text-center" style={{ padding: '6rem 0' }}>
-        <h2>Series Not Found</h2>
+        <h2>{t.series.seriesNotFound || 'Series Not Found'}</h2>
         <p className="text-muted" style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}>
-          The requested series does not exist.
+          {t.series.seriesNotFoundDesc || 'The requested series does not exist.'}
         </p>
         <Link href="/series" className="btn btn-primary">{t.series.allSeriesTitle || 'Browse All Series'}</Link>
       </div>
@@ -128,7 +128,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
       <div className="container">
         {/* Breadcrumb */}
         <div style={{ marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-          <Link href="/" style={{ color: 'var(--color-muted)' }}>Home</Link>
+          <Link href="/" style={{ color: 'var(--color-muted)' }}>{t.series.home || 'Home'}</Link>
           <span style={{ margin: '0 0.5rem', color: 'var(--color-border)' }}>/</span>
           <Link href="/series" style={{ color: 'var(--color-muted)' }}>{t.nav.allSeries || 'Series'}</Link>
           <span style={{ margin: '0 0.5rem', color: 'var(--color-border)' }}>/</span>
@@ -162,7 +162,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 textTransform: 'uppercase',
               }}
             >
-              🌺 Kārtika Mahotsava Special Series
+              {t.series.specialSeriesBadge || '🌺 Kārtika Mahotsava Special Series'}
             </span>
             <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
               {t.series.daysDaily}
@@ -181,7 +181,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 color: '#4ade80',
               }}
             >
-              🕒 Daily 7:05 PM IST
+              {t.series.dailyTimeBadge || '🕒 Daily 7:05 PM IST'}
             </span>
           </div>
 
@@ -269,7 +269,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               <div>
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>{t.series.roadmapTab}</h2>
                 <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                  Take today’s round live with your teacher or practice unlocked rounds anytime.
+                  {t.series.curriculumSubtitle || 'Take today’s round live with your teacher or practice unlocked rounds anytime.'}
                 </p>
               </div>
 
@@ -433,7 +433,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
             <div style={{ marginBottom: '1.5rem' }}>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>{t.series.standingsTab}</h2>
               <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                Total points earned across all daily rounds of the series.
+                {t.series.standingsSubtitle || 'Total points earned across all daily rounds of the series.'}
               </p>
             </div>
 
@@ -500,9 +500,9 @@ export default function SeriesPage({ params }: SeriesPageProps) {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
-                <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>Śrīla Bhaktisiddhānta’s Principles for Community</h2>
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>{t.series.principlesHeading || 'Śrīla Bhaktisiddhānta’s Principles for Community'}</h2>
                 <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                  Spiritual directives for community harmony and unalloyed service from <em>Reflections on Sacred Teachings V</em> by His Holiness Bhakti Tirtha Swami Maharaja.
+                  {t.series.principlesSubtitle || 'Spiritual directives for community harmony and unalloyed service from Reflections on Sacred Teachings V by His Holiness Bhakti Tirtha Swami Maharaja.'}
                 </p>
               </div>
 
@@ -513,20 +513,20 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                     className={`btn btn-sm ${principleScope === '30' ? 'btn-primary' : 'btn-ghost'}`}
                     style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', borderRadius: 6 }}
                   >
-                    Principles 1–30 (Current Series)
+                    {t.series.principlesCurrent || 'Principles 1–30 (Current Series)'}
                   </button>
                   <button
                     onClick={() => setPrincipleScope('64')}
                     className={`btn btn-sm ${principleScope === '64' ? 'btn-primary' : 'btn-ghost'}`}
                     style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', borderRadius: 6 }}
                   >
-                    All 64 Book Principles
+                    {t.series.principlesAll || 'All 64 Book Principles'}
                   </button>
                 </div>
 
                 <input
                   type="text"
-                  placeholder="Search principles..."
+                  placeholder={t.series.searchPrinciples || 'Search principles...'}
                   value={principleSearch}
                   onChange={e => setPrincipleSearch(e.target.value)}
                   style={{

@@ -34,7 +34,7 @@ export default function DirectQuizPage({ params }: Props) {
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
   const supabase = createClient()
   const submittingRef = useRef(false)
 
@@ -237,7 +237,7 @@ export default function DirectQuizPage({ params }: Props) {
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="text-center">
         <div className="spinner-gold" />
-        <p className="text-muted">Loading...</p>
+        <p className="text-muted">{t.quizIntro?.loadingQuiz || 'Loading...'}</p>
       </div>
     </div>
   )
@@ -249,17 +249,17 @@ export default function DirectQuizPage({ params }: Props) {
           {errorMsg.includes('scheduled') ? '🔒' : '🙏'}
         </div>
         <h2 style={{ marginBottom: '0.75rem' }}>
-          {errorMsg.includes('scheduled') ? 'Daily Round Scheduled' : 'Quiz Not Found'}
+          {errorMsg.includes('scheduled') ? (t.quizIntro?.dailyRoundScheduled || 'Daily Round Scheduled') : (t.quizIntro?.quizNotFound || 'Quiz Not Found')}
         </h2>
         <p className="text-muted" style={{ marginBottom: '1.5rem', fontSize: '0.9rem', lineHeight: 1.5 }}>{errorMsg}</p>
         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           {errorMsg.includes('scheduled') && (
-            <Link href="/series/64-principles" className="btn btn-primary" id="series-roadmap-btn">
-              Series Roadmap
+            <Link href="/series/sacred-teachings-64-principles" className="btn btn-primary" id="series-roadmap-btn">
+              {t.quizIntro?.seriesRoadmap || 'Series Roadmap'}
             </Link>
           )}
           <button className={`btn ${errorMsg.includes('scheduled') ? 'btn-ghost' : 'btn-primary'}`} onClick={() => router.push('/')} id="back-home-err-btn">
-            Return Home
+            {t.quizIntro?.returnHome || 'Return Home'}
           </button>
         </div>
       </div>
@@ -270,15 +270,15 @@ export default function DirectQuizPage({ params }: Props) {
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <div className="card-gold animate-scaleIn" style={{ padding: '2.5rem', maxWidth: 480, width: '100%' }}>
         <div className="text-center" style={{ marginBottom: '2rem' }}>
-          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>Practice Mode</span>
+          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>{t.quizIntro?.practiceMode || 'Practice Mode'}</span>
           <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{quiz.title}</h1>
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>{quiz.description}</p>
         </div>
         <div className="divider-gold" />
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
           {[
-            { label: 'Questions', value: quiz.questions.length },
-            { label: 'Time Limit', value: quiz.timeLimit > 0 ? `${Math.floor(quiz.timeLimit / 60)} min` : 'No limit' },
+            { label: t.quizIntro?.questions || 'Questions', value: quiz.questions.length },
+            { label: t.quizIntro?.timeLimit || 'Time Limit', value: quiz.timeLimit > 0 ? `${Math.floor(quiz.timeLimit / 60)} ${t.quizIntro?.min || 'min'}` : (t.quizIntro?.noLimit || 'No limit') },
           ].map(({ label, value }) => (
             <div key={label} className="card" style={{ padding: '0.85rem', textAlign: 'center' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.2rem' }}>{label}</p>
@@ -287,7 +287,7 @@ export default function DirectQuizPage({ params }: Props) {
           ))}
         </div>
         <button className="btn btn-primary btn-lg w-full" onClick={() => setPhase('quiz')} id="start-direct-quiz-btn">
-          ✨ Begin the Jijñāsā
+          {t.quizIntro?.beginInquiry || '✨ Begin the Jijñāsā'}
         </button>
       </div>
     </div>
@@ -325,9 +325,9 @@ export default function DirectQuizPage({ params }: Props) {
               fontWeight: 600,
             }}
           >
-            <span>✅ You have already completed this round. Showing your recorded scorecard and answer review.</span>
-            <Link href="/series/64-principles" style={{ color: 'var(--color-gold)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
-              Series Roadmap →
+            <span>{t.quizIntro?.alreadyCompletedNotice || '✅ You have already completed this round. Showing your recorded scorecard and answer review.'}</span>
+            <Link href="/series/sacred-teachings-64-principles" style={{ color: 'var(--color-gold)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+              {t.quizIntro?.seriesRoadmap || 'Series Roadmap'} →
             </Link>
           </div>
         </div>

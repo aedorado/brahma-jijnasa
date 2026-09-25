@@ -1,6 +1,7 @@
 'use client'
 
 import type { MissingLinkQuestion } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: MissingLinkQuestion
@@ -12,10 +13,12 @@ type Props = {
 const LETTERS = ['A', 'B', 'C', 'D']
 
 export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h2 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem' }}>
-        {question.question || 'What event completes the chain?'}
+        {question.question || t.questions?.missingLinkDefaultPrompt || 'What event completes the chain?'}
       </h2>
 
       {/* Chain visualization */}
@@ -71,7 +74,7 @@ export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
                     lineHeight: 1.4,
                   }}
                 >
-                  {isMissing ? '❓ [ Missing Event — Select below ]' : item}
+                  {isMissing ? (t.questions?.missingEventPlaceholder || '❓ [ Missing Event — Select below ]') : item}
                 </span>
               </div>
               {i < question.chain.length - 1 && (

@@ -1,6 +1,7 @@
 'use client'
 
 import type { MultipleSelectQuestion } from '@/types/quiz'
+import { useLanguage } from '@/context/LanguageContext'
 
 type Props = {
   question: MultipleSelectQuestion
@@ -12,6 +13,7 @@ type Props = {
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
 
 export function MultipleSelect({ question, answer, onAnswer, disabled }: Props) {
+  const { t } = useLanguage()
   const toggle = (i: number) => {
     if (disabled) return
     if (answer.includes(i)) {
@@ -27,7 +29,7 @@ export function MultipleSelect({ question, answer, onAnswer, disabled }: Props) 
         {question.question}
       </h2>
       <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
-        Select all that apply. Scoring: +1 per correct, −0.5 per wrong selection.
+        {t.questions?.multipleSelectScoring || 'Select all that apply. Scoring: +1 per correct, −0.5 per wrong selection.'}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

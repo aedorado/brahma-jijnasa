@@ -31,7 +31,7 @@ export default function SessionPage({ params }: Props) {
   const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
   const { user, loading: authLoading, login } = useAuth()
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
   const supabase = createClient()
   const activeQuizIdRef = useRef<string>('')
   const phaseRef = useRef<Phase>('loading')
@@ -271,7 +271,7 @@ export default function SessionPage({ params }: Props) {
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="text-center">
           <div className="spinner-gold" />
-          <p className="text-muted">Loading quiz...</p>
+          <p className="text-muted">{t.quizIntro?.loadingQuiz || 'Loading quiz...'}</p>
         </div>
       </div>
     )
@@ -282,10 +282,10 @@ export default function SessionPage({ params }: Props) {
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
         <div className="card-gold text-center" style={{ padding: '2.5rem', maxWidth: 420 }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🙏</div>
-          <h2 style={{ marginBottom: '0.75rem' }}>Unable to Join</h2>
+          <h2 style={{ marginBottom: '0.75rem' }}>{t.quizIntro?.unableToJoin || 'Unable to Join'}</h2>
           <p className="text-muted" style={{ marginBottom: '1.5rem' }}>{errorMsg}</p>
           <button className="btn btn-primary" onClick={() => router.push('/')} id="back-home-btn">
-            Return Home
+            {t.quizIntro?.returnHome || 'Return Home'}
           </button>
         </div>
       </div>
@@ -298,7 +298,7 @@ export default function SessionPage({ params }: Props) {
         <div className="card-gold animate-scaleIn" style={{ padding: '2.5rem', maxWidth: 480, width: '100%' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <span className="badge badge-accent" style={{ marginBottom: '1rem' }}>
-              {pin === '000' || pin === '0000' ? '⚡ Demo Quiz Session (PIN: 0000)' : `PIN: ${pin}`}
+              {pin === '000' || pin === '0000' ? (t.scoreCard?.demoSessionBadge || '⚡ Demo Quiz Session (PIN: 0000)') : `PIN: ${pin}`}
             </span>
             <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{quiz.title}</h1>
             <p className="text-muted" style={{ fontSize: '0.9rem' }}>{quiz.description}</p>
@@ -308,10 +308,10 @@ export default function SessionPage({ params }: Props) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
             {[
-              { label: 'Questions', value: quiz.questions.length },
-              { label: 'Time Limit', value: quiz.timeLimit > 0 ? `${Math.floor(quiz.timeLimit / 60)} min` : 'No limit' },
-              { label: 'Difficulty', value: quiz.difficulty.charAt(0).toUpperCase() + quiz.difficulty.slice(1) },
-              { label: 'Category', value: quiz.category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) },
+              { label: t.quizIntro?.questions || 'Questions', value: quiz.questions.length },
+              { label: t.quizIntro?.timeLimit || 'Time Limit', value: quiz.timeLimit > 0 ? `${Math.floor(quiz.timeLimit / 60)} ${t.quizIntro?.min || 'min'}` : (t.quizIntro?.noLimit || 'No limit') },
+              { label: t.quizIntro?.difficulty || 'Difficulty', value: (t.quizEngine as any)?.[quiz.difficulty] || quiz.difficulty.charAt(0).toUpperCase() + quiz.difficulty.slice(1) },
+              { label: t.quizIntro?.category || 'Category', value: (t.categories as any)?.[quiz.category] || quiz.category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) },
             ].map(({ label, value }) => (
               <div key={label} className="card" style={{ padding: '0.85rem', textAlign: 'center' }}>
                 <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.2rem' }}>{label}</p>
@@ -322,18 +322,18 @@ export default function SessionPage({ params }: Props) {
 
           {initialElapsed > 0 && (
             <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>
-              ↩ Your previous progress has been restored
+              {t.quizIntro?.progressRestored || '↩ Your previous progress has been restored'}
             </p>
           )}
 
           <button className="btn btn-primary btn-lg w-full" onClick={handleStart} id="start-quiz-btn">
-            ✨ Begin the Jijñāsā
+            {t.quizIntro?.beginInquiry || '✨ Begin the Jijñāsā'}
           </button>
 
           <p className="text-muted text-center mt-2" style={{ fontSize: '0.75rem' }}>
             {quiz.onTimeExpiry === 'submit-partial'
-              ? 'Quiz will auto-submit when time runs out'
-              : 'Answer all questions before submitting'}
+              ? (t.quizIntro?.autoSubmitNotice || 'Quiz will auto-submit when time runs out')
+              : (t.quizIntro?.answerAllNotice || 'Answer all questions before submitting')}
           </p>
         </div>
       </div>
