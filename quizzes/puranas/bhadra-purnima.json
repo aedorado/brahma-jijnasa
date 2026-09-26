@@ -245,9 +245,9 @@
         "Assertion is true, but Reason is false.",
         "Assertion is false, but Reason is true."
       ],
-      "correctIndex": 1,
+      "correctIndex": 0,
       "reference": "Śrīmad-Bhāgavatam 1.1.2 & 12.13.18",
-      "explanation": "Both statements are authentic scriptural truths. In epistemology, being the spotless means of valid knowledge (pramāṇa) is its intrinsic epistemic status, while the revelation of unalloyed devotional service is its theological substance (prameya/abhidheya)."
+      "explanation": "Both statements are true: Śrīmad-Bhāgavatam is the amala-pramāṇa precisely because it teaches pure devotional service completely free from material contamination and fruitive desires (SB 1.1.2)."
     },
     {
       "id": 14,
