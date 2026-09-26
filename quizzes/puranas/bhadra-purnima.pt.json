@@ -24,23 +24,20 @@
       "explanation": "O Śrīmad-Bhāgavatam 12.13.13 declara que se no dia de lua cheia do mês de Bhādra (proṣṭhapadyām / Bhādra Pūrṇimā) alguém apresentar o Śrīmad-Bhāgavatam num trono de ouro, alcançará o destino supremo."
     },
     {
-      "id": 2,
-      "type": "multiple-select",
-      "question": "Quais dos seguintes benefícios espirituais especiais são explicitamente declarados no Śrīmad-Bhāgavatam 12.13.13 ao presentear o Śrīmad-Bhāgavatam na Bhādra Pūrṇimā? (Selecione todos os que se aplicam)",
+      "id": "q2",
+      "type": "single-choice",
+      "question": "Qual benefício espiritual explícito é prometido no Śrīmad-Bhāgavatam 12.13.13 ao presentear o Śrīmad-Bhāgavatam em um trono de ouro na Bhādra Pūrṇimā?",
       "difficulty": "easy",
       "points": 10,
       "options": [
         "Obtenção de um reino soberano terreno",
-        "Obtenção do destino transcendental supremo (parāṁ gatim)",
-        "Liberação de impostos cósmicos nos planetas celestiais",
-        "Libertação do cativeiro material ao agradar o Supremo Senhor"
+        "Obtenção do supremo destino (parāṁ gatim)",
+        "Promoção ao sistema planetário celestial de Indra",
+        "Aquisição de poderes místicos (siddhis)"
       ],
-      "correctIndices": [
-        1,
-        3
-      ],
+      "correctIndex": 1,
       "reference": "Śrīmad-Bhāgavatam 12.13.13",
-      "explanation": "O SB 12.13.13 declara 'sa yāti paramāṁ gatim' — ao dar este supremo Purāṇa em um trono de ouro na Bhādra Pūrṇimā, alcança-se o supremo destino espiritual e a libertação do cativeiro material."
+      "explanation": "O Śrīmad-Bhāgavatam 12.13.13 declara explicitamente 'sa yāti paramāṁ gatim' — aquele que presenteia o Śrīmad-Bhāgavatam num trono de ouro na Bhādra Pūrṇimā alcança o supremo destino."
     },
     {
       "id": 3,

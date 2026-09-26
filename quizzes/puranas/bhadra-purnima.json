@@ -24,23 +24,20 @@
       "explanation": "Śrīmad-Bhāgavatam 12.13.13 states that if on the full-moon day of the month of Bhādra (proṣṭhapadyām / Bhādra Pūrṇimā) one presents the Śrīmad-Bhāgavatam seated on a golden throne, one achieves the supreme destination."
     },
     {
-      "id": 2,
-      "type": "multiple-select",
-      "question": "Which of the following special spiritual benefits are explicitly stated in Śrīmad-Bhāgavatam 12.13.13 for gifting Śrīmad-Bhāgavatam on Bhādra Pūrṇimā? (Select all that apply)",
+      "id": "q2",
+      "type": "single-choice",
+      "question": "What explicit spiritual benefit is promised in Śrīmad-Bhāgavatam 12.13.13 for gifting Śrīmad-Bhāgavatam on a golden throne on Bhādra Pūrṇimā?",
       "difficulty": "easy",
       "points": 10,
       "options": [
-        "Attainment of earthly sovereign kingdom",
-        "Attainment of the supreme transcendental destination (parāṁ gatim)",
-        "Freedom from cosmic taxation in heavenly planets",
-        "Freedom from material bondage by pleasing the Supreme Lord"
+        "Attainment of an earthly sovereign kingdom",
+        "Attainment of the supreme destination (parāṁ gatim)",
+        "Promotion to the heavenly planetary system of Indra",
+        "Acquisition of mystic powers (siddhis)"
       ],
-      "correctIndices": [
-        1,
-        3
-      ],
+      "correctIndex": 1,
       "reference": "Śrīmad-Bhāgavatam 12.13.13",
-      "explanation": "SB 12.13.13 declares 'sa yāti paramāṁ gatim' - by giving this supreme Purāṇa on a golden throne on Bhādra Pūrṇimā, one attains the supreme spiritual destination and liberation from material bondage."
+      "explanation": "Śrīmad-Bhāgavatam 12.13.13 explicitly states 'sa yāti paramāṁ gatim'—one who gives the gift of Śrīmad-Bhāgavatam seated on a golden throne on Bhādra Pūrṇimā attains the supreme destination."
     },
     {
       "id": 3,
