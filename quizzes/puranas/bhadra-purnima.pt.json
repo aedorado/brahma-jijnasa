@@ -1,0 +1,495 @@
+{
+  "id": "bhadra-purnima",
+  "title": "Bhādra Pūrṇimā — Śrīmad-Bhāgavatam Mahotsava",
+  "category": "puranas",
+  "description": "Quiz festivo abrangente sobre as glórias do Śrīmad-Bhāgavatam e a bênção auspiciosa de presentear a escritura na Bhādra Pūrṇimā, com base nas escrituras sagradas.",
+  "difficulty": "medium",
+  "timeLimit": 900,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "De acordo com o Śrīmad-Bhāgavatam 12.13.13, em qual dia sagrado de lua cheia é recomendado presentear o Śrīmad-Bhāgavatam colocado sobre um trono de ouro (hema-siṁha-samanvitam)?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Kārtika Pūrṇimā",
+        "Bhādra Pūrṇimā",
+        "Māgha Pūrṇimā",
+        "Vaiśākha Pūrṇimā"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 12.13.13",
+      "explanation": "O Śrīmad-Bhāgavatam 12.13.13 declara que se no dia de lua cheia do mês de Bhādra (proṣṭhapadyām / Bhādra Pūrṇimā) alguém apresentar o Śrīmad-Bhāgavatam num trono de ouro, alcançará o destino supremo."
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Quais dos seguintes benefícios espirituais especiais são explicitamente declarados no Śrīmad-Bhāgavatam 12.13.13 ao presentear o Śrīmad-Bhāgavatam na Bhādra Pūrṇimā? (Selecione todos os que se aplicam)",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Obtenção de um reino soberano terreno",
+        "Obtenção do destino transcendental supremo (parāṁ gatim)",
+        "Liberação de impostos cósmicos nos planetas celestiais",
+        "Libertação do cativeiro material ao agradar o Supremo Senhor"
+      ],
+      "correctIndices": [
+        1,
+        3
+      ],
+      "reference": "Śrīmad-Bhāgavatam 12.13.13",
+      "explanation": "O SB 12.13.13 declara 'sa yāti paramāṁ gatim' — ao dar este supremo Purāṇa em um trono de ouro na Bhādra Pūrṇimā, alcança-se o supremo destino espiritual e a libertação do cativeiro material."
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Verdadeiro ou Falso: O Śrīmad-Bhāgavatam é descrito como o 'Amala Purāṇa', significando o Purāṇa imaculado que é completamente livre de contaminação material e desejos fruitivos.",
+      "difficulty": "easy",
+      "points": 10,
+      "correct": true,
+      "reference": "Śrīmad-Bhāgavatam 12.13.18 & 1.1.2",
+      "explanation": "O Śrīmad-Bhāgavatam 12.13.18 glorifica explicitamente o Śrīmad-Bhāgavatam como 'śrīmad-bhāgavatam purāṇam amalaṁ yad vaiṣṇavānāṁ priyam' — o Purāṇa imaculado querido por todos os Vaiṣṇavas."
+    },
+    {
+      "id": 4,
+      "type": "who-said-this",
+      "question": "Quem proferiu o famoso verso declarando que pelo serviço regular ao Śrīmad-Bhāgavatam e ao devoto, todas as coisas impuras no coração são destruídas?",
+      "difficulty": "easy",
+      "points": 10,
+      "quote": "naṣṭa-prāyeṣv abhadreṣu nityaṁ bhāgavata-sevayā / bhagavaty uttama-śloke bhaktir bhavati naiṣṭhikī",
+      "context": "Proferido em Naimiṣāraṇya ao explicar o remédio definitivo para as impurezas do coração.",
+      "options": [
+        "Śukadeva Gosvāmī",
+        "Sūta Gosvāmī",
+        "Nārada Muni",
+        "Vyāsadeva"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 1.2.18",
+      "explanation": "Sūta Gosvāmī proferiu este verso para a assembleia de sábios em Naimiṣāraṇya liderada por Śaunaka Ṛṣi, enfatizando o poder do bhāgavata-sevā diário."
+    },
+    {
+      "id": 5,
+      "type": "single-choice",
+      "question": "Quantos Cantos (Skandhas) compõem o Śrīmad-Bhāgavatam completo?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "10 Cantos",
+        "12 Cantos",
+        "14 Cantos",
+        "18 Cantos"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 12.13.4-9",
+      "explanation": "O Śrīmad-Bhāgavatam consiste em 12 Cantos contendo 335 capítulos e 18.000 versos."
+    },
+    {
+      "id": 6,
+      "type": "match-pairs",
+      "question": "Associe cada grande personalidade espiritual com seu papel específico na compilação e transmissão do Śrīmad-Bhāgavatam:",
+      "difficulty": "easy",
+      "points": 10,
+      "left": [
+        "Śrīla Vyāsadeva",
+        "Nārada Muni",
+        "Śrī Śukadeva Gosvāmī",
+        "Mahārāja Parīkṣit"
+      ],
+      "right": [
+        "Recitou o Bhāgavatam na margem do Ganges",
+        "Indagou com puro desejo enquanto jejuava até a morte",
+        "Compilou os 18.000 versos após inspiração divina",
+        "Instruiu Vyāsadeva a escrever especificamente sobre as glórias de Kṛṣṇa"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "reference": "Śrīmad-Bhāgavatam Canto 1 Capítulos 2, 5 & 19",
+      "explanation": "Vyāsadeva compilou o texto; Nārada inspirou sua escrita; Śukadeva o proferiu no Ganges; Parīkṣit o ouviu com devoção de uso exclusivo."
+    },
+    {
+      "id": 7,
+      "type": "cause-effect",
+      "question": "Qual foi a causa imediata que levou Śrīla Vyāsadeva a compilar o Śrīmad-Bhāgavatam mesmo após editar os Vedas e Purāṇas?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Ele se sentiu desanimado em seu coração porque não havia glorificado diretamente os passatempos transcendentais do Senhor Kṛṣṇa.",
+        "Ele foi ordenado pelo Rei Yudhiṣṭhira a escrever uma crônica histórica para os Pandavas.",
+        "Ele queria vencer um debate contra os brāhmaṇas ritualistas de Naimiṣāraṇya.",
+        "Ele foi solicitado pela Mãe Satyavatī a compilar um código de leis para a Kali-yuga."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.4.26-31 & 1.5.8-11",
+      "explanation": "Apesar de organizar os Vedas e escrever o Mahābhārata, Vyāsadeva sentiu-se insatisfeito até que Nārada Muni apontou que ele não havia transmitido diretamente as puras glórias de Bhagavān Śrī Kṛṣṇa."
+    },
+    {
+      "id": 8,
+      "type": "who-am-i",
+      "question": "Identifique a personalidade descrita por estas pistas escriturais:",
+      "difficulty": "easy",
+      "points": 10,
+      "clues": [
+        "Sou o compilador da literatura védica que se sentiu incompleto até escrever o Śrīmad-Bhāgavatam.",
+        "Fui aconselhado por meu mestre espiritual Nārada Muni na margem do Rio Sarasvatī.",
+        "Ensinei este Purāṇa imaculado ao meu filho renunciante Śukadeva Gosvāmī."
+      ],
+      "options": [
+        "Sūta Gosvāmī",
+        "Śrīla Vyāsadeva",
+        "Maitreya Ṛṣi",
+        "Parāśara Muni"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 1.4.14-33 & 1.7.8",
+      "explanation": "Śrīla Vyāsadeva (Bādarāyaṇa) compilou o Bhāgavatam sob a instrução de Nārada e o ensinou a Śukadeva Gosvāmī."
+    },
+    {
+      "id": 9,
+      "type": "single-choice",
+      "question": "No Śrīmad-Bhāgavatam 1.1.3, qual metáfora é usada para descrever o Śrīmad-Bhāgavatam em relação à literatura védica?",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "A raiz firme da árvore da religião",
+        "O fruto maduro e totalmente desenvolvido da árvore dos desejos da sabedoria védica",
+        "O escudo impenetrável que protege a verdade eterna",
+        "A lâmpada de ouro que ilumina a floresta escura"
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 1.1.3",
+      "explanation": "Śrīmad-Bhāgavatam 1.1.3 descreve: 'nigama-kalpa-taror galitaṁ phalaṁ... pibata bhāgavataṁ rasam ālayam' — é o fruto amadurecido da árvore dos desejos do conhecimento védico."
+    },
+    {
+      "id": 10,
+      "type": "two-truths-one-false",
+      "question": "Identifique a afirmação FALSA entre as opções em relação às glórias do Śrīmad-Bhāgavatam:",
+      "difficulty": "easy",
+      "points": 10,
+      "options": [
+        "Declaração 1: O Śrīmad-Bhāgavatam é a encarnação literária da Suprema Personalidade de Deus (granthāvatāra) destinada a dar luz na Kali-yuga.",
+        "Declaração 2: O Śrīmad-Bhāgavatam rejeita completamente todas as atividades religiosas motivadas por ganho material (dharmaḥ projjhita-kaitavo 'tra).",
+        "Declaração 3: O Śrīmad-Bhāgavatam só pode ser compreendido por aqueles que realizam dispendiosos sacrifícios de cavalos (Aśvamedha-yajña)."
+      ],
+      "correctIndex": 2,
+      "reference": "Śrīmad-Bhāgavatam 1.1.2, 1.3.43 & 12.13.18",
+      "explanation": "A declaração 3 é FALSA. O Śrīmad-Bhāgavatam requer ouvir puro (śravaṇam) e devoção, deixando de lado completamente os dispendiosos sacrifícios ritualísticos."
+    },
+    {
+      "id": 11,
+      "type": "spot-the-error",
+      "question": "Identifique e corrija o erro factual no seguinte trecho:",
+      "difficulty": "easy",
+      "points": 10,
+      "passage": "O Mahārāja Parīkṣit sentou-se na margem do rio Yamunā jejuando até a morte durante sete dias. Lá, Śrīla Vyāsadeva recitou os 18.000 versos do Śrīmad-Bhāgavatam para ele na presença de grandes sábios.",
+      "options": [
+        "Mude 'rio Yamunā' para 'rio Ganges' e 'Śrīla Vyāsadeva recitou' para 'Śrī Śukadeva Gosvāmī recitou'.",
+        "Mude 'sete dias' para 'quarenta e nove dias'.",
+        "Mude '18.000 versos' para '100.000 versos'.",
+        "Mude 'Mahārāja Parīkṣit' para 'Mahārāja Yudhiṣṭhira'."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.19.6 & 1.19.25",
+      "explanation": "O Mahārāja Parīkṣit sentou-se na margem do Ganges (Gaṅgā-tīre), e foi Śrī Śukadeva Gosvāmī quem narrou o Bhāgavatam para ele."
+    },
+    {
+      "id": 12,
+      "type": "sequence",
+      "question": "Organize as seguintes etapas históricas na origem e transmissão do Śrīmad-Bhāgavatam na ordem cronológica correta:",
+      "difficulty": "easy",
+      "points": 10,
+      "items": [
+        "Nārada Muni instrui Śrīla Vyāsadeva a escrever puramente sobre os passatempos de Kṛṣṇa.",
+        "Śrī Śukadeva Gosvāmī recita o Bhāgavatam para o Mahārāja Parīkṣit na margem do Ganges.",
+        "Sūta Gosvāmī narra o Bhāgavatam para os sábios reunidos em Naimiṣāraṇya.",
+        "O Senhor Kṛṣṇa transmite os quatro versos fundamentais (Catuḥ-ślokī) ao Senhor Brahmā."
+      ],
+      "correctOrder": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 2.9.33-36, 1.5, 1.19 & 1.1",
+      "explanation": "1) Catuḥ-ślokī transmitido a Brahmā (3), 2) Nārada instrui Vyāsa (0), 3) Śukadeva recita para Parīkṣit (1), 4) Sūta recita em Naimiṣāraṇya (2)."
+    },
+    {
+      "id": 13,
+      "type": "assertion-reason",
+      "question": "Analise a Afirmação e a Razão sobre o estudo do Śrīmad-Bhāgavatam:",
+      "difficulty": "medium",
+      "points": 15,
+      "assertion": "O Śrīmad-Bhāgavatam é chamado de supremo pramāṇa (pramāṇam amalam) entre todas as escrituras védicas.",
+      "reason": "Apresenta diretamente a verdade imaculada do serviço devocional puro a Śrī Kṛṣṇa, sem qualquer mistura de motivos fruitivos.",
+      "options": [
+        "Tanto a Afirmação quanto a Razão são verdadeiras, e a Razão é a explicação correta para a Afirmação.",
+        "Tanto a Afirmação quanto a Razão são verdadeiras, mas a Razão NÃO é a explicação correta para a Afirmação.",
+        "A Afirmação é verdadeira, mas a Razão é falsa.",
+        "A Afirmação é falsa, mas a Razão é verdadeira."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 1.1.2 & 12.13.18",
+      "explanation": "Ambas as declarações são verdades escriturais autênticas. Na epistemologia, ser o meio imaculado de conhecimento válido (pramāṇa) é seu status epistemológico intrínseco, enquanto a revelação do serviço devocional puro é sua substância teológica (prameya/abhidheya)."
+    },
+    {
+      "id": 14,
+      "type": "multiple-select",
+      "question": "Quais das seguintes entidades são referidas pela palavra 'Bhāgavata' na tradição do Śrīmad-Bhāgavatam? (Selecione todos os que se aplicam)",
+      "difficulty": "medium",
+      "points": 15,
+      "options": [
+        "A escritura em livro Śrīmad-Bhāgavatam (Grantha-Bhāgavata)",
+        "O trabalhador fruitivo que busca a promoção celestial (Karmi-Bhāgavata)",
+        "O puro devoto do Supremo Senhor (Bhakta-Bhāgavata)",
+        "O meditador impessoal meditando no vazio (Śūnya-Bhāgavata)"
+      ],
+      "correctIndices": [
+        0,
+        2
+      ],
+      "reference": "Śrīmad-Bhāgavatam 1.2.18 & Significado",
+      "explanation": "Existem dois tipos de Bhāgavatas: o livro Bhāgavata (Grantha-Bhāgavata) e a pessoa Bhāgavata (Bhakta-Bhāgavata). Servir a ambos traz pura devoção."
+    },
+    {
+      "id": 15,
+      "type": "odd-one-out",
+      "question": "Qual dos seguintes NÃO é uma das dez características primárias (Daśa-lakṣaṇa) do Śrīmad-Bhāgavatam descritas no Canto 2 e Canto 12?",
+      "difficulty": "medium",
+      "points": 15,
+      "options": [
+        "Sarga (Criação primária dos elementos)",
+        "Visarga (Criação secundária por Brahmā)",
+        "Jyotiṣa (Adivinhação astrológica)",
+        "Iśānukathā (Passatempos do Senhor e de Seus devotos)"
+      ],
+      "correctIndex": 2,
+      "reference": "Śrīmad-Bhāgavatam 2.10.1 & 12.12.9-10",
+      "explanation": "Jyotiṣa (astrologia) é um dos Vedāṅgas, não um dos dez tópicos principais (daśa-lakṣaṇa) do Śrīmad-Bhāgavatam."
+    },
+    {
+      "id": 16,
+      "type": "who-am-i",
+      "question": "Identifique a personalidade descrita por estas pistas escriturais:",
+      "difficulty": "medium",
+      "points": 15,
+      "clues": [
+        "Nasci como filho de Śrīla Vyāsadeva e permaneci no ventre de minha mãe por dezesseis anos para evitar Māyā.",
+        "Quando caminhei pela floresta como um paramahaṁsa libertado, as árvores e a natureza responderam aos chamados de meu pai.",
+        "Recitei todo o Śrīmad-Bhāgavatam ao Rei Parīkṣit em sete dias sem tomar comida ou água."
+      ],
+      "options": [
+        "Śukadeva Gosvāmī",
+        "Sūta Gosvāmī",
+        "Śaunaka Ṛṣi",
+        "Maitreya Ṛṣi"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.2.2 & 1.19.25-30",
+      "explanation": "Śrī Śukadeva Gosvāmī era um paramahaṁsa auto-realizado que recitou o Bhāgavatam para Parīkṣit Mahārāja."
+    },
+    {
+      "id": 17,
+      "type": "missing-link",
+      "question": "Identifique o elo perdido nesta sequência de transmissão transcendental do Śrīmad-Bhāgavatam:",
+      "difficulty": "medium",
+      "points": 15,
+      "chain": [
+        "Supremo Senhor Kṛṣṇa",
+        "Senhor Brahmā",
+        "?",
+        "Śrīla Vyāsadeva"
+      ],
+      "options": [
+        "Nārada Muni",
+        "Sūta Gosvāmī",
+        "Maitreya Ṛṣi",
+        "Śukadeva Gosvāmī"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 2.9.36 & 1.5.1-3",
+      "explanation": "A linhagem de transmissão é: Supremo Senhor Kṛṣṇa -> Senhor Brahmā -> Nārada Muni -> Śrīla Vyāsadeva."
+    },
+    {
+      "id": 18,
+      "type": "case-study",
+      "question": "Com base na história da insatisfação inicial de Śrīla Vyāsadeva, qual lição espiritual é ensinada sobre os esforços humanos?",
+      "difficulty": "medium",
+      "points": 15,
+      "scenario": "Śrīla Vyāsadeva havia codificado os quatro Vedas, escrito o Vedānta-sūtra e composto os 18 Purāṇas e o Mahābhārata. No entanto, sentado na margem do Sarasvatī, ele se sentia espiritualmente não realizado e desanimado até que Nārada Muni apontou sua omissão.",
+      "options": [
+        "Uma pessoa deve acumular vasto conhecimento material para obter fama e honra públicas.",
+        "Qualquer esforço — não importa quão grandioso, erudito ou filantrópico — permanece incompleto se não glorificar diretamente a Kṛṣṇa e ao serviço devocional puro.",
+        "Escrever livros é fundamentalmente inferior a realizar meditação silenciosa e seca em isolamento.",
+        "Deve-se abandonar todos os deveres imediatamente se sentir exaustão mental temporária."
+      ],
+      "correctIndex": 1,
+      "reference": "Śrīmad-Bhāgavatam 1.5.8-12",
+      "explanation": "Nārada Muni explicou que a literatura que não glorifica o Senhor é como um lugar de prazer para os corvos, enquanto obras que glorificam Kṛṣṇa purificam o mundo inteiro."
+    },
+    {
+      "id": 19,
+      "type": "single-choice",
+      "question": "No Śrīmad-Bhāgavatam 1.3.43, ao que o Śrīmad-Bhāgavatam é comparado após a partida do Senhor Kṛṣṇa para Sua morada divina?",
+      "difficulty": "medium",
+      "points": 15,
+      "options": [
+        "Um sol brilhante iluminando aqueles que perderam a visão na densa escuridão da Kali-yuga",
+        "Uma espada afiada cortando emaranhados kármicos",
+        "Um vasto oceano contendo infinitas gemas preciosas",
+        "Um carro de ouro levando devotos através dos reinos cósmicos"
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.3.43",
+      "explanation": "SB 1.3.43 declara: 'kṛṣṇe sva-dhāmopagate... dharmo jñānādibhiḥ saha / kalau naṣṭa-dṛśām eṣa purāṇārko 'dhunoditaḥ' — este Purāṇa surgiu como um sol."
+    },
+    {
+      "id": 20,
+      "type": "what-would-you-do",
+      "question": "Como o Śrīmad-Bhāgavatam instrui um buscador sincero a se aproximar do estudo de sua mensagem sagrada?",
+      "difficulty": "medium",
+      "points": 15,
+      "scenario": "Um buscador quer entender as verdades mais profundas do Śrīmad-Bhāgavatam, mas está confuso com interpretações especulativas e debates intelectuais.",
+      "options": [
+        "Aproxime-se de uma alma auto-realizada em escuta submissa (śrauta-panthā) e preste serviço diário ao Bhāgavata.",
+        "Tente decifrar o texto por meio de lógica intelectual independente sem orientação espiritual.",
+        "Pule os primeiros nove Cantos e salte diretamente para os íntimos passatempos do 10º Canto (rasa-līlā).",
+        "Memorize regras gramaticais enquanto ignora o humor devocional do texto."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 1.2.18 & 1.3.44",
+      "explanation": "O Śrīmad-Bhāgavatam enfatiza a escuta submissa de um devoto auto-realizado idôneo (nityaṁ bhāgavata-sevayā) passo a passo a partir do Canto 1 em diante."
+    },
+    {
+      "id": 21,
+      "type": "assertion-reason",
+      "question": "Analise a Afirmação e a Razão relativas à doação do Śrīmad-Bhāgavatam na Bhādra Pūrṇimā:",
+      "difficulty": "hard",
+      "points": 20,
+      "assertion": "Dar o Śrīmad-Bhāgavatam em um trono de ouro na Bhādra Pūrṇimā produz a mais alta perfeição espiritual.",
+      "reason": "A Bhādra Pūrṇimā é o único dia em que cantar o maha-mantra Hare Kṛṣṇa produz resultados espirituais.",
+      "options": [
+        "Tanto a Afirmação quanto a Razão são verdadeiras, e a Razão é a explicação correta para a Afirmação.",
+        "Tanto a Afirmação quanto a Razão são verdadeiras, mas a Razão NÃO é a explicação correta para a Afirmação.",
+        "A Afirmação é verdadeira, mas a Razão é falsa.",
+        "A Afirmação é falsa, mas a Razão é verdadeira."
+      ],
+      "correctIndex": 2,
+      "reference": "Śrīmad-Bhāgavatam 12.13.13 & Kali-santaraṇa Upaniṣad",
+      "explanation": "A afirmação é verdadeira (SB 12.13.13), mas a razão é falsa porque cantar o maha-mantra Hare Kṛṣṇa é recomendado em todos os momentos, todos os dias."
+    },
+    {
+      "id": 22,
+      "type": "multiple-select",
+      "question": "Quais das seguintes descrições caracterizam com precisão os dois primeiros Cantos do Śrīmad-Bhāgavatam em relação à forma transcendental do Senhor Kṛṣṇa? (Selecione todos os que se aplicam)",
+      "difficulty": "hard",
+      "points": 20,
+      "options": [
+        "O Canto 1 representa o pé esquerdo do Supremo Senhor.",
+        "O Canto 2 representa o pé direito do Supremo Senhor.",
+        "Os Cantos 1 e 2 representam a coroa na cabeça do Senhor.",
+        "Eles estabelecem a compreensão fundamental antes de se aproximar dos membros superiores do Senhor."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "reference": "Padma Purāṇa & Comentários do Śrīmad-Bhāgavatam",
+      "explanation": "No Padma Purāṇa, os 12 Cantos correspondem ao corpo transcendental de Kṛṣṇa: os Cantos 1 e 2 são Seus pés de lótus (pés esquerdo e direito), levando gradualmente ao Seu rosto sorridente (Canto 10)."
+    },
+    {
+      "id": 23,
+      "type": "sequence",
+      "question": "Organize os seguintes tópicos estruturais do Śrīmad-Bhāgavatam na ordem de sua apresentação ao longo dos Cantos:",
+      "difficulty": "hard",
+      "points": 20,
+      "items": [
+        "Criação do universo (Sarga e Visarga) e Varāha-līlā",
+        "Os gloriosos passatempos e advento de Śrī Kṛṣṇa em Vṛndāvana e Dvārakā",
+        "Indagações dos sábios em Naimiṣāraṇya e o encontro de Śukadeva e Parīkṣit",
+        "Os sintomas da Kali-yuga, resumo de todos os Cantos e as glórias supremas do texto"
+      ],
+      "correctOrder": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "reference": "Śrīmad-Bhāgavatam Cantos 1, 3, 10 & 12",
+      "explanation": "Ordem ao longo dos Cantos: Canto 1 (item 2), Canto 3 (item 0), Canto 10 (item 1), Canto 12 (item 3)."
+    },
+    {
+      "id": 24,
+      "type": "match-pairs",
+      "question": "Associe o Canto específico do Śrīmad-Bhāgavatam ao seu tema narrativo proeminente:",
+      "difficulty": "hard",
+      "points": 20,
+      "left": [
+        "Canto 4",
+        "Canto 7",
+        "Canto 8",
+        "Canto 11"
+      ],
+      "right": [
+        "Gajendra Mokṣa e o Vāmana Avatāra",
+        "Dhruva Mahārāja e o Rei Pṛthu",
+        "Uddhava-gītā e Bhagavata-dharma",
+        "Prahlāda Mahārāja e o Senhor Nṛsiṁhadeva"
+      ],
+      "correctPairs": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "reference": "Śrīmad-Bhāgavatam Cantos 4, 7, 8 & 11",
+      "explanation": "O Canto 4 cobre Dhruva/Pṛthu; Canto 7 cobre Prahlāda/Nṛsiṁha; Canto 8 cobre Gajendra/Vāmana; Canto 11 cobre Uddhava-gītā."
+    },
+    {
+      "id": 25,
+      "type": "single-choice",
+      "question": "No Śrīmad-Bhāgavatam 12.13.15, qual afirmação é feita em relação à posição do Śrīmad-Bhāgavatam entre todos os Purāṇas?",
+      "difficulty": "hard",
+      "points": 20,
+      "options": [
+        "Assim como o Senhor Viṣṇu é supremo entre as divindades e o Ganges é supremo entre os rios, o Śrīmad-Bhāgavatam é supremo entre todos os Purāṇas.",
+        "É igual em status a todos os outros 17 Purāṇas sem qualquer distinção.",
+        "Destina-se exclusivamente a eremitas que vivem em cavernas.",
+        "É um apêndice auxiliar aos rituais do Karma-kāṇḍa."
+      ],
+      "correctIndex": 0,
+      "reference": "Śrīmad-Bhāgavatam 12.13.15",
+      "explanation": "SB 12.13.15 declara: 'surāṇām acyuto yathā... purāṇānām idaṁ tathā' — assim como Acyuta é supremo entre os deuses e Gaṅgā entre os rios, o Śrīmad-Bhāgavatam é supremo entre os Purāṇas."
+    }
+  ]
+}
