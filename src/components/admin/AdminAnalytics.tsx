@@ -1,9 +1,94 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { UserAvatar } from '@/components/UserAvatar'
 import { scoreQuestion } from '@/lib/scoring'
 import type { Quiz, QuizMeta, Question } from '@/types/quiz'
+
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+
+function getCorrectAnswerText(q: Question): string {
+  if (q.type === 'true-false') return q.correct ? 'True' : 'False'
+  if (q.type === 'multiple-select') {
+    return q.correctIndices?.map(i => `${LETTERS[i] || i + 1}. ${q.options?.[i] || ''}`).join(', ') || 'N/A'
+  }
+  if ('correctIndex' in q && typeof q.correctIndex === 'number' && 'options' in q && Array.isArray(q.options)) {
+    return `${LETTERS[q.correctIndex]}. ${q.options[q.correctIndex]}`
+  }
+  return 'N/A'
+}
+
+function renderAnswerComparison(q: Question, rawAns: any): { studentText: React.ReactNode; correctText: React.ReactNode } {
+  if (rawAns === undefined || rawAns === null) {
+    return {
+      studentText: <span style={{ color: 'var(--color-muted)', fontStyle: 'italic' }}>Unanswered / Skipped</span>,
+      correctText: getCorrectAnswerText(q),
+    }
+  }
+
+  switch (q.type) {
+    case 'true-false': {
+      const boolVal = rawAns === true || rawAns === 'true'
+      return {
+        studentText: boolVal ? 'True' : 'False',
+        correctText: q.correct ? 'True' : 'False',
+      }
+    }
+    case 'multiple-select': {
+      const selIndices = Array.isArray(rawAns) ? rawAns : []
+      const selText = selIndices.length > 0
+        ? selIndices.map(i => `${LETTERS[i] || i + 1}. ${q.options?.[i] || ''}`).join(', ')
+        : 'None selected'
+      const correctText = q.correctIndices
+        ?.map(i => `${LETTERS[i] || i + 1}. ${q.options?.[i] || ''}`)
+        .join(', ') || 'N/A'
+      return { studentText: selText, correctText }
+    }
+    case 'who-am-i': {
+      const selIdx = typeof rawAns === 'object' && rawAns !== null ? rawAns.selectedIndex : rawAns
+      const clues = typeof rawAns === 'object' && rawAns !== null ? rawAns.cluesRevealed : null
+      const studentText = selIdx != null && q.options?.[selIdx]
+        ? `${LETTERS[selIdx] || selIdx + 1}. ${q.options[selIdx]} ${clues ? `(${clues} clue${clues > 1 ? 's' : ''} used)` : ''}`
+        : 'Unanswered'
+      const correctText = q.options?.[q.correctIndex]
+        ? `${LETTERS[q.correctIndex]}. ${q.options[q.correctIndex]}`
+        : 'N/A'
+      return { studentText, correctText }
+    }
+    case 'match-pairs': {
+      const pairs = Array.isArray(rawAns) ? rawAns : []
+      const studentText = pairs.length > 0
+        ? pairs.map(([l, r]: [number, number]) => `${q.left?.[l] || l} ➔ ${q.right?.[r] || r}`).join('; ')
+        : 'No pairs matched'
+      const correctText = q.correctPairs
+        ?.map(([l, r]: [number, number]) => `${q.left?.[l] || l} ➔ ${q.right?.[r] || r}`)
+        .join('; ') || 'N/A'
+      return { studentText, correctText }
+    }
+    case 'sequence': {
+      const order = Array.isArray(rawAns) ? rawAns : []
+      const studentText = order.length > 0
+        ? order.map((i: number, step: number) => `${step + 1}. ${q.items?.[i] || ''}`).join(' → ')
+        : 'No order selected'
+      const correctText = q.correctOrder
+        ?.map((i: number, step: number) => `${step + 1}. ${q.items?.[i] || ''}`)
+        .join(' → ') || 'N/A'
+      return { studentText, correctText }
+    }
+    default: {
+      if (typeof rawAns === 'number' && q.options?.[rawAns]) {
+        return {
+          studentText: `${LETTERS[rawAns] || rawAns + 1}. ${q.options[rawAns]}`,
+          correctText: q.options?.[q.correctIndex] ? `${LETTERS[q.correctIndex]}. ${q.options[q.correctIndex]}` : 'N/A',
+        }
+      }
+      return {
+        studentText: String(rawAns),
+        correctText: q.options?.[q.correctIndex] ? `${LETTERS[q.correctIndex]}. ${q.options[q.correctIndex]}` : 'N/A',
+      }
+    }
+  }
+}
 
 export interface AttemptRecord {
   id: string
@@ -46,6 +131,16 @@ export function AdminAnalytics({
   const [selectedQuizFilter, setSelectedQuizFilter] = useState<string>('all')
   const [searchStudent, setSearchStudent] = useState<string>('')
   const [inspectAttempt, setInspectAttempt] = useState<AttemptRecord | null>(null)
+  const [showRawJson, setShowRawJson] = useState(false)
+
+  // Auto-fetch quiz questions if inspecting attempt and not in cache
+  useEffect(() => {
+    if (inspectAttempt?.quiz_id && !quizDetailsCache[inspectAttempt.quiz_id]) {
+      onFetchQuizDetails(inspectAttempt.quiz_id)
+    }
+  }, [inspectAttempt, quizDetailsCache, onFetchQuizDetails])
+
+  const inspectQuiz = inspectAttempt ? quizDetailsCache[inspectAttempt.quiz_id] : null
 
   // Filtered attempts
   const filteredAttempts = useMemo(() => {
@@ -425,7 +520,7 @@ export function AdminAnalytics({
           <div
             style={{
               width: '100%',
-              maxWidth: 600,
+              maxWidth: 680,
               height: '100%',
               background: 'var(--color-bg)',
               borderLeft: '1px solid var(--color-border)',
@@ -438,7 +533,7 @@ export function AdminAnalytics({
               <div>
                 <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Submission Details</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
-                  {inspectAttempt.profiles?.full_name || 'Anonymous'} • {inspectAttempt.quiz_id}
+                  {inspectAttempt.profiles?.full_name || 'Anonymous'} • {inspectQuiz?.title || inspectAttempt.quiz_id}
                 </p>
               </div>
               <button className="btn btn-ghost btn-sm" onClick={() => setInspectAttempt(null)}>
@@ -469,20 +564,154 @@ export function AdminAnalytics({
               </div>
             </div>
 
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.75rem' }}>Recorded Answers</h4>
-            <pre
-              style={{
-                fontSize: '0.8rem',
-                background: 'rgba(0,0,0,0.3)',
-                padding: '1rem',
-                borderRadius: 8,
-                border: '1px solid var(--color-border)',
-                overflowX: 'auto',
-                color: 'var(--color-text)',
-              }}
-            >
-              {JSON.stringify(inspectAttempt.answers, null, 2)}
-            </pre>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 700 }}>Recorded Answers</h4>
+              <button
+                type="button"
+                className="btn btn-ghost btn-xs"
+                onClick={() => setShowRawJson(prev => !prev)}
+                style={{ border: '1px solid var(--color-border)', fontSize: '0.75rem' }}
+              >
+                {showRawJson ? '📋 Show Formatted Review' : '{ } View Raw JSON'}
+              </button>
+            </div>
+
+            {showRawJson ? (
+              <pre
+                style={{
+                  fontSize: '0.8rem',
+                  background: 'rgba(0,0,0,0.3)',
+                  padding: '1rem',
+                  borderRadius: 8,
+                  border: '1px solid var(--color-border)',
+                  overflowX: 'auto',
+                  color: 'var(--color-text)',
+                }}
+              >
+                {JSON.stringify(inspectAttempt.answers, null, 2)}
+              </pre>
+            ) : !inspectQuiz ? (
+              <div style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--color-muted)' }}>
+                <div className="spinner-gold" style={{ margin: '0 auto 0.75rem' }} />
+                <p style={{ fontSize: '0.85rem' }}>Loading questions from quiz library...</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {inspectQuiz.questions.map((q, idx) => {
+                  const rawAns = inspectAttempt.answers?.[q.id]
+                    ?? inspectAttempt.answers?.[String(q.id)]
+                    ?? inspectAttempt.answers?.[idx + 1]
+                    ?? inspectAttempt.answers?.[String(idx + 1)]
+                    ?? inspectAttempt.answers?.[idx]
+                    ?? inspectAttempt.answers?.[String(idx)]
+
+                  const qResult = scoreQuestion(q, rawAns)
+                  const isCorrect = qResult.correct
+                  const isPartial = qResult.earned > 0 && !isCorrect
+                  const comparison = renderAnswerComparison(q, rawAns)
+
+                  const statusColor = isCorrect ? '#4ade80' : isPartial ? 'var(--color-gold)' : '#f87171'
+                  const statusBg = isCorrect
+                    ? 'rgba(74, 222, 128, 0.08)'
+                    : isPartial
+                    ? 'rgba(240, 199, 78, 0.08)'
+                    : 'rgba(248, 113, 113, 0.08)'
+                  const statusBorder = isCorrect
+                    ? 'rgba(74, 222, 128, 0.3)'
+                    : isPartial
+                    ? 'rgba(240, 199, 78, 0.3)'
+                    : 'rgba(248, 113, 113, 0.3)'
+
+                  return (
+                    <div
+                      key={q.id || idx}
+                      style={{
+                        padding: '1.1rem',
+                        borderRadius: 10,
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: `1px solid ${statusBorder}`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.75rem',
+                      }}
+                    >
+                      {/* Question Header */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: 800, fontSize: '0.88rem' }}>Q{idx + 1}</span>
+                          <span className="badge badge-ghost" style={{ fontSize: '0.68rem', textTransform: 'capitalize' }}>
+                            {q.type.replace(/-/g, ' ')}
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            padding: '0.2rem 0.6rem',
+                            borderRadius: 6,
+                            background: statusBg,
+                            color: statusColor,
+                            border: `1px solid ${statusBorder}`,
+                          }}
+                        >
+                          {isCorrect ? `✓ ${qResult.earned}/${qResult.max} pts` : isPartial ? `◐ ${qResult.earned}/${qResult.max} pts (Partial)` : `✕ 0/${qResult.max} pts`}
+                        </span>
+                      </div>
+
+                      {/* Question Text */}
+                      <p style={{ fontSize: '0.92rem', fontWeight: 600, lineHeight: 1.45, color: 'var(--color-text)' }}>
+                        {q.question}
+                      </p>
+
+                      {/* Answers Comparison */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.85rem' }}>
+                        <div
+                          style={{
+                            padding: '0.55rem 0.75rem',
+                            borderRadius: 6,
+                            background: statusBg,
+                            border: `1px solid ${statusBorder}`,
+                          }}
+                        >
+                          <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: statusColor, display: 'block', marginBottom: '0.15rem' }}>
+                            Student's Answer:
+                          </span>
+                          <span style={{ color: 'var(--color-text)' }}>{comparison.studentText}</span>
+                        </div>
+
+                        {!isCorrect && (
+                          <div
+                            style={{
+                              padding: '0.55rem 0.75rem',
+                              borderRadius: 6,
+                              background: 'rgba(74, 222, 128, 0.05)',
+                              border: '1px solid rgba(74, 222, 128, 0.25)',
+                            }}
+                          >
+                            <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#4ade80', display: 'block', marginBottom: '0.15rem' }}>
+                              Correct Answer:
+                            </span>
+                            <span style={{ color: 'var(--color-text)' }}>{comparison.correctText}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Explanation & Reference */}
+                      {q.explanation && (
+                        <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.5rem', lineHeight: 1.4 }}>
+                          💡 <strong style={{ color: 'var(--color-text-secondary)' }}>Explanation:</strong> {q.explanation}
+                          {q.reference && (
+                            <span style={{ display: 'block', marginTop: '0.2rem', color: 'var(--color-gold)', fontSize: '0.75rem' }}>
+                              📖 Reference: {q.reference}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
