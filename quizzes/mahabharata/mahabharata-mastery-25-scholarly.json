@@ -1,0 +1,468 @@
+{
+  "id": "mahabharata-mastery-25-scholarly",
+  "title": "Mahābhārata Scholarly & Structural 25-Question Quiz",
+  "category": "mahabharata",
+  "description": "A 25-question comprehensive, source-grounded quiz covering the complete Mahabharata narrative from Purnaprajna Dasa's authentic presentation.",
+  "difficulty": "medium",
+  "timeLimit": 660,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "How did King Janamejaya's great snake sacrifice (sarpa-satra) come to a sudden halt?",
+      "options": [
+        "Astika persuaded Janamejaya to grant him a boon to stop the sacrifice before Takshaka fell into the fire.",
+        "Indra hurled his thunderbolt at the sacrificial altar and destroyed the sacred vessels.",
+        "Takshaka defeated Janamejaya in battle outside the sacrificial arena.",
+        "Sage Vyasadeva appeared and personally extinguished the sacrificial fire."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Astika, the son of Jaratkaru, pleased King Janamejaya with his eloquent praise during the sarpa-satra and received a boon, requesting that the snake sacrifice be stopped immediately to save Takshaka and the serpent race.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Astika Parva)"
+    },
+    {
+      "id": 2,
+      "type": "multiple-select",
+      "question": "Which of the following curses were uttered against King Parikshit or his lineage? Select ALL that apply.",
+      "options": [
+        "Shringi cursed Parikshit that the snake Takshaka would bite and burn him to death within seven days.",
+        "Sarama cursed Janamejaya that unexpected calamity would strike his family for beating her innocent pup.",
+        "Utanka cursed Janamejaya that his kingdom would be swallowed by the ocean.",
+        "Mandavya Muni cursed Yamaraja (Vidura) to be born as a shudra for unfairly punishing his childhood act."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Shringi cursed Parikshit; Sarama cursed Janamejaya; and Mandavya cursed Yamaraja. Utanka did not curse Janamejaya to have his kingdom swallowed by the ocean.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Astika Parva & Pauloma Parva)"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "King Shantanu was originally King Mahabhisha in his previous birth, who was cursed by Lord Brahma for gazing longingly at Ganga when her garment was blown by the wind.",
+      "correct": true,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "In Satya-yuga, King Mahabhisha attended Lord Brahma's assembly. When the wind blew Ganga's dress, all devas bowed their heads except Mahabhisha, who stared at her. Brahma cursed them both to take birth on Earth.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "question": "Identify the Mahabharata personality based on the clues below.",
+      "clues": [
+        "3pts: I was born as the daughter of King Vasu Uparicara and the apsara Adrika (who was cursed to live as a fish in the Yamuna).",
+        "2pts: I was raised by the king of fishermen (Dasa) and possessed a strong fish-like body odor during my youth.",
+        "1pt: Sage Parashara removed my odor, gave me a divine fragrance (Yojanagandha), and fathered Vyasadeva through me."
+      ],
+      "options": [
+        "Satyavati",
+        "Amba",
+        "Ganga",
+        "Devayani"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Satyavati (Matsyagandha) was born from Adrika the fish, raised by fishermen, blessed with Yojanagandha by Parashara, and gave birth to Vyasadeva.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Who uttered this solemn vow in the presence of King Dasaraja and the royal ministers?",
+      "quote": "From this day forward, I adopt a vow of lifelong celibacy. Even if I have no sons, I shall never marry or accept sexual union.",
+      "context": "Spoken to ensure that Satyavati's sons would inherit the throne of Hastinapura without any future succession disputes.",
+      "options": [
+        "Devavrata (Bhishma)",
+        "Chitrangada",
+        "Vichitravirya",
+        "Pandu"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "Devavrata took this terrifying vow (bhīṣma) of absolute celibacy to satisfy the fisherman king's condition and secure Satyavati's marriage to his father Shantanu.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 6,
+      "type": "sequence",
+      "question": "Arrange these chronological stages of Bhishma's early life in correct order.",
+      "items": [
+        "Devavrata returns to Shantanu after mastering Vedas from Brihaspati and archery from Parashurama.",
+        "Bhishma wins the three princesses of Kashi (Amba, Ambika, Ambalika) at their Svayamvara for Vichitravirya.",
+        "Ganga takes baby Devavrata away to educate him in divine sciences.",
+        "Devavrata takes the vow of celibacy and earns the name Bhishma and the boon of iccha-mrityu."
+      ],
+      "correctOrder": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Ganga raised and educated him first; he returned to Shantanu; he took the celibacy vow; later he brought the Kashi princesses for Vichitravirya.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Sambhava Parva)"
+    },
+    {
+      "id": 7,
+      "type": "match-pairs",
+      "question": "Match each teacher/mentor on the left with their primary disciple/student on the right according to the source text.",
+      "left": [
+        "Parashurama",
+        "Dronacharya",
+        "Balarama",
+        "Ayoda-Dhaumya"
+      ],
+      "right": [
+        "Arjuna",
+        "Upamanyu",
+        "Karna",
+        "Duryodhana"
+      ],
+      "correctPairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Parashurama taught Karna; Dronacharya taught Arjuna; Balarama taught mace fighting to Duryodhana; Ayoda-Dhaumya tested Upamanyu.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva & Udyoga Parva"
+    },
+    {
+      "id": 8,
+      "type": "assertion-reason",
+      "question": "Evaluate the Assertion and Reason regarding Amba's transformation into Sikhandi.",
+      "assertion": "Amba performed intense austerities, received a garland of lotuses from Lord Shiva, and eventually immolated herself to be reborn as Sikhandi.",
+      "reason": "Lord Shiva granted her the boon that in her next birth as Sikhandi she would become the direct cause of Bhishma's death.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Amba sought Bhishma's death; Lord Shiva blessed her that she would slay Bhishma in her next life as Drupada's child (Sikhandi), prompting her to perform self-immolation.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Udyoga Parva (Amvopakhyana Parva)"
+    },
+    {
+      "id": 9,
+      "type": "spot-the-error",
+      "question": "Spot the factual error in the passage below and select the correct modification.",
+      "passage": "During the wax house (Lakshagriha) conspiracy at Varanavata, Purochana built the palace using combustible materials like lac, hemp, and ghee. Vidura sent a miner who dug a secret subterranean tunnel, allowing the Pandavas and Kunti to escape while Purochana was burned alive inside the house.",
+      "options": [
+        "The passage is factually incorrect because Duryodhana personally set fire to the house from the outside while Vidura guarded the front door.",
+        "The passage is accurate as written; there is no error in the stated events.",
+        "The passage is incorrect because Purochana escaped safely through the subterranean tunnel before the house caught fire.",
+        "The passage is incorrect because the miner was sent by Shakuni, not Vidura."
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "The passage as stated is completely accurate according to the text: Purochana built the lac house, Vidura sent a miner to dig the tunnel, Bhima set fire to it, and Purochana burned inside while the Pandavas escaped.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Jatugriha Parva)"
+    },
+    {
+      "id": 10,
+      "type": "missing-link",
+      "question": "Identify the missing event in the chain of events leading to the slaying of Hidimhasura.",
+      "chain": [
+        "The Pandavas escape the burning house of lac and travel into the dense forest.",
+        "Bhima stays awake carrying his weary brothers and mother Kunti.",
+        "?",
+        "Bhima fights and slays Hidimhasura, then marries Hidimbi with Kunti's permission."
+      ],
+      "options": [
+        "Hidimbi is sent by her demon brother Hidimhasura to catch the humans, but falls in love with Bhima upon seeing his exquisite form.",
+        "Bakasura attacks Kunti and demands his daily cartload of rice and human flesh.",
+        "Duryodhana sends an army of 10,000 soldiers into the forest to capture Bhima.",
+        "Vyasa appears and transports the Pandavas directly to the city of Ekachakra."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Hidimhasura smelled humans and sent his sister Hidimbi to kill them, but she fell in love with Bhima and warned him instead.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Hidimva-vadha Parva)"
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Three of the following options list celestial weapons or items obtained by Arjuna during his journey to the heavens/Indraloka, while one is an exception. Which is the ODD ONE OUT?",
+      "options": [
+        "Pashupatastra - granted by Lord Shiva after Arjuna fought Him in the guise of a Kirata (tribal hunter)",
+        "Agneyastra - granted by Dronacharya after Arjuna rescued him from an alligator",
+        "Vaishnavastra - granted by King Bhagadatta during the Kurukshetra War",
+        "Devadatta Conch - granted by Maya Danava from Bindu Lake"
+      ],
+      "correctIndex": 2,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Vaishnavastra was owned by Bhagadatta (and intercepted by Krishna during the war); it was NOT a weapon Arjuna obtained during his celestial journey.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva & Drona Parva"
+    },
+    {
+      "id": 12,
+      "type": "cause-effect",
+      "question": "What direct outcome resulted from Arjuna fulfilling his vow of twelve years of forest pilgrimage after entering Yudhishthira and Draupadi's chamber to retrieve his weapons?",
+      "options": [
+        "He visited holy places, married Ulupi (Naga princess) and Chitrangada (Manipura princess), and married Subhadra in Dvaraka with Krishna's blessing.",
+        "He was stripped of the Gandiva bow by Varuna until the end of the 12-year period.",
+        "He was challenged to a duel by Bhima outside the city gates of Indraprastha.",
+        "Yudhishthira surrendered half the kingdom of Indraprastha to Duryodhana as penance."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "During his 12-year pilgrimage, Arjuna married Ulupi (fathering Iravan), Chitrangada (fathering Babhruvahana), and Subhadra (fathering Abhimanyu).",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Arjuna-vanavasa Parva)"
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement among the three options concerning the burning of the Khandava forest.",
+      "options": [
+        "Agnideva was suffering from indigestion caused by consuming excessive ghee during King Svetaki's 100-year sacrifice.",
+        "Indra repeatedly poured rain to extinguish Khandava because his friend Takshaka resided there.",
+        "Arjuna and Krishna burned Khandava to punish Maya Danava for building demonic weapons."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Statement 3 is false! Agni needed to consume Khandava to cure his indigestion. Maya Danava was actually saved by Arjuna from the flames, and out of gratitude built the assembly hall (Maya-sabha).",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Khandava-daha Parva)"
+    },
+    {
+      "id": 14,
+      "type": "case-study",
+      "question": "A CEO faces a situation where a business partner uses technical technicalities to strip the company's founders of their assets during a high-stakes meeting.",
+      "scenario": "Applying the discourse of Vidura (Vidura-niti) regarding royal assembly ethics in the Sabha Parva, what makes an assembly truly righteous?",
+      "options": [
+        "An assembly is not a true assembly if it lacks elders, and elders are not true elders if they do not speak dharma; remaining silent when unrighteousness occurs corrupts the entire court.",
+        "An assembly should always side with the most powerful investor regardless of moral law.",
+        "Silent spectators in an unlawful meeting bear zero moral or karmic responsibility for the outcome.",
+        "It is better to agree to fraudulent deals than to risk open confrontation with ruthless partners."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Vidura famously cited: 'That is no assembly where there are no elders, and those are no elders who do not speak righteousness.' Silent spectators share in the sin of injustice.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Sabha Parva (Dyuta Parva)"
+    },
+    {
+      "id": 15,
+      "type": "what-would-you-do",
+      "question": "A leader is offered immediate victory over a rival by utilizing an underhanded tactic that violates established ethical codes.",
+      "scenario": "Applying Yudhishthira's response to Bhima and Draupadi in the Vana Parva regarding adherence to Dharma:",
+      "options": [
+        "Follow dharma out of duty without commercial calculation ('virtue for virtue's sake'), rejecting quick sinful gains because adharma ultimately destroys its perpetrator.",
+        "Abandon moral rules immediately whenever an enemy uses deception or causes suffering.",
+        "Seek immediate material revenge at all costs, treating dharma as a flexible business transaction.",
+        "Retreat into total passivity and let destiny run its course without taking any action."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 3,
+      "explanation": "Yudhishthira explained to Draupadi that he does not practice dharma for commercial gain (dharma-vaṇijyako); virtue must be followed because it is divine law, and adharma brings ultimate destruction.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva (Aranya Parva)"
+    },
+    {
+      "id": 16,
+      "type": "single-choice",
+      "question": "How did Bhima defeat and kill the demon Bakasura in the town of Ekachakra?",
+      "options": [
+        "He ate Bakasura's cartload of rice and meat in front of him, provoked the enraged demon into a duel, and broke his spine across his knee.",
+        "He shot him with a divine arrow given by sage Vyasa.",
+        "He trapped him inside a cave and lit a sacred sacrificial fire at the entrance.",
+        "He challenged him to a drinking contest and poisoned his wine."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Sent in place of the poor brahmana host, Bhima nonchalantly ate Bakasura's food, infuriated the demon, fought him in hand-to-hand combat, and snapped his waist.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Vaka-vadha Parva)"
+    },
+    {
+      "id": 17,
+      "type": "multiple-select",
+      "question": "Which of the following conditions or events occurred during Draupadi's Svayamvara? Select ALL that apply.",
+      "options": [
+        "The bow was so heavy and stiff that kings like Karna, Jarasandha, and Shalya failed or were disqualified from stringing it.",
+        "Arjuna, disguised as a young brahmana, lifted the bow effortlessly, strung it, and hit the target through the revolving wheel.",
+        "Dhrishtadyumna announced that whoever hit the target would win his sister Draupadi in marriage.",
+        "When Arjuna brought Draupadi home, Kunti unwittingly said 'Share whatever you have obtained equally among brothers'."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "All four options accurately describe the famous events of Draupadi's Svayamvara and Kunti's innocent instruction that led to Draupadi marrying all five Pandavas.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Adi Parva (Svaayamvara Parva)"
+    },
+    {
+      "id": 18,
+      "type": "true-false",
+      "question": "Jarasandha was born in two separate halves from two queens of King Brihadratha, and was fused together into a living baby by a demoness named Jara.",
+      "correct": true,
+      "difficulty": "easy",
+      "points": 2,
+      "explanation": "King Brihadratha's two wives each gave birth to half a child. The horrified king threw the halves away, but the demoness Jara joined them together, naming the child Jarasandha ('joined by Jara').",
+      "reference": "Purnaprajna Dasa - Mahabharata, Sabha Parva (Jarasandha-vadha Parva)"
+    },
+    {
+      "id": 19,
+      "type": "assertion-reason",
+      "question": "Evaluate the Assertion and Reason regarding the Rajasuya sacrifice performed by Yudhishthira.",
+      "assertion": "Shishupala fiercely protested against offering the first worship (Agraphuja) to Lord Krishna in the Rajasuya assembly.",
+      "reason": "Shishupala possessed a boon that Lord Krishna would forgive his first 100 offenses, but Krishna decapitated him with the Sudarshana Chakra when he committed his 101st insult.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion.",
+        "Assertion is true, but Reason is false.",
+        "Assertion is false, but Reason is true."
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "Both statements are factually true according to the text. Reason (the boon of 100 offenses) explains WHY Krishna tolerated his insults until 101, not WHY Shishupala protested (he protested out of envy towards Krishna).",
+      "reference": "Purnaprajna Dasa - Mahabharata, Sabha Parva (Rajasuyika Parva)"
+    },
+    {
+      "id": 20,
+      "type": "single-choice",
+      "question": "What specific vow did Bhima take in the Kuru assembly hall during the dishonoring of Draupadi?",
+      "options": [
+        "To drink DuHsasana's blood from his chest and break Duryodhana's thigh with his mace in battle.",
+        "To kill Shakuni and decapitate Karna before the 10th day of war.",
+        "To burn down the city of Hastinapura with divine weapons.",
+        "To renounce his weapons and live as an ascetic if Draupadi was not avenged."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Outraged by DuHsasana pulling Draupadi's hair and Duryodhana uncovering his left thigh, Bhima swore to drink DuHsasana's blood and smash Duryodhana's thigh.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Sabha Parva (Dyuta Parva)"
+    },
+    {
+      "id": 21,
+      "type": "who-said-this",
+      "question": "Who uttered this philosophical statement to King Yudhishthira?",
+      "quote": "Time is the seed of the universe. Time creates all beings and Time destroys them again. Everything is rooted in Time.",
+      "context": "Spoken during the Vana Parva to console Yudhishthira during his forest exile.",
+      "options": [
+        "Sanatsujata",
+        "Vyasa",
+        "Markandeya",
+        "Brihadasva"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Markandeya Rishi delivered extensive philosophical discourses to Yudhishthira in the forest, explaining the eternal nature of Time (Kala) and Yuga cycles.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Vana Parva (Markandeya-samasya Parva)"
+    },
+    {
+      "id": 22,
+      "type": "sequence",
+      "question": "Arrange these sequential incidents from the Pandavas' 13th year of anonymous exile (Ajnata-vasa) in Virata's kingdom in correct chronological order.",
+      "items": [
+        "Keechaka harasses Draupadi and is crushed into a ball of flesh by Bhima inside the dancing hall at night.",
+        "Arjuna (as Brihannala) with Prince Uttara retrieves the hidden weapons from the Shami tree and defeats the entire Kaurava army.",
+        "The Pandavas assume disguises: Yudhishthira as Kanka, Bhima as Valava, Arjuna as Brihannala, Nakula as Granthika, Sahadeva as Tantipala, and Draupadi as Sairandhri.",
+        "The Kaurava army attacks Matsya kingdom to steal King Virata's cattle and flush out the Pandavas."
+      ],
+      "correctOrder": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "The Pandavas entered Virata's court in disguise first; Keechaka was killed in the 10th month; Triggered by Keechaka's death, the Kauravas invaded Virata's cattle pastures; Arjuna retrieved weapons and defeated the Kauravas.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Virata Parva"
+    },
+    {
+      "id": 23,
+      "type": "multiple-select",
+      "question": "Which of the following conditions were part of the Peace Mission (Udyoga Parva) undertaken by Lord Krishna to Hastinapura? Select ALL that apply.",
+      "options": [
+        "Krishna asked Duryodhana to grant merely five villages to the five Pandavas to avoid catastrophic bloodshed.",
+        "Duryodhana refused Krishna's proposal, declaring he would not yield even as much land as could be covered by the point of a needle.",
+        "Duryodhana attempted to arrest and bind Krishna, whereupon Krishna displayed His universal Vishvarupa form in the court.",
+        "Krishna dined and stayed at the house of Vidura rather than Duryodhana's palace."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "All four options describe the key historical facts of Krishna's peace mission in the Udyoga Parva.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Udyoga Parva (Bhagavat-yana Parva)"
+    },
+    {
+      "id": 24,
+      "type": "spot-the-error",
+      "question": "Spot the factual error in the passage below and select the correct modification.",
+      "passage": "On the 10th day of the Kurukshetra War, Arjuna placed Sikhandi at the front of his chariot to face Bhishma. Recognizing Sikhandi's former identity as Amba, Bhishma refused to strike Sikhandi, allowing Arjuna to pierce Bhishma with countless arrows until he fell upon a bed of arrows.",
+      "options": [
+        "The passage is factually incorrect because Bhishma fell on the 18th day of war, not the 10th day.",
+        "The passage is accurate as written; there is no error in the stated events.",
+        "The passage is incorrect because Bhishma struck Sikhandi with five broad-headed arrows before falling.",
+        "The passage is incorrect because Dhrishtadyumna held the front of the chariot instead of Sikhandi."
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "points": 3,
+      "explanation": "The passage is completely accurate as written: Bhishma fell on the 10th day when Arjuna shielded himself behind Sikhandi, whom Bhishma refused to fight due to Sikhandi's female birth.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Bhishma Parva"
+    },
+    {
+      "id": 25,
+      "type": "single-choice",
+      "question": "Why was Abhimanyu trapped and killed inside the Padmavyuha (Chakravyuha) formation on the 13th day of the war?",
+      "options": [
+        "Abhimanyu knew how to penetrate the Chakravyuha but did not know how to exit it, and Jayadratha held off the remaining Pandava brothers using a boon from Lord Shiva.",
+        "Arjuna deliberately ordered Abhimanyu to fight alone to test his bravery.",
+        "Karna used the Narayanastra weapon to lock the entrances of the formation.",
+        "Dhrishtadyumna betrayed Abhimanyu by siding with Dronacharya inside the array."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "points": 2,
+      "explanation": "Abhimanyu learned how to enter the Chakravyuha while in Subhadra's womb, but Krishna stopped speaking before explaining how to exit. When Abhimanyu entered, King Jayadratha used Shiva's boon to hold back Yudhishthira, Bhima, Nakula, and Sahadeva, leaving Abhimanyu isolated.",
+      "reference": "Purnaprajna Dasa - Mahabharata, Drona Parva (Abhimanyu-vadha Parva)"
+    }
+  ]
+}
