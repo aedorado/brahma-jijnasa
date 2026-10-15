@@ -1,0 +1,368 @@
+{
+  "id": "bg-chapter-10-vibhuti-yoga",
+  "title": "Bhagavad-gītā Chapter 10 — Vibhūti-yoga",
+  "category": "bhagavad-gita",
+  "description": "Comprehensive 20-question quiz on the Opulences of the Absolute and Catur-śloki Gītā.",
+  "difficulty": "medium",
+  "timeLimit": 1200,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "In Bhagavad-gītā 10.8, Krishna states 'ahaṁ sarvasya prabhavo'. What does this foundational phrase declare?",
+      "difficulty": "easy",
+      "points": 1,
+      "reference": "BG 10.8",
+      "explanation": "In BG 10.8, Krishna explicitly states 'ahaṁ sarvasya prabhavo mattaḥ sarvaṁ pravartate'—He is the original source of all spiritual and material worlds, and everything emanates from Him.",
+      "options": [
+        "Krishna is equal to all demigods in authority",
+        "The material world was created spontaneously without a source",
+        "Krishna is the source of all material and spiritual worlds",
+        "Only the spiritual planets originate from Krishna"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 2,
+      "type": "true-false",
+      "question": "According to BG 10.2, the great sages and demigods fully understand Krishna's origin through their own independent mental power.",
+      "difficulty": "easy",
+      "points": 1,
+      "reference": "BG 10.2",
+      "explanation": "BG 10.2 states 'na me viduḥ sura-gaṇāḥ prabhavaṁ na maharṣayaḥ'—neither the demigods nor the great sages know Krishna's origin or opulences, because He is the source of all demigods and sages.",
+      "correct": false
+    },
+    {
+      "id": 3,
+      "type": "who-said-this",
+      "question": "Who spoke this prayer to Krishna in Bhagavad-gītā Chapter 10 upon hearing the Catur-śloki verses?",
+      "quote": "You are the Supreme Personality of Godhead, the ultimate abode, the purest, the Absolute Truth. You are the eternal, transcendental, original person...",
+      "context": "Spoken in Chapter 10 after hearing the four essential verses (Catur-śloki Gītā, BG 10.8-10.11).",
+      "difficulty": "easy",
+      "points": 1,
+      "reference": "BG 10.12-10.13",
+      "explanation": "In BG 10.12-10.13, Arjuna speaks these words ('paraṁ brahma paraṁ dhāma pavitraṁ paramaṁ bhavān...') accepting Krishna's supreme position as confirmed by sages like Nārada, Asita, Devala, and Vyāsa.",
+      "options": [
+        "Sañjaya",
+        "Arjuna",
+        "Lord Brahmā",
+        "Dhṛtarāṣṭra"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "type": "who-am-i",
+      "clues": [
+        "I am named in BG 10.25 as the prominent representation among all sacrifices (yajñānāṁ).",
+        "I involve the quiet, meditative repetition of holy names.",
+        "I require no elaborate paraphernalia or fire altars to perform."
+      ],
+      "difficulty": "easy",
+      "points": 2,
+      "reference": "BG 10.25",
+      "explanation": "In BG 10.25, Krishna specifies 'yajñānāṁ japa-yajño 'smi'—among sacrifices, He is the chanting of the holy names (Japa-yajña).",
+      "options": [
+        "Aśvamedha-yajña (Horse Sacrifice)",
+        "Dravya-yajña (Sacrifice of Possessions)",
+        "Tapo-yajña (Sacrifice of Austerities)",
+        "Japa-yajña (Chanting of Holy Names)"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 5,
+      "type": "single-choice",
+      "question": "Which luminous body does Krishna identify as His representation among all luminaries in BG 10.21?",
+      "difficulty": "easy",
+      "points": 1,
+      "reference": "BG 10.21",
+      "explanation": "In BG 10.21, Krishna says 'jyotiṣāṁ raviḥ aṁśumān'—among luminaries, He is the radiant Sun.",
+      "options": [
+        "The Pole Star (Dhruvaloka)",
+        "The Sun",
+        "Lightning",
+        "A meteor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 6,
+      "type": "true-false",
+      "question": "In BG 10.42, Krishna states that He pervades and supports the entire universe with only a single fragment (ekāṁśena) of Himself.",
+      "difficulty": "easy",
+      "points": 1,
+      "reference": "BG 10.42",
+      "explanation": "In BG 10.42, Krishna concludes 'viṣṭabhyāham idaṁ kṛtsnam ekāṁśena sthito jagat'—He supports the whole universe by a single partial expansion (the Supersoul).",
+      "correct": true
+    },
+    {
+      "id": 7,
+      "type": "multiple-select",
+      "question": "Which of the following great authorities are explicitly cited by Arjuna in BG 10.13 as confirming Krishna's supreme, divine status?",
+      "difficulty": "easy",
+      "points": 2,
+      "reference": "BG 10.13",
+      "explanation": "In BG 10.13, Arjuna cites Nārada, Asita, Devala, and Vyāsa as great sages who confirm Krishna's supreme divine position.",
+      "options": [
+        "Nārada",
+        "Carvāka",
+        "Vyāsa",
+        "Asita and Devala"
+      ],
+      "correctIndices": [
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 8,
+      "type": "sequence",
+      "question": "Arrange the four verses of the Catur-śloki Gītā (BG 10.8 to 10.11) in their exact sequential philosophical progression:",
+      "difficulty": "medium",
+      "points": 3,
+      "reference": "BG 10.8-10.11",
+      "explanation": "The Catur-śloki flows sequentially: 10.8 establishes Krishna as the source of all, 10.9 describes pure devotees discussing Krishna with joy, 10.10 explains how Krishna grants them intelligence (buddhi-yoga), and 10.11 describes Krishna destroying their darkness of ignorance with the lamp of knowledge.",
+      "items": [
+        "BG 10.10: 'Teṣāṁ satata-yuktānām...' (Krishna awarding buddhi-yoga to come to Him)",
+        "BG 10.8: 'Ahaṁ sarvasya prabhavo...' (Krishna as the source of all spiritual and material worlds)",
+        "BG 10.11: 'Teṣām evānukampārtham...' (Krishna dispelling ignorance with the lamp of knowledge)",
+        "BG 10.9: 'Mac-cittā mad-gata-prāṇā...' (Devotees deriving bliss by conversing about Krishna)"
+      ],
+      "correctOrder": [
+        1,
+        3,
+        0,
+        2
+      ]
+    },
+    {
+      "id": 9,
+      "type": "match-pairs",
+      "question": "Match each broad Vibhūti category (Left) with Krishna's specific representative manifestation in BG Chapter 10 (Right):",
+      "difficulty": "medium",
+      "points": 3,
+      "reference": "BG 10.22-10.25",
+      "explanation": "In Chapter 10: Among Vedas Krishna is Sāma Veda (10.22); among Rudras He is Śaṅkara/Śiva (10.23); among priests He is Bṛhaspati (10.24); among trees He is Aśvattha/Banyan (10.26).",
+      "left": [
+        "Vedas (vedānām)",
+        "Rudras (rudrāṇām)",
+        "Priests (purodhasām)",
+        "Trees (vṛkṣāṇām)"
+      ],
+      "right": [
+        "Śaṅkara (Lord Śiva)",
+        "Aśvattha (Banyan Tree)",
+        "Sāma Veda",
+        "Bṛhaspati"
+      ],
+      "correctPairs": [
+        [0, 2],
+        [1, 0],
+        [2, 3],
+        [3, 1]
+      ]
+    },
+    {
+      "id": 10,
+      "type": "cause-effect",
+      "question": "According to BG 10.10, what cause directly prompts Lord Krishna to grant buddhi-yoga (transcendental intelligence) to a practitioner?",
+      "difficulty": "medium",
+      "points": 2.5,
+      "reference": "BG 10.10",
+      "explanation": "BG 10.10 states 'teṣāṁ satata-yuktānāṁ bhajatāṁ prīti-pūrvakam / dadāmi buddhi-yogaṁ tam'—to those who are constantly devoted and worship Him with love, Krishna grants the intelligence by which they can attain Him.",
+      "options": [
+        "Extensive academic research into dry secular philosophy",
+        "Constant engagement in loving devotional service (bhajatāṁ prīti-pūrvakam)",
+        "Rigid execution of ritualistic karma-kāṇḍa sacrifices for personal wealth",
+        "Renouncing all human speech and retreating to a mountain cave without devotion"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 11,
+      "type": "odd-one-out",
+      "question": "Which of the following is the ODD ONE OUT regarding Krishna's representations among Sages/Thinkers in BG Chapter 10?",
+      "difficulty": "medium",
+      "points": 2,
+      "reference": "BG 10.25, 10.26, 10.37",
+      "explanation": "Bhṛgu (10.25), Nārada (10.26), and Vyāsa (10.37) are all human/divine sages representing Krishna. Citraratha (10.26) is the chief among Gandharvas (celestial singers), not a sage.",
+      "options": [
+        "Bhṛgu (among Maharṣis)",
+        "Nārada (among Devarṣis)",
+        "Citraratha (among Gandharvas)",
+        "Vyāsa (among Sages/Munis)"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 12,
+      "type": "missing-link",
+      "question": "Identify the MISSING LINK in Krishna's progression of cosmic manifestations: [10.20: Supersoul] -> [10.21: Sun among luminaries] -> [ ? ] -> [10.23: Śaṅkara among Rudras].",
+      "difficulty": "medium",
+      "points": 2,
+      "reference": "BG 10.22",
+      "explanation": "Following BG 10.20 (Supersoul) and 10.21 (Sun/Marīci), BG 10.22 states that among Vedas He is Sāma Veda, among demigods Indra, among senses the Mind (manas), and in living beings consciousness (cetanā).",
+      "options": [
+        "BG 10.30: Prahlāda among Daityas",
+        "BG 10.34: All-devouring Death",
+        "BG 10.22: Sāma Veda among Vedas & Mind among senses",
+        "BG 10.38: Punishment among subduing measures"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement among the three options below regarding Chapter 10 philosophy:",
+      "difficulty": "medium",
+      "points": 2.5,
+      "reference": "BG 10.3, 10.12, 10.18",
+      "explanation": "Arjuna explicitly states in BG 10.18 that he is NEVER satiated in hearing Krishna's ambrosial words ('tṛptir hi śṛṇvato nāsti me 'mṛtam'). Statement 2 falsely claims he became satiated and asked Krishna to stop.",
+      "options": [
+        "Understanding Krishna as unborn and the supreme master frees a person from all sinful reactions (BG 10.3).",
+        "Arjuna felt completely satiated after verse 10.11 and asked Krishna to stop describing His opulences.",
+        "Arjuna addresses Krishna as Param Brahma, Param Dhāma, and Pavitram Paramam (BG 10.12)."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "type": "who-am-i",
+      "clues": [
+        "I am identified in BG 10.30 as Krishna's representative among the Daityas (demons).",
+        "Despite being born in a demoniac lineage, I exhibited unalloyed devotion to Lord Viṣṇu from childhood.",
+        "My unwavering devotion caused the Supreme Lord to appear as Nṛsiṁhadeva to protect me."
+      ],
+      "difficulty": "medium",
+      "points": 3,
+      "reference": "BG 10.30",
+      "explanation": "In BG 10.30, Krishna states 'prahlādaś cāsmi daityānām'—among the Daityas (demoniac family), He is Prahlāda Mahārāja.",
+      "options": [
+        "Hiranyakaśipu",
+        "Bali Mahārāja",
+        "Prahlāda Mahārāja",
+        "Vṛtrāsura"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 15,
+      "type": "multiple-select",
+      "question": "Which of the following internal, emotional, or intellectual qualities listed in BG 10.4-10.5 originate solely from Lord Krishna?",
+      "difficulty": "medium",
+      "points": 3,
+      "reference": "BG 10.4-10.5",
+      "explanation": "BG 10.4-10.5 lists intelligence (buddhi), knowledge (jñāna), forgiveness (kṣamā), truthfulness (satyam), pleasure (sukham), fearlessness (abhayam), non-violence (ahiṁsā), and equanimity (samatā) as all originating from Krishna alone.",
+      "options": [
+        "Buddhi (Intelligence) and Jñāna (Knowledge)",
+        "Māyā-janita Egotism created independently of God",
+        "Kṣamā (Forgiveness) and Satyam (Truthfulness)",
+        "Ahiṁsā (Non-violence) and Samatā (Equanimity)"
+      ],
+      "correctIndices": [
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 16,
+      "type": "what-would-you-do",
+      "question": "A practitioner experiences spiritual dryness and struggles to focus during meditation. Applying the principle of BG 10.9-10.10 (Catur-śloki Gītā), what is the most authentic spiritual action to take?",
+      "difficulty": "medium",
+      "points": 3,
+      "reference": "BG 10.9-10.10",
+      "explanation": "BG 10.9-10.10 advises engaging in sravanam and kirtanam in the association of like-minded devotees (bodhayantaḥ parasparam) and serving Krishna with love, whereupon Krishna personally imparts the internal intelligence (buddhi-yoga) to overcome obstacles.",
+      "options": [
+        "Abandon spiritual practices entirely and rely on material wealth to buy peace of mind.",
+        "Seek out the association of sincere devotees to discuss and chant Krishna's pastimes (bodhayantaḥ parasparam) with love, attracting Lord Krishna's internal guidance.",
+        "Perform dry mental speculation without faith, criticizing scriptural commentators.",
+        "Attempt to invent new personal rituals that disregard Vedic paramparā guidelines."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 17,
+      "type": "evidence-based",
+      "principle": "The Supreme Lord is transcendental to material cognition and can only be known by His own revelation: 'svayam evātmanātmānaṁ vettha tvaṁ puruṣottama' (BG 10.15).",
+      "question": "Based on this principle from BG 10.15, what fundamental truth does Arjuna establish regarding knowing the Supreme Lord?",
+      "difficulty": "hard",
+      "points": 3.5,
+      "reference": "BG 10.15",
+      "explanation": "BG 10.15 establishes that the Supreme Lord is known exclusively through Himself (svayam eva ātmānaṁ vettha)—He cannot be grasped by material empirical senses or mental speculation unless He mercifully reveals Himself.",
+      "options": [
+        "Anyone with high academic scholarship can fully comprehend God without divine grace.",
+        "Demigods and demons understand God's personal form better than God Himself.",
+        "The Supreme Lord can only be known by Himself and revealed by His internal potency, not by empirical human speculation.",
+        "God is an abstract construction created by human imagination."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 18,
+      "type": "match-pairs",
+      "question": "Match each subtle or abstract manifestation in BG Chapter 10 (Left) with its corresponding category (Right):",
+      "difficulty": "hard",
+      "points": 3.5,
+      "reference": "BG 10.31-10.38",
+      "explanation": "In BG Ch 10: Among purifiers He is the Wind (10.31); among sciences He is Spiritual Science/Adhyātma-vidyā (10.32); among subduers He is Time/Kāla (10.30); among secrets He is Silence/Maunam (10.38).",
+      "left": [
+        "Purifiers (pavanatām)",
+        "Sciences (vidyānām)",
+        "Subduers (damayatām)",
+        "Secrets (guhyānām)"
+      ],
+      "right": [
+        "Silence (Maunam)",
+        "Time (Kāla) / Punishment (Daṇḍa)",
+        "Wind (Pavana)",
+        "Spiritual Science (Adhyātma-vidyā)"
+      ],
+      "correctPairs": [
+        [0, 2],
+        [1, 3],
+        [2, 1],
+        [3, 0]
+      ]
+    },
+    {
+      "id": 19,
+      "type": "two-truths-one-false",
+      "question": "Identify the FALSE statement among the deep theological assertions below from BG Chapter 10 and classical commentaries:",
+      "difficulty": "hard",
+      "points": 3.5,
+      "reference": "BG 10.12-10.42",
+      "explanation": "Statement 2 is FALSE. In BG 10.41, Krishna states that opulent creations are merely a SPARK of His splendor ('mama tejo-'ṁśa-sambhavam'), not His complete form or maximum limit. Statement 1 and 3 are true.",
+      "options": [
+        "In BG 10.20, Krishna identifies Himself as the Supersoul (Ātmā) residing in the hearts of all living entities as Garbhodakaśāyī and Kṣīrodakaśāyī Viṣṇu.",
+        "In BG 10.41, Krishna states that opulent and beautiful creations represent the maximum limit and full boundary of His total divine energy.",
+        "In BG 10.34, Krishna reveals Himself as both all-devouring Death (mṛtyuḥ sarva-haraḥ) and the generating principle of future manifestations."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 20,
+      "type": "multiple-select",
+      "question": "Which of the following statements accurately summarize the ultimate philosophical conclusions of Bhagavad-gītā Chapter 10 (Vibhūti-yoga)?",
+      "difficulty": "hard",
+      "points": 4,
+      "reference": "BG 10.8, 10.11, 10.41, 10.42",
+      "explanation": "Chapter 10 concludes that Krishna is the supreme source of all worlds (10.8), He illuminates His devotees' hearts internally by removing ignorance (10.11), all earthly/celestial grandeur is but a spark of His splendor (10.41), and He pervades the whole universe with a single fragment of Himself (10.42).",
+      "options": [
+        "Krishna is the original uncaused source of all material and spiritual existences (BG 10.8).",
+        "The Lord personally dwells within the hearts of His unalloyed devotees to destroy ignorance with the lamp of knowledge (BG 10.11).",
+        "All opulent, beautiful, and glorious manifestations across the universe are merely a spark of Krishna's splendor (BG 10.41).",
+        "Lord Krishna supports and pervades the entire cosmic creation through a single fragment (ekāṁśena) of His potency (BG 10.42)"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}
