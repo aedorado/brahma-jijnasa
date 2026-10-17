@@ -181,7 +181,7 @@ export default function HomePage() {
                     href="/quizzes"
                     style={{ fontSize: '0.82rem', color: 'var(--color-gold)', fontWeight: 600, textDecoration: 'underline' }}
                   >
-                    📖 Or explore all live & scripture quizzes without a PIN →
+                    ⚡ View currently active live quizzes →
                   </Link>
                 </div>
               </form>

@@ -66,7 +66,8 @@ export function Navbar() {
                 className={`navbar-nav-link ${isQuizzesActive ? 'active' : ''}`}
                 id="nav-quizzes-link"
               >
-                {t.nav.quizzes || 'Quizzes'}
+                <span style={{ color: '#4ade80', marginRight: '0.25rem' }}>⚡</span>
+                {t.nav.liveQuizzes || 'Live Quizzes'}
               </Link>
               <Link
                 href="/series"
@@ -212,8 +213,8 @@ export function Navbar() {
               className={`navbar-mobile-link ${isQuizzesActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="navbar-mobile-icon">📖</span>
-              <span>{t.nav.quizzes || 'Quizzes'}</span>
+              <span className="navbar-mobile-icon">⚡</span>
+              <span>{t.nav.liveQuizzes || 'Live Quizzes'}</span>
             </Link>
             <Link
               href="/series"
