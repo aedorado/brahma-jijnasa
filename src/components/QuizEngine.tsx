@@ -15,6 +15,7 @@ import { AssertionReason } from './questions/AssertionReason'
 import { SpotTheError } from './questions/SpotTheError'
 import { ScenarioQuestion } from './questions/ScenarioQuestion'
 import { MissingLink } from './questions/MissingLink'
+import { QuestionErrorBoundary } from './QuestionErrorBoundary'
 
 interface QuizEngineProps {
   questions: Question[]
@@ -408,7 +409,9 @@ export function QuizEngine({
         </p>
 
         {/* Render question type */}
-        {renderQuestion()}
+        <QuestionErrorBoundary questionId={q.id} questionType={q.type}>
+          {renderQuestion()}
+        </QuestionErrorBoundary>
       </div>
 
       {/* Navigation */}

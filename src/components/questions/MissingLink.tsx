@@ -14,6 +14,7 @@ const LETTERS = ['A', 'B', 'C', 'D']
 
 export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
   const { t } = useLanguage()
+  const chain = Array.isArray(question.chain) ? question.chain : []
 
   return (
     <div>
@@ -22,18 +23,19 @@ export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
       </h2>
 
       {/* Chain visualization */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.4rem',
-          marginBottom: '1.75rem',
-        }}
-      >
-        {question.chain.map((item, i) => {
-          const isMissing = item.trim() === '?'
-          return (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      {chain.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.4rem',
+            marginBottom: '1.75rem',
+          }}
+        >
+          {chain.map((item, i) => {
+            const isMissing = item.trim() === '?'
+            return (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
               <div
                 style={{
                   width: '100%',
@@ -77,7 +79,7 @@ export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
                   {isMissing ? (t.questions?.missingEventPlaceholder || '❓ [ Missing Event — Select below ]') : item}
                 </span>
               </div>
-              {i < question.chain.length - 1 && (
+              {i < chain.length - 1 && (
                 <div style={{ color: 'var(--color-gold)', fontSize: '1rem', margin: '0.1rem 0', opacity: 0.8 }}>
                   ↓
                 </div>
@@ -86,6 +88,7 @@ export function MissingLink({ question, answer, onAnswer, disabled }: Props) {
           )
         })}
       </div>
+      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {question.options.map((opt, i) => (

@@ -8,9 +8,10 @@ import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
 interface AdminQuizCreatorProps {
   onQuizPublished: (quizId: string) => Promise<void>
   onSwitchToCatalog: () => void
+  onDryRunQuiz?: (quiz: Quiz) => void
 }
 
-export function AdminQuizCreator({ onQuizPublished, onSwitchToCatalog }: AdminQuizCreatorProps) {
+export function AdminQuizCreator({ onQuizPublished, onSwitchToCatalog, onDryRunQuiz }: AdminQuizCreatorProps) {
   const [rawInput, setRawInput] = useState('')
   const [parsedQuiz, setParsedQuiz] = useState<Quiz | null>(null)
   const [parseError, setParseError] = useState<string | null>(null)
@@ -295,6 +296,14 @@ export function AdminQuizCreator({ onQuizPublished, onSwitchToCatalog }: AdminQu
                 💾 Download JSON
               </button>
               <button
+                className="btn btn-primary btn-sm"
+                onClick={() => onDryRunQuiz?.(parsedQuiz)}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800 }}
+                title="Run dry run simulation in real quiz engine before publishing"
+              >
+                <span>🧪</span> Dry Run Quiz
+              </button>
+              <button
                 className="btn btn-gold btn-sm"
                 onClick={handlePublish}
                 disabled={publishing}
@@ -323,7 +332,14 @@ export function AdminQuizCreator({ onQuizPublished, onSwitchToCatalog }: AdminQu
               <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>{parsedQuiz.description}</p>
             </div>
 
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <button
+                className="btn btn-gold btn-xs"
+                onClick={() => onDryRunQuiz?.(parsedQuiz)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontWeight: 700 }}
+              >
+                <span>🧪</span> Dry Run in Engine
+              </button>
               <span className="badge badge-ghost" style={{ fontSize: '0.75rem' }}>
                 📝 {parsedQuiz.questions.length} Questions
               </span>

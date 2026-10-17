@@ -126,10 +126,10 @@
       "reference": "BG 10.8-10.11",
       "explanation": "The Catur-śloki flows sequentially: 10.8 establishes Krishna as the source of all, 10.9 describes pure devotees discussing Krishna with joy, 10.10 explains how Krishna grants them intelligence (buddhi-yoga), and 10.11 describes Krishna destroying their darkness of ignorance with the lamp of knowledge.",
       "items": [
-        "BG 10.10: 'Teṣāṁ satata-yuktānām...' (Krishna awarding buddhi-yoga to come to Him)",
-        "BG 10.8: 'Ahaṁ sarvasya prabhavo...' (Krishna as the source of all spiritual and material worlds)",
-        "BG 10.11: 'Teṣām evānukampārtham...' (Krishna dispelling ignorance with the lamp of knowledge)",
-        "BG 10.9: 'Mac-cittā mad-gata-prāṇā...' (Devotees deriving bliss by conversing about Krishna)"
+        "'Teṣāṁ satata-yuktānām...' (Krishna awarding buddhi-yoga to come to Him)",
+        "'Ahaṁ sarvasya prabhavo...' (Krishna as the source of all spiritual and material worlds)",
+        "'Teṣām evānukampārtham...' (Krishna dispelling ignorance with the lamp of knowledge)",
+        "'Mac-cittā mad-gata-prāṇā...' (Devotees deriving bliss by conversing about Krishna)"
       ],
       "correctOrder": [
         1,
@@ -159,10 +159,22 @@
         "Bṛhaspati"
       ],
       "correctPairs": [
-        [0, 2],
-        [1, 0],
-        [2, 3],
-        [3, 1]
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          1
+        ]
       ]
     },
     {
@@ -200,16 +212,22 @@
     {
       "id": 12,
       "type": "missing-link",
-      "question": "Identify the MISSING LINK in Krishna's progression of cosmic manifestations: [10.20: Supersoul] -> [10.21: Sun among luminaries] -> [ ? ] -> [10.23: Śaṅkara among Rudras].",
+      "question": "Identify the MISSING LINK in Krishna's progression of cosmic manifestations:",
+      "chain": [
+        "BG 10.20: Supersoul",
+        "BG 10.21: Sun among luminaries",
+        "?",
+        "BG 10.23: Śaṅkara among Rudras"
+      ],
       "difficulty": "medium",
       "points": 2,
       "reference": "BG 10.22",
       "explanation": "Following BG 10.20 (Supersoul) and 10.21 (Sun/Marīci), BG 10.22 states that among Vedas He is Sāma Veda, among demigods Indra, among senses the Mind (manas), and in living beings consciousness (cetanā).",
       "options": [
-        "BG 10.30: Prahlāda among Daityas",
-        "BG 10.34: All-devouring Death",
-        "BG 10.22: Sāma Veda among Vedas & Mind among senses",
-        "BG 10.38: Punishment among subduing measures"
+        "Prahlāda among Daityas",
+        "All-devouring Death",
+        "Sāma Veda among Vedas & Mind among senses",
+        "Punishment among subduing measures"
       ],
       "correctIndex": 2
     },
@@ -322,10 +340,22 @@
         "Spiritual Science (Adhyātma-vidyā)"
       ],
       "correctPairs": [
-        [0, 2],
-        [1, 3],
-        [2, 1],
-        [3, 0]
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          0
+        ]
       ]
     },
     {

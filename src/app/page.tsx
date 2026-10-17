@@ -175,6 +175,15 @@ export default function HomePage() {
                 >
                   <span>{t.home.testRoundHint || '✨ Want to take a test round? Try PIN 0000'}</span>
                 </button>
+
+                <div style={{ textAlign: 'center', marginTop: '0.85rem' }}>
+                  <Link
+                    href="/quizzes"
+                    style={{ fontSize: '0.82rem', color: 'var(--color-gold)', fontWeight: 600, textDecoration: 'underline' }}
+                  >
+                    📖 Or explore all live & scripture quizzes without a PIN →
+                  </Link>
+                </div>
               </form>
             </div>
 

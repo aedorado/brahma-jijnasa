@@ -11,6 +11,7 @@ import { AdminSeriesManager } from '@/components/admin/AdminSeriesManager'
 import { AdminQuizCatalog } from '@/components/admin/AdminQuizCatalog'
 import { AdminAnalytics, type AttemptRecord } from '@/components/admin/AdminAnalytics'
 import { AdminQuizCreator } from '@/components/admin/AdminQuizCreator'
+import { AdminDryRunModal } from '@/components/admin/AdminDryRunModal'
 
 type AdminPillar = 'live' | 'series' | 'catalog' | 'analytics' | 'create'
 
@@ -29,10 +30,31 @@ export default function AdminPage() {
   const [starting, setStarting] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
   const [quizDetailsCache, setQuizDetailsCache] = useState<Record<string, Quiz>>({})
+  const [dryRunQuiz, setDryRunQuiz] = useState<Quiz | null>(null)
+  const [loadingDryRun, setLoadingDryRun] = useState(false)
 
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
   const supabase = createClient()
+
+  const handleStartDryRun = async (quizIdOrData: string | Quiz) => {
+    if (typeof quizIdOrData === 'object' && quizIdOrData !== null) {
+      setDryRunQuiz(quizIdOrData)
+      return
+    }
+    setLoadingDryRun(true)
+    try {
+      const res = await fetch(`/api/quiz/${quizIdOrData}`)
+      if (res.ok) {
+        const q = await res.json()
+        setDryRunQuiz(q)
+      }
+    } catch (e) {
+      console.error('Failed to load quiz for dry run:', e)
+    } finally {
+      setLoadingDryRun(false)
+    }
+  }
 
   const loadQuizzes = async () => {
     try {
@@ -166,6 +188,14 @@ export default function AdminPage() {
     const init = async () => {
       await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
       setLoading(false)
+
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search)
+        const dryRunId = params.get('dryRun')
+        if (dryRunId) {
+          handleStartDryRun(dryRunId)
+        }
+      }
     }
     init()
   }, [authLoading, user])
@@ -431,6 +461,7 @@ export default function AdminPage() {
             }}
             starting={starting}
             onOpenCreator={() => setActivePillar('create')}
+            onDryRunQuiz={handleStartDryRun}
           />
         )}
 
@@ -451,9 +482,18 @@ export default function AdminPage() {
               await loadQuizzes()
             }}
             onSwitchToCatalog={() => setActivePillar('catalog')}
+            onDryRunQuiz={handleStartDryRun}
           />
         )}
       </div>
+
+      {/* DRY RUN MODAL */}
+      {dryRunQuiz && (
+        <AdminDryRunModal
+          quiz={dryRunQuiz}
+          onClose={() => setDryRunQuiz(null)}
+        />
+      )}
     </div>
   )
 }

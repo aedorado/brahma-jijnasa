@@ -22,6 +22,7 @@ export const translations = {
     // Navigation
     nav: {
       tagline: 'Sanātana Dharma Scripture Platform',
+      quizzes: 'Quizzes',
       allSeries: 'Series',
       featuredSeries: '64 Principles',
       leaderboard: 'Leaderboard',
@@ -404,6 +405,7 @@ export const translations = {
     // Navigation
     nav: {
       tagline: 'सनातन धर्म शास्त्र मंच',
+      quizzes: 'प्रश्नोत्तरी',
       allSeries: 'श्रृंखलाएं',
       featuredSeries: '६४ सिद्धांत',
       leaderboard: 'अंक-तालिका',
@@ -786,6 +788,7 @@ export const translations = {
     // Navigation
     nav: {
       tagline: 'Plataforma de Escrituras do Sanātana Dharma',
+      quizzes: 'Quizzes',
       allSeries: 'Séries',
       featuredSeries: '64 Princípios',
       leaderboard: 'Classificação',

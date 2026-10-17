@@ -11,6 +11,7 @@ interface AdminQuizCatalogProps {
   onSelectSession?: (sessionId: string) => void
   starting: string | null
   onOpenCreator?: () => void
+  onDryRunQuiz?: (quizId: string) => Promise<void>
 }
 
 export function AdminQuizCatalog({
@@ -20,6 +21,7 @@ export function AdminQuizCatalog({
   onSelectSession,
   starting,
   onOpenCreator,
+  onDryRunQuiz,
 }: AdminQuizCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -184,21 +186,32 @@ export function AdminQuizCatalog({
                 </div>
 
                 <div>
-                  <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '0.4rem', marginBottom: '0.75rem' }}>
                     <button
-                      className="btn btn-ghost btn-xs w-full"
+                      className="btn btn-ghost btn-xs"
                       onClick={() => handleInspectQuestions(quiz.id)}
                       style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
+                      title="Inspect question details"
                     >
-                      <span>👁</span> Preview ({quiz.totalQuestions})
+                      <span>👁</span> Preview
+                    </button>
+
+                    <button
+                      className="btn btn-gold btn-xs"
+                      onClick={() => onDryRunQuiz?.(quiz.id)}
+                      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem', fontWeight: 700 }}
+                      title="Run interactive simulation in quiz engine"
+                    >
+                      <span>🧪</span> Dry Run
                     </button>
 
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => handleCopyLink(quiz.id)}
                       style={{ border: '1px solid var(--color-border)', whiteSpace: 'nowrap' }}
+                      title="Copy student link"
                     >
-                      {copiedId === quiz.id ? '✓ Copied' : '🔗 Link'}
+                      {copiedId === quiz.id ? '✓' : '🔗'}
                     </button>
                   </div>
 
@@ -297,8 +310,17 @@ export function AdminQuizCatalog({
                             className="btn btn-ghost btn-xs"
                             onClick={() => handleInspectQuestions(quiz.id)}
                             style={{ border: '1px solid var(--color-border)' }}
+                            title="Inspect questions list"
                           >
                             👁 Preview
+                          </button>
+                          <button
+                            className="btn btn-gold btn-xs"
+                            onClick={() => onDryRunQuiz?.(quiz.id)}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontWeight: 700 }}
+                            title="Launch interactive dry run"
+                          >
+                            🧪 Dry Run
                           </button>
                           <button
                             className="btn btn-ghost btn-xs"
@@ -375,7 +397,7 @@ export function AdminQuizCatalog({
             }}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
               <div>
                 <span className="badge badge-gold" style={{ fontSize: '0.72rem', marginBottom: '0.25rem' }}>
                   {previewQuiz.category}
@@ -384,13 +406,27 @@ export function AdminQuizCatalog({
                 <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>{previewQuiz.description}</p>
               </div>
 
-              <button
-                className="btn btn-ghost btn-sm"
-                onClick={() => setPreviewQuiz(null)}
-                style={{ fontSize: '1.2rem', padding: '0.2rem 0.6rem' }}
-              >
-                ✕
-              </button>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <button
+                  className="btn btn-gold btn-sm"
+                  onClick={() => {
+                    const qId = previewQuiz.id
+                    setPreviewQuiz(null)
+                    onDryRunQuiz?.(qId)
+                  }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 800 }}
+                  title="Run interactive simulation in quiz engine"
+                >
+                  <span>🧪</span> Launch Dry Run
+                </button>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setPreviewQuiz(null)}
+                  style={{ fontSize: '1.2rem', padding: '0.2rem 0.6rem' }}
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

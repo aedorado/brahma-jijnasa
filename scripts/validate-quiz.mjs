@@ -98,11 +98,67 @@ quiz.questions?.forEach((q, idx) => {
   switch (q.type) {
     case 'single-choice':
     case 'odd-one-out':
-    case 'spot-the-error':
+    case 'cause-effect':
+      if (!Array.isArray(q.options) || q.options.length < 2) {
+        errors.push(`${prefix} "options" must be an array of at least 2 items`)
+      }
+      if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex >= (q.options?.length ?? 0)) {
+        errors.push(`${prefix} "correctIndex" (${q.correctIndex}) out of bounds for options length ${q.options?.length}`)
+      }
+      break
+
     case 'missing-link':
+      if (!Array.isArray(q.chain) || q.chain.length < 3) {
+        errors.push(`${prefix} "chain" must be an array of at least 3 items (e.g. ["Event A", "?", "Event C"])`)
+      } else if (!q.chain.some(item => typeof item === 'string' && item.trim() === '?')) {
+        errors.push(`${prefix} "chain" must contain at least one missing link placeholder "?"`)
+      }
+      if (!Array.isArray(q.options) || q.options.length < 2) {
+        errors.push(`${prefix} "options" must be an array of at least 2 items`)
+      }
+      if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex >= (q.options?.length ?? 0)) {
+        errors.push(`${prefix} "correctIndex" (${q.correctIndex}) out of bounds for options length ${q.options?.length}`)
+      }
+      break
+
     case 'case-study':
     case 'what-would-you-do':
-    case 'cause-effect':
+      if (!q.scenario && !q.question) {
+        errors.push(`${prefix} Missing "scenario" text`)
+      }
+      if (!Array.isArray(q.options) || q.options.length < 2) {
+        errors.push(`${prefix} "options" must be an array of at least 2 items`)
+      }
+      if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex >= (q.options?.length ?? 0)) {
+        errors.push(`${prefix} "correctIndex" (${q.correctIndex}) out of bounds for options length ${q.options?.length}`)
+      }
+      break
+
+    case 'spot-the-error':
+      if (!q.passage && !q.question) {
+        errors.push(`${prefix} Missing "passage" text to spot error in`)
+      }
+      if (!Array.isArray(q.options) || q.options.length < 2) {
+        errors.push(`${prefix} "options" must be an array of at least 2 items`)
+      }
+      if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex >= (q.options?.length ?? 0)) {
+        errors.push(`${prefix} "correctIndex" (${q.correctIndex}) out of bounds for options length ${q.options?.length}`)
+      }
+      break
+
+    case 'two-truths-one-false':
+      if (!Array.isArray(q.options) || q.options.length !== 3) {
+        errors.push(`${prefix} "options" must contain exactly 3 statements (two true, one false)`)
+      }
+      if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex >= (q.options?.length ?? 0)) {
+        errors.push(`${prefix} "correctIndex" (${q.correctIndex}) out of bounds for options length ${q.options?.length}`)
+      }
+      break
+
+    case 'evidence-based':
+      if (!q.principle && !q.question) {
+        warnings.push(`${prefix} Evidence-based question should include a "principle" statement`)
+      }
       if (!Array.isArray(q.options) || q.options.length < 2) {
         errors.push(`${prefix} "options" must be an array of at least 2 items`)
       }

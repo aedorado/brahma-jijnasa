@@ -44,6 +44,7 @@ export function Navbar() {
     setTheme(next)
   }
 
+  const isQuizzesActive = pathname === '/quizzes'
   const isSeriesActive = pathname?.startsWith('/series')
   const isLeaderboardActive = pathname === '/leaderboard'
 
@@ -60,6 +61,13 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <nav className="navbar-nav-desktop" aria-label="Main Navigation">
+              <Link
+                href="/quizzes"
+                className={`navbar-nav-link ${isQuizzesActive ? 'active' : ''}`}
+                id="nav-quizzes-link"
+              >
+                {t.nav.quizzes || 'Quizzes'}
+              </Link>
               <Link
                 href="/series"
                 className={`navbar-nav-link ${isSeriesActive ? 'active' : ''}`}
@@ -199,6 +207,14 @@ export function Navbar() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="navbar-mobile-drawer animate-scaleIn">
+            <Link
+              href="/quizzes"
+              className={`navbar-mobile-link ${isQuizzesActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="navbar-mobile-icon">📖</span>
+              <span>{t.nav.quizzes || 'Quizzes'}</span>
+            </Link>
             <Link
               href="/series"
               className={`navbar-mobile-link ${isSeriesActive ? 'active' : ''}`}
