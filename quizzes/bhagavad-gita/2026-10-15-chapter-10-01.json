@@ -4,7 +4,7 @@
   "category": "bhagavad-gita",
   "description": "Comprehensive 20-question quiz on the Opulences of the Absolute and Catur-śloki Gītā.",
   "difficulty": "medium",
-  "timeLimit": 1200,
+  "timeLimit": 450,
   "onTimeExpiry": "submit-partial",
   "questions": [
     {
