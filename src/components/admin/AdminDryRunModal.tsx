@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import type { Quiz, Question, AnswerMap, ScoreResult, WhoAmIAnswer, PairsAnswer } from '@/types/quiz'
 import { scoreQuiz, formatTime } from '@/lib/scoring'
 import { QuizEngine } from '@/components/QuizEngine'
@@ -33,6 +34,20 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
   const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null)
   const [submissionTime, setSubmissionTime] = useState(0)
   const [engineKey, setEngineKey] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [])
 
   // Close on Escape key
   useEffect(() => {
@@ -124,7 +139,9 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
     return 'N/A'
   }
 
-  return (
+  if (!mounted) return null
+
+  return createPortal(
     <div
       style={{
         position: 'fixed',
@@ -132,7 +149,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 1000,
+        zIndex: 99999,
         background: 'rgba(5, 5, 10, 0.92)',
         backdropFilter: 'blur(12px)',
         display: 'flex',
@@ -549,6 +566,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
 
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

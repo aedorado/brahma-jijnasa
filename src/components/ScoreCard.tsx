@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { formatTime } from '@/lib/scoring'
 import { createClient } from '@/lib/supabase/client'
@@ -25,9 +26,23 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<number | null>(null)
   const [showReviewModal, setShowReviewModal] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const supabase = createClient()
   const { t } = useLanguage()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!showReviewModal) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [showReviewModal])
   const getPerformance = (percentage: number) => {
     if (percentage >= 90) return { label: t.scoreCard.perfBrahmajnani || 'Exceptional — Brahmajñānī!', emoji: '🌟' }
     if (percentage >= 75) return { label: t.scoreCard.perfVidvan || 'Excellent — Vidvān!', emoji: '🏆' }
@@ -644,13 +659,13 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
       </div>
 
       {/* Fullscreen Modal View */}
-      {showReviewModal && (
+      {showReviewModal && mounted && createPortal(
         <div
           style={{
             position: 'fixed', inset: 0,
             background: 'rgba(15, 11, 28, 0.94)',
             backdropFilter: 'blur(10px)',
-            zIndex: 200,
+            zIndex: 99999,
             overflowY: 'auto',
           }}
         >
@@ -673,7 +688,8 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
               {t.scoreCard.closeReview}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

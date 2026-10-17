@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AuthProvider>
               <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 <Navbar />
-                <main style={{ position: 'relative', zIndex: 1, flex: 1 }}>
+                <main style={{ position: 'relative', flex: 1 }}>
                   {children}
                 </main>
                 <Footer />

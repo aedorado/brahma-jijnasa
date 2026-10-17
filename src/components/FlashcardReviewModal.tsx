@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import type { Quiz, Question, AnswerMap, Answer } from '@/types/quiz'
 import { CATEGORY_ICONS, CATEGORY_LABELS } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
@@ -29,6 +30,21 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
   const [revealedClues, setRevealedClues] = useState<Record<number, number>>({})
   const [filterWeakOnly, setFilterWeakOnly] = useState(false)
   const [showSummary, setShowSummary] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (!isOpen) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [isOpen])
 
   // Fetch Quiz Data
   useEffect(() => {
@@ -154,7 +170,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
     }))
   }
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
   const renderQuestionFront = (q: Question) => {
     const practiceAns = userPracticeAnswers[q.id]
@@ -676,7 +692,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
     )
   }
 
-  return (
+  return createPortal(
     <div className="flashcard-modal-overlay" onClick={onClose}>
       <div
         className="flashcard-modal-container"
@@ -801,6 +817,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

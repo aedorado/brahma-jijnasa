@@ -672,7 +672,14 @@ export default function LiveQuizzesPage() {
                       </h3>
 
                       <div style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>
-                        Completed: {new Date(att.completed_at).toLocaleDateString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                        Completed: {(() => {
+                          try {
+                            const d = new Date(att.completed_at)
+                            return isNaN(d.getTime()) ? att.completed_at : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                          } catch {
+                            return att.completed_at
+                          }
+                        })()}
                         {att.time_taken ? ` • ⏱️ ${Math.floor(att.time_taken / 60)}m ${att.time_taken % 60}s` : ''}
                       </div>
                     </div>
