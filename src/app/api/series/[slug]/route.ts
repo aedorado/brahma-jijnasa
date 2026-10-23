@@ -67,24 +67,35 @@ export async function GET(
       }
 
       if (dbRounds && dbRounds.length > 0) {
-        rounds = DEFAULT_64_PRINCIPLES_ROUNDS.map((defRound) => {
-          const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
-          const unlockAt = defRound.unlock_at || matchDb?.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
-          const quizId = matchDb?.quiz_id || defRound.quiz_id
-          const activePin = activePinMap.get(quizId) || null
-          const isManualUnlocked = matchDb ? matchDb.is_unlocked : false
-          return {
-            ...defRound,
-            id: matchDb ? matchDb.id : defRound.id,
-            title: matchDb?.title || defRound.title,
-            description: matchDb?.description || defRound.description,
-            principles_range: matchDb?.principles_range || defRound.principles_range,
-            shloka_reference: matchDb?.shloka_reference || defRound.shloka_reference,
-            unlock_at: unlockAt,
-            activePin,
-            is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: isManualUnlocked, unlock_at: unlockAt, activePin }),
-          }
-        })
+        if (slug === DEFAULT_64_PRINCIPLES_SERIES.slug) {
+          rounds = DEFAULT_64_PRINCIPLES_ROUNDS.map((defRound) => {
+            const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
+            const unlockAt = matchDb?.unlock_at || defRound.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
+            const quizId = matchDb?.quiz_id || defRound.quiz_id
+            const activePin = activePinMap.get(quizId) || null
+            const isManualUnlocked = matchDb ? Boolean(matchDb.is_unlocked) : false
+            return {
+              ...defRound,
+              id: matchDb ? matchDb.id : defRound.id,
+              title: matchDb?.title || defRound.title,
+              description: matchDb?.description !== undefined && matchDb?.description !== null ? matchDb.description : defRound.description,
+              principles_range: matchDb?.principles_range !== undefined && matchDb?.principles_range !== null ? matchDb.principles_range : defRound.principles_range,
+              shloka_reference: matchDb?.shloka_reference !== undefined && matchDb?.shloka_reference !== null ? matchDb.shloka_reference : defRound.shloka_reference,
+              unlock_at: unlockAt,
+              activePin,
+              is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: isManualUnlocked, unlock_at: unlockAt, activePin }),
+            }
+          })
+        } else {
+          rounds = dbRounds.map((r: any) => {
+            const activePin = activePinMap.get(r.quiz_id) || null
+            return {
+              ...r,
+              activePin,
+              is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: r.is_unlocked, unlock_at: r.unlock_at, activePin }),
+            }
+          })
+        }
       }
     }
 

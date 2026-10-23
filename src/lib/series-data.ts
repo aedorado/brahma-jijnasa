@@ -280,10 +280,11 @@ export function isRoundEffectivelyUnlocked(round: {
   activePin?: string | null
 }): boolean {
   if (round.activePin) return true
+  if (round.is_unlocked) return true
   if (round.unlock_at) {
     return new Date() >= new Date(round.unlock_at)
   }
-  return Boolean(round.is_unlocked)
+  return false
 }
 
 export const DEFAULT_64_PRINCIPLES_SERIES: QuizSeries = {
