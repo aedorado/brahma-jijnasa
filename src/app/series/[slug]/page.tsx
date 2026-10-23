@@ -342,11 +342,11 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                         >
                           {(() => {
                             const dayTag = round.day_number === -2
-                              ? 'Day -2 (D-3)'
+                              ? 'Preparatory Quiz 1'
                               : round.day_number === -1
-                                ? 'Day -1 (D-2)'
+                                ? 'Preparatory Quiz 2'
                                 : round.day_number === 0
-                                  ? 'Day 0 (D-1)'
+                                  ? 'Preparatory Quiz 3'
                                   : `${t.series.dayLabel} ${round.day_number}`
                             return isLive
                               ? `🔴 ${t.series.liveClassNow}`

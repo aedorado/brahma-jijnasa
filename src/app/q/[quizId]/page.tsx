@@ -111,8 +111,33 @@ export default function DirectQuizPage({ params }: Props) {
         }
 
         if (dayNum !== null) {
-          const unlockIso = getSeriesRoundUnlockTime(dayNum)
-          if (new Date() < new Date(unlockIso)) {
+          let isUnlocked = false
+          let effectiveUnlockIso = getSeriesRoundUnlockTime(dayNum)
+
+          try {
+            const { data: dbRound } = await supabase
+              .from('quiz_series_rounds')
+              .select('unlock_at, is_unlocked')
+              .eq('quiz_id', quizId)
+              .maybeSingle()
+
+            if (dbRound) {
+              if (dbRound.is_unlocked) {
+                isUnlocked = true
+              }
+              if (dbRound.unlock_at) {
+                effectiveUnlockIso = dbRound.unlock_at
+              }
+            }
+          } catch (err) {
+            console.warn('Could not check db round unlock status:', err)
+          }
+
+          if (!isUnlocked && new Date() >= new Date(effectiveUnlockIso)) {
+            isUnlocked = true
+          }
+
+          if (!isUnlocked) {
             // Check if there is an active live PIN session created by teacher/admin
             try {
               const { data: activeSession } = await supabase
@@ -138,9 +163,9 @@ export default function DirectQuizPage({ params }: Props) {
               minute: '2-digit',
               hour12: true,
               timeZone: 'Asia/Kolkata',
-            }).format(new Date(unlockIso)) + ' IST'
+            }).format(new Date(effectiveUnlockIso)) + ' IST'
 
-            const label = dayNum === -2 ? 'Day -2 (D-3)' : dayNum === -1 ? 'Day -1 (D-2)' : dayNum === 0 ? 'Day 0 (D-1)' : `Day ${dayNum}`
+            const label = dayNum === -2 ? 'Preparatory Quiz 1' : dayNum === -1 ? 'Preparatory Quiz 2' : dayNum === 0 ? 'Preparatory Quiz 3' : `Day ${dayNum}`
             setErrorMsg(`${label} is scheduled to release on ${formattedTime}. Please check back at the scheduled time or join the live class when active.`)
             setPhase('error')
             return
