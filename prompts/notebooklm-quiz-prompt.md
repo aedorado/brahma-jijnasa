@@ -1,42 +1,41 @@
 # Brahma Jijñāsā — Universal High-Quality NotebookLM Quiz Prompt
 
-> **Character Count:** ~3,250 characters (Strictly under 3,500 characters limit).
+> **Character Count:** ~3,150 characters (Strictly under NotebookLM's 3,500 characters limit).
+> **Target:** Copy-paste directly into Google NotebookLM with uploaded sources.
 
 ---
 
-```markdown
+```text
 Based STRICTLY on the uploaded source material:
-Generate a 20-question interactive quiz as a single valid JSON object. Output pure JSON ONLY (no markdown fences or commentary).
+Generate a 20-question interactive quiz as a single valid JSON object. Output pure JSON ONLY (no markdown fences, no text before or after). Starts with { and ends with }.
 
-QUALITY RULES:
-1. FOCUS ON CORE INSPIRING THEMES: Essential, faith-building, memorable events and teachings. Avoid obscure footnote trivia or administrative dates.
-2. NO CROSS-QUESTION LEAKS: Questions must be isolated. Never reveal an answer inside another question.
-3. SHUFFLE ANSWERS:
-   - For single-choice: Distribute correctIndex across 0, 1, 2, 3 (do NOT default to 0).
-   - For multiple-select: Vary correctIndices (e.g. [1, 3], [0, 2, 3], [0, 3]). Never always use [0, 1, 2].
-   - In sequence & match-pairs: Scramble items thoroughly so order is never [0, 1, 2, 3].
-4. AUTHENTIC REFERENCES: Provide clear chapter references and concise explanations.
-5. DIFFICULTY BALANCE: 6 Easy, 10 Medium, 4 Hard. (Do NOT include points).
+CORE PEDAGOGICAL & QUALITY RULES:
+1. FOCUS ON SPIRITUAL TOPIC (NO META-REFERENCES): Focus on the persons, pastimes, and philosophy. Never write 'In Chapter X of [Book]...' in the question stem. Citations belong in 'reference' and 'explanation'.
+2. EXPLICIT SUBJECT NAMING: Never use ambiguous pronouns ('he/they'). Name the historical or scriptural subject clearly in the question stem.
+3. BALANCED DISTRACTORS: All 4 options must be plausible, authentic peers of similar length and tone. Never make the correct answer obviously longer or distractors silly.
+4. NO CROSS-QUESTION LEAKS: Questions must be 100% self-contained. No question or explanation may spoil or reveal the answer to any other question.
+5. SHUFFLE INDICES: Evenly distribute correctIndex across 0, 1, 2, 3 (do NOT default to 0). For multiple-select, vary correctIndices across [0,2], [1,3], [0,2,3], [1,2,3].
+6. STRICT JSON ESCAPING: NEVER use unescaped double quotes inside strings. Use single quotes ('...') or escape with \".
 
-20 QUESTIONS (Exact Order):
-Q1: "single-choice" (options: 4 strings, correctIndex: 0-3)
-Q2: "multiple-select" (options: 4 strings, correctIndices: array of 2-3 indices)
-Q3: "true-false" (question: clear statement, correct: boolean)
-Q4: "who-am-i" (clues: [subtle clue, clearer clue, direct clue], options: 4 strings, correctIndex: 0-3)
-Q5: "who-said-this" (quote: string, context: string, options: 4 speakers, correctIndex: 0-3)
-Q6: "sequence" (items: 4 scrambled events, correctOrder: [shuffled indices 0-3 in proper order])
-Q7: "match-pairs" (left: 4 items, right: 4 scrambled items, correctPairs: [[0,x], [1,y], [2,z], [3,w]])
-Q8: "assertion-reason" (assertion: string, reason: string, options: ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], correctIndex: 0-3)
-Q9: "spot-the-error" (passage: 2-sentence passage with 1 factual error, options: 4 corrections, correctIndex: 0-3)
-Q10: "missing-link" (chain: ["Step 1", "Step 2", "?", "Step 4"], options: 4 choices for "?", correctIndex: 0-3)
-Q11: "odd-one-out" (options: 4 strings where 3 share theme and 1 does not, correctIndex: 0-3)
-Q12: "cause-effect" (cause/action in question, options: 4 outcomes, correctIndex: 0-3)
-Q13: "two-truths-one-false" (options: 3 statements (2 true, 1 false), correctIndex: index of FALSE statement 0-2)
-Q14: "case-study" (scenario: 2-3 sentences of dilemma, question: decision, options: 4 choices, correctIndex: 0-3)
-Q15: "what-would-you-do" (scenario: 2-3 sentences of situation, question: spiritual action, options: 4 choices, correctIndex: 0-3)
-Q16, Q18, Q20: "single-choice" (options: 4 strings, correctIndex: 0-3)
-Q17, Q19: "multiple-select" (options: 4 strings, correctIndices: array of 2-3 indices)
+20 QUESTIONS (Use these exact keys per question):
+Q1: {"type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":2}
+Q2: {"type":"multiple-select","question":"... (Select all that apply)","options":["A","B","C","D"],"correctIndices":[0,2,3]}
+Q3: {"type":"true-false","question":"True or False: ...","options":["True","False"],"correct":true,"correctIndex":0}
+Q4: {"type":"who-am-i","question":"Who am I based on these clues?","clues":["Subtle clue (+3pts)","Clearer clue (+2pts)","Direct clue (+1pt)"],"options":["A","B","C","D"],"correctIndex":1}
+Q5: {"type":"who-said-this","question":"Identify the speaker:","quote":"Exact quote...","context":"Context/recipient...","options":["A","B","C","D"],"correctIndex":3}
+Q6: {"type":"sequence","question":"Arrange in chronological order:","items":["Event 1","Event 2","Event 3","Event 4"],"correctOrder":[2,0,1,3]}
+Q7: {"type":"match-pairs","question":"Match items:","left":["L1","L2","L3","L4"],"right":["R1","R2","R3","R4"],"correctPairs":[[0,2],[1,3],[2,1],[3,0]]}
+Q8: {"type":"assertion-reason","question":"Analyze:","assertion":"...","reason":"...","options":["Both A and R true, and R is correct explanation","Both true, but R is NOT correct explanation","A is true, R is false","A is false, R is true"],"correctIndex":0}
+Q9: {"type":"spot-the-error","question":"Identify the incorrect statement:","passage":"1. ...\n2. ...\n3. ...\n4. ...","options":["Part 1","Part 2","Part 3","Part 4"],"correctIndex":2}
+Q10: {"type":"missing-link","question":"What completes the chain?","chain":["Step 1","Step 2","?","Step 4"],"options":["A","B","C","D"],"correctIndex":1}
+Q11: {"type":"odd-one-out","question":"Which is the odd one out?","options":["A","B","C","D"],"correctIndex":3}
+Q12: {"type":"cause-effect","question":"What is the spiritual consequence?","options":["A","B","C","D"],"correctIndex":0}
+Q13: {"type":"two-truths-one-false","question":"Select the statement that is FALSE:","options":["True statement 1","False statement 2","True statement 3"],"correctIndex":1}
+Q14: {"type":"case-study","question":"How was this resolved?","scenario":"Description of case...","options":["A","B","C","D"],"correctIndex":2}
+Q15: {"type":"what-would-you-do","question":"What is the proper course of action?","scenario":"Description of situation...","options":["A","B","C","D"],"correctIndex":1}
+Q16, Q18, Q20: {"type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":1}
+Q17, Q19: {"type":"multiple-select","question":"...","options":["A","B","C","D"],"correctIndices":[1,3]}
 
-JSON SCHEMA:
-{"id":"quiz-slug","title":"Descriptive Quiz Title","category":"64-principles","description":"Summary of quiz topic and sources covered","difficulty":"medium","timeLimit":720,"onTimeExpiry":"submit-partial","questions":[{"id":"q1","type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":2,"difficulty":"easy","explanation":"...","reference":"Chapter 1"}]}
+WRAPPER SCHEMA:
+{"id":"quiz-slug","title":"Descriptive Quiz Title","category":"64-principles","description":"Summary of quiz","difficulty":"easy","timeLimit":720,"onTimeExpiry":"submit-partial","questions":[/* Every question must include "id", "type", "difficulty":"easy", "explanation":"...", "reference":"..." */]}
 ```
