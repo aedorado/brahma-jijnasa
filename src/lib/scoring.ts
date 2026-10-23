@@ -93,10 +93,13 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
 
     case 'match-pairs': {
       const userPairs = (answer as PairsAnswer) || []
-      const totalPairs = question.correctPairs.length
+      const normalizedCorrect: [number, number][] = (question.correctPairs || []).map((p: any) =>
+        Array.isArray(p) ? (p as [number, number]) : [p.left, p.right]
+      )
+      const totalPairs = normalizedCorrect.length
       let matched = 0
       for (const [l, r] of userPairs) {
-        if (question.correctPairs.some(([cl, cr]) => cl === l && cr === r)) matched++
+        if (normalizedCorrect.some(([cl, cr]) => cl === l && cr === r)) matched++
       }
       correct = totalPairs > 0 && matched === totalPairs
       earned = correct ? max : totalPairs > 0 ? Math.round((matched / totalPairs) * max * 2) / 2 : 0

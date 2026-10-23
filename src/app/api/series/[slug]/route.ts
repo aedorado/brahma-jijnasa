@@ -47,19 +47,39 @@ export async function GET(
     if (dbSeries) {
       const { data: dbRounds } = await supabase
         .from('quiz_series_rounds')
-        .select('*, quiz_sessions(pin, is_active)')
+        .select('*')
         .eq('series_id', dbSeries.id)
         .order('day_number', { ascending: true })
+
+      // Fetch active live sessions by quiz_id
+      const { data: activeSessions } = await supabase
+        .from('quiz_sessions')
+        .select('quiz_id, pin')
+        .eq('is_active', true)
+
+      const activePinMap = new Map<string, string>()
+      if (activeSessions) {
+        for (const s of activeSessions) {
+          if (s.quiz_id && s.pin) {
+            activePinMap.set(s.quiz_id, s.pin)
+          }
+        }
+      }
 
       if (dbRounds && dbRounds.length > 0) {
         rounds = DEFAULT_64_PRINCIPLES_ROUNDS.map((defRound) => {
           const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
-          const unlockAt = matchDb?.unlock_at || defRound.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
-          const activePin = matchDb?.quiz_sessions?.is_active ? matchDb.quiz_sessions.pin : null
+          const unlockAt = defRound.unlock_at || matchDb?.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
+          const quizId = matchDb?.quiz_id || defRound.quiz_id
+          const activePin = activePinMap.get(quizId) || null
           const isManualUnlocked = matchDb ? matchDb.is_unlocked : false
           return {
             ...defRound,
             id: matchDb ? matchDb.id : defRound.id,
+            title: matchDb?.title || defRound.title,
+            description: matchDb?.description || defRound.description,
+            principles_range: matchDb?.principles_range || defRound.principles_range,
+            shloka_reference: matchDb?.shloka_reference || defRound.shloka_reference,
             unlock_at: unlockAt,
             activePin,
             is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: isManualUnlocked, unlock_at: unlockAt, activePin }),
@@ -68,9 +88,10 @@ export async function GET(
       }
     }
 
-    // 3. Fetch standings from view (or fallback gracefully)
+    // 3. Fetch standings from view (only when series has already started)
     let standings: any[] = []
-    if (dbSeries) {
+    const hasStarted = series.start_date ? new Date() >= new Date(series.start_date) : false
+    if (dbSeries && hasStarted) {
       const { data: dbStandings } = await supabase
         .from('series_leaderboard_view')
         .select('*')

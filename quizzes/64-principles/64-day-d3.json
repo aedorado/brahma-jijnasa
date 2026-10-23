@@ -1,0 +1,355 @@
+{
+  "id": "64-day-d3",
+  "title": "Day -2 (D-3): Life & Legacy of HH Bhakti Tirtha Swami (Community Leadership Edition)",
+  "category": "64-principles",
+  "description": "Every question is grounded in the actual biographical events, pastimes, and milestones of HH Bhakti Tirtha Swami from Black Lotus, highlighting his life of community leadership.",
+  "difficulty": "medium",
+  "timeLimit": 600,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single-choice",
+      "question": "What childhood physical speech challenge did young John Favors overcome while beginning his preaching work in Cleveland's 'Forgotten Triangle'?",
+      "options": [
+        "Loss of hearing",
+        "A severe speech stutter",
+        "Impaired eyesight",
+        "Chronic memory loss"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Despite suffering from a severe stutter in early childhood, young John Favors was empowered through prayer and encouragement from music teacher Vivian DuBose Jordan to speak fluently as a child evangelist on local radio and TV.",
+      "reference": "Black Lotus, Chapter 1: The Forgotten Triangle"
+    },
+    {
+      "id": "q2",
+      "type": "multiple-select",
+      "question": "Which of the following actual student leadership roles did John Favors hold while building community at Princeton University between 1968 and 1972? (Select ALL that apply)",
+      "options": [
+        "President of the Princeton Varsity Rowing Club",
+        "President of the Association of Black Collegians (ABC)",
+        "Co-founder and Chairman of the Third World Coalition",
+        "Elected Student Body President at Princeton University"
+      ],
+      "correctIndices": [
+        1,
+        2,
+        3
+      ],
+      "difficulty": "medium",
+      "explanation": "At Princeton, John Favors served as president of the ABC, co-founded/chaired the Third World Coalition, and was elected student body president in 1971, uniting diverse student groups.",
+      "reference": "Black Lotus, Chapter 3: The Prince of Princeton"
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "True or False: Upon graduating from Princeton in 1972, John Favors turned down postgraduate law school opportunities, moved directly to the Dallas temple, and asked the temple president for the most humble service, scrubbing the monks' bathroom on his knees.",
+      "correct": true,
+      "difficulty": "easy",
+      "explanation": "Instead of seeking corporate prestige for his Ivy League degree, John Favors surrendered to temple life in Dallas in 1972, asking for the most humble service and scrubbing the brahmachari bathroom with total determination.",
+      "reference": "Black Lotus, Chapter 4: Enter the Dark Lord"
+    },
+    {
+      "id": "q4",
+      "type": "who-am-i",
+      "clues": [
+        "I initiated John Favors in February 1973, giving him the spiritual name Ghanashyam Dasa ('servant of the dark rain cloud').",
+        "I appeared to him in a pivotal 1979 dream, instructing him three times to 'open the door' for the people of Africa.",
+        "I am the Founder-Acharya of ISKCON whose books, vision, and global mission Bhakti Tirtha Swami dedicated his entire life to serving."
+      ],
+      "options": [
+        "Srila Bhaktisiddhanta Sarasvati Thakura",
+        "Satsvarupa Dasa Goswami",
+        "Srila A.C. Bhaktivedanta Swami Prabhupada",
+        "Bhakti Charu Swami"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "explanation": "Srila Prabhupada is the spiritual master of Bhakti Tirtha Swami who initiated him, gave him the name Ghanashyam Dasa, and directed his preaching mission to Africa.",
+      "reference": "Black Lotus, Chapter 4 & Chapter 6"
+    },
+    {
+      "id": "q5",
+      "type": "who-said-this",
+      "quote": "Through Bhakti Tirtha Swami’s great efforts, his spiritual legacy will live on and endure throughout posterity.",
+      "context": "Tribute featured in the introductory pages of Black Lotus.",
+      "options": [
+        "Nelson Mandela",
+        "Dr. Martin Luther King Jr.",
+        "Alice Coltrane",
+        "Cathy Hughes"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "explanation": "Renowned musician and spiritual seeker Swamini Turiyasangitananda (Alice Coltrane) gave this heartfelt tribute honoring Bhakti Tirtha Swami's enduring global legacy.",
+      "reference": "Black Lotus, Foreword / Tributes"
+    },
+    {
+      "id": "q6",
+      "type": "sequence",
+      "question": "Arrange these major historical milestones in Bhakti Tirtha Swami's life in correct chronological order (from earliest to latest):",
+      "items": [
+        "Establishing the Institute for Applied Spiritual Technology (IFAST) in Washington D.C.",
+        "Graduating from Princeton University and joining ISKCON",
+        "Being coronated as High Chief (Nghorikpa) of Warri in Nigeria",
+        "Pioneering ISKCON's preaching mission in West Africa following a dream of Srila Prabhupada"
+      ],
+      "correctOrder": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "difficulty": "medium",
+      "explanation": "1972: Graduated Princeton & joined ISKCON; 1979: Traveled to West Africa; 1990: Founded IFAST in Washington D.C.; Fall 1990: Coronated as High Chief of Warri.",
+      "reference": "Black Lotus, Chapters 3, 6, 7, 8 & Timeline"
+    },
+    {
+      "id": "q7",
+      "type": "match-pairs",
+      "question": "Match each historical location from Black Lotus with the milestone event that occurred in Bhakti Tirtha Swami's life there:",
+      "left": [
+        "Mayapur, India (2002)",
+        "Forgotten Triangle, Cleveland",
+        "Warri, Nigeria (1990)",
+        "Howard University, Washington D.C."
+      ],
+      "right": [
+        "Where he boldly defended a female scholar's right to give class",
+        "Where IFAST held its early transformative public lectures",
+        "Where he was coronated as a High Chief",
+        "Where he spent his childhood as a child evangelist"
+      ],
+      "correctPairs": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "difficulty": "easy",
+      "explanation": "Cleveland is where he grew up as a child evangelist; Howard University hosted early IFAST lectures; Mayapur is where he defended Visakha Dasi's class; and Warri is where he was crowned High Chief.",
+      "reference": "Black Lotus, Chapters 1, 7, 8"
+    },
+    {
+      "id": "q8",
+      "type": "assertion-reason",
+      "assertion": "In 1979, Ghanashyam Dasa abruptly left a successful restaurant and center in Washington D.C. to pioneer preaching centers in West Africa.",
+      "reason": "He received a direct spiritual instruction in a dream where Srila Prabhupada told him three times to 'open the door' for the African people.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion",
+        "Assertion is true, but Reason is false",
+        "Assertion is false, but Reason is true"
+      ],
+      "correctIndex": 0,
+      "difficulty": "hard",
+      "explanation": "Both Assertion and Reason are true. Ghanashyam Dasa's decision to travel to Africa was directly inspired by his dream of Srila Prabhupada telling him three times to 'open the door'.",
+      "reference": "Black Lotus, Chapter 6: Passage to Africa"
+    },
+    {
+      "id": "q9",
+      "type": "spot-the-error",
+      "passage": "In 1980, when Ghanashyam Dasa arrived at the newly acquired building in Lagos, Nigeria, he refused to enter the filthy upstairs rooms of the former clinic. He ordered his junior disciples to clean the blood-stained walls alone while he remained in his private quarters downstairs.",
+      "options": [
+        "The building was located in South Africa, not Nigeria.",
+        "He arrived in Lagos in 1995, not 1980.",
+        "The building was previously a commercial bank, not a clinic.",
+        "This statement is false; Ekendra Dasa records that Ghanashyam Dasa personally encouraged the team, approved cleaning the upstairs rooms together, and purified the floor with kirtan and incense."
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "explanation": "In Black Lotus (Ch. 6), Ekendra Dasa describes how Ghanashyam Dasa worked warmly with the team, encouraging them to clean the upstairs rooms and transforming the atmosphere with kirtan.",
+      "reference": "Black Lotus, Chapter 6: Passage to Africa"
+    },
+    {
+      "id": "q10",
+      "type": "missing-link",
+      "chain": [
+        "John Favors listens to nonsectarian spiritual sciences from mentor Norman Anderson in Cleveland",
+        "John attends Sunday Love Feasts at the Brooklyn ISKCON temple",
+        "?",
+        "John declines law school prospects and moves to Dallas to surrender to Srila Prabhupada's mission"
+      ],
+      "options": [
+        "He listens to Srila Prabhupada's 'Happening' record album given by Eva Coleman and weeps from deep spiritual recognition",
+        "He buys a commercial farm in Ohio",
+        "He runs for mayor of East Cleveland",
+        "He joins a monastic order in Europe"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "explanation": "Hearing Srila Prabhupada's voice chanting on the 'Happening' album brought by Eva Coleman deeply moved John, inspiring his complete surrender to Srila Prabhupada.",
+      "reference": "Black Lotus, Chapter 4: Enter the Dark Lord"
+    },
+    {
+      "id": "q11",
+      "type": "odd-one-out",
+      "options": [
+        "Association of Black Collegians (ABC) at Princeton",
+        "Princeton Investment Management Corporation",
+        "Third World Coalition at Princeton",
+        "Institute for Applied Spiritual Technology (IFAST)"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "John Favors led the ABC, co-founded the Third World Coalition, and founded IFAST. He was never affiliated with the Princeton Investment Management Corporation.",
+      "reference": "Black Lotus, Chapters 3 & 7"
+    },
+    {
+      "id": "q12",
+      "type": "cause-effect",
+      "question": "Action: While traveling with the BBT Library Party, Ghanashyam Dasa initiated a spontaneous conversation with a stranger he met in a university restroom. What was the direct outcome of this interaction?",
+      "options": [
+        "Ghanashyam Dasa was arrested for trespassing on campus.",
+        "The university canceled all library book orders.",
+        "The stranger offered him a tenured professorship.",
+        "The man turned out to be the head of the Religion Department, leading to standing orders for full sets of Srila Prabhupada's books."
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "explanation": "By divine arrangement, the stranger in the restroom was the head of the Religion Department teaching Hinduism, who placed standing orders for full sets of Srila Prabhupada's books.",
+      "reference": "Black Lotus, Chapter 4: The Library Party"
+    },
+    {
+      "id": "q13",
+      "type": "two-truths-one-false",
+      "options": [
+        "In 1990, Bhakti Tirtha Swami was coronated as a High Chief (Nghorikpa) in Warri, Nigeria.",
+        "After taking sannyasa, Bhakti Tirtha Swami permanently retired from international travel and lived exclusively in a secluded hermit ashram.",
+        "At Mayapur Festivals, Bhakti Tirtha Swami ran through the crowds serving buckets of sweet chipped rice while addressing every devotee as 'Prabhu' (master)."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "explanation": "Statement 2 is FALSE. Bhakti Tirtha Swami maintained a dynamic global preaching schedule, traveling to 20-30 countries annually throughout his life.",
+      "reference": "Black Lotus, Chapters 5, 6, 8 & Timeline"
+    },
+    {
+      "id": "q14",
+      "type": "case-study",
+      "scenario": "During the 2002 Mayapur festival, conservative elements secretly removed the microphone and Bhagavatam book to prevent senior female scholar Visakha Dasi from giving class. Seeing this injustice, Bhakti Tirtha Swami stood up in 'fierce compassion'.",
+      "question": "According to Rukmini Devi Dasi's eyewitness account in Black Lotus, what was Bhakti Tirtha Swami's direct action during this event?",
+      "options": [
+        "He canceled the lecture and walked out of the temple room.",
+        "He advised the speaker to quietly accept the discrimination without speaking up.",
+        "He confronted the resident leadership boldly: 'Listen, you’d better get that book, microphone, and cymbals! And you’d better get them NOW!', restoring the microphone and protecting her dignity.",
+        "He reported the incident to local civil authorities."
+      ],
+      "correctIndex": 2,
+      "difficulty": "hard",
+      "explanation": "In Black Lotus (Ch. 8), Rukmini Devi Dasi describes how Bhakti Tirtha Swami stood up like a 'whirling firebrand' to demand the immediate return of the microphone and Bhagavatam.",
+      "reference": "Black Lotus, Chapter 8: Mayapur 2002"
+    },
+    {
+      "id": "q15",
+      "type": "what-would-you-do",
+      "scenario": "In 1994, when Bhakti Tirtha Swami assumed leadership of the struggling 350-acre Gita Nagari farm community, he found members divided by low trust and interpersonal friction.",
+      "question": "Based on his actual life actions recorded in Black Lotus, how did he approach rebuilding the community?",
+      "options": [
+        "He prioritized holding open dialogues, personal care, and restoring trust and loving Vaishnava relationships before focusing on farm productivity targets.",
+        "He evicted all resident families and brought in commercial farm laborers.",
+        "He sold the community land to private real estate developers.",
+        "He imposed heavy financial fines on any member who expressed dissatisfaction."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "explanation": "At Gita Nagari, Bhakti Tirtha Swami recognized that establishing genuine Vaishnava relationships, open communication, and trust was the essential foundation for community success.",
+      "reference": "Black Lotus, Chapter 8: Moving to Gita Nagari"
+    },
+    {
+      "id": "q16",
+      "type": "single-choice",
+      "question": "What specific traditional title was bestowed upon Bhakti Tirtha Swami during his coronation ceremony in Nigeria in Fall 1990?",
+      "options": [
+        "Honorary Mayor of Lagos",
+        "Grand Commander of West Africa",
+        "Supreme Chancellor of IFAST",
+        "High Chief Nghorikpa of Warri ('The One Who Encircles and Protects')"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "explanation": "In 1990, Bhakti Tirtha Swami was coronated as High Chief Nghorikpa of Warri in Nigeria in recognition of his spiritual and social contributions.",
+      "reference": "Black Lotus, Chapter 8: High Chief of Warri"
+    },
+    {
+      "id": "q17",
+      "type": "multiple-select",
+      "question": "Which of the following prominent global figures met and engaged in personal dialogue with Bhakti Tirtha Swami during his global travels? (Select ALL that apply)",
+      "options": [
+        "President Nelson Mandela of South Africa",
+        "British Prime Minister Winston Churchill",
+        "Heavyweight boxing champion Muhammad Ali",
+        "President Kenneth Kaunda of Zambia"
+      ],
+      "correctIndices": [
+        0,
+        2,
+        3
+      ],
+      "difficulty": "easy",
+      "explanation": "Bhakti Tirtha Swami met with Nelson Mandela, Muhammad Ali, and President Kenneth Kaunda of Zambia during his global travels.",
+      "reference": "Black Lotus, Chapter 8 & Timeline"
+    },
+    {
+      "id": "q18",
+      "type": "single-choice",
+      "question": "On June 27, 2005, Bhakti Tirtha Swami passed away in which holy rural community, surrounded by loving disciples and chanting devotees?",
+      "options": [
+        "New Vrindaban",
+        "Mayapur",
+        "Vrindavan",
+        "Gita Nagari"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "explanation": "Bhakti Tirtha Swami passed away on June 27, 2005, at Gita Nagari in Pennsylvania.",
+      "reference": "Black Lotus, Chapter 9: The Final Lesson"
+    },
+    {
+      "id": "q19",
+      "type": "multiple-select",
+      "question": "Which of the following book series were authored by Bhakti Tirtha Swami as part of his teaching legacy? (Select ALL that apply)",
+      "options": [
+        "The Beggar series",
+        "The Spiritual Warrior series",
+        "The Oxford History of Modern Diplomacy",
+        "Leadership for an Age of Higher Consciousness series"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        3
+      ],
+      "difficulty": "easy",
+      "explanation": "Bhakti Tirtha Swami authored The Beggar series, the Spiritual Warrior series, and Leadership for an Age of Higher Consciousness series.",
+      "reference": "Black Lotus, Chapters 7, 8 & Catalog"
+    },
+    {
+      "id": "q20",
+      "type": "single-choice",
+      "question": "What botanical metaphor from his biography's title describes how John Favors rose from the 'mud' of ghetto poverty and racial hardship in Cleveland to bloom as a global spiritual master?",
+      "options": [
+        "Golden Banyan",
+        "Red Rose",
+        "Black Lotus",
+        "White Lily"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "explanation": "Just as a lotus takes root in mud but blooms pristine above water, 'Black Lotus' symbolizes his spiritual emergence and global leadership.",
+      "reference": "Black Lotus, Introduction: A Black Lotus Emerges"
+    }
+  ]
+}

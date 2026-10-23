@@ -11,11 +11,11 @@ SET
   title = 'Reflections on Sacred Teachings — Śrīla Bhaktisiddhānta''s Principles for Community',
   subtitle = 'A 30-Day Spiritual Journey through Principles 1 to 30',
   description = 'Explore the foundational community guidelines and spiritual instructions (Principles 1–30) given by His Divine Grace Śrīla Bhaktisiddhānta Sarasvatī Gosvāmī Ṭhākura Prabhupāda, as illumined in Reflections on Sacred Teachings V by His Holiness Bhakti Tirtha Swami Maharaja. Each day of Kārtika is dedicated to studying and practicing one essential principle for community transformation.',
-  start_date = '2026-10-26 19:05:00+05:30',
+  start_date = '2026-10-26 18:55:00+05:30',
   end_date = '2026-11-25 00:00:00+05:30'
 WHERE slug = 'sacred-teachings-64-principles';
 
--- 2. Update all 30 Daily Rounds with Release Schedule (Daily 7:05 PM IST starting 26 Oct 2026)
+-- 2. Update all 30 Daily Rounds with Release Schedule (Daily 6:55 PM IST starting 26 Oct 2026)
 WITH target_series AS (
   SELECT id FROM quiz_series WHERE slug = 'sacred-teachings-64-principles' LIMIT 1
 )
@@ -28,7 +28,7 @@ SELECT
   d.description,
   d.principles_range,
   d.shloka_reference,
-  ('2026-10-26 19:05:00+05:30'::timestamptz + ((d.day_number - 1) || ' days')::interval) AS unlock_at,
+  ('2026-10-26 18:55:00+05:30'::timestamptz + ((d.day_number - 1) || ' days')::interval) AS unlock_at,
   d.is_unlocked
 FROM target_series,
 (VALUES

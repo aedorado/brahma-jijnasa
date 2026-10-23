@@ -264,8 +264,8 @@ export const BHAKTISIDDHANTA_64_PRINCIPLES: BhaktisiddhantaPrinciple[] = [
   }
 ];
 
-// 26th October 2026, 19:05:00 IST (+05:30) is 13:35:00 UTC
-export const SERIES_64_START_ISO = '2026-10-26T13:35:00.000Z'
+// 26th October 2026, 18:55:00 IST (+05:30) is 13:25:00 UTC
+export const SERIES_64_START_ISO = '2026-10-26T13:25:00.000Z'
 export const SERIES_64_END_ISO = '2026-11-25T00:00:00.000Z'
 
 export function getSeriesRoundUnlockTime(dayNumber: number, startIso: string = SERIES_64_START_ISO): string {
@@ -290,350 +290,75 @@ export const DEFAULT_64_PRINCIPLES_SERIES: QuizSeries = {
   id: 'series-64-principles',
   slug: 'sacred-teachings-64-principles',
   title: "Reflections on Sacred Teachings — Śrīla Bhaktisiddhānta's Principles for Community",
-  subtitle: "A 30-Day Spiritual Journey through Principles 1 to 30",
+  subtitle: "A 33-Day Spiritual Journey (D-3 to D-1 Preparation & Principles 1–30)",
   description:
-    "Explore the foundational community guidelines and spiritual instructions (Principles 1–30) given by His Divine Grace Śrīla Bhaktisiddhānta Sarasvatī Gosvāmī Ṭhākura Prabhupāda, as illumined in Reflections on Sacred Teachings V by His Holiness Bhakti Tirtha Swami Maharaja. Each day of Kārtika is dedicated to studying and practicing one essential principle for community transformation.",
+    "Explore the foundational community guidelines and spiritual instructions given by His Divine Grace Śrīla Bhaktisiddhānta Sarasvatī Gosvāmī Ṭhākura Prabhupāda, as illumined in Reflections on Sacred Teachings V by His Holiness Bhakti Tirtha Swami Maharaja, starting with three foundational study rounds on Śrī Dāmodarāṣṭakam, the Foreword, and the Introduction.",
   category: '64-principles',
-  total_days: 30,
-  start_date: SERIES_64_START_ISO,
+  total_days: 33,
+  start_date: '2026-10-23T13:25:00.000Z',
   end_date: SERIES_64_END_ISO,
   is_active: true,
 }
 
-const RAW_64_PRINCIPLES_ROUNDS: Array<Omit<QuizSeriesRound, 'unlock_at'>> = [
+export const PRE_LAUNCH_ROUNDS: Array<Omit<QuizSeriesRound, 'unlock_at'>> = [
   {
-    "day_number": 1,
-    "quiz_id": "64-day-01",
-    "title": "Day 1: The Life & Legacy of HH Bhakti Tirtha Swami",
-    "description": "An intimate study of the spiritual journey, preaching pastimes, books, and teachings of His Holiness Bhakti Tirtha Swami Maharaja from the biography 'Black Lotus'.",
-    "principles_range": "Author Tribute & Life",
-    "shloka_reference": "Black Lotus: The Spiritual Journey of an Urban Mystic",
-    "is_unlocked": false,
-    "id": "round-1",
-    "series_id": "series-64-principles"
+    id: 'round-d3',
+    series_id: 'series-64-principles',
+    day_number: -2,
+    quiz_id: '64-day-d3',
+    title: 'Day -2 (D-3): Life & Legacy of HH Bhakti Tirtha Swami',
+    description: '20 questions on the biographical pastimes, global service, and community leadership of HH Bhakti Tirtha Swami from Black Lotus.',
+    principles_range: 'D-3 Round (20 Qs)',
+    shloka_reference: 'Black Lotus: The Spiritual Journey of an Urban Mystic',
+    is_unlocked: false,
   },
   {
-    "day_number": 2,
-    "quiz_id": "64-day-02",
-    "title": "Day 2: Śrī Kṛṣṇa as the Sole Enjoyer",
-    "description": "The Supreme Personality of Godhead, Śrī Kṛṣṇa, is the only enjoyer; everyone and everything else is the object of His pleasure.",
-    "principles_range": "Principle 2",
-    "shloka_reference": "Principle 2 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-2",
-    "series_id": "series-64-principles"
+    id: 'round-d2',
+    series_id: 'series-64-principles',
+    day_number: -1,
+    quiz_id: '64-day-d2',
+    title: 'Day -1 (D-2): Foreword & Foundational Vision',
+    description: '12 questions on the foundation and emergence of the 64 Community Principles as presented by HH Bhakti Charu Swami.',
+    principles_range: 'D-2 Round (12 Qs)',
+    shloka_reference: 'Foreword by HH Bhakti Charu Swami',
+    is_unlocked: false,
   },
   {
-    "day_number": 3,
-    "quiz_id": "64-day-03",
-    "title": "Day 3: Serving Lord Hari to Avoid Spiritual Self-Destruction",
-    "description": "Anyone who does not engage in the loving service of Lord Hari remains in spiritual ignorance and causes spiritual suicide.",
-    "principles_range": "Principle 3",
-    "shloka_reference": "Principle 3 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-3",
-    "series_id": "series-64-principles"
+    id: 'round-d1',
+    series_id: 'series-64-principles',
+    day_number: 0,
+    quiz_id: '64-day-d1',
+    title: 'Day 0 (D-1): Introduction & Community Science',
+    description: '12 questions on the science of relationships, mirror of association, and transcendental hospitals by HH Bhakti Tirtha Swami.',
+    principles_range: 'D-1 Round (12 Qs)',
+    shloka_reference: 'Introduction by HH Bhakti Tirtha Swami',
+    is_unlocked: false,
   },
-  {
-    "day_number": 4,
-    "quiz_id": "64-day-04",
-    "title": "Day 4: The Indispensable Art of Tolerance in Community",
-    "description": "Learning genuine tolerance (tṛṇād api sunīcena) is one of the highest and most essential responsibilities of those living in the community.",
-    "principles_range": "Principle 4",
-    "shloka_reference": "Principle 4 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-4",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 5,
-    "quiz_id": "64-day-05",
-    "title": "Day 5: Rūpānuga Dependence: Glory to the Original Source",
-    "description": "Followers of Śrī Rūpa Gosvāmī ascribe all credit and glory to the Supreme Lord rather than relying proudly on their own strength.",
-    "principles_range": "Principle 5",
-    "shloka_reference": "Principle 5 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-5",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 6,
-    "quiz_id": "64-day-06",
-    "title": "Day 6: Undivided Devotion: Renouncing Assorted Religious Pursuits",
-    "description": "Those who perform mixed or assorted worldly religious activities (karma/jñāna) cannot attain pure unalloyed service to the Supreme Lord.",
-    "principles_range": "Principle 6",
-    "shloka_reference": "Principle 6 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-6",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 7,
-    "quiz_id": "64-day-07",
-    "title": "Day 7: Becoming United in Purpose to Serve Lord Hari",
-    "description": "Shedding petty rivalries and self-interest to unite wholeheartedly with one common purpose in the service of Lord Hari.",
-    "principles_range": "Principle 7",
-    "shloka_reference": "Principle 7 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-7",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 8,
-    "quiz_id": "64-day-08",
-    "title": "Day 8: Where Hari-Kathā Flows is a Place of Pilgrimage",
-    "description": "Wherever transcendental discussion and chanting about Śrī Kṛṣṇa takes place, that very place is transformed into a sacred holy dhāma.",
-    "principles_range": "Principle 8",
-    "shloka_reference": "Principle 8 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-8",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 9,
-    "quiz_id": "64-day-09",
-    "title": "Day 9: Carriers of the Dust of Haris Feet",
-    "description": "We are neither pious nor learned; we are simply carriers of the dust of Lord Hari’s lotus feet, initiated by the holy vow ‘kīrtanīyaḥ sadā hariḥ’.",
-    "principles_range": "Principle 9",
-    "shloka_reference": "Principle 9 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-9",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 10,
-    "quiz_id": "64-day-10",
-    "title": "Day 10: The Golden Rule: Rectify Yourself, Do Not Criticize Others",
-    "description": "Cease scrutinizing the faults of other Vaiṣṇavas; direct all attention inward to purify and rectify your own heart and habits.",
-    "principles_range": "Principle 10",
-    "shloka_reference": "Principle 10 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-10",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 11,
-    "quiz_id": "64-day-11",
-    "title": "Day 11: Serving the Residents of Vraja in Separation",
-    "description": "Our supreme spiritual aspiration is to serve the eternal residents of Vraja who feel intense separation from Kṛṣṇa upon His departure to Mathurā.",
-    "principles_range": "Principle 11",
-    "shloka_reference": "Principle 11 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-11",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 12,
-    "quiz_id": "64-day-12",
-    "title": "Day 12: Jagad-Guru Consciousness: The Humble Learner",
-    "description": "A pure devotee humbly recognizes that everyone is his spiritual master and can teach him; through such extreme humility one truly honors guru-tattva.",
-    "principles_range": "Principle 12",
-    "shloka_reference": "Principle 12 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-12",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 13,
-    "quiz_id": "64-day-13",
-    "title": "Day 13: The Words of the Vedas Above Mundane Opinions",
-    "description": "To attain eternal auspiciousness, discard the endless conflicting opinions of mortal minds and take exclusive shelter of revealed Vedic truth.",
-    "principles_range": "Principle 13",
-    "shloka_reference": "Principle 13 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-13",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 14,
-    "quiz_id": "64-day-14",
-    "title": "Day 14: Pure Desire: Longing Exclusively for Real Auspiciousness",
-    "description": "Whatever is genuinely auspicious for the soul’s eternal journey toward Kṛṣṇa should be fervently desired and pursued.",
-    "principles_range": "Principle 14",
-    "shloka_reference": "Principle 14 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-14",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 15,
-    "quiz_id": "64-day-15",
-    "title": "Day 15: The Intimate Devotee: Serving the Followers of Śrī Rūpa",
-    "description": "An intimate Vaiṣṇava possesses no separate ambition in life other than unconditionally serving the devoted followers of Śrī Rūpa Gosvāmī.",
-    "principles_range": "Principle 15",
-    "shloka_reference": "Principle 15 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-15",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 16,
-    "quiz_id": "64-day-16",
-    "title": "Day 16: Hearing: The Sole Bridge to Transcendence",
-    "description": "There is no other avenue of establishing a living connection with the transcendental realm except through submissive hearing (śravaṇam).",
-    "principles_range": "Principle 16",
-    "shloka_reference": "Principle 16 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-16",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 17,
-    "quiz_id": "64-day-17",
-    "title": "Day 17: The Vital Necessity of Spiritual Shelter",
-    "description": "The moment we leave or compromise our shelter under the spiritual master, every material circumstance becomes an enemy that attacks us.",
-    "principles_range": "Principle 17",
-    "shloka_reference": "Principle 17 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-17",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 18,
-    "quiz_id": "64-day-18",
-    "title": "Day 18: Rejecting Flattery in Spiritual Leadership",
-    "description": "A person who compromises the truth to flatter others for popularity can never become a bonafide guru or authentic preacher.",
-    "principles_range": "Principle 18",
-    "shloka_reference": "Principle 18 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-18",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 19,
-    "quiz_id": "64-day-19",
-    "title": "Day 19: Freedom from Duplicity: Shunning Deceit at All Costs",
-    "description": "It is far better to transmigrate through millions of animal species than to be a deceitful hypocrite; only the guileless receive divine mercy.",
-    "principles_range": "Principle 19",
-    "shloka_reference": "Principle 19 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-19",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 20,
-    "quiz_id": "64-day-20",
-    "title": "Day 20: Simplicity (Saralatā): Vaiṣṇavism in Its Truest Form",
-    "description": "Vaiṣṇavism is synonymous with simplicity (saralatā); true servants of the paramahaṁsa are thoroughly straightforward and free from guile.",
-    "principles_range": "Principle 20",
-    "shloka_reference": "Principle 20 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-20",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 21,
-    "quiz_id": "64-day-21",
-    "title": "Day 21: Transforming Degraded Taste: The Highest Philanthropy",
-    "description": "Saving even one soul from the grip of mahā-māyā by giving them taste for Kṛṣṇa is an infinitely greater service than establishing millions of hospitals.",
-    "principles_range": "Principle 21",
-    "shloka_reference": "Principle 21 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-21",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 22,
-    "quiz_id": "64-day-22",
-    "title": "Day 22: Guarding the Heart: Rejecting Pleasing Yet Worldly Association",
-    "description": "No matter how outwardly pleasant someone’s companionship is, if they lack genuine surrender and devotion to Hari, their association must be avoided.",
-    "principles_range": "Principle 22",
-    "shloka_reference": "Principle 22 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-22",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 23,
-    "quiz_id": "64-day-23",
-    "title": "Day 23: Preaching by Example: Practicing What We Preach",
-    "description": "Preaching without personal exemplary conduct is merely an empty karma-kāṇḍa ritual devoid of spiritual potency.",
-    "principles_range": "Principle 23",
-    "shloka_reference": "Principle 23 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-23",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 24,
-    "quiz_id": "64-day-24",
-    "title": "Day 24: Detachment Through Seva to Hari & Devotees",
-    "description": "Attachment to material household life naturally dissolves not by dry austerity, but by joyfully serving the Supreme Lord and His devotees.",
-    "principles_range": "Principle 24",
-    "shloka_reference": "Principle 24 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-24",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 25,
-    "quiz_id": "64-day-25",
-    "title": "Day 25: Curing Our Disease: Collecting Unrelated Possessions",
-    "description": "Our chronic spiritual illness is the urge to collect and hoard objects that have no utility or connection with the service of Lord Kṛṣṇa.",
-    "principles_range": "Principle 25",
-    "shloka_reference": "Principle 25 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-25",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 26,
-    "quiz_id": "64-day-26",
-    "title": "Day 26: Peons of Mahāprabhu’s Mercy: Not Material Artisans",
-    "description": "We have not appeared in this world to be mere mundane builders or artisans; we are strictly humble peons distributing Mahāprabhu’s mercy.",
-    "principles_range": "Principle 26",
-    "shloka_reference": "Principle 26 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-26",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 27,
-    "quiz_id": "64-day-27",
-    "title": "Day 27: The Auspicious Departure: Singing Hari’s Glory at Lifes End",
-    "description": "Our fleeting sojourn in this mortal body attains glorious perfection if our last breath departs while singing the transcendental names of Lord Hari.",
-    "principles_range": "Principle 27",
-    "shloka_reference": "Principle 27 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-27",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 28,
-    "quiz_id": "64-day-28",
-    "title": "Day 28: Treasuring the Dust of Śrī Rūpa Gosvāmī",
-    "description": "The supreme ambition of our existence is to humbly gather the dust of the lotus feet of Śrī Rūpa Gosvāmī, who fulfilled the deepest heart-desire of Mahāprabhu.",
-    "principles_range": "Principle 28",
-    "shloka_reference": "Principle 28 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-28",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 29,
-    "quiz_id": "64-day-29",
-    "title": "Day 29: The Examination Hall: Navigating the Material Nature",
-    "description": "This material world, full of opposition to Kṛṣṇa consciousness, is designed as a rigorous examination hall for the souls spiritual maturation.",
-    "principles_range": "Principle 29",
-    "shloka_reference": "Principle 29 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-29",
-    "series_id": "series-64-principles"
-  },
-  {
-    "day_number": 30,
-    "quiz_id": "64-day-30",
-    "title": "Day 30: Instructions for Ultimate Benefit: The Rare Gift of Guidance",
-    "description": "In every birth one easily receives biological parents, but only by rare good fortune does one receive transcendental instructions for the souls eternal welfare.",
-    "principles_range": "Principle 30",
-    "shloka_reference": "Principle 30 (Reflections on Sacred Teachings V)",
-    "is_unlocked": false,
-    "id": "round-30",
-    "series_id": "series-64-principles"
-  }
-];
+]
 
-export const DEFAULT_64_PRINCIPLES_ROUNDS: QuizSeriesRound[] = RAW_64_PRINCIPLES_ROUNDS.map((r) => {
+const RAW_64_PRINCIPLES_ROUNDS: Array<Omit<QuizSeriesRound, 'unlock_at'>> = Array.from(
+  { length: 30 },
+  (_, idx) => {
+    const dayNumber = idx + 1
+    const pad = String(dayNumber).padStart(2, '0')
+    return {
+      day_number: dayNumber,
+      quiz_id: `64-day-${pad}`,
+      title: `Day ${dayNumber}`,
+      description: '',
+      principles_range: '',
+      shloka_reference: '',
+      is_unlocked: false,
+      id: `round-${dayNumber}`,
+      series_id: 'series-64-principles',
+    }
+  }
+)
+
+export const DEFAULT_64_PRINCIPLES_ROUNDS: QuizSeriesRound[] = [
+  ...PRE_LAUNCH_ROUNDS,
+  ...RAW_64_PRINCIPLES_ROUNDS,
+].map((r) => {
   const unlockAt = getSeriesRoundUnlockTime(r.day_number)
   return {
     ...r,

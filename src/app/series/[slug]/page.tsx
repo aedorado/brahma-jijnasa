@@ -181,7 +181,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 color: '#4ade80',
               }}
             >
-              {t.series.dailyTimeBadge || '🕒 Daily 7:05 PM IST'}
+              {t.series.dailyTimeBadge || '🕒 Daily 6:55 PM IST'}
             </span>
           </div>
 
@@ -211,7 +211,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
           >
             <div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t.series.scheduleLaunch}</p>
-              <p style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--color-gold)' }}>26 Oct • 7:05 PM IST</p>
+              <p style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--color-gold)' }}>23 Oct • 6:55 PM IST</p>
             </div>
             <div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t.series.totalDuration}</p>
@@ -310,8 +310,8 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                       border: isLive
                         ? '1.5px solid var(--color-gold)'
                         : isCompleted
-                        ? '1px solid rgba(74, 222, 128, 0.35)'
-                        : undefined,
+                          ? '1px solid rgba(74, 222, 128, 0.35)'
+                          : undefined,
                       transition: 'transform 0.2s ease, border-color 0.2s ease',
                     }}
                   >
@@ -325,28 +325,37 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                             background: isLive
                               ? 'rgba(74, 222, 128, 0.15)'
                               : isCompleted
-                              ? 'rgba(74, 222, 128, 0.15)'
-                              : isUnlocked
-                              ? 'rgba(240, 199, 78, 0.15)'
-                              : 'rgba(255,255,255,0.05)',
+                                ? 'rgba(74, 222, 128, 0.15)'
+                                : isUnlocked
+                                  ? 'rgba(240, 199, 78, 0.15)'
+                                  : 'rgba(255,255,255,0.05)',
                             color: isLive
                               ? '#4ade80'
                               : isCompleted
-                              ? '#4ade80'
-                              : isUnlocked
-                              ? 'var(--color-gold)'
-                              : 'var(--color-muted)',
+                                ? '#4ade80'
+                                : isUnlocked
+                                  ? 'var(--color-gold)'
+                                  : 'var(--color-muted)',
                             fontSize: '0.75rem',
                             fontWeight: 700,
                           }}
                         >
-                          {isLive
-                            ? `🔴 ${t.series.liveClassNow}`
-                            : isCompleted
-                            ? `${t.series.dayLabel} ${round.day_number} • ✅ ${t.series.completedBadge}`
-                            : isUnlocked
-                            ? `${t.series.dayLabel} ${round.day_number} • ✨ ${t.series.unlockedBadge}`
-                            : `🔒 ${t.series.dayLabel} ${round.day_number}`}
+                          {(() => {
+                            const dayTag = round.day_number === -2
+                              ? 'Day -2 (D-3)'
+                              : round.day_number === -1
+                                ? 'Day -1 (D-2)'
+                                : round.day_number === 0
+                                  ? 'Day 0 (D-1)'
+                                  : `${t.series.dayLabel} ${round.day_number}`
+                            return isLive
+                              ? `🔴 ${t.series.liveClassNow}`
+                              : isCompleted
+                                ? `${dayTag} • ✅ ${t.series.completedBadge}`
+                                : isUnlocked
+                                  ? `${dayTag} • ✨ ${t.series.unlockedBadge}`
+                                  : `🔒 ${dayTag}`
+                          })()}
                         </span>
 
                         {isCompleted ? (
@@ -371,9 +380,11 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                         </p>
                       )}
 
-                      <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
-                        {round.description}
-                      </p>
+                      {round.description && (
+                        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                          {round.description}
+                        </p>
+                      )}
                     </div>
 
                     {/* Action Button */}

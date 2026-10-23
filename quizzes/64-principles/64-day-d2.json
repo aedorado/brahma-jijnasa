@@ -1,0 +1,199 @@
+{
+  "id": "64-day-d2",
+  "title": "Day -1 (D-2): Foreword & Foundational Vision",
+  "category": "64-principles",
+  "description": "Warmup test quiz covering the Foreword by HH Bhakti Charu Swami on the origin, lineage, and purpose of the 64 Community Principles.",
+  "difficulty": "medium",
+  "timeLimit": 720,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "How many foundational principles did Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura establish for the Gauḍīya Maṭha as a complete blueprint for a spiritual society?",
+      "options": [
+        "108 Principles",
+        "64 Principles",
+        "32 Principles",
+        "24 Principles"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura founded the Gauḍīya Maṭha on sixty-four principles that outline a complete and perfect foundation for a spiritual society."
+    },
+    {
+      "id": 2,
+      "type": "single-choice",
+      "question": "How many years elapsed between Śrīla Prabhupāda receiving the instruction from Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura and his journey to the West in 1965 to establish ISKCON?",
+      "options": [
+        "25 years",
+        "32 years",
+        "43 years",
+        "50 years"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "In 1965, according to the instructions he received from Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura forty-three years earlier (in 1922), Śrīla Prabhupāda traveled to the West to establish ISKCON."
+    },
+    {
+      "id": 3,
+      "type": "single-choice",
+      "question": "In which publication did HH Bhakti Charu Swami originally translate and publish the 64 principles from Bengali into English?",
+      "options": [
+        "Back to Godhead",
+        "Spiritual Connections",
+        "Harmonist",
+        "Sajjana Toṣaṇī"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "HH Bhakti Charu Swami translated the original guidelines and printed them in 'Spiritual Connections', a magazine published for his disciples and friends."
+    },
+    {
+      "id": 4,
+      "type": "true-false",
+      "question": "Despite facing a critical state of physical health, HH Bhakti Tirtha Swami continued writing Kṛṣṇa conscious literature to inspire and uplift others.",
+      "correct": true,
+      "difficulty": "easy",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "HH Bhakti Charu Swami noted with inspiration that despite his very critical physical health, HH Bhakti Tirtha Swami continued writing to uplift the worldwide devotee community."
+    },
+    {
+      "id": 5,
+      "type": "single-choice",
+      "question": "Who originally compiled the Bengali work 'Śrīla Prabhupāder Vaiśiṣṭha Sampad O Samādhān Sampad', where these sixty-four principles were preserved?",
+      "options": [
+        "Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura",
+        "His Holiness Bhāratī Mahārāja",
+        "Śrīla Bhaktivinoda Ṭhākura",
+        "His Holiness Bhakti Pramode Purī Mahārāja"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "reference": "Foreword & Introduction",
+      "explanation": "These sixty-four principles were compiled in the Bengali book 'Śrīla Prabhupāder Vaiśiṣṭha Sampad O Samādhān Sampad' by His Holiness Bhāratī Mahārāja."
+    },
+    {
+      "id": 6,
+      "type": "single-choice",
+      "question": "According to HH Bhakti Charu Swami's Foreword, what is identified as the yuga-dharma and the only hope of achieving spiritual success in this age?",
+      "options": [
+        "Austerities and solitary meditation",
+        "The Kṛṣṇa consciousness movement",
+        "Vedic fire sacrifices (yajña)",
+        "Temple building projects alone"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "The Foreword emphasizes: 'This Krishna consciousness movement is the only hope for this world; it is the yuga-dharma, the only means of achieving spiritual success in this age.'"
+    },
+    {
+      "id": 7,
+      "type": "assertion-reason",
+      "question": "Evaluate the relationship between ISKCON's success and Śrīla Bhaktisiddhānta's 64 principles:",
+      "assertion": "The enduring success and spiritual prosperity of ISKCON depend on implementing the sixty-four principles of Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura.",
+      "reason": "These sacred instructions fully reveal the true essence and framework upon which Śrīla Prabhupāda founded the society.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion",
+        "Assertion is true, but Reason is false",
+        "Assertion is false, but Reason is true"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "Both statements are direct teachings from the Foreword: remaining loyal to these principles allows the society to epitomize the ideals of the founder and flourish."
+    },
+    {
+      "id": 8,
+      "type": "match-pairs",
+      "question": "Match each spiritual personality with their historical contribution to the 64 Principles:",
+      "left": [
+        "Śrīla Bhaktisiddhānta Sarasvatī",
+        "Śrīla A.C. Bhaktivedanta Swami",
+        "HH Bhakti Charu Swami",
+        "HH Bhāratī Mahārāja"
+      ],
+      "right": [
+        "Founded Gauḍīya Maṭha on 64 community principles",
+        "Traveled to the West in 1965 to embody these principles in ISKCON",
+        "Translated the 64 Bengali principles in Spiritual Connections",
+        "Compiled Śrīla Prabhupāder Vaiśiṣṭha Sampad O Samādhān Sampad"
+      ],
+      "correctPairs": [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+        [3, 3]
+      ],
+      "difficulty": "medium",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "Each personality played an essential linked role across the paramparā in establishing, preserving, translating, and expounding these principles."
+    },
+    {
+      "id": 9,
+      "type": "two-truths-one-false",
+      "question": "Examine the following statements about the historical emergence of these principles. Identify the FALSE statement:",
+      "options": [
+        "Śrīla Prabhupāda established ISKCON as the pure embodiment of the principles propounded by his spiritual master.",
+        "HH Bhakti Tirtha Swami immediately recognized the value of the principles when reading Spiritual Connections and resolved to write a book on them.",
+        "The sixty-four principles were originally composed in Sanskrit by the Six Gosvāmīs at Rādhā-kuṇḍa."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "Statement 3 is false: The sixty-four principles were formulated in Bengali by Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura for community conduct, not in Sanskrit by the Six Gosvāmīs."
+    },
+    {
+      "id": 10,
+      "type": "case-study",
+      "scenario": "A regional preaching council is debating whether to focus purely on external institutional expansion or allocate resources to cultivating authentic devotee relationships according to Śrīla Bhaktisiddhānta's guidelines.",
+      "question": "Based on HH Bhakti Charu Swami's Foreword, what principle must guide the council's decision?",
+      "options": [
+        "Prioritize external expansion exclusively, since community dynamics solve themselves automatically over time.",
+        "Recognize that organizational success lies in implementing these sacred instructions, which form the true internal framework and health of the society.",
+        "Abandon all institutional structures in favor of solitary individual practice.",
+        "Postpone addressing community principles until the society has attained complete material self-sufficiency."
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "HH Bhakti Charu Swami states: 'Our success lies in the implementation of these sacred instructions. They fully reveal the true essence and framework of the International Society for Krishna Consciousness.'"
+    },
+    {
+      "id": 11,
+      "type": "who-said-this",
+      "question": "Identify the author of this personal reflection found in the Foreword:",
+      "quote": "In order to share these potent instructions with the community of devotees, I translated the original guidelines and printed them in Spiritual Connections, a magazine published for my disciples and friends. Upon coming across the translation, His Holiness Bhakti Tirtha Maharaja immediately recognized their profound value...",
+      "options": [
+        "HH Bhakti Charu Swami",
+        "Śrīla A.C. Bhaktivedanta Swami Prabhupāda",
+        "HH Bhāratī Mahārāja",
+        "Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "HH Bhakti Charu Swami explains how his personal magazine translation sparked HH Bhakti Tirtha Swami's deep inspiration to author the book."
+    },
+    {
+      "id": 12,
+      "type": "single-choice",
+      "question": "According to HH Bhakti Charu Swami, what essential quality empowered HH Bhakti Tirtha Swami to expertly guide the world through these sixty-four principles?",
+      "options": [
+        "He had memorized all Sanskrit grammars and lexicons.",
+        "He had molded his personal life according to these sixty-four principles, leading by his direct personal example.",
+        "He was appointed as the international legal secretary of the society.",
+        "He had visited every archaeological pilgrimage site in India."
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "reference": "Foreword by HH Bhakti Charu Swami",
+      "explanation": "HH Bhakti Charu Swami notes: 'Maharaja has molded his life according to these sixty-four principles... Therefore, he is able to expertly guide the world, not only by elaborating on them, but by leading with his personal example.'"
+    }
+  ]
+}

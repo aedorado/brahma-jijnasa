@@ -1,0 +1,192 @@
+{
+  "id": "64-day-d1",
+  "title": "Day 0 (D-1): Introduction & The Science of Community",
+  "category": "64-principles",
+  "description": "Warmup test quiz covering the Introduction by HH Bhakti Tirtha Swami on the science of relationships, mirror of association, and transcendental hospitals.",
+  "difficulty": "medium",
+  "timeLimit": 720,
+  "onTimeExpiry": "submit-partial",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single-choice",
+      "question": "According to HH Bhakti Tirtha Swami, why must devotional service be practiced with the precision of a science?",
+      "options": [
+        "Because devotional service requires learning advanced mathematics and laboratory instruments.",
+        "Because if we fail to follow the scientific procedure, we not only miss out on the benefits, but risk producing harmful spiritual results.",
+        "Because scientific logic takes precedence over scriptural authority.",
+        "Because only university scholars can understand the teachings of the Gauḍīya Vaiṣṇava ācāryas."
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami writes: 'Devotional service is a science. As with any science, if we do not follow the procedure, we will not only miss out on the full benefits, but we will risk creating harmful results.'"
+    },
+    {
+      "id": 2,
+      "type": "single-choice",
+      "question": "Why does HH Bhakti Tirtha Swami describe devotee association as a 'mirror'?",
+      "options": [
+        "Because devotees should imitate each other's outer dress and hairstyle.",
+        "Because our associates reflect our true strengths and weaknesses, giving us the opportunity to introspect honestly and evaluate our realization.",
+        "Because mirrors symbolize illusion (māyā) and should be avoided in spiritual life.",
+        "Because seeing physical reflections helps one focus during japa."
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami teaches: 'Our associates give us the opportunity to look at ourselves in a mirror so that we get a clearer vision of our strengths and weaknesses. This reflection allows us to introspect more authentically.'"
+    },
+    {
+      "id": 3,
+      "type": "true-false",
+      "question": "Without healthy relationships among peer devotees (sādhus), one's relationship with the spiritual master will not go beyond hero worship, sentimentalism, and fanaticism.",
+      "correct": true,
+      "difficulty": "medium",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami emphasizes: 'Without healthy relationships among our peers, our relationship with the guru does not go beyond hero worship. It will just be another expression of sentimentalism and even fanaticism.'"
+    },
+    {
+      "id": 4,
+      "type": "single-choice",
+      "question": "Which verse from Bhagavad-gītā (18.66) does HH Bhakti Tirtha Swami cite to demonstrate that Kṛṣṇa is not interested in mere conventional religiosity, but in unalloyed surrender?",
+      "options": [
+        "sarva-dharmān parityajya mām ekaṁ śaraṇaṁ vraja",
+        "man-manā bhava mad-bhakto mad-yājī māṁ namaskuru",
+        "yadṛcchā-lābha-santuṣṭo dvandvātīto vimatsaraḥ",
+        "teṣāṁ satata-yuktānāṁ bhajatāṁ prīti-pūrvakam"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami explains that Kṛṣṇa is not in the 'religion business'—He asks Arjuna to abandon all varieties of religion (sarva-dharmān parityajya) and surrender completely."
+    },
+    {
+      "id": 5,
+      "type": "who-said-this",
+      "question": "Identify which Mahājana spoke this famous verse quoted in the Introduction:",
+      "quote": "The solid truth of religious principles is hidden in the heart of an unadulterated, self-realized person. Consequently, as the śāstras confirm, one should accept whatever progressive path the mahājanas advocate.",
+      "options": [
+        "Yudhiṣṭhira Mahārāja (in Mahābhārata, Vana-parva)",
+        "Prahlāda Mahārāja (in Śrīmad-Bhāgavatam)",
+        "Lord Brahmā (in Brahma-saṁhitā)",
+        "Bhīṣmadeva (in Mahābhārata, Śānti-parva)"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Mahābhārata, Vana-parva 313.117 / Introduction",
+      "explanation": "Yudhiṣṭhira Mahārāja answered the Yamarāja Yakṣa with this famous verse: 'dharmasya tattvaṁ nihitaṁ guhāyāṁ mahājano yena gataḥ sa panthāḥ'."
+    },
+    {
+      "id": 6,
+      "type": "multiple-select",
+      "question": "Which physical and natural phenomena does HH Bhakti Tirtha Swami reference to illustrate that relationship (sambandha) is the universal fabric of creation?",
+      "options": [
+        "Atoms, protons, and neutrons interacting and repelling/uniting",
+        "Light waves interacting in unique ways",
+        "Conscious life forms engaging with their environment",
+        "Static void elements possessing zero connectivity"
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "difficulty": "medium",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami points out that from atoms, neutrons, and light waves to conscious life forms, relationships are inherent everywhere in creation."
+    },
+    {
+      "id": 7,
+      "type": "cause-effect",
+      "question": "What is the cause-and-effect relationship regarding devotees who live a cloistered lifestyle to avoid interacting with others?",
+      "options": [
+        "Cause: Living in cloistered isolation. Effect: Mistaking stagnant denial and ignorance for genuine spiritual peace while avoiding true realization.",
+        "Cause: Living in cloistered isolation. Effect: Instantly achieving pure love of Godhead without needing any peers.",
+        "Cause: Associating with challenging devotees. Effect: Irreversible destruction of all spiritual advancement.",
+        "Cause: Constant honest introspection. Effect: Developing hatred for the holy dhāma."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami explains: 'It is peaceful to be in ignorance; it is peaceful to be in denial... but the real challenge arises when we have to interact with people because it tests our genuine level of realization.'"
+    },
+    {
+      "id": 8,
+      "type": "single-choice",
+      "question": "In his 1956 Back to Godhead essay 'Conceptions of Gītā-nāgarī', what unique role did Śrīla Prabhupāda assign to spiritual communities to cure materialistic people?",
+      "options": [
+        "Operating transcendental hospitals that treat the heart diseases of asuric patients through education, initiation, and transcendental science.",
+        "Opening commercial banks and factories to compete with worldly enterprises.",
+        "Building political alliances to enforce Vedic dietary laws by legislation.",
+        "Running ordinary medical facilities identical to municipal secular clinics."
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Conceptions of Gītā-nāgarī (1956) / Introduction",
+      "explanation": "Śrīla Prabhupāda wrote that 'transcendental hospitals have to be opened at Gītā-nāgarī apart from ordinary hospitals... to treat the heart disease of asuric patients in education, initiation, knowledge, and lifestyle.'"
+    },
+    {
+      "id": 9,
+      "type": "assertion-reason",
+      "question": "Examine the dynamic of qualifying for the spiritual world through community relationships:",
+      "assertion": "In order to return to Kṛṣṇa's spiritual abode upon leaving this body, we must cultivate selfless, unmotivated relational love in our current communities.",
+      "reason": "The eternal residents of Kṛṣṇa's abode interact at the highest level of quality relationships, and we cannot enter that environment without embodying its culture.",
+      "options": [
+        "Both Assertion and Reason are true, and Reason is the correct explanation of Assertion",
+        "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion",
+        "Assertion is true, but Reason is false",
+        "Assertion is false, but Reason is true"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "Both statements are direct teachings from the Introduction: 'In order to go back to Krishna's abode, we have to become like that abode... interacting at the highest level with the Divine Couple.'"
+    },
+    {
+      "id": 10,
+      "type": "what-would-you-do",
+      "scenario": "A devotee feels overwhelmed by interpersonal friction in their temple or community, and feels tempted to withdraw entirely to practice alone in private isolation.",
+      "question": "Applying the guidance given by HH Bhakti Tirtha Swami in the Introduction, what should this devotee do?",
+      "options": [
+        "Abandon community life permanently, because solitary practice avoids all offenses.",
+        "View interpersonal friction as a mirror for honest self-evaluation, recognizing that real spiritual growth requires learning tolerance, humility, and mature relationships.",
+        "Conclude that devotional service cannot be practiced in the modern age.",
+        "Demand that the community expel anyone who disagrees with them before returning."
+      ],
+      "correctIndex": 1,
+      "difficulty": "hard",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "HH Bhakti Tirtha Swami explains that avoiding interaction is merely retreating into peaceful denial; real realization unfolds when we use the mirror of association to purify our ego."
+    },
+    {
+      "id": 11,
+      "type": "single-choice",
+      "question": "Which verse from Bhagavad-gītā (10.10) does HH Bhakti Tirtha Swami cite to emphasize that Kṛṣṇa gives real understanding only to those who serve with loving devotion?",
+      "options": [
+        "teṣāṁ satata-yuktānāṁ bhajatāṁ prīti-pūrvakam",
+        "ananyāś cintayanto māṁ ye janāḥ paryupāsate",
+        "brahma-bhūtaḥ prasannātmā na śocati na kāṅkṣati",
+        "patraṁ puṣpaṁ phalaṁ toyaṁ yo me bhaktyā prayacchati"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "reference": "Introduction (Reflections on Sacred Teachings V) / Bhagavad-gītā 10.10",
+      "explanation": "HH Bhakti Tirtha Swami quotes BG 10.10: 'To those who are constantly devoted to serving Me with love, I give the understanding by which they can come to Me.'"
+    },
+    {
+      "id": 12,
+      "type": "two-truths-one-false",
+      "question": "Examine the following statements from HH Bhakti Tirtha Swami's Introduction. Identify the FALSE statement:",
+      "options": [
+        "There can never be successful involvement in community without constant honest inventory.",
+        "If we try to succeed on the spiritual path alone, we are basically just engaged in speculation and interpolation.",
+        "Spiritual realization requires complete permanent isolation from all other devotees to prevent conflict."
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "reference": "Introduction (Reflections on Sacred Teachings V)",
+      "explanation": "Statement 3 is false: Solitary withdrawal is peaceful denial; authentic spiritual advancement requires testing our realization through devotee community relationships."
+    }
+  ]
+}

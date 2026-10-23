@@ -260,14 +260,17 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
               {t.scoreCard.correctPairings}
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.4rem' }}>
-              {q.correctPairs.map(([l, r], idx) => (
-                <div key={idx} style={{ fontSize: '0.95rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ color: 'var(--color-success)', fontWeight: 800 }}>✓</span>
-                  <strong style={{ color: 'var(--color-text)' }}>{q.left[l]}</strong>
-                  <span style={{ color: 'var(--color-muted)' }}>➔</span>
-                  <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{q.right[r]}</span>
-                </div>
-              ))}
+              {(q.correctPairs || []).map((pair: any, idx) => {
+                const [l, r] = Array.isArray(pair) ? pair : [pair.left, pair.right]
+                return (
+                  <div key={idx} style={{ fontSize: '0.95rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ color: 'var(--color-success)', fontWeight: 800 }}>✓</span>
+                    <strong style={{ color: 'var(--color-text)' }}>{q.left[l]}</strong>
+                    <span style={{ color: 'var(--color-muted)' }}>➔</span>
+                    <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{q.right[r]}</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
 

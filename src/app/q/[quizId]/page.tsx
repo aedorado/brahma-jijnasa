@@ -101,8 +101,16 @@ export default function DirectQuizPage({ params }: Props) {
 
       // If this is a series round, check if it is locked
       if (quizId.startsWith('64-day-')) {
-        const dayNum = parseInt(quizId.replace('64-day-', ''), 10)
-        if (!isNaN(dayNum)) {
+        let dayNum: number | null = null
+        if (quizId === '64-day-d3') dayNum = -2
+        else if (quizId === '64-day-d2') dayNum = -1
+        else if (quizId === '64-day-d1') dayNum = 0
+        else {
+          const parsed = parseInt(quizId.replace('64-day-', ''), 10)
+          if (!isNaN(parsed)) dayNum = parsed
+        }
+
+        if (dayNum !== null) {
           const unlockIso = getSeriesRoundUnlockTime(dayNum)
           if (new Date() < new Date(unlockIso)) {
             // Check if there is an active live PIN session created by teacher/admin
@@ -132,7 +140,8 @@ export default function DirectQuizPage({ params }: Props) {
               timeZone: 'Asia/Kolkata',
             }).format(new Date(unlockIso)) + ' IST'
 
-            setErrorMsg(`Day ${dayNum} is scheduled to release on ${formattedTime}. Please check back at the scheduled time or join the live class when active.`)
+            const label = dayNum === -2 ? 'Day -2 (D-3)' : dayNum === -1 ? 'Day -1 (D-2)' : dayNum === 0 ? 'Day 0 (D-1)' : `Day ${dayNum}`
+            setErrorMsg(`${label} is scheduled to release on ${formattedTime}. Please check back at the scheduled time or join the live class when active.`)
             setPhase('error')
             return
           }

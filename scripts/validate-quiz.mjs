@@ -82,7 +82,16 @@ quiz.questions?.forEach((q, idx) => {
     seenTypes.add(q.type)
   }
 
-  if (!q.question && q.type !== 'who-am-i') {
+  const hasSelfSufficientPrompt = 
+    q.type === 'who-am-i' || 
+    (q.type === 'assertion-reason' && q.assertion && q.reason) ||
+    (q.type === 'who-said-this' && q.quote) ||
+    (q.type === 'spot-the-error' && q.passage) ||
+    (q.type === 'missing-link' && q.chain) ||
+    (q.type === 'two-truths-one-false' && Array.isArray(q.options)) ||
+    (q.type === 'odd-one-out' && Array.isArray(q.options))
+
+  if (!q.question && !hasSelfSufficientPrompt) {
     errors.push(`${prefix} Missing "question" text`)
   }
 
@@ -225,6 +234,22 @@ quiz.questions?.forEach((q, idx) => {
       }
       if (!Array.isArray(q.correctPairs) || q.correctPairs.length !== q.left?.length) {
         errors.push(`${prefix} "correctPairs" must have one pair per left item`)
+      } else {
+        q.correctPairs.forEach((pair, pIdx) => {
+          if (!Array.isArray(pair) || pair.length !== 2) {
+            errors.push(
+              `${prefix} correctPairs[${pIdx}] must be a [leftIndex, rightIndex] array tuple (e.g. [0, 1]), but got ${JSON.stringify(pair)}. Objects like {left, right} are invalid.`
+            )
+          } else {
+            const [l, r] = pair
+            if (typeof l !== 'number' || l < 0 || l >= (q.left?.length ?? 0)) {
+              errors.push(`${prefix} correctPairs[${pIdx}] left index ${l} out of bounds (0..${(q.left?.length ?? 1) - 1})`)
+            }
+            if (typeof r !== 'number' || r < 0 || r >= (q.right?.length ?? 0)) {
+              errors.push(`${prefix} correctPairs[${pIdx}] right index ${r} out of bounds (0..${(q.right?.length ?? 1) - 1})`)
+            }
+          }
+        })
       }
       break
 

@@ -27,7 +27,11 @@ export function SingleChoice({ question, answer, onAnswer, disabled }: Props) {
       )}
 
       <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.5rem', lineHeight: 1.5 }}>
-        {question.question}
+        {question.question || (question.type === 'two-truths-one-false'
+          ? (language === 'hi' ? 'असत्य कथन की पहचान करें:' : language === 'pt' ? 'Identifique a declaração FALSA:' : 'Identify the FALSE statement:')
+          : question.type === 'odd-one-out'
+          ? (language === 'hi' ? 'बेमेल विकल्प की पहचान करें:' : language === 'pt' ? 'Identifique a opção incompatível:' : 'Identify the odd one out:')
+          : '')}
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
