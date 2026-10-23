@@ -1,130 +1,130 @@
 {
   "id": "64-day-d3",
-  "title": "Dia -2 (D-3): Vida e Legado de SS Bhakti Tirtha Swami (Edição Liderança Comunitária)",
+  "title": "Dia -2 (D-3): Vida e Liderança Comunitária de SS Bhakti Tirtha Swami",
   "category": "64-principles",
-  "description": "Cada pergunta é fundamentada nos eventos biográficos reais, passatempos e marcos de SS Bhakti Tirtha Swami do livro Black Lotus, destacando sua vida de liderança comunitária.",
-  "difficulty": "medium",
+  "description": "15 perguntas encorajadoras sobre a vida inspiradora, liderança servidora e cuidado comunitário de SS Bhakti Tirtha Swami.",
+  "difficulty": "easy",
   "timeLimit": 600,
   "onTimeExpiry": "submit-partial",
   "questions": [
     {
       "id": "q1",
       "type": "single-choice",
-      "question": "Qual desafio físico de fala da infância o jovem John Favors superou ao iniciar suas pregações no 'Triângulo Esquecido' (Forgotten Triangle) de Cleveland?",
+      "question": "Durante sua infância em Cleveland, que dificuldade física de fala o jovem John Favors superou através de oração sincera e determinação espiritual para começar a falar e pregar?",
       "options": [
-        "Perda da audição",
-        "Uma gagueira severa na fala",
-        "Visão prejudicada",
-        "Perda crônica de memória"
+        "Perda completa da audição",
+        "Rouquidão crônica severa",
+        "Uma gagueira debilitante na fala",
+        "Incapacidade de memorizar escrituras"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "difficulty": "easy",
-      "explanation": "Apesar de sofrer de gagueira severa no início da infância, o jovem John Favors foi fortalecido pela oração e pelo incentivo de sua professora de música Vivian DuBose Jordan para falar fluentemente como evangelista infantil em rádios e TVs locais.",
+      "explanation": "O jovem John lutava contra uma grave gagueira na infância, mas através da oração e do encorajamento de sua professora de música Vivian DuBose Jordan, foi capacitado a falar com fluência sempre que falava sobre Deus.",
       "reference": "Black Lotus, Capítulo 1: O Triângulo Esquecido"
     },
     {
       "id": "q2",
       "type": "multiple-select",
-      "question": "Quais dos seguintes papéis reais de liderança estudantil John Favors exerceu enquanto construía comunidade na Universidade de Princeton entre 1968 e 1972? (Selecione TODOS os que se aplicam)",
+      "question": "Como estudante de graduação na Universidade de Princeton, quais papéis de liderança estudantil John Favors exerceu para construir comunidade e unir grupos diversos? (Selecione TODAS as opções aplicáveis)",
       "options": [
-        "Presidente do Clube de Remo Universitário de Princeton",
-        "Presidente da Associação de Colegas Negros (Association of Black Collegians - ABC)",
-        "Co-fundador e Presidente da Coalizão do Terceiro Mundo (Third World Coalition)",
-        "Presidente eleito do Corpo Estudantil da Universidade de Princeton"
+        "Presidente da Associação de Universitários Negros (ABC)",
+        "Cofundador e Presidente da Coalizão do Terceiro Mundo",
+        "Capitão da equipe universitária de hipismo",
+        "Presidente eleito do Grêmio Estudantil na Universidade de Princeton"
       ],
       "correctIndices": [
+        0,
         1,
-        2,
         3
       ],
-      "difficulty": "medium",
-      "explanation": "Em Princeton, John Favors atuou como presidente da ABC, co-fundou e presidiu a Coalizão do Terceiro Mundo e foi eleito presidente do corpo estudantil em 1971, unindo diversos grupos estudantis.",
+      "difficulty": "easy",
+      "explanation": "Em Princeton, John Favors atuou como presidente da ABC, cofundou e presidiu a Coalizão do Terceiro Mundo para apoiar estudantes de minorias e foi eleito presidente do corpo estudantil em 1971.",
       "reference": "Black Lotus, Capítulo 3: O Príncipe de Princeton"
     },
     {
       "id": "q3",
       "type": "true-false",
-      "question": "Verdadeiro ou Falso: Ao se formar em Princeton em 1972, John Favors recusou oportunidades na pós-graduação em Direito, mudou-se diretamente para o templo de Dallas e pediu ao presidente do templo o serviço mais humilde: esfregar o banheiro dos monges de joelhos.",
+      "question": "Verdadeiro ou Falso: Ao se mudar pela primeira vez para o ashram como um novo devoto, John Favors pediu à liderança do templo o serviço mais humilde e limpou de joelhos o banheiro dos monges com dedicação.",
       "correct": true,
       "difficulty": "easy",
-      "explanation": "Em vez de buscar prestígio corporativo por seu diploma da Ivy League, John Favors rendeu-se à vida no templo em Dallas em 1972, pedindo o serviço mais humilde e esfregando o banheiro dos brahmacharis com total determinação.",
-      "reference": "Black Lotus, Capítulo 4: A Entrada do Senhor Escuro"
+      "explanation": "Em vez de buscar prestígio para seu diploma da Ivy League, John Favors se entregou à vida do templo pedindo o serviço mais humilde, esfregando o banheiro dos brahmacharis com total determinação.",
+      "reference": "Black Lotus, Capítulo 4: Entra o Senhor Escuro"
     },
     {
       "id": "q4",
       "type": "who-am-i",
       "clues": [
-        "Iniciei John Favors em fevereiro de 1973, dando-lhe o nome espiritual Ghanashyam Dasa ('servo da escura nuvem de chuva').",
-        "Apareci a ele em um sonho decisivo em 1979, instruindo-o três vezes a 'abrir a porta' para o povo da África.",
-        "Sou o Fundador-Acharya da ISKCON, cujos livros, visão e missão global Bhakti Tirtha Swami dedicou toda a sua vida a servir."
+        "Aceitei John Favors como meu discípulo em fevereiro de 1973, dando-lhe o nome espiritual Ghanashyam Dasa ('servo da escura nuvem de chuva').",
+        "Em um sonho decisivo em 1979, pedi-lhe três vezes para 'abrir a porta' para as multidões de pessoas na África.",
+        "Sou o Fundador-Acharya da ISKCON cuja missão e livros universais Bhakti Tirtha Swami dedicou toda a sua vida a servir."
       ],
       "options": [
         "Srila Bhaktisiddhanta Sarasvati Thakura",
-        "Satsvarupa Dasa Goswami",
         "Srila A.C. Bhaktivedanta Swami Prabhupada",
-        "Bhakti Charu Swami"
+        "Tamal Krishna Goswami",
+        "Satsvarupa Dasa Goswami"
       ],
-      "correctIndex": 2,
+      "correctIndex": 1,
       "difficulty": "easy",
-      "explanation": "Srila Prabhupada é o mestre espiritual de Bhakti Tirtha Swami que o iniciou, deu-lhe o nome de Ghanashyam Dasa e direcionou sua missão de pregação para a África.",
-      "reference": "Black Lotus, Capítulos 4 e 6"
+      "explanation": "Srila Prabhupada é o amado mestre espiritual iniciador que guiou Ghanashyam Dasa (Bhakti Tirtha Swami) e dirigiu sua missão global de pregação.",
+      "reference": "Black Lotus, Capítulo 4 e Capítulo 6"
     },
     {
       "id": "q5",
       "type": "who-said-this",
-      "quote": "Through Bhakti Tirtha Swami’s great efforts, his spiritual legacy will live on and endure throughout posterity. (Por meio dos grandes esforços de Bhakti Tirtha Swami, seu legado espiritual continuará vivo e perdurará por toda a posteridade.)",
-      "context": "Homenagem destacada nas páginas introdutórias de Black Lotus.",
+      "quote": "Sabe, aquele jovem realmente vai longe. Ele está pelo menos dez anos à frente de seu tempo.",
+      "context": "Dito ao Reverendo E. Randel T. Osburn em Cleveland (1967) após o jovem líder John Favors questioná-lo com coragem sobre a estratégia e terminologia dos direitos civis.",
       "options": [
-        "Nelson Mandela",
-        "Dr. Martin Luther King Jr.",
-        "Alice Coltrane",
-        "Cathy Hughes"
+        "Malcolm X",
+        "Jesse Jackson",
+        "John Lewis",
+        "Dr. Martin Luther King Jr."
       ],
-      "correctIndex": 2,
-      "difficulty": "medium",
-      "explanation": "A renomada musicista e buscadora espiritual Swamini Turiyasangitananda (Alice Coltrane) prestou esta sincera homenagem honrando o duradouro legado global de Bhakti Tirtha Swami.",
-      "reference": "Black Lotus, Prefácio / Homenagens"
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "explanation": "O Dr. Martin Luther King Jr. ficou profundamente impressionado com as perguntas ousadas e visionárias do jovem John durante um encontro em Cleveland e observou que ele possuía a visão de um verdadeiro líder.",
+      "reference": "Black Lotus, Capítulo 2: Experiências que Mudaram a Vida"
     },
     {
       "id": "q6",
       "type": "sequence",
-      "question": "Organize estes marcos históricos da vida de Bhakti Tirtha Swami na ordem cronológica correta (do mais antigo ao mais recente):",
+      "question": "Organize estes quatro marcos importantes na vida de Bhakti Tirtha Swami na ordem cronológica correta (do mais antigo ao mais recente):",
       "items": [
-        "Fundar o Instituto de Tecnologia Espiritual Aplicada (IFAST) em Washington D.C.",
-        "Graduar-se na Universidade de Princeton e ingressar na ISKCON",
-        "Ser coroado como Alto Chefe (Nghorikpa) de Warri na Nigéria",
-        "Pioneirar a missão de pregação da ISKCON na África Ocidental após um sonho com Srila Prabhupada"
+        "Formar-se com honras na Universidade de Princeton",
+        "Pregar como um jovem pregador infantil inspirador em Cleveland",
+        "Aceitar os votos de sannyasa como Bhakti Tirtha Swami",
+        "Render-se à vida monástica em tempo integral em Dallas"
       ],
       "correctOrder": [
         1,
-        3,
         0,
+        3,
         2
       ],
-      "difficulty": "medium",
-      "explanation": "1972: Formou-se em Princeton e ingressou na ISKCON; 1979: Viajou para a África Ocidental; 1990: Fundou o IFAST em Washington D.C.; Outono de 1990: Coroado Alto Chefe de Warri.",
-      "reference": "Black Lotus, Capítulos 3, 6, 7, 8 e Cronologia"
+      "difficulty": "easy",
+      "explanation": "1960: Pregação na infância em Cleveland; Primavera de 1972: Formatura em Princeton; Verão de 1972: Rendição no ashram em Dallas; 1979: Iniciação de sannyasa.",
+      "reference": "Black Lotus, Capítulos 1, 3, 4, 5"
     },
     {
       "id": "q7",
       "type": "match-pairs",
-      "question": "Associe cada localidade histórica de Black Lotus ao marco ocorrido na vida de Bhakti Tirtha Swami:",
+      "question": "Associe cada localidade importante na vida de Bhakti Tirtha Swami ao marco histórico ou serviço realizado ali:",
       "left": [
-        "Mayapur, Índia (2002)",
-        "Forgotten Triangle, Cleveland",
-        "Warri, Nigéria (1990)",
-        "Howard University, Washington D.C."
+        "Cleveland, Ohio",
+        "Dallas, Texas",
+        "Lagos, Nigéria",
+        "Gita Nagari, Pensilvânia"
       ],
       "right": [
-        "Onde defendeu corajosamente o direito de uma erudita sênior dar aula",
-        "Onde o IFAST realizou suas primeiras palestras públicas transformadoras",
-        "Onde ele foi coroado como Alto Chefe",
-        "Onde ele passou sua infância como evangelista infantil"
+        "Centro pioneiro de pregação onde uma antiga clínica foi transformada em templo próspero",
+        "Lar de infância onde iniciou sua busca espiritual e primeiras palestras comunitárias",
+        "Comunidade rural revitalizada por ele com amoroso cuidado aos devotos e proteção às vacas",
+        "Primeiro templo da ISKCON onde passou por treinamento monástico após a faculdade"
       ],
       "correctPairs": [
         [
           0,
-          0
+          1
         ],
         [
           1,
@@ -132,165 +132,101 @@
         ],
         [
           2,
-          2
+          0
         ],
         [
           3,
-          1
+          2
         ]
       ],
       "difficulty": "easy",
-      "explanation": "Cleveland foi onde cresceu como evangelista infantil; a Universidade Howard sediou as primeiras palestras do IFAST; Mayapur foi onde defendeu a aula de Visakha Dasi; e Warri onde foi coroado Alto Chefe.",
-      "reference": "Black Lotus, Capítulos 1, 7, 8"
+      "explanation": "Cleveland foi seu lar de infância; Dallas foi onde iniciou seu treinamento monástico; Lagos foi onde purificaram a clínica tornando-a um templo; Gita Nagari foi a comunidade rural que revitalizou com amor.",
+      "reference": "Black Lotus, Capítulos 1, 4, 6, 8"
     },
     {
       "id": "q8",
-      "type": "assertion-reason",
-      "assertion": "Em 1979, Ghanashyam Dasa deixou abruptamente um restaurante e centro próspero em Washington D.C. para fundar centros de pregação na África Ocidental.",
-      "reason": "Ele recebeu uma instrução espiritual direta em sonho onde Srila Prabhupada lhe disse três vezes para 'abrir a porta' para o povo africano.",
+      "type": "odd-one-out",
+      "question": "Qual dos seguintes comportamentos contradiz os ensinamentos de Bhakti Tirtha Swami sobre liderança servidora e cuidado comunitário?",
       "options": [
-        "Tanto a Afirmação quanto a Razão são verdadeiras, e a Razão é a explicação correta da Afirmação",
-        "Tanto a Afirmação quanto a Razão são verdadeiras, mas a Razão NÃO é a explicação correta da Afirmação",
-        "A Afirmação é verdadeira, mas a Razão é falsa",
-        "A Afirmação é falsa, mas a Razão é verdadeira"
+        "Exigir prestígio pessoal, controle corporativo e autoridade autocrática sobre os outros",
+        "Praticar a humildade radical e ver-se como servo de todos",
+        "Cooperar sinceramente para construir pontes entre diferenças raciais e culturais",
+        "Praticar a compaixão ativa e proteger os membros vulneráveis da comunidade"
       ],
       "correctIndex": 0,
-      "difficulty": "hard",
-      "explanation": "Tanto a Afirmação quanto a Razão são verdadeiras. A decisão de Ghanashyam Dasa de ir para a África foi inspirada diretamente pelo sonho com Srila Prabhupada dizendo três vezes para 'abrir a porta'.",
-      "reference": "Black Lotus, Capítulo 6: Passagem para a África"
+      "difficulty": "easy",
+      "explanation": "Buscar prestígio pessoal e controle autocrático são manifestações do falso ego, enquanto a humildade, a cooperação e a proteção aos outros são as virtudes comunitárias fundamentais exemplificadas na vida de Bhakti Tirtha Swami.",
+      "reference": "Black Lotus, Capítulos 4, 7, 8"
     },
     {
       "id": "q9",
-      "type": "spot-the-error",
-      "passage": "Em 1980, quando Ghanashyam Dasa chegou ao prédio recém-adquirido em Lagos, Nigéria, ele se recusou a entrar nos quartos sujos do andar superior da antiga clínica. Ordenou que seus discípulos juniores limpassem sozinhos as paredes manchadas de sangue enquanto permaneceu em seus aposentos privados no andar de baixo.",
+      "type": "two-truths-one-false",
+      "question": "Em relação à vida e liderança servidora de Bhakti Tirtha Swami, identifique a afirmação FALSA:",
       "options": [
-        "O prédio ficava na África do Sul, e não na Nigéria.",
-        "Ele chegou a Lagos em 1995, e não em 1980.",
-        "O edifício era anteriormente um banco comercial, e não uma clínica.",
-        "Esta declaração é falsa; Ekendra Dasa registra que Ghanashyam Dasa encorajou pessoalmente a equipe, aprovou limparem juntos o andar de cima e purificou o ambiente com kirtana e incenso."
+        "Durante os festivais de Mayapur, Bhakti Tirtha Swami corria pela multidão servindo arroz doce com um sorriso alegre, chamando cada devoto de 'Prabhu' (mestre).",
+        "Ele acreditava que regras administrativas e metas organizacionais eram muito mais importantes do que cuidar dos sentimentos pessoais dos devotos.",
+        "Ele viajou pelo mundo oferecendo workshops sobre como superar o falso ego, transformar o medo em amor e construir relacionamentos de alta confiança."
       ],
-      "correctIndex": 3,
-      "difficulty": "medium",
-      "explanation": "Em Black Lotus (Cap. 6), Ekendra Dasa relata como Ghanashyam Dasa trabalhou calorosamente com a equipe, incentivando a limpeza mútua e transformando o ambiente com kirtana.",
-      "reference": "Black Lotus, Capítulo 6: Passagem para a África"
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "A afirmação B é FALSA. Bhakti Tirtha Swami ensinava constantemente que o cuidado vaishnava genuíno, a afeição e os relacionamentos de alta confiança devem sempre vir antes de metas de gestão mecânicas.",
+      "reference": "Black Lotus, Capítulos 5, 7, 8"
     },
     {
       "id": "q10",
-      "type": "missing-link",
-      "chain": [
-        "John Favors ouve ciências espirituais não sectárias de seu mentor Norman Anderson em Cleveland",
-        "John participa dos Festivais de Amor de Domingo no templo da ISKCON no Brooklyn",
-        "?",
-        "John recusa propostas da faculdade de Direito e muda-se para Dallas para render-se à missão de Srila Prabhupada"
-      ],
-      "options": [
-        "Ele ouve o disco de vinil 'Happening' de Srila Prabhupada trazido por Eva Coleman e chora em profundo reconhecimento espiritual",
-        "Ele compra uma fazenda comercial em Ohio",
-        "Ele se candidata a prefeito de East Cleveland",
-        "Ele ingressa em uma ordem monástica na Europa"
-      ],
-      "correctIndex": 0,
-      "difficulty": "easy",
-      "explanation": "Ouvir a voz de Srila Prabhupada cantando no álbum 'Happening' trazido por Eva Coleman tocou profundamente John, inspirando sua rendição completa a Srila Prabhupada.",
-      "reference": "Black Lotus, Capítulo 4: A Entrada do Senhor Escuro"
-    },
-    {
-      "id": "q11",
-      "type": "odd-one-out",
-      "options": [
-        "Associação de Colegas Negros (ABC) em Princeton",
-        "Corporação de Gestão de Investimentos de Princeton",
-        "Coalizão do Terceiro Mundo em Princeton",
-        "Instituto de Tecnologia Espiritual Aplicada (IFAST)"
-      ],
-      "correctIndex": 1,
-      "difficulty": "easy",
-      "explanation": "John Favors liderou a ABC, co-fundou a Coalizão do Terceiro Mundo e fundou o IFAST. Nunca foi associado à Corporação de Gestão de Investimentos de Princeton.",
-      "reference": "Black Lotus, Capítulos 3 e 7"
-    },
-    {
-      "id": "q12",
-      "type": "cause-effect",
-      "question": "Ação: Ao viajar com a BBT Library Party, Ghanashyam Dasa iniciou uma conversa espontânea com um estranho em um banheiro da universidade. Qual foi o resultado direto dessa interação?",
-      "options": [
-        "Ghanashyam Dasa foi detido por invasão de campus.",
-        "A universidade cancelou todos os pedidos de livros para a biblioteca.",
-        "O estranho ofereceu-lhe uma cátedra com estabilidade.",
-        "O homem era o chefe do Departamento de Religião, o que gerou encomendas permanentes de coleções completas dos livros de Srila Prabhupada."
-      ],
-      "correctIndex": 3,
-      "difficulty": "easy",
-      "explanation": "Por arranjo divino, o homem no banheiro era o chefe do Departamento de Religião que lecionava Hinduísmo e encomendou conjuntos completos dos livros de Srila Prabhupada.",
-      "reference": "Black Lotus, Capítulo 4: The Library Party"
-    },
-    {
-      "id": "q13",
-      "type": "two-truths-one-false",
-      "options": [
-        "Em 1990, Bhakti Tirtha Swami foi coroado Alto Chefe (Nghorikpa) em Warri, Nigéria.",
-        "Após tomar sannyasa, Bhakti Tirtha Swami aposentou-se permanentemente de viagens internacionais e viveu exclusivamente em um eremitério isolado.",
-        "Nos festivais de Mayapur, Bhakti Tirtha Swami corria entre as multidões servindo baldes de arroz prensado doce tratando cada devoto como 'Prabhu' (mestre)."
-      ],
-      "correctIndex": 1,
-      "difficulty": "medium",
-      "explanation": "A afirmação 2 é FALSA. Bhakti Tirtha Swami manteve uma intensa rotina de pregação global, viajando para 20 a 30 países anualmente durante toda a vida.",
-      "reference": "Black Lotus, Capítulos 5, 6, 8 e Cronologia"
-    },
-    {
-      "id": "q14",
       "type": "case-study",
-      "scenario": "Durante o festival de Mayapur de 2002, elementos conservadores removeram secretamente o microfone e o livro do Bhagavatam para impedir a acadêmica sênior Visakha Dasi de dar aula. Vendo essa injustiça, Bhakti Tirtha Swami agiu com 'compaixão feroz'.",
-      "question": "De acordo com o relato de testemunha ocular de Rukmini Devi Dasi em Black Lotus, qual foi a atitude direta de Bhakti Tirtha Swami durante esse evento?",
+      "scenario": "Durante o festival de Mayapur de 2002, houve uma tentativa não autorizada de silenciar a acadêmica sênior Visakha Dasi, retirando secretamente seu microfone e as escrituras antes da aula.",
+      "question": "Quando ocorreu essa tentativa de silenciar sua irmã espiritual, como Bhakti Tirtha Swami demonstrou liderança comunitária corajosa?",
       "options": [
-        "Ele cancelou a aula e saiu do salão do templo.",
-        "Ele aconselhou a palestrante a aceitar a discriminação em silêncio sem se manifestar.",
-        "Ele confrontou a liderança local com firmeza: 'Ouçam, é melhor vocês pegarem esse livro, o microfone e os címbalos! E é melhor pegá-los AGORA!', restaurando o microfone e protegendo a dignidade dela.",
-        "Ele denunciou o ocorrido às autoridades civis locais."
+        "Ele cancelou a palestra e saiu da sala do templo em protesto",
+        "Ele disse à oradora para tolerar o desrespeito em silêncio sem dizer nada",
+        "Ele se levantou com 'compaixão feroz' e ordenou firmemente aos líderes residentes que devolvessem o microfone e as escrituras imediatamente",
+        "Ele chamou policiais civis externos para inspecionar a sala do templo"
       ],
       "correctIndex": 2,
-      "difficulty": "hard",
-      "explanation": "Em Black Lotus (Cap. 8), Rukmini Devi Dasi descreve como Bhakti Tirtha Swami se levantou como um 'facho de fogo giratório' para exigir a devolução imediata do microfone e do Bhagavatam.",
+      "difficulty": "easy",
+      "explanation": "Bhakti Tirtha Swami se levantou como uma chama viva em feroz compaixão, exigindo o retorno imediato do microfone e do Bhagavatam para proteger a dignidade de sua irmã espiritual.",
       "reference": "Black Lotus, Capítulo 8: Mayapur 2002"
     },
     {
-      "id": "q15",
+      "id": "q11",
       "type": "what-would-you-do",
-      "scenario": "Em 1994, quando Bhakti Tirtha Swami assumiu a liderança da comunidade agrícola em crise de 350 acres de Gita Nagari, encontrou membros divididos por baixa confiança e atritos interpessoais.",
-      "question": "Com base em suas ações reais registradas em Black Lotus, como ele abordou a reconstrução da comunidade?",
+      "scenario": "Em 1994, quando Bhakti Tirtha Swami aceitou a liderança da comunidade de Gita Nagari em dificuldades, descobriu que as famílias residentes estavam desgastadas por exaustão, desconfiança e conflitos interpessoais.",
+      "question": "Ao assumir a responsabilidade por esta comunidade, o que ele priorizou antes de implementar programas agrícolas ou econômicos?",
       "options": [
-        "Priorizou diálogos abertos, cuidado pessoal e restauração da confiança e dos relacionamentos amorosos antes de focar em metas de produtividade da fazenda.",
-        "Despejou todas as famílias residentes e contratou trabalhadores agrícolas comerciais.",
-        "Vendeu as terras da comunidade para incorporadoras imobiliárias privadas.",
-        "Impôs pesadas multas financeiras a qualquer membro que expressasse insatisfação."
+        "Substituir todos os membros atuais da comunidade por trabalhadores terceirizados comerciais",
+        "Promover comunicação aberta, cuidado pessoal e reconstruir relacionamentos fortes e confiáveis entre os devotos",
+        "Impor multas financeiras pesadas a qualquer devoto que expressasse queixas",
+        "Vender imediatamente as terras da fazenda para empreiteiras urbanas comerciais"
       ],
-      "correctIndex": 0,
-      "difficulty": "medium",
-      "explanation": "Em Gita Nagari, Bhakti Tirtha Swami reconheceu que estabelecer relacionamentos vaishnavas genuínos, comunicação aberta e confiança mútua era a base indispensável para o sucesso comunitário.",
-      "reference": "Black Lotus, Capítulo 8: Mudança para Gita Nagari"
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "explanation": "Como observou Chandramauli Swami, Bhakti Tirtha Swami percebeu que antes de qualquer programa de autossuficiência ou agricultura, ele precisava primeiro construir comunidade e restabelecer laços de alta confiança.",
+      "reference": "Black Lotus, Capítulo 8: Mudando-se para Gita Nagari"
     },
     {
-      "id": "q16",
+      "id": "q12",
       "type": "single-choice",
-      "question": "Qual título tradicional específico foi conferido a Bhakti Tirtha Swami durante sua cerimônia de coroação na Nigéria no outono de 1990?",
+      "question": "Quando o Rei (Ohroje) de Okpe coroou Bhakti Tirtha Swami como Alto Chefe em Warri, Nigéria, em 1990, qual título tradicional honorífico lhe foi concedido para representar seu papel como protetor amoroso da comunidade?",
       "options": [
-        "Prefeito Honorário de Lagos",
-        "Grande Comandante da África Ocidental",
-        "Chanceler Supremo do IFAST",
-        "Alto Chefe Nghorikpa de Warri ('Aquele que Circunda e Protege')"
+        "Alto Chefe Ovie ('O Líder Tradicional')",
+        "Alto Chefe Osio ('O Portador de Bênçãos')",
+        "Alto Chefe Odion ('O Ancião Respeitado')",
+        "Alto Chefe Nghorikpa ('Aquele Que Circunda e Protege')"
       ],
       "correctIndex": 3,
       "difficulty": "easy",
-      "explanation": "Em 1990, Bhakti Tirtha Swami foi coroado como Alto Chefe Nghorikpa de Warri, na Nigéria, em reconhecimento às suas contribuições espirituais e sociais.",
+      "explanation": "A realeza tradicional nigeriana concedeu-lhe o título de Alto Chefe Nghorikpa de Warri, que significa 'Aquele Que Circunda e Protege', reconhecendo seu cuidado espiritual desinteressado e elevação humanitária.",
       "reference": "Black Lotus, Capítulo 8: Alto Chefe de Warri"
     },
     {
-      "id": "q17",
+      "id": "q13",
       "type": "multiple-select",
-      "question": "Quais das seguintes figuras mundiais proeminentes encontraram-se e dialogaram pessoalmente com Bhakti Tirtha Swami durante suas viagens globais? (Selecione TODAS as que se aplicam)",
+      "question": "Durante suas viagens globais e missão de pregação, quais figuras internacionalmente reconhecidas se reuniram com Bhakti Tirtha Swami e receberam sua orientação espiritual, amizade e visão sobre a paz mundial? (Selecione TODAS as opções aplicáveis)",
       "options": [
         "Presidente Nelson Mandela da África do Sul",
         "Primeiro-ministro britânico Winston Churchill",
-        "Campeão mundial dos pesos pesados Muhammad Ali",
+        "Campeão mundial dos pesos-pesados Muhammad Ali",
         "Presidente Kenneth Kaunda da Zâmbia"
       ],
       "correctIndices": [
@@ -299,57 +235,38 @@
         3
       ],
       "difficulty": "easy",
-      "explanation": "Bhakti Tirtha Swami encontrou-se com Nelson Mandela, Muhammad Ali e com o presidente Kenneth Kaunda da Zâmbia em suas viagens internacionais.",
+      "explanation": "Bhakti Tirtha Swami teve diálogos espirituais afetuosos com o Presidente Nelson Mandela na África do Sul, o campeão Muhammad Ali e o Presidente Kenneth Kaunda da Zâmbia.",
       "reference": "Black Lotus, Capítulo 8 e Cronologia"
     },
     {
-      "id": "q18",
+      "id": "q14",
       "type": "single-choice",
-      "question": "Em 27 de junho de 2005, em qual sagrada comunidade rural Bhakti Tirtha Swami partiu deste mundo, cercado por discípulos amorosos e devotos em kirtana?",
+      "question": "Como Bhakti Tirtha Swami passou seus últimos dias em junho de 2005 em Gita Nagari, oferecendo sua lição suprema sobre comunidade, relacionamentos amorosos e rendição?",
       "options": [
-        "New Vrindaban",
-        "Mayapur",
-        "Vrindavan",
-        "Gita Nagari"
+        "Cercado por centenas de devotos e discípulos amorosos entoando kirtan suave e resolvendo desavenças em sua presença",
+        "Em completo isolamento, recusando-se a ver ou falar com qualquer devoto",
+        "Viajando sozinho para um hospital secreto no exterior",
+        "Escrevendo queixas formais de gestão contra outros líderes"
       ],
-      "correctIndex": 3,
+      "correctIndex": 0,
       "difficulty": "easy",
-      "explanation": "Bhakti Tirtha Swami deixou este mundo em 27 de junho de 2005, em Gita Nagari, na Pensilvânia.",
+      "explanation": "Bhakti Tirtha Swami partiu deste mundo cercado por centenas de devotos cantando os santos nomes, inspirando os membros a resolverem antigas desavenças e a se unirem em amor.",
       "reference": "Black Lotus, Capítulo 9: A Lição Final"
     },
     {
-      "id": "q19",
-      "type": "multiple-select",
-      "question": "Quais das seguintes séries de livros foram de autoria de Bhakti Tirtha Swami como parte de seu legado de ensinamentos? (Selecione TODAS as que se aplicam)",
-      "options": [
-        "Série O Mendigo (The Beggar)",
-        "Série Guerreiro Espiritual (Spiritual Warrior)",
-        "História de Oxford sobre Diplomacia Moderna",
-        "Série Liderança para uma Era de Consciência Mais Elevada"
-      ],
-      "correctIndices": [
-        0,
-        1,
-        3
-      ],
-      "difficulty": "easy",
-      "explanation": "Bhakti Tirtha Swami foi autor da série O Mendigo, Guerreiro Espiritual e Liderança para uma Era de Consciência Mais Elevada.",
-      "reference": "Black Lotus, Capítulos 7, 8 e Catálogo de Obras"
-    },
-    {
-      "id": "q20",
+      "id": "q15",
       "type": "single-choice",
-      "question": "Qual metáfora botânica do título de sua biografia descreve como John Favors emergiu da 'lama' da pobreza dos guetos e das adversidades raciais de Cleveland para florescer como um mestre espiritual global?",
+      "question": "Ao refletir sobre a extraordinária jornada de vida de Bhakti Tirtha Swami, que profundo significado espiritual a metáfora do 'lótus' transmite em relação ao seu caráter e serviço?",
       "options": [
-        "Banyan Dourada",
-        "Rosa Vermelha",
-        "Lótus Negra (Black Lotus)",
-        "Lírio Branco"
+        "Que um líder espiritual deve se isolar das pessoas",
+        "Que a riqueza material é necessária antes de pregar a verdade espiritual",
+        "Que, assim como o lótus surge através da água lamacenta para desabrochar imaculado à luz do sol, um guerreiro espiritual se eleva acima das adversidades materiais para oferecer fragrância e abrigo aos outros",
+        "Que o valor espiritual de alguém depende estritamente de seu nascimento material e posição social"
       ],
       "correctIndex": 2,
       "difficulty": "easy",
-      "explanation": "Assim como o lótus cria raízes na lama mas floresce puro e intocado sobre a água, 'Black Lotus' simboliza seu desabrochar espiritual e liderança global.",
-      "reference": "Black Lotus, Introdução: Uma Lótus Negra Emerge"
+      "explanation": "Steven Rosen explica que, assim como o lótus se enraíza na lama, mas se eleva de 20 a 30 centímetros acima da água para florir puro ao sol, Bhakti Tirtha Swami superou as adversidades urbanas para florescer como um extraordinário líder-servo compassivo.",
+      "reference": "Black Lotus, Introdução: Um Lótus Negro Emerge"
     }
   ]
 }

@@ -1,42 +1,57 @@
-# Brahma Jijñāsā — Universal High-Quality NotebookLM Quiz Prompt
+# Brahma Jijñāsā — Day -2 (D-3): Life & Community Leadership of HH Bhakti Tirtha Swami (Black Lotus)
 
-> **Character Count:** ~3,300 characters (Strictly under 3,500 characters limit).
+> **NotebookLM Optimized Prompt**
+> **Character Count:** **3,466 characters** (Strictly within NotebookLM's 3,500 character limit).
+> **Format Tuning:** **Exactly 15 questions**, all set to **'easy' and encouraging** difficulty. Subtly highlights community leadership skills (servant leadership, radical humility, uniting people, restoring trust, compassionate defense). Strictly grounded in *Black Lotus*.
 
 ---
 
-```markdown
-Based STRICTLY on the uploaded source material:
-Generate a 20-question interactive quiz as a single valid JSON object. Output pure JSON ONLY (no markdown fences or commentary).
+## The Prompt to Copy into NotebookLM
 
-QUALITY RULES:
-1. FOCUS ON CORE INSPIRING THEMES: Essential, faith-building, memorable events and teachings. Avoid obscure footnote trivia or administrative dates.
-2. NO CROSS-QUESTION LEAKS: Questions must be isolated. Never reveal an answer inside another question.
-3. SHUFFLE ANSWERS:
-   - For single-choice: Distribute correctIndex across 0, 1, 2, 3 (do NOT default to 0).
-   - For multiple-select: Vary correctIndices (e.g. [1, 3], [0, 2, 3], [0, 3]). Never always use [0, 1, 2].
-   - In sequence & match-pairs: Scramble items thoroughly so order is never [0, 1, 2, 3].
-4. AUTHENTIC REFERENCES: Provide clear chapter references and concise explanations.
-5. DIFFICULTY BALANCE: 6 Easy, 10 Medium, 4 Hard. (Do NOT include points).
+```text
+Based STRICTLY on the uploaded book "Black Lotus: The Spiritual Journey of an Urban Mystic":
+Generate an encouraging, very easy 15-question interactive quiz as a single valid JSON object.
+Output pure JSON ONLY (no markdown fences, no commentary). Starts with { and ends with }.
 
-20 QUESTIONS (Exact Order):
-Q1: "single-choice" (options: 4 strings, correctIndex: 0-3)
-Q2: "multiple-select" (options: 4 strings, correctIndices: array of 2-3 indices)
-Q3: "true-false" (question: clear statement, correct: boolean)
-Q4: "who-am-i" (clues: [subtle clue, clearer clue, direct clue], options: 4 strings, correctIndex: 0-3)
-Q5: "who-said-this" (quote: string, context: string, options: 4 speakers, correctIndex: 0-3)
-Q6: "sequence" (items: 4 scrambled events, correctOrder: [shuffled indices 0-3 in proper order])
-Q7: "match-pairs" (left: 4 items, right: 4 scrambled items, correctPairs: [[0,x], [1,y], [2,z], [3,w]])
-Q8: "assertion-reason" (assertion: string, reason: string, options: ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is NOT the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], correctIndex: 0-3)
-Q9: "spot-the-error" (passage: 2-sentence passage with 1 factual error, options: 4 corrections, correctIndex: 0-3)
-Q10: "missing-link" (chain: ["Step 1", "Step 2", "?", "Step 4"], options: 4 choices for "?", correctIndex: 0-3)
-Q11: "odd-one-out" (options: 4 strings where 3 share theme and 1 does not, correctIndex: 0-3)
-Q12: "cause-effect" (cause/action in question, options: 4 outcomes, correctIndex: 0-3)
-Q13: "two-truths-one-false" (options: 3 statements (2 true, 1 false), correctIndex: index of FALSE statement 0-2)
-Q14: "case-study" (scenario: 2-3 sentences of dilemma, question: decision, options: 4 choices, correctIndex: 0-3)
-Q15: "what-would-you-do" (scenario: 2-3 sentences of situation, question: spiritual action, options: 4 choices, correctIndex: 0-3)
-Q16, Q18, Q20: "single-choice" (options: 4 strings, correctIndex: 0-3)
-Q17, Q19: "multiple-select" (options: 4 strings, correctIndices: array of 2-3 indices)
+THEME & TONE:
+- ENCOURAGING & EASY: Series kickoff. All questions very easy and uplifting. No obscure dates or tricky trivia.
+- SUBTLE COMMUNITY SKILLS: Highlight Bhakti Tirtha Swami's ability to unite people, practice radical humility, build trust, defuse conflict, protect others, and lead with servant leadership.
+
+CRITICAL ANTI-FAILURE RULES:
+1. SHUFFLE ANSWER INDICES:
+   - Single-choice/Who-am-i/Who-said-this: Distribute correctIndex evenly across 0, 1, 2, 3 (NEVER all 0!).
+   - Multiple-select: Vary correctIndices across [1, 2], [0, 2, 3], [1, 3], [0, 1, 3]. NEVER use [0, 1, 2] repeatedly!
+   - Sequence: correctOrder must be a scrambled permutation (e.g. [1, 3, 0, 2]), NEVER [0, 1, 2, 3].
+   - Match-pairs: Scramble right column; correctPairs must be 2-number tuples: [[0, x], [1, y], [2, z], [3, w]].
+2. TRUTHFUL BINDING: Write 4 options first. Identify which option is factually correct, and set correctIndex to that exact position. Explanation MUST prove why that option is true. Never change an index without moving the correct text!
+3. ZERO LEAKS: Each question must focus on a distinct pastime. No question or explanation may spoil any other question.
+4. AUTHENTIC CITATIONS: Cite the specific chapter in Black Lotus.
+
+15 QUESTIONS (Strict Linear Order - All Difficulty 'easy'):
+Q1: single-choice (Cleveland: overcoming stutter through prayer to serve, Ch 1)
+Q2: multiple-select (Princeton: uniting student groups & Third World Coalition, Ch 3)
+Q3: true-false (Dallas: Ivy League graduate humbly scrubbing bathrooms on knees, Ch 4)
+Q4: who-am-i (Srila Prabhupada: initiating master giving name Ghanashyam Dasa, Ch 4)
+Q5: who-said-this (Dr. Martin Luther King Jr.: recognizing John as leader ahead of time, Ch 2)
+Q6: sequence (4 milestones: Cleveland -> Princeton -> Dallas -> Sannyasa, Ch 1-6)
+Q7: match-pairs (4 places: Cleveland, Dallas surrender, Lagos clinic, Gita Nagari, Ch 1, 4, 6, 9)
+Q8: odd-one-out (Community traits: Humility, Cooperation, Compassion vs Arrogance, Ch 4-8)
+Q9: two-truths-one-false (3 statements on his caring servant mood, false index, Ch 5, 8)
+Q10: case-study (Mayapur 2002: standing up with fierce compassion to protect female speaker, Ch 8)
+Q11: what-would-you-do (Gita Nagari 1994: rebuilding trust and relationships before farm quotas, Ch 8)
+Q12: single-choice (Warri coronation: title High Chief Nghorikpa meaning protector, Ch 8)
+Q13: multiple-select (Global outreach: leaders he guided like Mandela, Kaunda, Ali, Ch 8)
+Q14: single-choice (Final lesson: passing away surrounded by loving community kirtan, Ch 9)
+Q15: single-choice (Black Lotus metaphor: rising from mud to bloom and shelter others, Intro)
 
 SCHEMA:
-{"id":"64-day-01","title":"Day 1: The Life & Legacy of HH Bhakti Tirtha Swami","category":"64-principles","description":"Life, surrender, preaching & teachings of HH Bhakti Tirtha Swami from Black Lotus","difficulty":"medium","timeLimit":720,"onTimeExpiry":"submit-partial","questions":[{"id":"q1","type":"single-choice","question":"...","options":["A","B","C","D"],"correctIndex":2,"difficulty":"easy","explanation":"...","reference":"Chapter 1"}]}
+{"id":"64-day-d3","title":"Day -2 (D-3): Life & Community Leadership of HH Bhakti Tirtha Swami","category":"64-principles","description":"15 encouraging questions on the inspiring life and community leadership of HH Bhakti Tirtha Swami from Black Lotus.","difficulty":"easy","timeLimit":600,"onTimeExpiry":"submit-partial","questions":[{"id":"q1","type":"single-choice","question":"...","options":["...","...","...","..."],"correctIndex":1,"difficulty":"easy","explanation":"...","reference":"Black Lotus, Chapter 1"}]}
 ```
+
+---
+
+## Why This 15-Question Prompt Works So Well
+
+1. **Very Easy & Encouraging:** No obscure administrative dates, no trick questions. Designed to build excitement and confidence on Day -3.
+2. **Subtle Community Focus:** Highlights his ability to lead with humility (bathroom scrubbing), build bridges (Third World Coalition), defend devotees (Mayapur 2002), and restore broken trust (Gita Nagari 1994).
+3. **Strict Topic Isolation (Zero Leaks):** Each of the 15 questions covers an entirely separate chapter/event from *Black Lotus*, making cross-question leaks impossible.
