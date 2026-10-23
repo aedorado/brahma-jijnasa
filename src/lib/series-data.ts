@@ -274,17 +274,33 @@ export function getSeriesRoundUnlockTime(dayNumber: number, startIso: string = S
   return unlockDate.toISOString()
 }
 
+/**
+ * A series round is LIVE if and only if:
+ * 1. An active PIN session has been created for it (round.activePin exists).
+ * 2. AND either it is manually unlocked (round.is_unlocked) OR the scheduled release time has arrived (now >= unlock_at).
+ *
+ * If no PIN is made, it is NEVER live.
+ * Even if a PIN is made, it does NOT go live before the scheduled time (unless manually unlocked by admin).
+ */
+export function isSeriesRoundLive(round: {
+  is_unlocked?: boolean
+  unlock_at?: string
+  activePin?: string | null
+}): boolean {
+  if (!round.activePin) return false
+  if (round.is_unlocked) return true
+  if (round.unlock_at) {
+    return new Date() >= new Date(round.unlock_at)
+  }
+  return true
+}
+
 export function isRoundEffectivelyUnlocked(round: {
   is_unlocked?: boolean
   unlock_at?: string
   activePin?: string | null
 }): boolean {
-  if (round.activePin) return true
-  if (round.is_unlocked) return true
-  if (round.unlock_at) {
-    return new Date() >= new Date(round.unlock_at)
-  }
-  return false
+  return isSeriesRoundLive(round)
 }
 
 export const DEFAULT_64_PRINCIPLES_SERIES: QuizSeries = {

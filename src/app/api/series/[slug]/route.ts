@@ -6,6 +6,7 @@ import {
   getSeriesRoundUnlockTime,
   isRoundEffectivelyUnlocked,
 } from '@/lib/series-data'
+import { generateUniqueActivePin } from '@/lib/pin'
 
 export async function GET(
   _request: Request,
@@ -68,33 +69,127 @@ export async function GET(
 
       if (dbRounds && dbRounds.length > 0) {
         if (slug === DEFAULT_64_PRINCIPLES_SERIES.slug) {
-          rounds = DEFAULT_64_PRINCIPLES_ROUNDS.map((defRound) => {
-            const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
-            const unlockAt = matchDb?.unlock_at || defRound.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
-            const quizId = matchDb?.quiz_id || defRound.quiz_id
-            const activePin = activePinMap.get(quizId) || null
-            const isManualUnlocked = matchDb ? Boolean(matchDb.is_unlocked) : false
-            return {
-              ...defRound,
-              id: matchDb ? matchDb.id : defRound.id,
-              title: matchDb?.title || defRound.title,
-              description: matchDb?.description !== undefined && matchDb?.description !== null ? matchDb.description : defRound.description,
-              principles_range: matchDb?.principles_range !== undefined && matchDb?.principles_range !== null ? matchDb.principles_range : defRound.principles_range,
-              shloka_reference: matchDb?.shloka_reference !== undefined && matchDb?.shloka_reference !== null ? matchDb.shloka_reference : defRound.shloka_reference,
-              unlock_at: unlockAt,
-              activePin,
-              is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: isManualUnlocked, unlock_at: unlockAt, activePin }),
-            }
-          })
+          rounds = await Promise.all(
+            DEFAULT_64_PRINCIPLES_ROUNDS.map(async (defRound) => {
+              const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
+              const unlockAt = matchDb?.unlock_at || defRound.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
+              const quizId = matchDb?.quiz_id || defRound.quiz_id
+              let activePin = activePinMap.get(quizId) || null
+              const isManualUnlocked = matchDb ? Boolean(matchDb.is_unlocked) : false
+              const isTimeArrived = unlockAt ? new Date() >= new Date(unlockAt) : false
+
+              // If scheduled release time has arrived (or manually unlocked) but no session exists,
+              // auto-generate a collision-free PIN session so the series round is immediately ready for students to join!
+              if (!activePin && (isTimeArrived || isManualUnlocked)) {
+                try {
+                  const { data: existingSession } = await supabase
+                    .from('quiz_sessions')
+                    .select('id, pin')
+                    .eq('quiz_id', quizId)
+                    .eq('is_active', true)
+                    .order('started_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle()
+
+                  if (existingSession?.pin) {
+                    const pin = String(existingSession.pin)
+                    activePin = pin
+                    activePinMap.set(quizId, pin)
+                  } else {
+                    const newPin = await generateUniqueActivePin(supabase)
+                    const { data: newSession } = await supabase
+                      .from('quiz_sessions')
+                      .insert({
+                        quiz_id: quizId,
+                        pin: newPin,
+                      })
+                      .select('id, pin')
+                      .maybeSingle()
+
+                    if (newSession?.pin) {
+                      const pin = String(newSession.pin)
+                      activePin = pin
+                      activePinMap.set(quizId, pin)
+                      if (matchDb?.id) {
+                        await supabase
+                          .from('quiz_series_rounds')
+                          .update({ active_session_id: newSession.id })
+                          .eq('id', matchDb.id)
+                      }
+                    }
+                  }
+                } catch (sessionErr) {
+                  console.warn(`[Auto-PIN] Could not auto-create session for ${quizId}:`, sessionErr)
+                }
+              }
+
+              return {
+                ...defRound,
+                id: matchDb ? matchDb.id : defRound.id,
+                title: matchDb?.title || defRound.title,
+                description: matchDb?.description !== undefined && matchDb?.description !== null ? matchDb.description : defRound.description,
+                principles_range: matchDb?.principles_range !== undefined && matchDb?.principles_range !== null ? matchDb.principles_range : defRound.principles_range,
+                shloka_reference: matchDb?.shloka_reference !== undefined && matchDb?.shloka_reference !== null ? matchDb.shloka_reference : defRound.shloka_reference,
+                unlock_at: unlockAt,
+                activePin,
+                is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: isManualUnlocked, unlock_at: unlockAt, activePin }),
+              }
+            })
+          )
         } else {
-          rounds = dbRounds.map((r: any) => {
-            const activePin = activePinMap.get(r.quiz_id) || null
-            return {
-              ...r,
-              activePin,
-              is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: r.is_unlocked, unlock_at: r.unlock_at, activePin }),
-            }
-          })
+          rounds = await Promise.all(
+            dbRounds.map(async (r: any) => {
+              let activePin = activePinMap.get(r.quiz_id) || null
+              const isTimeArrived = r.unlock_at ? new Date() >= new Date(r.unlock_at) : false
+
+              if (!activePin && (isTimeArrived || r.is_unlocked)) {
+                try {
+                  const { data: existingSession } = await supabase
+                    .from('quiz_sessions')
+                    .select('id, pin')
+                    .eq('quiz_id', r.quiz_id)
+                    .eq('is_active', true)
+                    .order('started_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle()
+
+                  if (existingSession?.pin) {
+                    const pin = String(existingSession.pin)
+                    activePin = pin
+                    activePinMap.set(r.quiz_id, pin)
+                  } else {
+                    const newPin = await generateUniqueActivePin(supabase)
+                    const { data: newSession } = await supabase
+                      .from('quiz_sessions')
+                      .insert({
+                        quiz_id: r.quiz_id,
+                        pin: newPin,
+                      })
+                      .select('id, pin')
+                      .maybeSingle()
+
+                    if (newSession?.pin) {
+                      const pin = String(newSession.pin)
+                      activePin = pin
+                      activePinMap.set(r.quiz_id, pin)
+                      await supabase
+                        .from('quiz_series_rounds')
+                        .update({ active_session_id: newSession.id })
+                        .eq('id', r.id)
+                    }
+                  }
+                } catch (sessionErr) {
+                  console.warn(`[Auto-PIN] Could not auto-create session for ${r.quiz_id}:`, sessionErr)
+                }
+              }
+
+              return {
+                ...r,
+                activePin,
+                is_unlocked: isRoundEffectivelyUnlocked({ is_unlocked: r.is_unlocked, unlock_at: r.unlock_at, activePin }),
+              }
+            })
+          )
         }
       }
     }

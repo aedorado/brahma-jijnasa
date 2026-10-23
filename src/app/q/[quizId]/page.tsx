@@ -99,7 +99,7 @@ export default function DirectQuizPage({ params }: Props) {
         }
       }
 
-      // If this is a series round, check if it is locked
+      // Series quizzes ALWAYS run in live PIN mode only (no solo practice mode)
       if (quizId.startsWith('64-day-')) {
         let dayNum: number | null = null
         if (quizId === '64-day-d3') dayNum = -2
@@ -110,67 +110,73 @@ export default function DirectQuizPage({ params }: Props) {
           if (!isNaN(parsed)) dayNum = parsed
         }
 
-        if (dayNum !== null) {
-          let isUnlocked = false
-          let effectiveUnlockIso = getSeriesRoundUnlockTime(dayNum)
+        let isManualUnlocked = false
+        let effectiveUnlockIso = dayNum !== null ? getSeriesRoundUnlockTime(dayNum) : new Date().toISOString()
 
-          try {
-            const { data: dbRound } = await supabase
-              .from('quiz_series_rounds')
-              .select('unlock_at, is_unlocked')
-              .eq('quiz_id', quizId)
-              .maybeSingle()
+        try {
+          const { data: dbRound } = await supabase
+            .from('quiz_series_rounds')
+            .select('unlock_at, is_unlocked')
+            .eq('quiz_id', quizId)
+            .maybeSingle()
 
-            if (dbRound) {
-              if (dbRound.is_unlocked) {
-                isUnlocked = true
-              }
-              if (dbRound.unlock_at) {
-                effectiveUnlockIso = dbRound.unlock_at
-              }
-            }
-          } catch (err) {
-            console.warn('Could not check db round unlock status:', err)
+          if (dbRound) {
+            if (dbRound.is_unlocked) isManualUnlocked = true
+            if (dbRound.unlock_at) effectiveUnlockIso = dbRound.unlock_at
           }
-
-          if (!isUnlocked && new Date() >= new Date(effectiveUnlockIso)) {
-            isUnlocked = true
-          }
-
-          if (!isUnlocked) {
-            // Check if there is an active live PIN session created by teacher/admin
-            try {
-              const { data: activeSession } = await supabase
-                .from('quiz_sessions')
-                .select('pin')
-                .eq('quiz_id', quizId)
-                .eq('is_active', true)
-                .limit(1)
-
-              if (activeSession && activeSession.length > 0) {
-                router.push(`/session/${activeSession[0].pin}`)
-                return
-              }
-            } catch (err) {
-              console.warn('Could not check active live session:', err)
-            }
-
-            const formattedTime = new Intl.DateTimeFormat('en-IN', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: '2-digit',
-              hour12: true,
-              timeZone: 'Asia/Kolkata',
-            }).format(new Date(effectiveUnlockIso)) + ' IST'
-
-            const label = dayNum === -2 ? 'Preparatory Quiz 1' : dayNum === -1 ? 'Preparatory Quiz 2' : dayNum === 0 ? 'Preparatory Quiz 3' : `Day ${dayNum}`
-            setErrorMsg(`${label} is scheduled to release on ${formattedTime}. Please check back at the scheduled time or join the live class when active.`)
-            setPhase('error')
-            return
-          }
+        } catch (err) {
+          console.warn('Could not check db round unlock status:', err)
         }
+
+        const isTimeArrived = isManualUnlocked || new Date() >= new Date(effectiveUnlockIso)
+
+        // Check if there is an active PIN session
+        let activePin: string | null = null
+        try {
+          const { data: activeSession } = await supabase
+            .from('quiz_sessions')
+            .select('pin')
+            .eq('quiz_id', quizId)
+            .eq('is_active', true)
+            .order('created_at', { ascending: false })
+            .limit(1)
+
+          if (activeSession && activeSession.length > 0) {
+            activePin = activeSession[0].pin
+          }
+        } catch (err) {
+          console.warn('Could not check active live session:', err)
+        }
+
+        const formattedTime = new Intl.DateTimeFormat('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: 'Asia/Kolkata',
+        }).format(new Date(effectiveUnlockIso)) + ' IST'
+
+        const label = dayNum === -2 ? 'Preparatory Quiz 1' : dayNum === -1 ? 'Preparatory Quiz 2' : dayNum === 0 ? 'Preparatory Quiz 3' : `Day ${dayNum}`
+
+        // If an active PIN exists AND the scheduled release time has arrived, redirect to live session
+        if (activePin && isTimeArrived) {
+          router.push(`/session/${activePin}`)
+          return
+        }
+
+        // If active PIN exists but release time has not arrived yet:
+        if (activePin && !isTimeArrived) {
+          setErrorMsg(`${label} is scheduled to go live on ${formattedTime}. A live PIN session is registered, but it will activate only at the scheduled time.`)
+          setPhase('error')
+          return
+        }
+
+        // If no active PIN exists: Series rounds cannot be taken in practice mode!
+        setErrorMsg(`${label} is an official series competition round and can only be taken during an active live session via PIN. Practice mode is disabled for series rounds. Please return at ${formattedTime} for the live class.`)
+        setPhase('error')
+        return
       }
 
       const saved = loadProgress(quizId, effectiveUid)

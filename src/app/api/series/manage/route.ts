@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession, SESSION_COOKIE_NAME } from '@/lib/auth'
+import { generateUniqueActivePin } from '@/lib/pin'
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'launch_session') {
-      const pin = String(Math.floor(1000 + Math.random() * 9000))
+      const pin = await generateUniqueActivePin(supabase)
       const { data: session, error: sessionErr } = await supabase
         .from('quiz_sessions')
         .insert({
@@ -45,13 +46,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: sessionErr.message }, { status: 500 })
       }
 
-      // Link session to round
+      // Link session to round without overriding unlock_at schedule
       if (roundId) {
         await supabase
           .from('quiz_series_rounds')
           .update({
             active_session_id: session.id,
-            is_unlocked: true,
           })
           .eq('id', roundId)
       }

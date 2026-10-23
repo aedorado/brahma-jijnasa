@@ -10,6 +10,22 @@ import { UserAvatar } from '@/components/UserAvatar'
 import type { QuizSeries, QuizSeriesRound, SeriesStanding } from '@/types/series'
 import { BHAKTISIDDHANTA_64_PRINCIPLES } from '@/lib/series-data'
 
+function isSeriesRoundLive(round: {
+  is_unlocked?: boolean
+  unlock_at?: string
+  activePin?: string | null
+}): boolean {
+  if (!round.activePin) return false
+  if (round.is_unlocked && !round.unlock_at) return true
+  if (round.unlock_at) {
+    if (new Date() < new Date(round.unlock_at)) {
+      return Boolean(round.is_unlocked)
+    }
+    return true
+  }
+  return Boolean(round.is_unlocked)
+}
+
 function formatUnlockSchedule(iso?: string): string {
   if (!iso) return 'Scheduled'
   try {
@@ -47,6 +63,41 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   const [activeTab, setActiveTab] = useState<'roadmap' | 'leaderboard' | 'principles'>('roadmap')
   const [principleSearch, setPrincipleSearch] = useState('')
   const [principleScope, setPrincipleScope] = useState<'30' | '64'>('30')
+  const [launchingRoundId, setLaunchingRoundId] = useState<string | null>(null)
+
+  const isAdminOrTeacher = user?.role === 'admin' || user?.role === 'teacher'
+
+  const handleLaunchSession = async (round: QuizSeriesRound) => {
+    const key = round.id || round.quiz_id
+    setLaunchingRoundId(key)
+    try {
+      const res = await fetch('/api/series/manage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'launch_session',
+          roundId: round.id,
+          quizId: round.quiz_id,
+        }),
+      })
+      const data = await res.json()
+      if (res.ok && data.pin) {
+        setRounds(prev =>
+          prev.map(r =>
+            (r.id && r.id === round.id) || r.quiz_id === round.quiz_id
+              ? { ...r, activePin: data.pin, is_unlocked: true }
+              : r
+          )
+        )
+      } else {
+        alert(`Could not launch live session: ${data.error || 'Server error'}`)
+      }
+    } catch (err: any) {
+      alert(`Failed to launch live session: ${err.message}`)
+    } finally {
+      setLaunchingRoundId(null)
+    }
+  }
 
   useEffect(() => {
     const fetchSeriesData = async () => {
@@ -294,8 +345,20 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               {rounds.map((round) => {
                 const userAttempt = userAttempts[round.quiz_id]
                 const isCompleted = !!userAttempt
-                const isLive = Boolean((round as any).activePin)
-                const isUnlocked = round.is_unlocked || isLive || isCompleted
+                const activePin = (round as any).activePin as string | null
+                const isLive = isSeriesRoundLive(round)
+                const hasScheduledPin = Boolean(activePin && !isLive)
+                const isTimeArrived = Boolean(round.unlock_at && new Date() >= new Date(round.unlock_at))
+                const isAwaitingSession = isTimeArrived && !activePin && !isCompleted
+                const isUnlocked = isLive || isCompleted
+
+                const dayTag = round.day_number === -2
+                  ? 'Preparatory Quiz 1'
+                  : round.day_number === -1
+                    ? 'Preparatory Quiz 2'
+                    : round.day_number === 0
+                      ? 'Preparatory Quiz 3'
+                      : `${t.series.dayLabel} ${round.day_number}`
 
                 return (
                   <div
@@ -306,12 +369,14 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
-                      opacity: isUnlocked ? 1 : 0.65,
+                      opacity: isUnlocked || hasScheduledPin || isAwaitingSession ? 1 : 0.65,
                       border: isLive
                         ? '1.5px solid var(--color-gold)'
                         : isCompleted
                           ? '1px solid rgba(74, 222, 128, 0.35)'
-                          : undefined,
+                          : isAwaitingSession
+                            ? '1px solid rgba(240, 199, 78, 0.35)'
+                            : undefined,
                       transition: 'transform 0.2s ease, border-color 0.2s ease',
                     }}
                   >
@@ -326,45 +391,54 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                               ? 'rgba(74, 222, 128, 0.15)'
                               : isCompleted
                                 ? 'rgba(74, 222, 128, 0.15)'
-                                : isUnlocked
+                                : hasScheduledPin
                                   ? 'rgba(240, 199, 78, 0.15)'
-                                  : 'rgba(255,255,255,0.05)',
+                                  : isAwaitingSession
+                                    ? 'rgba(240, 199, 78, 0.15)'
+                                    : 'rgba(255,255,255,0.05)',
                             color: isLive
                               ? '#4ade80'
                               : isCompleted
                                 ? '#4ade80'
-                                : isUnlocked
+                                : hasScheduledPin
                                   ? 'var(--color-gold)'
-                                  : 'var(--color-muted)',
+                                  : isAwaitingSession
+                                    ? 'var(--color-gold)'
+                                    : 'var(--color-muted)',
                             fontSize: '0.75rem',
                             fontWeight: 700,
                           }}
                         >
-                          {(() => {
-                            const dayTag = round.day_number === -2
-                              ? 'Preparatory Quiz 1'
-                              : round.day_number === -1
-                                ? 'Preparatory Quiz 2'
-                                : round.day_number === 0
-                                  ? 'Preparatory Quiz 3'
-                                  : `${t.series.dayLabel} ${round.day_number}`
-                            return isLive
-                              ? `🔴 ${t.series.liveClassNow}`
-                              : isCompleted
-                                ? `${dayTag} • ✅ ${t.series.completedBadge}`
-                                : isUnlocked
-                                  ? `${dayTag} • ✨ ${t.series.unlockedBadge}`
-                                  : `🔒 ${dayTag}`
-                          })()}
+                          {isLive
+                            ? `🔴 ${t.series.liveClassNow}`
+                            : isCompleted
+                              ? `${dayTag} • ✅ ${t.series.completedBadge}`
+                              : hasScheduledPin
+                                ? `${dayTag} • ⏰ PIN Ready`
+                                : isAwaitingSession
+                                  ? `${dayTag} • ⏳ Starting Soon`
+                                  : `🔒 ${dayTag}`}
                         </span>
 
                         {isCompleted ? (
                           <span style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 700 }}>
                             ⭐ {t.series.scoreLabel}: {userAttempt.score} / {userAttempt.max_score} {t.series.pts}
                           </span>
+                        ) : isLive ? (
+                          <span style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 700 }}>
+                            ⚡ PIN: {activePin}
+                          </span>
+                        ) : hasScheduledPin ? (
+                          <span style={{ fontSize: '0.75rem', color: '#f6ad55', fontWeight: 600 }}>
+                            🔑 PIN: {activePin}
+                          </span>
+                        ) : isAwaitingSession ? (
+                          <span style={{ fontSize: '0.75rem', color: '#f6ad55', fontWeight: 600 }}>
+                            ✨ Scheduled time reached
+                          </span>
                         ) : (
-                          <span style={{ fontSize: '0.75rem', color: isUnlocked ? 'var(--color-muted)' : '#f6ad55', fontWeight: isUnlocked ? 400 : 600 }}>
-                            {isUnlocked ? round.principles_range : `${t.series.unlocksAt} ${formatUnlockSchedule(round.unlock_at)}`}
+                          <span style={{ fontSize: '0.75rem', color: '#f6ad55', fontWeight: 600 }}>
+                            {`${t.series.unlocksAt} ${formatUnlockSchedule(round.unlock_at)}`}
                           </span>
                         )}
                       </div>
@@ -387,7 +461,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                       )}
                     </div>
 
-                    {/* Action Button */}
+                    {/* Action Button: Series rounds ONLY run via Live Session PIN */}
                     <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)' }}>
                       {isCompleted ? (
                         <Link
@@ -407,20 +481,39 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                         </Link>
                       ) : isLive ? (
                         <Link
-                          href={`/session/${(round as any).activePin}`}
+                          href={`/session/${activePin}`}
                           className="btn btn-primary btn-sm w-full"
                           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
                         >
-                          <span>⚡</span> {t.series.joinLive} (PIN: {(round as any).activePin})
+                          <span>⚡</span> {t.series.joinLive} (PIN: {activePin})
                         </Link>
-                      ) : isUnlocked ? (
-                        <Link
-                          href={`/q/${round.quiz_id}`}
+                      ) : hasScheduledPin ? (
+                        <button
+                          disabled
                           className="btn btn-ghost btn-sm w-full"
-                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', border: '1px solid var(--color-border)' }}
+                          style={{ opacity: 0.75, cursor: 'not-allowed', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', border: '1px solid rgba(240, 199, 78, 0.3)' }}
                         >
-                          <span>✨</span> {t.series.takePractice}
-                        </Link>
+                          <span>⏰</span> Live Session at {formatUnlockSchedule(round.unlock_at)}
+                        </button>
+                      ) : isAwaitingSession ? (
+                        isAdminOrTeacher ? (
+                          <button
+                            onClick={() => handleLaunchSession(round)}
+                            disabled={launchingRoundId === (round.id || round.quiz_id)}
+                            className="btn btn-primary btn-sm w-full"
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}
+                          >
+                            <span>🚀</span> {launchingRoundId === (round.id || round.quiz_id) ? 'Launching Live Room...' : 'Start Live Session (Create PIN)'}
+                          </button>
+                        ) : (
+                          <button
+                            disabled
+                            className="btn btn-ghost btn-sm w-full"
+                            style={{ opacity: 0.75, cursor: 'not-allowed', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', border: '1px solid rgba(240, 199, 78, 0.3)' }}
+                          >
+                            <span>⏳</span> Waiting for Teacher to Start Live Room
+                          </button>
+                        )
                       ) : (
                         <button
                           disabled

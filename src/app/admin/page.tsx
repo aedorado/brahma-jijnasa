@@ -12,6 +12,7 @@ import { AdminQuizCatalog } from '@/components/admin/AdminQuizCatalog'
 import { AdminAnalytics, type AttemptRecord } from '@/components/admin/AdminAnalytics'
 import { AdminQuizCreator } from '@/components/admin/AdminQuizCreator'
 import { AdminDryRunModal } from '@/components/admin/AdminDryRunModal'
+import { generateUniqueActivePin } from '@/lib/pin'
 
 type AdminPillar = 'live' | 'series' | 'catalog' | 'analytics' | 'create'
 
@@ -246,7 +247,7 @@ export default function AdminPage() {
     }
 
     setStarting(quizId)
-    const pin = String(Math.floor(1000 + Math.random() * 9000))
+    const pin = await generateUniqueActivePin(supabase)
 
     const { data, error } = await supabase
       .from('quiz_sessions')
@@ -284,6 +285,12 @@ export default function AdminPage() {
           if (retryError) {
             alert(`Could not start session: ${retryError.message}`)
           } else {
+            if (retryData?.id) {
+              await supabase
+                .from('quiz_series_rounds')
+                .update({ active_session_id: retryData.id })
+                .eq('quiz_id', quizId)
+            }
             await loadActiveSessions()
             if (retryData?.id) setSelectedSessionId(retryData.id)
             setActivePillar('live')
@@ -293,6 +300,12 @@ export default function AdminPage() {
         alert(`Could not start session: ${error.message}`)
       }
     } else {
+      if (data?.id) {
+        await supabase
+          .from('quiz_series_rounds')
+          .update({ active_session_id: data.id })
+          .eq('quiz_id', quizId)
+      }
       await loadActiveSessions()
       if (data?.id) setSelectedSessionId(data.id)
       setActivePillar('live')
@@ -306,6 +319,10 @@ export default function AdminPage() {
       .from('quiz_sessions')
       .update({ is_active: false, ended_at: new Date().toISOString() })
       .eq('id', sessionId)
+    await supabase
+      .from('quiz_series_rounds')
+      .update({ active_session_id: null })
+      .eq('active_session_id', sessionId)
     await loadActiveSessions()
     await loadAllAttempts()
   }

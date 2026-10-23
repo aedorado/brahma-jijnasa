@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
+import { getSeriesRoundUnlockTime } from '@/lib/series-data'
 
 export default function HomePage() {
   const [pin, setPin] = useState('')
@@ -49,6 +50,53 @@ export default function HomePage() {
       setError(t.home.noActiveSessionError || 'No active quiz found with this PIN. Ask your teacher.')
       setLoading(false)
       return
+    }
+
+    // If this session is for a series round, check if scheduled release time has arrived
+    if (session.quiz_id && session.quiz_id.startsWith('64-day-')) {
+      let dayNum: number | null = null
+      if (session.quiz_id === '64-day-d3') dayNum = -2
+      else if (session.quiz_id === '64-day-d2') dayNum = -1
+      else if (session.quiz_id === '64-day-d1') dayNum = 0
+      else {
+        const parsed = parseInt(session.quiz_id.replace('64-day-', ''), 10)
+        if (!isNaN(parsed)) dayNum = parsed
+      }
+
+      let isManualUnlocked = false
+      let effectiveUnlockIso = dayNum !== null ? getSeriesRoundUnlockTime(dayNum) : new Date().toISOString()
+
+      try {
+        const { data: dbRound } = await supabase
+          .from('quiz_series_rounds')
+          .select('unlock_at, is_unlocked')
+          .eq('quiz_id', session.quiz_id)
+          .maybeSingle()
+
+        if (dbRound) {
+          if (dbRound.is_unlocked) isManualUnlocked = true
+          if (dbRound.unlock_at) effectiveUnlockIso = dbRound.unlock_at
+        }
+      } catch (err) {
+        console.warn('Could not check series round unlock_at:', err)
+      }
+
+      if (!isManualUnlocked && new Date() < new Date(effectiveUnlockIso)) {
+        const formattedTime = new Intl.DateTimeFormat('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: 'Asia/Kolkata',
+        }).format(new Date(effectiveUnlockIso)) + ' IST'
+
+        const label = dayNum === -2 ? 'Preparatory Quiz 1' : dayNum === -1 ? 'Preparatory Quiz 2' : dayNum === 0 ? 'Preparatory Quiz 3' : `Day ${dayNum}`
+        setError(`⏰ ${label} is scheduled to start at ${formattedTime}. Please return at the scheduled time.`)
+        setLoading(false)
+        return
+      }
     }
 
     // Check if user is logged in
