@@ -31,11 +31,60 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'launch_session') {
+      const targetQuizId = quizId || 'sandbox-demo'
+
+      // Check if an existing session already exists for this quiz (re-activate in place with same PIN)
+      const { data: existingSessions } = await supabase
+        .from('quiz_sessions')
+        .select('*')
+        .eq('quiz_id', targetQuizId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+
+      const prev = existingSessions && existingSessions.length > 0 ? existingSessions[0] : null
+
+      if (prev && prev.pin) {
+        let pinToUse = String(prev.pin)
+        const { data: conflict } = await supabase
+          .from('quiz_sessions')
+          .select('id')
+          .eq('pin', pinToUse)
+          .eq('is_active', true)
+          .neq('id', prev.id)
+          .limit(1)
+
+        if (conflict && conflict.length > 0) {
+          pinToUse = await generateUniqueActivePin(supabase)
+        }
+
+        const { data: reactivated, error: reactivateErr } = await supabase
+          .from('quiz_sessions')
+          .update({
+            is_active: true,
+            ended_at: null,
+            pin: pinToUse,
+          })
+          .eq('id', prev.id)
+          .select()
+          .single()
+
+        if (!reactivateErr && reactivated) {
+          if (roundId) {
+            await supabase
+              .from('quiz_series_rounds')
+              .update({ active_session_id: reactivated.id })
+              .eq('id', roundId)
+          }
+          return NextResponse.json({ success: true, session: reactivated, reused: true })
+        }
+      }
+
+      // Fallback: insert fresh row only if no previous session existed
       const pin = await generateUniqueActivePin(supabase)
       const { data: session, error: sessionErr } = await supabase
         .from('quiz_sessions')
         .insert({
-          quiz_id: quizId || 'sandbox-demo',
+          quiz_id: targetQuizId,
           pin,
           created_by: sessionUser.id,
         })

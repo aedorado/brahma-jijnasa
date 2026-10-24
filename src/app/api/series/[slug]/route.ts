@@ -84,10 +84,9 @@ export async function GET(
                 try {
                   const { data: existingSession } = await supabase
                     .from('quiz_sessions')
-                    .select('id, pin')
+                    .select('id, pin, is_active')
                     .eq('quiz_id', quizId)
-                    .eq('is_active', true)
-                    .order('started_at', { ascending: false })
+                    .order('created_at', { ascending: false })
                     .limit(1)
                     .maybeSingle()
 
@@ -95,6 +94,20 @@ export async function GET(
                     const pin = String(existingSession.pin)
                     activePin = pin
                     activePinMap.set(quizId, pin)
+
+                    if (!existingSession.is_active) {
+                      await supabase
+                        .from('quiz_sessions')
+                        .update({ is_active: true, ended_at: null })
+                        .eq('id', existingSession.id)
+                    }
+
+                    if (matchDb?.id) {
+                      await supabase
+                        .from('quiz_series_rounds')
+                        .update({ active_session_id: existingSession.id })
+                        .eq('id', matchDb.id)
+                    }
                   } else {
                     const newPin = await generateUniqueActivePin(supabase)
                     const { data: newSession } = await supabase
@@ -146,10 +159,9 @@ export async function GET(
                 try {
                   const { data: existingSession } = await supabase
                     .from('quiz_sessions')
-                    .select('id, pin')
+                    .select('id, pin, is_active')
                     .eq('quiz_id', r.quiz_id)
-                    .eq('is_active', true)
-                    .order('started_at', { ascending: false })
+                    .order('created_at', { ascending: false })
                     .limit(1)
                     .maybeSingle()
 
@@ -157,6 +169,18 @@ export async function GET(
                     const pin = String(existingSession.pin)
                     activePin = pin
                     activePinMap.set(r.quiz_id, pin)
+
+                    if (!existingSession.is_active) {
+                      await supabase
+                        .from('quiz_sessions')
+                        .update({ is_active: true, ended_at: null })
+                        .eq('id', existingSession.id)
+                    }
+
+                    await supabase
+                      .from('quiz_series_rounds')
+                      .update({ active_session_id: existingSession.id })
+                      .eq('id', r.id)
                   } else {
                     const newPin = await generateUniqueActivePin(supabase)
                     const { data: newSession } = await supabase

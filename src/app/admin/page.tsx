@@ -247,6 +247,60 @@ export default function AdminPage() {
     }
 
     setStarting(quizId)
+
+    // Check if an existing session already exists for this quiz (re-activate in place with same PIN instead of inserting a new row)
+    const { data: pastSessions } = await supabase
+      .from('quiz_sessions')
+      .select('*')
+      .eq('quiz_id', quizId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    const prevSession = pastSessions && pastSessions.length > 0 ? pastSessions[0] : null
+
+    if (prevSession && prevSession.pin) {
+      let pinToUse = String(prevSession.pin)
+
+      // Ensure no OTHER currently active room is using this PIN
+      const { data: conflict } = await supabase
+        .from('quiz_sessions')
+        .select('id')
+        .eq('pin', pinToUse)
+        .eq('is_active', true)
+        .neq('id', prevSession.id)
+        .limit(1)
+
+      if (conflict && conflict.length > 0) {
+        pinToUse = await generateUniqueActivePin(supabase)
+      }
+
+      // Re-activate the existing session in place (no new row created, keeps same PIN!)
+      const { data: reactivated, error: reactivateErr } = await supabase
+        .from('quiz_sessions')
+        .update({
+          is_active: true,
+          ended_at: null,
+          pin: pinToUse,
+        })
+        .eq('id', prevSession.id)
+        .select()
+        .single()
+
+      if (!reactivateErr && reactivated) {
+        await supabase
+          .from('quiz_series_rounds')
+          .update({ active_session_id: reactivated.id })
+          .eq('quiz_id', quizId)
+
+        await loadActiveSessions()
+        setSelectedSessionId(reactivated.id)
+        setActivePillar('live')
+        setStarting(null)
+        return
+      }
+    }
+
+    // Fallback: If no past session exists for this quiz, create a new row
     const pin = await generateUniqueActivePin(supabase)
 
     const { data, error } = await supabase

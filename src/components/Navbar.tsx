@@ -52,13 +52,13 @@ export function Navbar() {
     return (
       <header className="navbar navbar-focus-mode">
         <div className="container">
-          <div className="navbar-inner" style={{ minHeight: '3.1rem' }}>
-            {/* Left: Compact Logo & Focus Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div className="focus-navbar-inner">
+            {/* Left: Brand Logo */}
+            <div className="focus-navbar-left">
               <Link
                 href="/"
                 className="navbar-logo"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 onClick={(e) => {
                   if (!confirm('Are you sure you want to leave the quiz? Your in-progress timer is running.')) {
                     e.preventDefault()
@@ -67,34 +67,27 @@ export function Navbar() {
                   }
                 }}
               >
-                <span className="navbar-logo-main" style={{ fontSize: '1rem' }}>Brahma Jijñāsā</span>
+                <span className="navbar-logo-main focus-logo-desktop" style={{ fontSize: '1.05rem', whiteSpace: 'nowrap' }}>
+                  Brahma Jijñāsā
+                </span>
+                <span className="navbar-logo-main focus-logo-mobile">
+                  🪷 BJ
+                </span>
               </Link>
+            </div>
 
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  padding: '0.2rem 0.6rem',
-                  borderRadius: 12,
-                  background: 'rgba(240, 199, 78, 0.12)',
-                  border: '1px solid var(--color-border-gold)',
-                  color: 'var(--color-gold)',
-                  maxWidth: '220px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <span>🧘</span>
-                <span>{focusTitle || 'Focus Mode'}</span>
+            {/* Center: Quiz Title Badge (spans naturally on desktop without premature truncation) */}
+            <div className="focus-navbar-center">
+              <div className="focus-badge" title={focusTitle || 'Sacred Focus Mode'}>
+                <span style={{ flexShrink: 0, fontSize: '0.9rem' }}>🧘</span>
+                <span className="focus-badge-title">
+                  {focusTitle || 'Focus Mode'}
+                </span>
               </div>
             </div>
 
             {/* Right: Language Selector + Theme Toggle + Exit Button */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <div className="focus-navbar-right">
               <LanguageSelector />
 
               <button
@@ -117,7 +110,8 @@ export function Navbar() {
                 className="quiz-exit-btn"
                 title="Exit quiz and return to home"
               >
-                ✕ Exit
+                <span className="quiz-exit-label-full">✕ Exit</span>
+                <span className="quiz-exit-label-mobile">✕</span>
               </button>
             </div>
           </div>
