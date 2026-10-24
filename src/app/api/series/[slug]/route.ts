@@ -86,7 +86,7 @@ export async function GET(
                     .from('quiz_sessions')
                     .select('id, pin, is_active')
                     .eq('quiz_id', quizId)
-                    .order('created_at', { ascending: false })
+                    .order('started_at', { ascending: false })
                     .limit(1)
                     .maybeSingle()
 
@@ -98,7 +98,7 @@ export async function GET(
                     if (!existingSession.is_active) {
                       await supabase
                         .from('quiz_sessions')
-                        .update({ is_active: true, ended_at: null })
+                        .update({ is_active: true, ended_at: null, started_at: new Date().toISOString() })
                         .eq('id', existingSession.id)
                     }
 
@@ -161,7 +161,7 @@ export async function GET(
                     .from('quiz_sessions')
                     .select('id, pin, is_active')
                     .eq('quiz_id', r.quiz_id)
-                    .order('created_at', { ascending: false })
+                    .order('started_at', { ascending: false })
                     .limit(1)
                     .maybeSingle()
 
@@ -173,7 +173,7 @@ export async function GET(
                     if (!existingSession.is_active) {
                       await supabase
                         .from('quiz_sessions')
-                        .update({ is_active: true, ended_at: null })
+                        .update({ is_active: true, ended_at: null, started_at: new Date().toISOString() })
                         .eq('id', existingSession.id)
                     }
 

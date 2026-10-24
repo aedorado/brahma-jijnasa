@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         .from('quiz_sessions')
         .select('*')
         .eq('quiz_id', targetQuizId)
-        .order('created_at', { ascending: false })
+        .order('started_at', { ascending: false })
         .limit(1)
 
       const prev = existingSessions && existingSessions.length > 0 ? existingSessions[0] : null
@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
           .update({
             is_active: true,
             ended_at: null,
+            started_at: new Date().toISOString(),
             pin: pinToUse,
           })
           .eq('id', prev.id)
