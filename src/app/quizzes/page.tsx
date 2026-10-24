@@ -168,13 +168,17 @@ export default function LiveQuizzesPage() {
   const liveItems = useMemo(() => {
     return activeSessions.map(session => {
       const meta = quizMetaMap.get(session.quiz_id)
-      const attempt = userAttemptLookup.bySession.get(session.id) || userAttemptLookup.byQuiz.get(session.quiz_id)
-      const isAttempted = !!attempt
+      const sessionAttempt = userAttemptLookup.bySession.get(session.id)
+      const pastQuizAttempt = userAttemptLookup.byQuiz.get(session.quiz_id)
+      const attempt = sessionAttempt || pastQuizAttempt
+      // A user is considered attempted in this live room only if they actually submitted to this specific session
+      const isAttempted = !!sessionAttempt
       return {
         session,
         meta,
         attempt,
         isAttempted,
+        isPastQuizAttempted: !!pastQuizAttempt && !sessionAttempt,
       }
     })
   }, [activeSessions, quizMetaMap, userAttemptLookup])
@@ -325,7 +329,7 @@ export default function LiveQuizzesPage() {
                 border: '1px solid var(--color-border)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.82rem', color: 'var(--color-muted)', fontWeight: 600 }}>
                   Show:
                 </span>
@@ -397,11 +401,24 @@ export default function LiveQuizzesPage() {
                   : 'No Live Quizzes Match this Filter'}
               </h3>
 
-              <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', maxWidth: 480, margin: '0 auto 1.75rem', lineHeight: 1.5 }}>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', maxWidth: 480, margin: '0 auto 1.25rem', lineHeight: 1.5 }}>
                 {activeSessions.length === 0
                   ? 'When your teacher starts a live room, it will appear here automatically in real time without refreshing.'
-                  : 'You have either completed all active rooms or none match the selected filter.'}
+                  : 'You have completed all active rooms under this filter.'}
               </p>
+
+              {activeSessions.length > 0 && liveSubFilter !== 'all' && (
+                <div style={{ marginBottom: '1.75rem' }}>
+                  <button
+                    type="button"
+                    className="btn btn-gold btn-sm"
+                    onClick={() => setLiveSubFilter('all')}
+                    style={{ fontWeight: 700 }}
+                  >
+                    👀 Show All Active Rooms ({activeSessions.length})
+                  </button>
+                </div>
+              )}
 
               {/* MANUAL PIN INPUT FALLBACK */}
               <div

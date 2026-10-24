@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/context/LanguageContext'
 import { UserAvatar } from '@/components/UserAvatar'
 import type { Quiz, ScoreResult, LeaderboardEntry, AnswerMap, Question, Answer } from '@/types/quiz'
+import { BookPurchaseBanner } from '@/components/BookPurchaseBanner'
 
 interface Props {
   quiz: Quiz
@@ -56,17 +57,23 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
   useEffect(() => {
     let current = 0
     const target = result.totalEarned
-    const step = Math.max(1, target / 60)
+    const hasDecimal = target % 1 !== 0 || (result.totalMax % 1 !== 0)
+    const step = Math.max(0.05, target / 60)
     const tick = () => {
       current = Math.min(current + step, target)
-      setDisplayScore(Math.round(current))
+      const formatted = hasDecimal
+        ? Math.round(current * 10) / 10
+        : Math.round(current)
+      setDisplayScore(formatted)
       if (current < target) {
         animRef.current = setTimeout(tick, 16)
+      } else {
+        setDisplayScore(target)
       }
     }
     tick()
     return () => { if (animRef.current) clearTimeout(animRef.current) }
-  }, [result.totalEarned])
+  }, [result.totalEarned, result.totalMax])
 
   // Load leaderboard
   useEffect(() => {
@@ -554,6 +561,13 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
           </div>
         )}
       </div>
+
+      {/* Book Purchase Companion for 64-Principles Series — Prominently placed at the top right after submission */}
+      {(quiz?.category === '64-principles' || quiz?.id?.startsWith('64-day') || (quiz?.title && /principle|bhaktisiddhanta|community/i.test(quiz.title))) && (
+        <div style={{ margin: '1.5rem 0' }}>
+          <BookPurchaseBanner variant="post-quiz" />
+        </div>
+      )}
 
       {/* Per-category breakdown */}
       <div className="card score-card-section">

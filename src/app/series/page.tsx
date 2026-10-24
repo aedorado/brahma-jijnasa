@@ -67,42 +67,6 @@ export default function SeriesDirectoryPage() {
           <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{t.series.allSeriesBreadcrumb || 'All Scripture Series'}</span>
         </div>
 
-        {/* Hero Section */}
-        <div
-          className="card-gold animate-fadeIn text-center"
-          style={{
-            padding: '3rem 2rem',
-            marginBottom: '3rem',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.35rem 0.9rem',
-              borderRadius: '9999px',
-              background: 'rgba(240, 199, 78, 0.15)',
-              border: '1px solid rgba(240, 199, 78, 0.35)',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              color: 'var(--color-gold)',
-              marginBottom: '1rem',
-              textTransform: 'uppercase',
-            }}
-          >
-            🪷 {t.series.featuredBadge}
-          </span>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.75rem', lineHeight: 1.25 }}>
-            {t.series.allSeriesTitle}
-          </h1>
-          <p className="text-muted" style={{ maxWidth: 640, margin: '0 auto', fontSize: '0.95rem', lineHeight: 1.6 }}>
-            {t.series.allSeriesSubtitle}
-          </p>
-        </div>
-
         {/* Series List Grid */}
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -148,13 +112,13 @@ export default function SeriesDirectoryPage() {
                             background: isOngoing
                               ? 'rgba(74, 222, 128, 0.15)'
                               : isUpcoming
-                              ? 'rgba(240, 199, 78, 0.15)'
-                              : 'rgba(255,255,255,0.05)',
+                                ? 'rgba(240, 199, 78, 0.15)'
+                                : 'rgba(255,255,255,0.05)',
                             color: isOngoing
                               ? '#4ade80'
                               : isUpcoming
-                              ? 'var(--color-gold)'
-                              : 'var(--color-muted)',
+                                ? 'var(--color-gold)'
+                                : 'var(--color-muted)',
                             fontSize: '0.75rem',
                             fontWeight: 700,
                           }}

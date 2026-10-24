@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, use } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
@@ -9,6 +10,8 @@ import { createClient } from '@/lib/supabase/client'
 import { UserAvatar } from '@/components/UserAvatar'
 import type { QuizSeries, QuizSeriesRound, SeriesStanding } from '@/types/series'
 import { BHAKTISIDDHANTA_64_PRINCIPLES } from '@/lib/series-data'
+import { BookPurchaseBanner, BOOK_QR_IMAGE, AMAZON_STORES } from '@/components/BookPurchaseBanner'
+import { BookPurchaseModal } from '@/components/BookPurchaseModal'
 
 function isSeriesRoundLive(round: {
   is_unlocked?: boolean
@@ -52,7 +55,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   const slug = resolvedParams.slug
   const router = useRouter()
   const { user } = useAuth()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const supabase = createClient()
 
   const [series, setSeries] = useState<QuizSeries | null>(null)
@@ -64,6 +67,13 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   const [principleSearch, setPrincipleSearch] = useState('')
   const [principleScope, setPrincipleScope] = useState<'30' | '64'>('30')
   const [launchingRoundId, setLaunchingRoundId] = useState<string | null>(null)
+  const [showBookModal, setShowBookModal] = useState(false)
+  const [selectedStoreCode, setSelectedStoreCode] = useState<string>(
+    language === 'pt' ? 'BR' : 'IN'
+  )
+  const [showAllHeroStores, setShowAllHeroStores] = useState(false)
+
+  const selectedStore = AMAZON_STORES.find(s => s.code === selectedStoreCode) || AMAZON_STORES[0]
 
   const isAdminOrTeacher = user?.role === 'admin' || user?.role === 'teacher'
 
@@ -196,59 +206,216 @@ export default function SeriesPage({ params }: SeriesPageProps) {
             overflow: 'hidden',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-            <span
+          {/* Main Hero Layout: Left description, Right prominent QR & Book card */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              flexWrap: 'wrap',
+              gap: '2rem',
+              marginBottom: '2rem',
+            }}
+          >
+            {/* Left Content Column */}
+            <div style={{ flex: '1 1 520px', minWidth: 280 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.3rem 0.8rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(240, 199, 78, 0.15)',
+                    border: '1px solid rgba(240, 199, 78, 0.35)',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: 'var(--color-gold)',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {t.series.specialSeriesBadge || '🌺 Kārtika Mahotsava Special Series'}
+                </span>
+                <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
+                  {t.series.daysDaily}
+                </span>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0.25rem 0.7rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(74, 222, 128, 0.12)',
+                    border: '1px solid rgba(74, 222, 128, 0.3)',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#4ade80',
+                  }}
+                >
+                  {t.series.dailyTimeBadge || '🕒 Daily 6:55 PM IST'}
+                </span>
+                <button
+                  onClick={() => setShowAllHeroStores(prev => !prev)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(240, 199, 78, 0.35)',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: 'var(--color-gold)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span>📖</span> 13 Amazon Stores {showAllHeroStores ? '▲' : '▾'}
+                </button>
+              </div>
+
+              <h1 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', fontWeight: 900, marginBottom: '0.75rem', lineHeight: 1.2 }}>
+                {series.title}
+              </h1>
+
+              {series.subtitle && (
+                <p style={{ fontSize: '1.05rem', color: 'var(--color-gold)', marginBottom: '1rem', fontWeight: 600 }}>
+                  {series.subtitle}
+                </p>
+              )}
+
+              <p style={{ color: 'var(--color-text-secondary)', maxWidth: 740, lineHeight: 1.65, fontSize: '0.95rem', margin: 0 }}>
+                {series.description}
+              </p>
+            </div>
+
+            {/* Right Prominent QR & Book Companion Card */}
+            <div
               style={{
-                display: 'inline-flex',
+                flex: '0 0 auto',
+                width: '100%',
+                maxWidth: 300,
+                background: 'rgba(26, 16, 47, 0.75)',
+                backdropFilter: 'blur(12px)',
+                border: '1.5px solid rgba(240, 199, 78, 0.45)',
+                borderRadius: 16,
+                padding: '1.25rem',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(240, 199, 78, 0.12)',
+                display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.35rem',
-                padding: '0.3rem 0.8rem',
-                borderRadius: '9999px',
-                background: 'rgba(240, 199, 78, 0.15)',
-                border: '1px solid rgba(240, 199, 78, 0.35)',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                color: 'var(--color-gold)',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
+                textAlign: 'center',
               }}
             >
-              {t.series.specialSeriesBadge || '🌺 Kārtika Mahotsava Special Series'}
-            </span>
-            <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-              {t.series.daysDaily}
-            </span>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.3rem',
-                padding: '0.25rem 0.7rem',
-                borderRadius: '9999px',
-                background: 'rgba(74, 222, 128, 0.12)',
-                border: '1px solid rgba(74, 222, 128, 0.3)',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                color: '#4ade80',
-              }}
-            >
-              {t.series.dailyTimeBadge || '🕒 Daily 6:55 PM IST'}
-            </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.65rem' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  📖 Official Companion Book
+                </span>
+              </div>
+
+              {/* QR Image Box with Direct Store Link */}
+              <a
+                href={selectedStore.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: '#ffffff',
+                  padding: '8px',
+                  borderRadius: 12,
+                  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.5)',
+                  border: '2px solid rgba(240, 199, 78, 0.5)',
+                  cursor: 'pointer',
+                  marginBottom: '0.75rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                }}
+                title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
+              >
+                <Image
+                  src={BOOK_QR_IMAGE}
+                  alt="Scan QR code to buy 64 Principles Book on Amazon"
+                  width={125}
+                  height={125}
+                  style={{ display: 'block', borderRadius: 8 }}
+                  priority
+                />
+                <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#1a102f', marginTop: 5, letterSpacing: '0.02em' }}>
+                  📷 Scan to Buy on Amazon
+                </span>
+              </a>
+
+              {/* Direct Store Buy Button */}
+              <a
+                href={selectedStore.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary btn-sm w-full"
+                style={{
+                  fontWeight: 800,
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.4rem',
+                  padding: '0.5rem 0.9rem',
+                  borderRadius: 8,
+                  marginBottom: '0.65rem',
+                  textDecoration: 'none',
+                }}
+              >
+                <span>🛒 Buy on Amazon ({selectedStore.flag} {selectedStore.name})</span>
+              </a>
+
+              {/* Quick Country Pills with Inline Expansion (No Popup) */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                {(showAllHeroStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 4)).map(s => (
+                  <button
+                    key={s.code}
+                    type="button"
+                    onClick={() => setSelectedStoreCode(s.code)}
+                    style={{
+                      fontSize: '0.72rem',
+                      padding: '0.2rem 0.48rem',
+                      borderRadius: 6,
+                      border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid var(--color-border)',
+                      background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.25)' : 'rgba(255, 255, 255, 0.05)',
+                      color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
+                      cursor: 'pointer',
+                      fontWeight: selectedStoreCode === s.code ? 800 : 500,
+                      transition: 'all 0.15s ease',
+                    }}
+                    title={`${s.name} (${s.code})`}
+                  >
+                    {s.flag} {s.code}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setShowAllHeroStores(prev => !prev)}
+                  style={{
+                    fontSize: '0.72rem',
+                    padding: '0.2rem 0.55rem',
+                    borderRadius: 6,
+                    border: '1px solid rgba(240, 199, 78, 0.45)',
+                    background: 'rgba(240, 199, 78, 0.12)',
+                    color: 'var(--color-gold)',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    transition: 'all 0.15s ease',
+                  }}
+                  title={showAllHeroStores ? 'Show fewer countries' : 'Show all 13 international regional stores'}
+                >
+                  {showAllHeroStores ? '▲ Less' : `+${AMAZON_STORES.length - 4} More ▾`}
+                </button>
+              </div>
+            </div>
           </div>
-
-          <h1 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', fontWeight: 900, marginBottom: '0.75rem', lineHeight: 1.2 }}>
-            {series.title}
-          </h1>
-
-          {series.subtitle && (
-            <p style={{ fontSize: '1.05rem', color: 'var(--color-gold)', marginBottom: '1rem', fontWeight: 600 }}>
-              {series.subtitle}
-            </p>
-          )}
-
-          <p style={{ color: 'var(--color-text-secondary)', maxWidth: 780, lineHeight: 1.65, fontSize: '0.95rem', marginBottom: '1.75rem' }}>
-            {series.description}
-          </p>
 
           {/* Quick Metrics Bar */}
           <div
@@ -541,6 +708,11 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               </p>
             </div>
 
+            {/* Prominent Book Companion & QR Banner on Series Standings */}
+            <div style={{ marginBottom: '2rem' }}>
+              <BookPurchaseBanner variant="card" />
+            </div>
+
             {standings.length === 0 ? (
               <div className="card text-center" style={{ padding: '3.5rem 1.5rem' }}>
                 <p style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🏆</p>
@@ -646,6 +818,9 @@ export default function SeriesPage({ params }: SeriesPageProps) {
               </div>
             </div>
 
+            {/* Book Purchase Companion Banner */}
+            <BookPurchaseBanner variant="card" />
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
               {BHAKTISIDDHANTA_64_PRINCIPLES
                 .filter(p => {
@@ -687,6 +862,8 @@ export default function SeriesPage({ params }: SeriesPageProps) {
             </div>
           </div>
         )}
+        {/* Book Purchase Modal */}
+        <BookPurchaseModal isOpen={showBookModal} onClose={() => setShowBookModal(false)} />
       </div>
     </div>
   )

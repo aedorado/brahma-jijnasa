@@ -7,11 +7,13 @@ import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
 import { getSeriesRoundUnlockTime } from '@/lib/series-data'
+import { BookPurchaseModal } from '@/components/BookPurchaseModal'
 
 export default function HomePage() {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showBookModal, setShowBookModal] = useState(false)
   const router = useRouter()
   const { user, login } = useAuth()
   const { t } = useLanguage()
@@ -275,6 +277,22 @@ export default function HomePage() {
                 >
                   <span>{t.nav.allSeries || 'All Series'}</span>
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => setShowBookModal(true)}
+                  className="btn btn-ghost"
+                  style={{
+                    border: '1px solid rgba(240, 199, 78, 0.35)',
+                    color: 'var(--color-gold)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                  }}
+                  id="home-book-qr-btn"
+                >
+                  <span>📖</span>
+                  <span>Book & QR</span>
+                </button>
               </div>
             </div>
           </div>
@@ -335,6 +353,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Book Purchase Modal */}
+      <BookPurchaseModal isOpen={showBookModal} onClose={() => setShowBookModal(false)} />
     </div>
   )
 }

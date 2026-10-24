@@ -116,8 +116,8 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
 // ——— Score full quiz ———
 export function scoreQuiz(questions: Question[], answers: AnswerMap): ScoreResult {
   const questionResults = questions.map(q => scoreQuestion(q, answers[q.id] ?? null))
-  const totalEarned = questionResults.reduce((sum, r) => sum + r.earned, 0)
-  const totalMax    = questionResults.reduce((sum, r) => sum + r.max, 0)
+  const totalEarned = Math.round(questionResults.reduce((sum, r) => sum + r.earned, 0) * 10) / 10
+  const totalMax    = Math.round(questionResults.reduce((sum, r) => sum + r.max, 0) * 10) / 10
   const percentage  = totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0
 
   return { totalEarned, totalMax, percentage, questionResults }

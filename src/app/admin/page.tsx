@@ -459,10 +459,16 @@ export default function AdminPage() {
         {/* PILLAR 2: SERIES & 64 PRINCIPLES CAMPAIGN */}
         {activePillar === 'series' && (
           <AdminSeriesManager
+            activeSessions={activeSessions}
+            onSelectSession={(sessionId) => {
+              setSelectedSessionId(sessionId)
+              setActivePillar('live')
+            }}
             onSessionStarted={async () => {
               await loadActiveSessions()
               setActivePillar('live')
             }}
+            onDryRunQuiz={handleStartDryRun}
           />
         )}
 

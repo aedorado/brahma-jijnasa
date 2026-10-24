@@ -1,10 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
+import { BookPurchaseModal } from '@/components/BookPurchaseModal'
 
 export function Footer() {
   const { t } = useLanguage()
+  const [showBookModal, setShowBookModal] = useState(false)
 
   const scrollToTop = () => {
     if (typeof window !== 'undefined') {
@@ -44,6 +47,26 @@ export function Footer() {
                 <Link href="/series/sacred-teachings-64-principles" className="footer-link">
                   {t.footer?.sixtyFourPrinciples || '64 Community Principles'}
                 </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setShowBookModal(true)}
+                  className="footer-link"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    color: 'var(--color-gold)',
+                  }}
+                >
+                  <span>📖</span> 64 Principles Book & QR
+                </button>
               </li>
               <li>
                 <Link href="/#pin-entry" className="footer-link">
@@ -99,6 +122,7 @@ export function Footer() {
           </button>
         </div>
       </div>
+      <BookPurchaseModal isOpen={showBookModal} onClose={() => setShowBookModal(false)} />
     </footer>
   )
 }

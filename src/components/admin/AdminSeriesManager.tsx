@@ -4,8 +4,18 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { QuizSeries, QuizSeriesRound, SeriesStanding } from '@/types/series'
 
+interface ActiveSessionSummary {
+  id: string
+  quiz_id: string
+  pin: string
+  is_active?: boolean
+}
+
 interface AdminSeriesManagerProps {
   onSessionStarted?: () => void
+  onDryRunQuiz?: (quizId: string) => void
+  activeSessions?: ActiveSessionSummary[]
+  onSelectSession?: (sessionId: string) => void
 }
 
 function formatAdminSchedule(iso?: string): string {
@@ -25,7 +35,12 @@ function formatAdminSchedule(iso?: string): string {
   }
 }
 
-export function AdminSeriesManager({ onSessionStarted }: AdminSeriesManagerProps) {
+export function AdminSeriesManager({
+  onSessionStarted,
+  onDryRunQuiz,
+  activeSessions = [],
+  onSelectSession,
+}: AdminSeriesManagerProps) {
   const [seriesList, setSeriesList] = useState<QuizSeries[]>([])
   const [selectedSeries, setSelectedSeries] = useState<string>('sacred-teachings-64-principles')
   const [rounds, setRounds] = useState<QuizSeriesRound[]>([])
@@ -246,6 +261,15 @@ export function AdminSeriesManager({ onSessionStarted }: AdminSeriesManagerProps
               <tbody>
                 {filteredRounds.map((round) => {
                   const isBusy = actionLoading === round.id || actionLoading === `launch_${round.id}`
+                  const liveSession = activeSessions.find(s =>
+                    (round.active_session_id && s.id === round.active_session_id) ||
+                    s.quiz_id === round.quiz_id ||
+                    s.quiz_id === round.id ||
+                    ((round as any).activePin && s.pin === (round as any).activePin)
+                  )
+                  const roundPin = (round as any).activePin || liveSession?.pin || null
+                  const isLive = Boolean(roundPin || liveSession)
+
                   return (
                     <tr
                       key={round.id || round.day_number}
@@ -276,7 +300,25 @@ export function AdminSeriesManager({ onSessionStarted }: AdminSeriesManagerProps
                       </td>
 
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                        {round.is_unlocked ? (
+                        {isLive ? (
+                          <span
+                            className="badge badge-success"
+                            style={{
+                              fontSize: '0.72rem',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.35rem',
+                              background: 'rgba(74, 222, 128, 0.15)',
+                              border: '1px solid #4ade80',
+                              color: '#4ade80',
+                              fontWeight: 800,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                            LIVE (PIN: {roundPin || liveSession?.pin})
+                          </span>
+                        ) : round.is_unlocked ? (
                           <span className="badge badge-success" style={{ fontSize: '0.72rem' }}>
                             🔓 Unlocked
                           </span>
@@ -290,6 +332,16 @@ export function AdminSeriesManager({ onSessionStarted }: AdminSeriesManagerProps
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                         <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
                           <button
+                            type="button"
+                            className="btn btn-gold btn-xs"
+                            onClick={() => onDryRunQuiz?.(round.quiz_id)}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', fontWeight: 700, fontSize: '0.75rem' }}
+                            title={`Dry run interactive simulation for ${round.title}`}
+                          >
+                            <span>🧪</span> Dry Run
+                          </button>
+
+                          <button
                             className="btn btn-ghost btn-xs"
                             onClick={() => handleToggleUnlock(round.id, round.is_unlocked)}
                             disabled={isBusy}
@@ -298,14 +350,58 @@ export function AdminSeriesManager({ onSessionStarted }: AdminSeriesManagerProps
                             {round.is_unlocked ? '🔒 Lock' : '🔓 Unlock'}
                           </button>
 
-                          <button
-                            className="btn btn-primary btn-xs"
-                            onClick={() => handleLaunchSession(round)}
-                            disabled={isBusy}
-                            style={{ fontSize: '0.75rem', fontWeight: 600 }}
-                          >
-                            ⚡ Launch Live
-                          </button>
+                          {isLive ? (
+                            liveSession && onSelectSession ? (
+                              <button
+                                type="button"
+                                className="btn btn-xs"
+                                onClick={() => onSelectSession(liveSession.id)}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.35rem',
+                                  background: 'rgba(74, 222, 128, 0.18)',
+                                  border: '1.5px solid #4ade80',
+                                  color: '#4ade80',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 800,
+                                }}
+                                title="Open active live classroom room and student scoreboard"
+                              >
+                                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                                Live Room ({roundPin || liveSession.pin})
+                              </button>
+                            ) : roundPin ? (
+                              <Link
+                                href={`/session/${roundPin}`}
+                                target="_blank"
+                                className="btn btn-xs"
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.35rem',
+                                  background: 'rgba(74, 222, 128, 0.18)',
+                                  border: '1.5px solid #4ade80',
+                                  color: '#4ade80',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 800,
+                                }}
+                                title="Open student session room"
+                              >
+                                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                                Live Room ({roundPin})
+                              </Link>
+                            ) : null
+                          ) : (
+                            <button
+                              className="btn btn-primary btn-xs"
+                              onClick={() => handleLaunchSession(round)}
+                              disabled={isBusy}
+                              style={{ fontSize: '0.75rem', fontWeight: 600 }}
+                            >
+                              ⚡ Launch Live
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
