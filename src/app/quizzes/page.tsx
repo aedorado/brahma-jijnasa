@@ -239,16 +239,7 @@ export default function LiveQuizzesPage() {
         </p>
 
         {/* PRIMARY MODE TABS: LIVE QUIZZES vs REVIEW PAST ATTEMPTS */}
-        <div
-          style={{
-            display: 'inline-flex',
-            background: 'rgba(255, 255, 255, 0.05)',
-            padding: '0.3rem',
-            borderRadius: 12,
-            border: '1px solid var(--color-border)',
-            gap: '0.35rem',
-          }}
-        >
+        <div className="live-mode-tabs-container">
           <button
             className={`btn btn-sm ${tabMode === 'live' ? 'btn-gold' : 'btn-ghost'}`}
             onClick={() => setTabMode('live')}
@@ -315,20 +306,7 @@ export default function LiveQuizzesPage() {
         <div>
           {/* SUBFILTER PILLS: ALL / UNATTEMPTED / COMPLETED */}
           {activeSessions.length > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '0.75rem',
-                marginBottom: '1.5rem',
-                padding: '0.75rem 1.25rem',
-                background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: 10,
-                border: '1px solid var(--color-border)',
-              }}
-            >
+            <div className="live-filter-subbar">
               <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.82rem', color: 'var(--color-muted)', fontWeight: 600 }}>
                   Show:
@@ -421,17 +399,8 @@ export default function LiveQuizzesPage() {
               )}
 
               {/* MANUAL PIN INPUT FALLBACK */}
-              <div
-                style={{
-                  maxWidth: 360,
-                  margin: '0 auto',
-                  padding: '1.25rem',
-                  background: 'rgba(0, 0, 0, 0.25)',
-                  borderRadius: 12,
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.6rem', color: 'var(--color-gold)' }}>
+              <div className="quiz-pin-fallback-box">
+                <div style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: '0.65rem', color: 'var(--color-gold)' }}>
                   Have a 4-Digit Classroom PIN?
                 </div>
                 <form onSubmit={handleManualPinJoin} style={{ display: 'flex', gap: '0.5rem' }}>
@@ -441,28 +410,17 @@ export default function LiveQuizzesPage() {
                     placeholder="Enter PIN"
                     value={manualPin}
                     onChange={e => setManualPin(e.target.value.replace(/\D/g, ''))}
-                    style={{
-                      flex: 1,
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: 8,
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid var(--color-border)',
-                      color: 'var(--color-text)',
-                      textAlign: 'center',
-                      fontFamily: 'monospace',
-                      fontWeight: 800,
-                      letterSpacing: '0.1em',
-                    }}
+                    className="quiz-pin-input"
                   />
                   <button type="submit" className="btn btn-gold btn-sm" disabled={manualPin.length !== 4 && manualPin !== '000' && manualPin !== '0000'}>
                     Join
                   </button>
                 </form>
 
-                <div style={{ marginTop: '0.75rem' }}>
+                <div style={{ marginTop: '0.85rem' }}>
                   <Link
                     href="/session/0000"
-                    style={{ fontSize: '0.78rem', color: 'var(--color-muted)', textDecoration: 'underline' }}
+                    style={{ fontSize: '0.8rem', color: 'var(--color-gold)', textDecoration: 'underline', fontWeight: 600 }}
                   >
                     ✨ Or try test demo room (PIN: 0000)
                   </Link>
@@ -488,7 +446,7 @@ export default function LiveQuizzesPage() {
                       border: isAttempted ? '1px solid var(--color-border-gold)' : '1.5px solid #4ade80',
                       background: isAttempted
                         ? 'var(--glass-bg)'
-                        : 'linear-gradient(135deg, rgba(74, 222, 128, 0.06) 0%, rgba(0, 0, 0, 0.35) 100%)',
+                        : undefined,
                       boxShadow: isAttempted ? undefined : '0 0 20px rgba(74, 222, 128, 0.12)',
                       display: 'flex',
                       justifyContent: 'space-between',

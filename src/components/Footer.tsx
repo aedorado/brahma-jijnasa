@@ -3,16 +3,41 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
+import { useQuizFocus } from '@/context/QuizFocusContext'
 import { BookPurchaseModal } from '@/components/BookPurchaseModal'
 
 export function Footer() {
   const { t } = useLanguage()
+  const { isFocusMode } = useQuizFocus()
   const [showBookModal, setShowBookModal] = useState(false)
 
   const scrollToTop = () => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  // Focus Mode / Zen Exam Mode: Slim 1-line footer matching examination screen
+  if (isFocusMode) {
+    return (
+      <footer className="global-footer quiz-focus-footer">
+        <div className="container">
+          <div className="footer-bottom-bar" style={{ borderTop: 'none', paddingTop: 0 }}>
+            <p className="footer-copy">
+              © {new Date().getFullYear()} Brahma Jijñāsā · {t.footer?.rights || 'Sanātana Dharma Wisdom Platform'}
+            </p>
+
+            <button
+              onClick={scrollToTop}
+              className="footer-back-to-top"
+              aria-label="Scroll back to top"
+            >
+              {t.footer?.backToTop || 'Back to Top ↑'}
+            </button>
+          </div>
+        </div>
+      </footer>
+    )
   }
 
   return (

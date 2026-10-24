@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { useQuizFocus } from '@/context/QuizFocusContext'
 import { LanguageSelector } from '@/components/LanguageSelector'
 import { UserAvatar } from '@/components/UserAvatar'
 import { getTheme, setTheme } from '@/lib/session-storage'
@@ -12,7 +13,9 @@ import { getTheme, setTheme } from '@/lib/session-storage'
 export function Navbar() {
   const { user, loading, login, logout } = useAuth()
   const { t } = useLanguage()
+  const { isFocusMode, focusTitle, exitFocusMode } = useQuizFocus()
   const pathname = usePathname()
+  const router = useRouter()
   const [theme, setThemeState] = useState<'dark' | 'light'>('light')
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -42,6 +45,85 @@ export function Navbar() {
     const next = theme === 'dark' ? 'light' : 'dark'
     setThemeState(next)
     setTheme(next)
+  }
+
+  // Focus Mode Header: Minimal, distraction-free examination view
+  if (isFocusMode) {
+    return (
+      <header className="navbar navbar-focus-mode">
+        <div className="container">
+          <div className="navbar-inner" style={{ minHeight: '3.1rem' }}>
+            {/* Left: Compact Logo & Focus Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <Link
+                href="/"
+                className="navbar-logo"
+                style={{ textDecoration: 'none' }}
+                onClick={(e) => {
+                  if (!confirm('Are you sure you want to leave the quiz? Your in-progress timer is running.')) {
+                    e.preventDefault()
+                  } else {
+                    exitFocusMode()
+                  }
+                }}
+              >
+                <span className="navbar-logo-main" style={{ fontSize: '1rem' }}>Brahma Jijñāsā</span>
+              </Link>
+
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.6rem',
+                  borderRadius: 12,
+                  background: 'rgba(240, 199, 78, 0.12)',
+                  border: '1px solid var(--color-border-gold)',
+                  color: 'var(--color-gold)',
+                  maxWidth: '220px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <span>🧘</span>
+                <span>{focusTitle || 'Focus Mode'}</span>
+              </div>
+            </div>
+
+            {/* Right: Language Selector + Theme Toggle + Exit Button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <LanguageSelector />
+
+              <button
+                className="theme-toggle"
+                onClick={handleThemeToggle}
+                aria-label={theme === 'dark' ? t.nav.themeLight : t.nav.themeDark}
+                title={theme === 'dark' ? t.nav.themeLight : t.nav.themeDark}
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm('Are you sure you want to exit the quiz? Your in-progress timer is running.')) {
+                    exitFocusMode()
+                    router.push('/')
+                  }
+                }}
+                className="quiz-exit-btn"
+                title="Exit quiz and return to home"
+              >
+                ✕ Exit
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+    )
   }
 
   const isQuizzesActive = pathname === '/quizzes'

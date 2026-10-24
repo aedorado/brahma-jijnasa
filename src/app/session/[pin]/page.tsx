@@ -399,6 +399,7 @@ export default function SessionPage({ params }: Props) {
         initialElapsed={initialElapsed}
         initialQuestionIndex={initialQuestionIndex}
         onProgress={handleProgress}
+        quizTitle={quiz.title}
       />
     )
   }

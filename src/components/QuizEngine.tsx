@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useLanguage } from '@/context/LanguageContext'
+import { useQuizFocus } from '@/context/QuizFocusContext'
 import type { Question, AnswerMap, Answer, WhoAmIAnswer, PairsAnswer } from '@/types/quiz'
 import { formatTime } from '@/lib/scoring'
 import { SingleChoice } from './questions/SingleChoice'
@@ -26,6 +27,7 @@ interface QuizEngineProps {
   initialElapsed?: number
   initialQuestionIndex?: number
   onProgress?: (answers: AnswerMap, timeElapsed: number, currentQuestionIndex: number) => void
+  quizTitle?: string
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -75,8 +77,19 @@ export function QuizEngine({
   initialElapsed = 0,
   initialQuestionIndex = 0,
   onProgress,
+  quizTitle,
 }: QuizEngineProps) {
   const { t, language } = useLanguage()
+  const { enterFocusMode, exitFocusMode } = useQuizFocus()
+
+  // Activate Focus Mode (simplified examination header and slim footer) while quiz is taking place
+  useEffect(() => {
+    enterFocusMode(quizTitle)
+    return () => {
+      exitFocusMode()
+    }
+  }, [enterFocusMode, exitFocusMode, quizTitle])
+
   const [current, setCurrent] = useState(
     initialQuestionIndex >= 0 && initialQuestionIndex < questions.length
       ? initialQuestionIndex

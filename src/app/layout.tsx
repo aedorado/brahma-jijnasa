@@ -45,6 +45,9 @@ export const metadata: Metadata = {
   },
 }
 
+import { QuizFocusProvider } from '@/context/QuizFocusContext'
+import { LanguageWelcomeModal } from '@/components/LanguageWelcomeModal'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
@@ -56,13 +59,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>
-              <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <Navbar />
-                <main style={{ position: 'relative', flex: 1 }}>
-                  {children}
-                </main>
-                <Footer />
-              </div>
+              <QuizFocusProvider>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Navbar />
+                  <main style={{ position: 'relative', flex: 1 }}>
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+                <LanguageWelcomeModal />
+              </QuizFocusProvider>
             </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>
