@@ -2,9 +2,136 @@ import fs from 'fs'
 import path from 'path'
 import type { Quiz, QuizMeta, Category, QuestionType, Difficulty } from '@/types/quiz'
 
+import { createClient as createServerClient } from '@/lib/supabase/server'
+import { getStandardQuestionPoints } from '@/lib/quiz-validator'
+
 const QUIZZES_DIR = path.join(process.cwd(), 'quizzes')
 
-// ——— Load all quiz metadata (for listings) ———
+// ——— In-Memory Cache (1-minute TTL for high-concurrency devotee quiz access) ———
+interface CacheEntry<T> {
+  data: T
+  expiresAt: number
+}
+
+const quizCache = new Map<string, CacheEntry<Quiz>>()
+let quizMetaCache: CacheEntry<QuizMeta[]> | null = null
+const CACHE_TTL_MS = 60 * 1000 // 60 seconds
+
+export function invalidateQuizCache(quizId?: string) {
+  if (quizId) {
+    for (const key of Array.from(quizCache.keys())) {
+      if (key === quizId || key.startsWith(`${quizId}:`)) {
+        quizCache.delete(key)
+      }
+    }
+  } else {
+    quizCache.clear()
+  }
+  quizMetaCache = null
+}
+
+// Helper to convert database row to Quiz object
+export function mapRowToQuiz(row: any, lang?: string): Quiz {
+  const questionsObj = row.questions || {}
+  const targetLang = (lang && questionsObj[lang] && questionsObj[lang].length > 0) ? lang : 'en'
+  const rawQuestions = questionsObj[targetLang] || questionsObj['en'] || []
+
+  return normalizeQuiz({
+    id: row.id,
+    title: row.title,
+    category: row.category,
+    description: row.description || undefined,
+    difficulty: row.difficulty || 'medium',
+    timeLimit: row.time_limit || 720,
+    onTimeExpiry: row.on_time_expiry || 'submit-partial',
+    questions: rawQuestions,
+  })
+}
+
+// ——— Async Load all quiz metadata strictly from Supabase DB ———
+export async function fetchAllQuizMeta(): Promise<QuizMeta[]> {
+  const now = Date.now()
+  if (quizMetaCache && quizMetaCache.expiresAt > now) {
+    return quizMetaCache.data
+  }
+
+  try {
+    const supabase = await createServerClient()
+    const { data, error } = await supabase
+      .from('quizzes')
+      .select('id, title, category, description, difficulty, time_limit, on_time_expiry, questions, updated_at')
+      .eq('is_published', true)
+      .order('updated_at', { ascending: false })
+
+    if (error) {
+      console.error('[fetchAllQuizMeta] Supabase error:', error.message)
+      return []
+    }
+
+    if (data && data.length > 0) {
+      const metas = data.map((row: any) => {
+        const enQuestions = row.questions?.en || Object.values(row.questions || {})[0] || []
+        return {
+          id: row.id,
+          title: row.title,
+          category: row.category,
+          description: row.description,
+          difficulty: row.difficulty,
+          timeLimit: row.time_limit,
+          onTimeExpiry: row.on_time_expiry,
+          totalQuestions: Array.isArray(enQuestions) ? enQuestions.length : 0,
+          filePath: `supabase/${row.category}/${row.id}`,
+        }
+      })
+      quizMetaCache = { data: metas, expiresAt: now + CACHE_TTL_MS }
+      return metas
+    }
+
+    return []
+  } catch (err) {
+    console.error('[fetchAllQuizMeta] Failed to load from database:', err)
+    return []
+  }
+}
+
+// ——— Async Load a single quiz by ID strictly from Supabase DB (NO file fallback) ———
+export async function fetchQuizById(id: string, lang?: string): Promise<Quiz | null> {
+  const cacheKey = `${id}:${lang || 'en'}`
+  const now = Date.now()
+  const cached = quizCache.get(cacheKey)
+
+  if (cached && cached.expiresAt > now) {
+    return cached.data
+  }
+
+  try {
+    const supabase = await createServerClient()
+    const { data, error } = await supabase
+      .from('quizzes')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+
+    if (error) {
+      console.error(`[fetchQuizById] Database error for "${id}":`, error.message)
+      return null
+    }
+
+    if (data) {
+      const parsed = mapRowToQuiz(data, lang)
+      quizCache.set(cacheKey, { data: parsed, expiresAt: now + CACHE_TTL_MS })
+      return parsed
+    }
+
+    // Quiz does not exist in DB — strictly return null (no silent file fallback!)
+    return null
+  } catch (err) {
+    console.error(`[fetchQuizById] DB query failed for "${id}":`, err)
+    return null
+  }
+}
+
+// ——— Load all quiz metadata (for listings / fallback) ———
 export function getAllQuizMeta(): QuizMeta[] {
   const metas: QuizMeta[] = []
 
@@ -45,18 +172,7 @@ export function getAllQuizMeta(): QuizMeta[] {
   return metas
 }
 
-export function getStandardQuestionPoints(type: QuestionType, difficulty: Difficulty): number {
-  // Tier 1: Direct Recognition (1 pick / boolean)
-  if (['single-choice', 'true-false', 'who-said-this', 'odd-one-out', 'missing-link'].includes(type)) {
-    return difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3
-  }
-  // Tier 2: Analytical Reasoning (Multi-statement / Scenario)
-  if (['assertion-reason', 'cause-effect', 'spot-the-error', 'two-truths-one-false', 'evidence-based', 'case-study', 'what-would-you-do'].includes(type)) {
-    return difficulty === 'easy' ? 1.5 : difficulty === 'medium' ? 2.5 : 3.5
-  }
-  // Tier 3: Multi-Element & Interactive (match-pairs, sequence, multiple-select, who-am-i)
-  return difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4
-}
+export { getStandardQuestionPoints } from '@/lib/quiz-validator'
 
 export function normalizeQuiz(quiz: Quiz): Quiz {
   return {

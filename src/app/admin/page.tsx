@@ -33,6 +33,8 @@ export default function AdminPage() {
   const [quizDetailsCache, setQuizDetailsCache] = useState<Record<string, Quiz>>({})
   const [dryRunQuiz, setDryRunQuiz] = useState<Quiz | null>(null)
   const [loadingDryRun, setLoadingDryRun] = useState(false)
+  const [editingQuizId, setEditingQuizId] = useState<string | null>(null)
+  const [initialSeriesDay, setInitialSeriesDay] = useState<number | null>(null)
 
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
@@ -113,7 +115,7 @@ export default function AdminPage() {
     try {
       const { data } = await supabase
         .from('quiz_attempts')
-        .select('user_id, score, max_score, time_taken, profiles(full_name, avatar_url)')
+        .select('user_id, score, max_score, time_taken, completed_at, profiles(full_name, avatar_url)')
         .eq('session_id', sessionId)
         .order('score', { ascending: false })
         .order('time_taken', { ascending: true, nullsFirst: false })
@@ -132,6 +134,7 @@ export default function AdminPage() {
             score: d.score,
             max_score: d.max_score,
             time_taken: d.time_taken,
+            completed_at: d.completed_at || null,
           })
         }
 
@@ -212,7 +215,7 @@ export default function AdminPage() {
     const interval = setInterval(() => {
       loadLiveStats(selectedSessionId)
       loadAllAttempts()
-    }, 3500)
+    }, 15000)
 
     const channel = supabase
       .channel(`realtime_session_${selectedSessionId}`)
@@ -526,6 +529,7 @@ export default function AdminPage() {
         {/* PILLAR 2: SERIES & 64 PRINCIPLES CAMPAIGN */}
         {activePillar === 'series' && (
           <AdminSeriesManager
+            quizzes={quizzes}
             activeSessions={activeSessions}
             onSelectSession={(sessionId) => {
               setSelectedSessionId(sessionId)
@@ -536,6 +540,16 @@ export default function AdminPage() {
               setActivePillar('live')
             }}
             onDryRunQuiz={handleStartDryRun}
+            onCreateQuizForDay={(dayNum) => {
+              setEditingQuizId(null)
+              setInitialSeriesDay(dayNum)
+              setActivePillar('create')
+            }}
+            onEditQuiz={(quizId) => {
+              setInitialSeriesDay(null)
+              setEditingQuizId(quizId)
+              setActivePillar('create')
+            }}
           />
         )}
 
@@ -550,8 +564,17 @@ export default function AdminPage() {
               setActivePillar('live')
             }}
             starting={starting}
-            onOpenCreator={() => setActivePillar('create')}
+            onOpenCreator={() => {
+              setEditingQuizId(null)
+              setInitialSeriesDay(null)
+              setActivePillar('create')
+            }}
             onDryRunQuiz={handleStartDryRun}
+            onEditQuiz={(quizId) => {
+              setInitialSeriesDay(null)
+              setEditingQuizId(quizId)
+              setActivePillar('create')
+            }}
           />
         )}
 
@@ -568,10 +591,19 @@ export default function AdminPage() {
         {/* PILLAR 5: QUIZ CREATOR STUDIO */}
         {activePillar === 'create' && (
           <AdminQuizCreator
+            editingQuizId={editingQuizId}
+            onClearEditingQuiz={() => setEditingQuizId(null)}
+            initialSeriesDay={initialSeriesDay}
+            onClearInitialSeriesDay={() => setInitialSeriesDay(null)}
+            catalogQuizzes={quizzes}
             onQuizPublished={async (quizId) => {
               await loadQuizzes()
             }}
-            onSwitchToCatalog={() => setActivePillar('catalog')}
+            onSwitchToCatalog={() => {
+              setEditingQuizId(null)
+              setInitialSeriesDay(null)
+              setActivePillar('catalog')
+            }}
             onDryRunQuiz={handleStartDryRun}
           />
         )}

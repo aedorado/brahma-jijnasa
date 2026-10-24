@@ -191,21 +191,6 @@ export function QuizEngine({
     setAnswers(prev => ({ ...prev, [questionId]: answer }))
   }, [])
 
-  const setAnswerAndAutoAdvance = useCallback((questionId: number, answer: Answer) => {
-    setAnswers(prev => {
-      const next = { ...prev, [questionId]: answer }
-      return next
-    })
-    setTimeout(() => {
-      setCurrent(c => {
-        if (c < questions.length - 1) {
-          setDirection('forward')
-          return c + 1
-        }
-        return c
-      })
-    }, 380)
-  }, [questions.length])
 
   const navigate = (index: number) => {
     setDirection(index > current ? 'forward' : 'back')
@@ -245,19 +230,19 @@ export function QuizEngine({
     const type = q.type
     if (type === 'single-choice' || type === 'cause-effect' || type === 'odd-one-out' ||
       type === 'two-truths-one-false' || type === 'evidence-based') {
-      return <SingleChoice question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <SingleChoice question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'multiple-select') {
       return <MultipleSelect question={q as any} answer={(answers[q.id] as number[]) || []} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'true-false') {
-      return <TrueFalse question={q as any} answer={answers[q.id] as boolean | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <TrueFalse question={q as any} answer={answers[q.id] as boolean | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'who-am-i') {
-      return <WhoAmI question={q as any} answer={(answers[q.id] as WhoAmIAnswer) || null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <WhoAmI question={q as any} answer={(answers[q.id] as WhoAmIAnswer) || null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'who-said-this') {
-      return <WhoSaidThis question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <WhoSaidThis question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'sequence') {
       return <Sequence question={q as any} answer={(answers[q.id] as number[]) || []} onAnswer={a => setAnswer(q.id, a)} />
@@ -266,16 +251,16 @@ export function QuizEngine({
       return <MatchPairs question={q as any} answer={(answers[q.id] as PairsAnswer) || []} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'assertion-reason') {
-      return <AssertionReason question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <AssertionReason question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'spot-the-error') {
-      return <SpotTheError question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <SpotTheError question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'case-study' || type === 'what-would-you-do') {
-      return <ScenarioQuestion question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <ScenarioQuestion question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     if (type === 'missing-link') {
-      return <MissingLink question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswerAndAutoAdvance(q.id, a)} />
+      return <MissingLink question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
     return null
   }

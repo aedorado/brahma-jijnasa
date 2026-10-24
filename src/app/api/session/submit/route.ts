@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession, SESSION_COOKIE_NAME } from '@/lib/auth'
 import { scoreQuiz } from '@/lib/scoring'
-import { getQuizById } from '@/lib/quizzes'
+import { fetchQuizById } from '@/lib/quizzes'
 
 const inFlightSubmissions = new Set<string>()
 
@@ -61,9 +61,9 @@ export async function POST(request: NextRequest) {
 
     // 3. Load Quiz definition and calculate official score
     const targetQuizId = quizId || (isSandboxPin ? 'sandbox-demo' : 'mahabharata-authentic-quiz-20')
-    let quiz = getQuizById(targetQuizId)
+    let quiz = await fetchQuizById(targetQuizId)
     if (!quiz && isSandboxPin) {
-      quiz = getQuizById('mahabharata-variety-demo')
+      quiz = await fetchQuizById('mahabharata-variety-demo')
     }
     if (!quiz) {
       return NextResponse.json({ error: `Quiz definition not found for ID ${targetQuizId}` }, { status: 404 })
