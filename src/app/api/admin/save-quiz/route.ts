@@ -76,7 +76,10 @@ export async function POST(request: Request) {
     const cookieStore = await cookies()
     const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value
     const sessionUser = await verifySession(sessionToken)
-    const currentUserId = sessionUser?.id || body.updated_by || body.created_by || null
+    if (!sessionUser || (sessionUser.role !== 'admin' && sessionUser.role !== 'teacher' && sessionUser.role !== 'creator')) {
+      return NextResponse.json({ error: 'Unauthorized: Admin, Teacher, or Creator role required to save quizzes.' }, { status: 403 })
+    }
+    const currentUserId = sessionUser.id
 
     // Check if the quiz already exists to preserve original created_by
     const { data: existingQuiz } = await supabase

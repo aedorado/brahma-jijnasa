@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
       .split(',')
       .map(e => e.trim().toLowerCase())
       .filter(Boolean)
-
     const emailLower = user.email.toLowerCase()
     let shouldUpdate = false
     let targetRole = user.role
@@ -39,13 +38,28 @@ export async function GET(request: NextRequest) {
       shouldUpdate = true
     }
 
-    // Sync profile to Supabase database
+    // Check if role is set in Supabase profiles table
     try {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
       const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
       if (supabaseUrl && supabaseKey) {
         const { createClient } = await import('@supabase/supabase-js')
         const supabase = createClient(supabaseUrl, supabaseKey)
+        const { data: dbProfile } = await supabase
+          .from('profiles')
+          .select('role')
+          .or(`id.eq.${user.id},email.ilike.${emailLower}`)
+          .maybeSingle()
+
+        if (dbProfile?.role && ['admin', 'teacher', 'creator', 'student'].includes(dbProfile.role)) {
+          if (!adminEmails.includes(emailLower) && !teacherEmails.includes(emailLower) && !creatorEmails.includes(emailLower)) {
+            if (user.role !== dbProfile.role) {
+              targetRole = dbProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
+              shouldUpdate = true
+            }
+          }
+        }
+
         await supabase.from('profiles').upsert({
           id: user.id,
           email: user.email,

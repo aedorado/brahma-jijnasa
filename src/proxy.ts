@@ -7,7 +7,7 @@ export async function proxy(request: NextRequest) {
     const token = request.cookies.get(SESSION_COOKIE_NAME)?.value
     const user = await verifySession(token)
 
-    if (!user || (user.role !== 'admin' && user.role !== 'teacher')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'teacher' && user.role !== 'creator')) {
       return NextResponse.redirect(new URL('/?error=unauthorized', request.url))
     }
   }

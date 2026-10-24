@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
 
     const googleUser = await userinfoRes.json()
 
-    // 3. Determine role based on ADMIN_EMAILS / TEACHER_EMAILS
+    // 3. Determine role based on ADMIN_EMAILS / TEACHER_EMAILS or Supabase profile
     const adminEmails = (process.env.ADMIN_EMAILS || '')
       .split(',')
       .map(e => e.trim().toLowerCase())
@@ -79,17 +79,35 @@ export async function GET(request: NextRequest) {
       .map(e => e.trim().toLowerCase())
       .filter(Boolean)
 
+    // Generate a valid RFC4122 UUID from Google user ID
+    const hash = crypto.createHash('sha256').update(googleUser.id).digest('hex')
+    const userId = `${hash.slice(0, 8)}-${hash.slice(8, 12)}-4${hash.slice(13, 16)}-a${hash.slice(17, 20)}-${hash.slice(20, 32)}`
+
     const emailLower = googleUser.email.toLowerCase()
-    let role: 'student' | 'teacher' | 'admin' = 'student'
+    let role: 'student' | 'teacher' | 'admin' | 'creator' = 'student'
     if (adminEmails.includes(emailLower)) {
       role = 'admin'
     } else if (teacherEmails.includes(emailLower)) {
       role = 'teacher'
+    } else {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        if (supabaseUrl && supabaseKey) {
+          const supabase = createClient(supabaseUrl, supabaseKey)
+          const { data: existingProfile } = await supabase
+            .from('profiles')
+            .select('role')
+            .or(`id.eq.${userId},email.ilike.${emailLower}`)
+            .maybeSingle()
+          if (existingProfile?.role && ['admin', 'teacher', 'creator', 'student'].includes(existingProfile.role)) {
+            role = existingProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
+          }
+        }
+      } catch {
+        // ignore
+      }
     }
-
-    // Generate a valid RFC4122 UUID from Google user ID
-    const hash = crypto.createHash('sha256').update(googleUser.id).digest('hex')
-    const userId = `${hash.slice(0, 8)}-${hash.slice(8, 12)}-4${hash.slice(13, 16)}-a${hash.slice(17, 20)}-${hash.slice(20, 32)}`
 
     const user: AuthUser = {
       id: userId,

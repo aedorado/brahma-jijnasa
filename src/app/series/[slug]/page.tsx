@@ -294,23 +294,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
             </div>
 
             {/* Right Prominent QR & Book Companion Card */}
-            <div
-              style={{
-                flex: '0 0 auto',
-                width: '100%',
-                maxWidth: 300,
-                background: 'rgba(26, 16, 47, 0.75)',
-                backdropFilter: 'blur(12px)',
-                border: '1.5px solid rgba(240, 199, 78, 0.45)',
-                borderRadius: 16,
-                padding: '1.25rem',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(240, 199, 78, 0.12)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-              }}
-            >
+            <div className="book-companion-hero-card" style={{ flex: '0 0 auto' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.65rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   📖 Official Companion Book
@@ -322,17 +306,10 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 href={selectedStore.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="book-qr-box"
                 style={{
-                  background: '#ffffff',
-                  padding: '8px',
-                  borderRadius: 12,
-                  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.5)',
-                  border: '2px solid rgba(240, 199, 78, 0.5)',
                   cursor: 'pointer',
                   marginBottom: '0.75rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
                   textDecoration: 'none',
                 }}
                 title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
@@ -379,17 +356,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                     key={s.code}
                     type="button"
                     onClick={() => setSelectedStoreCode(s.code)}
-                    style={{
-                      fontSize: '0.72rem',
-                      padding: '0.2rem 0.48rem',
-                      borderRadius: 6,
-                      border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid var(--color-border)',
-                      background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                      color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                      cursor: 'pointer',
-                      fontWeight: selectedStoreCode === s.code ? 800 : 500,
-                      transition: 'all 0.15s ease',
-                    }}
+                    className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
                     title={`${s.name} (${s.code})`}
                   >
                     {s.flag} {s.code}
@@ -398,17 +365,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 <button
                   type="button"
                   onClick={() => setShowAllHeroStores(prev => !prev)}
-                  style={{
-                    fontSize: '0.72rem',
-                    padding: '0.2rem 0.55rem',
-                    borderRadius: 6,
-                    border: '1px solid rgba(240, 199, 78, 0.45)',
-                    background: 'rgba(240, 199, 78, 0.12)',
-                    color: 'var(--color-gold)',
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                    transition: 'all 0.15s ease',
-                  }}
+                  className="book-store-more-btn"
                   title={showAllHeroStores ? 'Show fewer countries' : 'Show all 13 international regional stores'}
                 >
                   {showAllHeroStores ? '▲ Less' : `+${AMAZON_STORES.length - 4} More ▾`}

@@ -204,7 +204,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             {/* Country Selector Pills */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
               <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)' }}>Store:</span>
-              {AMAZON_STORES.slice(0, 5).map(s => (
+              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 5)).map(s => (
                 <button
                   key={s.code}
                   type="button"
@@ -220,38 +220,9 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                 onClick={() => setShowAllStores(prev => !prev)}
                 className="book-store-more-btn"
               >
-                {showAllStores ? '▲ Less' : '▼ More (13+ countries)'}
+                {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 5} More`}
               </button>
             </div>
-
-            {showAllStores && (
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '0.35rem',
-                  flexWrap: 'wrap',
-                  marginBottom: '0.85rem',
-                  padding: '0.5rem',
-                  borderRadius: 8,
-                  background: 'var(--color-surface-2)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                {AMAZON_STORES.map(s => (
-                  <button
-                    key={s.code}
-                    type="button"
-                    onClick={() => {
-                      setSelectedStoreCode(s.code)
-                      setShowAllStores(false)
-                    }}
-                    className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
-                  >
-                    {s.flag} {s.name}
-                  </button>
-                ))}
-              </div>
-            )}
 
             <a
               href={selectedStore.url}
@@ -349,7 +320,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               {labels.chooseRegion}
             </p>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {AMAZON_STORES.slice(0, 6).map(s => (
+              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 6)).map(s => (
                 <button
                   key={s.code}
                   type="button"
@@ -365,38 +336,9 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                 onClick={() => setShowAllStores(prev => !prev)}
                 className="book-store-more-btn"
               >
-                {showAllStores ? '▲ Less' : '▼ More Regions'}
+                {showAllStores ? '▲ Less' : `▼ More (${AMAZON_STORES.length - 6} Countries)`}
               </button>
             </div>
-
-            {showAllStores && (
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '0.4rem',
-                  flexWrap: 'wrap',
-                  marginTop: '0.65rem',
-                  padding: '0.75rem',
-                  borderRadius: 10,
-                  background: 'var(--color-surface-2)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                {AMAZON_STORES.map(s => (
-                  <button
-                    key={s.code}
-                    type="button"
-                    onClick={() => {
-                      setSelectedStoreCode(s.code)
-                      setShowAllStores(false)
-                    }}
-                    className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
-                  >
-                    {s.flag} {s.name}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>

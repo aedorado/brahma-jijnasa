@@ -172,25 +172,37 @@ export default function AdminPage() {
 
   const handleManualRefresh = async () => {
     setRefreshing(true)
-    await Promise.all([
-      loadQuizzes(),
-      loadActiveSessions(),
-      loadAllAttempts(),
-      selectedSessionId ? loadLiveStats(selectedSessionId) : Promise.resolve(),
-    ])
+    if (user?.role === 'creator') {
+      await loadQuizzes()
+    } else {
+      await Promise.all([
+        loadQuizzes(),
+        loadActiveSessions(),
+        loadAllAttempts(),
+        selectedSessionId ? loadLiveStats(selectedSessionId) : Promise.resolve(),
+      ])
+    }
     setTimeout(() => setRefreshing(false), 400)
   }
 
   // Auth gate
   useEffect(() => {
     if (authLoading) return
-    if (!user || (user.role !== 'admin' && user.role !== 'teacher')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'teacher' && user.role !== 'creator')) {
       router.push('/')
       return
     }
 
+    if (user.role === 'creator') {
+      setActivePillar('create')
+    }
+
     const init = async () => {
-      await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
+      if (user.role === 'creator') {
+        await loadQuizzes()
+      } else {
+        await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
+      }
       setLoading(false)
 
       if (typeof window !== 'undefined') {
@@ -415,13 +427,17 @@ export default function AdminPage() {
         <div className="flex items-center justify-between mb-4" style={{ flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.25rem' }}>
-              <h1 style={{ fontSize: '1.85rem', fontWeight: 800 }}>Admin & Teacher Control Center</h1>
+              <h1 style={{ fontSize: '1.85rem', fontWeight: 800 }}>
+                {user?.role === 'creator' ? 'Quiz Studio' : 'Admin & Teacher Control Center'}
+              </h1>
               <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-                {user?.role === 'admin' ? '👑 Admin' : '⚡ Teacher'}
+                {user?.role === 'admin' ? '👑 Admin' : user?.role === 'creator' ? '🎨 Quiz Creator' : '⚡ Teacher'}
               </span>
             </div>
             <p className="text-muted" style={{ fontSize: '0.9rem' }}>
-              Manage live classroom sessions, 30-day series campaigns, quiz libraries, and devotee diagnostics.
+              {user?.role === 'creator'
+                ? 'Create and edit quizzes, manage localized questions, and schedule release rounds.'
+                : 'Manage live classroom sessions, 30-day series campaigns, quiz libraries, and devotee diagnostics.'}
             </p>
           </div>
 
@@ -441,7 +457,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 5-Pillar Tab Switcher */}
+        {/* Tab Switcher */}
         <div
           style={{
             display: 'flex',
@@ -452,55 +468,59 @@ export default function AdminPage() {
             overflowX: 'auto',
           }}
         >
-          <button
-            onClick={() => setActivePillar('live')}
-            className={`btn btn-sm ${activePillar === 'live' ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-            id="admin-pillar-live"
-          >
-            <span>⚡</span> Live Rooms
-            {activeSessions.length > 0 && (
-              <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-                {activeSessions.length} Live
-              </span>
-            )}
-          </button>
+          {user?.role !== 'creator' && (
+            <>
+              <button
+                onClick={() => setActivePillar('live')}
+                className={`btn btn-sm ${activePillar === 'live' ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+                id="admin-pillar-live"
+              >
+                <span>⚡</span> Live Rooms
+                {activeSessions.length > 0 && (
+                  <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                    {activeSessions.length} Live
+                  </span>
+                )}
+              </button>
 
-          <button
-            onClick={() => setActivePillar('series')}
-            className={`btn btn-sm ${activePillar === 'series' ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-            id="admin-pillar-series"
-          >
-            <span>📚</span> 64 Principles Series
-            <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-              Kārtika
-            </span>
-          </button>
+              <button
+                onClick={() => setActivePillar('series')}
+                className={`btn btn-sm ${activePillar === 'series' ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+                id="admin-pillar-series"
+              >
+                <span>📚</span> 64 Principles Series
+                <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                  Kārtika
+                </span>
+              </button>
 
-          <button
-            onClick={() => setActivePillar('catalog')}
-            className={`btn btn-sm ${activePillar === 'catalog' ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-            id="admin-pillar-catalog"
-          >
-            <span>📑</span> Quiz Library
-            <span className="badge badge-ghost" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-              {quizzes.length}
-            </span>
-          </button>
+              <button
+                onClick={() => setActivePillar('catalog')}
+                className={`btn btn-sm ${activePillar === 'catalog' ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+                id="admin-pillar-catalog"
+              >
+                <span>📑</span> Quiz Library
+                <span className="badge badge-ghost" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                  {quizzes.length}
+                </span>
+              </button>
 
-          <button
-            onClick={() => setActivePillar('analytics')}
-            className={`btn btn-sm ${activePillar === 'analytics' ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-            id="admin-pillar-analytics"
-          >
-            <span>📊</span> Analytics & Grading
-            <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-              {allAttempts.length}
-            </span>
-          </button>
+              <button
+                onClick={() => setActivePillar('analytics')}
+                className={`btn btn-sm ${activePillar === 'analytics' ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+                id="admin-pillar-analytics"
+              >
+                <span>📊</span> Analytics & Grading
+                <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                  {allAttempts.length}
+                </span>
+              </button>
+            </>
+          )}
 
           <button
             onClick={() => setActivePillar('create')}
@@ -602,7 +622,9 @@ export default function AdminPage() {
             onSwitchToCatalog={() => {
               setEditingQuizId(null)
               setInitialSeriesDay(null)
-              setActivePillar('catalog')
+              if (user?.role !== 'creator') {
+                setActivePillar('catalog')
+              }
             }}
             onDryRunQuiz={handleStartDryRun}
           />

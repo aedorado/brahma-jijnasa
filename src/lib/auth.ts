@@ -7,7 +7,7 @@ export interface AuthUser {
   email: string
   full_name: string
   avatar_url: string
-  role: 'student' | 'teacher' | 'admin'
+  role: 'student' | 'teacher' | 'admin' | 'creator'
 }
 
 export const SESSION_COOKIE_NAME = 'bj_session'

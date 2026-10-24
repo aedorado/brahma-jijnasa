@@ -209,15 +209,15 @@ export function Navbar() {
                     </div>
 
                     <div className="user-dropdown-body">
-                      {(user.role === 'admin' || user.role === 'teacher') && (
+                      {(user.role === 'admin' || user.role === 'teacher' || user.role === 'creator') && (
                         <Link
                           href="/admin"
                           className="dropdown-menu-item"
                           onClick={() => setUserMenuOpen(false)}
                           id="admin-link"
                         >
-                          <span style={{ fontSize: '1rem' }}>⚡</span>
-                          <span>{t.nav.admin}</span>
+                          <span style={{ fontSize: '1rem' }}>{user.role === 'creator' ? '🎨' : '⚡'}</span>
+                          <span>{user.role === 'creator' ? 'Quiz Studio' : t.nav.admin}</span>
                         </Link>
                       )}
 
@@ -319,14 +319,14 @@ export function Navbar() {
                   <span className="navbar-mobile-icon">👤</span>
                   <span>{t.nav.profile}</span>
                 </Link>
-                {(user.role === 'admin' || user.role === 'teacher') && (
+                {(user.role === 'admin' || user.role === 'teacher' || user.role === 'creator') && (
                   <Link
                     href="/admin"
                     className="navbar-mobile-link"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className="navbar-mobile-icon">⚡</span>
-                    <span>{t.nav.admin}</span>
+                    <span className="navbar-mobile-icon">{user.role === 'creator' ? '🎨' : '⚡'}</span>
+                    <span>{user.role === 'creator' ? 'Quiz Studio' : t.nav.admin}</span>
                   </Link>
                 )}
               </>

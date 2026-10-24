@@ -63,17 +63,47 @@ export default function LiveQuizzesPage() {
     }
   }
 
-  // 2. Fetch Active Live Sessions
+  // 2. Fetch Active Live Sessions (Filter out those scheduled for future start time)
   const loadActiveSessions = async () => {
     try {
-      const { data, error } = await supabase
-        .from('quiz_sessions')
-        .select('*')
-        .eq('is_active', true)
-        .order('started_at', { ascending: false })
+      const [{ data: sessionData, error: sessionErr }, { data: roundData }] = await Promise.all([
+        supabase
+          .from('quiz_sessions')
+          .select('*')
+          .eq('is_active', true)
+          .order('started_at', { ascending: false }),
+        supabase
+          .from('quiz_series_rounds')
+          .select('quiz_id, unlock_at, is_unlocked'),
+      ])
 
-      if (!error && data) {
-        setActiveSessions(data as QuizSession[])
+      if (!sessionErr && sessionData) {
+        const roundLookup = new Map<string, { unlock_at?: string | null; is_unlocked: boolean }>()
+        if (roundData) {
+          roundData.forEach((r: any) => {
+            roundLookup.set(r.quiz_id, {
+              unlock_at: r.unlock_at,
+              is_unlocked: Boolean(r.is_unlocked),
+            })
+          })
+        }
+
+        const now = new Date()
+        // Filter out any sessions whose scheduled start time is in the future and not manually unlocked
+        const activeOnly = (sessionData as QuizSession[]).filter(s => {
+          const round = roundLookup.get(s.quiz_id)
+          if (round) {
+            // If admin explicitly unlocked, it is live
+            if (round.is_unlocked) return true
+            // If scheduled for a future start time, DO NOT show it as live
+            if (round.unlock_at && new Date(round.unlock_at) > now) {
+              return false
+            }
+          }
+          return true
+        })
+
+        setActiveSessions(activeOnly)
       }
     } catch (err) {
       console.warn('Failed to load active live sessions:', err)

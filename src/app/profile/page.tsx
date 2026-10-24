@@ -117,7 +117,13 @@ export default function ProfilePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
             <h1 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{user.full_name}</h1>
             <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
-              {user.role === 'admin' ? (t.profile?.adminRole || '👑 Admin') : user.role === 'teacher' ? (t.profile?.teacherRole || '⚡ Teacher') : (t.profile?.studentRole || '🎓 Student')}
+              {user.role === 'admin'
+                ? (t.profile?.adminRole || '👑 Admin')
+                : user.role === 'teacher'
+                ? (t.profile?.teacherRole || '⚡ Teacher')
+                : user.role === 'creator'
+                ? '🎨 Quiz Creator'
+                : (t.profile?.studentRole || '🎓 Student')}
             </span>
           </div>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>{user.email}</p>
@@ -129,9 +135,9 @@ export default function ProfilePage() {
             <button className="btn btn-ghost btn-sm" onClick={logout}>
               {t.profile?.signOut || 'Sign Out'}
             </button>
-            {(user.role === 'admin' || user.role === 'teacher') && (
+            {(user.role === 'admin' || user.role === 'teacher' || user.role === 'creator') && (
               <Link href="/admin" className="btn btn-ghost btn-sm">
-                {t.profile?.teacherDashboard || '⚡ Teacher Dashboard →'}
+                {user.role === 'creator' ? '🎨 Quiz Studio →' : (t.profile?.teacherDashboard || '⚡ Teacher Dashboard →')}
               </Link>
             )}
           </div>

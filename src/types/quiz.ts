@@ -243,7 +243,7 @@ export interface Profile {
   full_name: string | null
   avatar_url: string | null
   email: string | null
-  role: 'student' | 'admin'
+  role: 'student' | 'teacher' | 'admin' | 'creator'
   created_at: string
 }
 

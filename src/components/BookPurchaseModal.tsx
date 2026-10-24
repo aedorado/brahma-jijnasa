@@ -81,19 +81,7 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="card-gold animate-scaleIn"
-        style={{
-          width: '100%',
-          maxWidth: 540,
-          maxHeight: '92vh',
-          overflowY: 'auto',
-          background: 'linear-gradient(135deg, rgba(28, 20, 52, 0.98) 0%, rgba(16, 12, 30, 0.98) 100%)',
-          border: '1px solid rgba(240, 199, 78, 0.45)',
-          borderRadius: 20,
-          padding: '2rem 1.75rem',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)',
-          position: 'relative',
-        }}
+        className="book-purchase-modal animate-scaleIn"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -134,21 +122,21 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
         </div>
 
         {/* Title */}
-        <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '0.35rem', color: '#FAF4E4' }}>
+        <h3 className="book-purchase-title" style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '0.35rem' }}>
           {labels.title}
         </h3>
         <p style={{ fontSize: '0.88rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '0.35rem' }}>
           {labels.subtitle}
         </p>
-        <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
+        <p className="book-purchase-author" style={{ fontSize: '0.8rem', marginBottom: '1.25rem' }}>
           {labels.author}
         </p>
 
         {/* QR Code Highlight Area */}
         <div
           style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(240, 199, 78, 0.25)',
+            background: 'var(--color-surface-2)',
+            border: '1px solid var(--color-border-gold)',
             borderRadius: 14,
             padding: '1.25rem',
             display: 'flex',
@@ -159,13 +147,8 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
           }}
         >
           <div
+            className="book-qr-box"
             style={{
-              background: '#ffffff',
-              padding: '12px',
-              borderRadius: 14,
-              boxShadow: '0 8px 28px rgba(0, 0, 0, 0.5)',
-              display: 'inline-block',
-              border: '2px solid rgba(240, 199, 78, 0.45)',
               marginBottom: '0.75rem',
             }}
           >
@@ -192,21 +175,13 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
             {labels.chooseStore}
           </p>
           <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-            {AMAZON_STORES.slice(0, 6).map(s => (
+            {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 6)).map(s => (
               <button
                 key={s.code}
                 type="button"
                 onClick={() => setSelectedStoreCode(s.code)}
-                style={{
-                  fontSize: '0.74rem',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: 7,
-                  border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid var(--color-border)',
-                  background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.22)' : 'rgba(255, 255, 255, 0.04)',
-                  color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                  fontWeight: selectedStoreCode === s.code ? 700 : 500,
-                  cursor: 'pointer',
-                }}
+                className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
+                title={`${s.name} (${s.code})`}
               >
                 {s.flag} {s.name}
               </button>
@@ -214,57 +189,11 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
             <button
               type="button"
               onClick={() => setShowAllStores(prev => !prev)}
-              style={{
-                fontSize: '0.74rem',
-                padding: '0.25rem 0.6rem',
-                borderRadius: 7,
-                border: '1px solid var(--color-border)',
-                background: 'none',
-                color: 'var(--color-gold)',
-                cursor: 'pointer',
-              }}
+              className="book-store-more-btn"
             >
-              {showAllStores ? '▲ Less' : '▼ More (13+ countries)'}
+              {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 6} More`}
             </button>
           </div>
-
-          {showAllStores && (
-            <div
-              style={{
-                display: 'flex',
-                gap: '0.35rem',
-                flexWrap: 'wrap',
-                marginTop: '0.5rem',
-                padding: '0.65rem',
-                borderRadius: 8,
-                background: 'rgba(0,0,0,0.3)',
-                border: '1px solid var(--color-border)',
-              }}
-            >
-              {AMAZON_STORES.map(s => (
-                <button
-                  key={s.code}
-                  type="button"
-                  onClick={() => {
-                    setSelectedStoreCode(s.code)
-                    setShowAllStores(false)
-                  }}
-                  style={{
-                    fontSize: '0.74rem',
-                    padding: '0.25rem 0.55rem',
-                    borderRadius: 6,
-                    border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid rgba(255,255,255,0.08)',
-                    background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.22)' : 'rgba(255, 255, 255, 0.04)',
-                    color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                    fontWeight: selectedStoreCode === s.code ? 700 : 500,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {s.flag} {s.name}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Actions */}
