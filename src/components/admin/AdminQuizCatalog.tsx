@@ -12,6 +12,7 @@ interface AdminQuizCatalogProps {
   starting: string | null
   onOpenCreator?: () => void
   onDryRunQuiz?: (quizId: string) => Promise<void>
+  onEditQuiz?: (quizId: string) => void
 }
 
 export function AdminQuizCatalog({
@@ -22,6 +23,7 @@ export function AdminQuizCatalog({
   starting,
   onOpenCreator,
   onDryRunQuiz,
+  onEditQuiz,
 }: AdminQuizCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -186,7 +188,7 @@ export function AdminQuizCatalog({
                 </div>
 
                 <div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '0.4rem', marginBottom: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '0.4rem', marginBottom: '0.75rem' }}>
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => handleInspectQuestions(quiz.id)}
@@ -195,6 +197,17 @@ export function AdminQuizCatalog({
                     >
                       <span>👁</span> Preview
                     </button>
+
+                    {onEditQuiz && (
+                      <button
+                        className="btn btn-ghost btn-xs"
+                        onClick={() => onEditQuiz(quiz.id)}
+                        style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
+                        title="Edit quiz in CMS Studio"
+                      >
+                        <span>✏️</span> Edit
+                      </button>
+                    )}
 
                     <button
                       className="btn btn-gold btn-xs"
@@ -314,6 +327,16 @@ export function AdminQuizCatalog({
                           >
                             👁 Preview
                           </button>
+                          {onEditQuiz && (
+                            <button
+                              className="btn btn-ghost btn-xs"
+                              onClick={() => onEditQuiz(quiz.id)}
+                              style={{ border: '1px solid var(--color-border)' }}
+                              title="Edit quiz in CMS Studio"
+                            >
+                              ✏️ Edit
+                            </button>
+                          )}
                           <button
                             className="btn btn-gold btn-xs"
                             onClick={() => onDryRunQuiz?.(quiz.id)}
@@ -407,6 +430,19 @@ export function AdminQuizCatalog({
               </div>
 
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                {onEditQuiz && (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => {
+                      const qId = previewQuiz.id
+                      setPreviewQuiz(null)
+                      onEditQuiz(qId)
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 700 }}
+                  >
+                    <span>✏️</span> Edit in Studio
+                  </button>
+                )}
                 <button
                   className="btn btn-gold btn-sm"
                   onClick={() => {

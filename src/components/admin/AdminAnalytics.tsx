@@ -451,7 +451,8 @@ export function AdminAnalytics({
               <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Devotee</th>
                 <th style={{ padding: '0.75rem 1rem' }}>Quiz ID</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Time</th>
+                <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Time Taken</th>
+                <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Submitted At</th>
                 <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Accuracy</th>
                 <th style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>Score</th>
                 <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Action</th>
@@ -460,6 +461,16 @@ export function AdminAnalytics({
             <tbody>
               {filteredAttempts.map(att => {
                 const pct = Math.round((att.score / (att.max_score || 1)) * 100)
+                const durationStr = att.time_taken != null && att.time_taken > 0
+                  ? att.time_taken >= 60
+                    ? `${Math.floor(att.time_taken / 60)}m ${(att.time_taken % 60).toString().padStart(2, '0')}s`
+                    : `${att.time_taken}s`
+                  : '—'
+
+                const submittedTimeStr = att.completed_at
+                  ? new Date(att.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                  : null
+
                 return (
                   <tr key={att.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
                     <td style={{ padding: '0.85rem 1rem' }}>
@@ -475,7 +486,30 @@ export function AdminAnalytics({
                       {att.quiz_id}
                     </td>
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'center', color: 'var(--color-muted)' }}>
-                      {att.time_taken ? `${att.time_taken}s` : '—'}
+                      {durationStr}
+                    </td>
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                      {submittedTimeStr ? (
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.3rem',
+                            padding: '0.15rem 0.45rem',
+                            borderRadius: 6,
+                            background: 'var(--color-surface-2)',
+                            border: '1px solid var(--color-border)',
+                            color: 'var(--color-text)',
+                            fontFamily: 'monospace',
+                            fontSize: '0.8rem',
+                          }}
+                          title={att.completed_at ? new Date(att.completed_at).toLocaleString() : ''}
+                        >
+                          🕒 {submittedTimeStr}
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--color-muted)' }}>—</span>
+                      )}
                     </td>
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'center', fontWeight: 600 }}>
                       {pct}%

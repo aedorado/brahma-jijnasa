@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { QuizSeries, QuizSeriesRound, SeriesStanding } from '@/types/series'
+import type { QuizMeta } from '@/types/quiz'
 
 interface ActiveSessionSummary {
   id: string
@@ -12,10 +13,13 @@ interface ActiveSessionSummary {
 }
 
 interface AdminSeriesManagerProps {
+  quizzes?: QuizMeta[]
   onSessionStarted?: () => void
   onDryRunQuiz?: (quizId: string) => void
   activeSessions?: ActiveSessionSummary[]
   onSelectSession?: (sessionId: string) => void
+  onCreateQuizForDay?: (dayNumber: number) => void
+  onEditQuiz?: (quizId: string) => void
 }
 
 function formatAdminSchedule(iso?: string): string {
@@ -36,10 +40,13 @@ function formatAdminSchedule(iso?: string): string {
 }
 
 export function AdminSeriesManager({
+  quizzes = [],
   onSessionStarted,
   onDryRunQuiz,
   activeSessions = [],
   onSelectSession,
+  onCreateQuizForDay,
+  onEditQuiz,
 }: AdminSeriesManagerProps) {
   const [seriesList, setSeriesList] = useState<QuizSeries[]>([])
   const [selectedSeries, setSelectedSeries] = useState<string>('sacred-teachings-64-principles')
@@ -269,6 +276,7 @@ export function AdminSeriesManager({
                   )
                   const roundPin = (round as any).activePin || liveSession?.pin || null
                   const isLive = Boolean(roundPin || liveSession)
+                  const quizExists = (quizzes || []).some(q => q.id === round.quiz_id)
 
                   return (
                     <tr
@@ -300,7 +308,21 @@ export function AdminSeriesManager({
                       </td>
 
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                        {isLive ? (
+                        {!quizExists ? (
+                          <span
+                            className="badge badge-ghost"
+                            style={{
+                              fontSize: '0.72rem',
+                              background: 'rgba(245, 158, 11, 0.12)',
+                              border: '1px solid rgba(245, 158, 11, 0.4)',
+                              color: '#f59e0b',
+                              fontWeight: 700,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            ⚠️ Missing Quiz
+                          </span>
+                        ) : isLive ? (
                           <span
                             className="badge badge-success"
                             style={{
@@ -331,76 +353,102 @@ export function AdminSeriesManager({
 
                       <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                         <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
-                          <button
-                            type="button"
-                            className="btn btn-gold btn-xs"
-                            onClick={() => onDryRunQuiz?.(round.quiz_id)}
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', fontWeight: 700, fontSize: '0.75rem' }}
-                            title={`Dry run interactive simulation for ${round.title}`}
-                          >
-                            <span>🧪</span> Dry Run
-                          </button>
+                          {!quizExists ? (
+                            <button
+                              type="button"
+                              className="btn btn-gold btn-xs"
+                              onClick={() => onCreateQuizForDay?.(round.day_number)}
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontWeight: 800, fontSize: '0.75rem' }}
+                              title={`Create quiz for Day ${round.day_number} in Quiz Studio`}
+                            >
+                              <span>✨</span> Create Quiz
+                            </button>
+                          ) : (
+                            <>
+                              {onEditQuiz && (
+                                <button
+                                  type="button"
+                                  className="btn btn-ghost btn-xs"
+                                  onClick={() => onEditQuiz(round.quiz_id)}
+                                  style={{ border: '1px solid var(--color-border)', fontSize: '0.75rem', fontWeight: 600 }}
+                                  title={`Edit ${round.title} in Quiz Studio`}
+                                >
+                                  ✏️ Edit
+                                </button>
+                              )}
 
-                          <button
-                            className="btn btn-ghost btn-xs"
-                            onClick={() => handleToggleUnlock(round.id, round.is_unlocked)}
-                            disabled={isBusy}
-                            style={{ border: '1px solid var(--color-border)', fontSize: '0.75rem' }}
-                          >
-                            {round.is_unlocked ? '🔒 Lock' : '🔓 Unlock'}
-                          </button>
-
-                          {isLive ? (
-                            liveSession && onSelectSession ? (
                               <button
                                 type="button"
-                                className="btn btn-xs"
-                                onClick={() => onSelectSession(liveSession.id)}
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '0.35rem',
-                                  background: 'rgba(74, 222, 128, 0.18)',
-                                  border: '1.5px solid #4ade80',
-                                  color: '#4ade80',
-                                  fontSize: '0.75rem',
-                                  fontWeight: 800,
-                                }}
-                                title="Open active live classroom room and student scoreboard"
+                                className="btn btn-gold btn-xs"
+                                onClick={() => onDryRunQuiz?.(round.quiz_id)}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', fontWeight: 700, fontSize: '0.75rem' }}
+                                title={`Dry run interactive simulation for ${round.title}`}
                               >
-                                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
-                                Live Room ({roundPin || liveSession.pin})
+                                <span>🧪</span> Dry Run
                               </button>
-                            ) : roundPin ? (
-                              <Link
-                                href={`/session/${roundPin}`}
-                                target="_blank"
-                                className="btn btn-xs"
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '0.35rem',
-                                  background: 'rgba(74, 222, 128, 0.18)',
-                                  border: '1.5px solid #4ade80',
-                                  color: '#4ade80',
-                                  fontSize: '0.75rem',
-                                  fontWeight: 800,
-                                }}
-                                title="Open student session room"
+
+                              <button
+                                className="btn btn-ghost btn-xs"
+                                onClick={() => handleToggleUnlock(round.id, round.is_unlocked)}
+                                disabled={isBusy}
+                                style={{ border: '1px solid var(--color-border)', fontSize: '0.75rem' }}
                               >
-                                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
-                                Live Room ({roundPin})
-                              </Link>
-                            ) : null
-                          ) : (
-                            <button
-                              className="btn btn-primary btn-xs"
-                              onClick={() => handleLaunchSession(round)}
-                              disabled={isBusy}
-                              style={{ fontSize: '0.75rem', fontWeight: 600 }}
-                            >
-                              ⚡ Launch Live
-                            </button>
+                                {round.is_unlocked ? '🔒 Lock' : '🔓 Unlock'}
+                              </button>
+
+                              {isLive ? (
+                                liveSession && onSelectSession ? (
+                                  <button
+                                    type="button"
+                                    className="btn btn-xs"
+                                    onClick={() => onSelectSession(liveSession.id)}
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '0.35rem',
+                                      background: 'rgba(74, 222, 128, 0.18)',
+                                      border: '1.5px solid #4ade80',
+                                      color: '#4ade80',
+                                      fontSize: '0.75rem',
+                                      fontWeight: 800,
+                                    }}
+                                    title="Open active live classroom room and student scoreboard"
+                                  >
+                                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                                    Live Room ({roundPin || liveSession.pin})
+                                  </button>
+                                ) : roundPin ? (
+                                  <Link
+                                    href={`/session/${roundPin}`}
+                                    target="_blank"
+                                    className="btn btn-xs"
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '0.35rem',
+                                      background: 'rgba(74, 222, 128, 0.18)',
+                                      border: '1.5px solid #4ade80',
+                                      color: '#4ade80',
+                                      fontSize: '0.75rem',
+                                      fontWeight: 800,
+                                    }}
+                                    title="Open student session room"
+                                  >
+                                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                                    Live Room ({roundPin})
+                                  </Link>
+                                ) : null
+                              ) : (
+                                <button
+                                  className="btn btn-primary btn-xs"
+                                  onClick={() => handleLaunchSession(round)}
+                                  disabled={isBusy}
+                                  style={{ fontSize: '0.75rem', fontWeight: 600 }}
+                                >
+                                  ⚡ Launch Live
+                                </button>
+                              )}
+                            </>
                           )}
                         </div>
                       </td>

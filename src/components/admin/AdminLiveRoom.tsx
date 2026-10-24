@@ -13,6 +13,7 @@ export interface LiveEntry {
   score: number
   max_score: number
   time_taken: number | null
+  completed_at?: string | null
 }
 
 interface AdminLiveRoomProps {
@@ -270,36 +271,73 @@ export function AdminLiveRoom({
                     <tr style={{ borderBottom: '1px solid var(--color-border)', textAlign: 'left', background: 'rgba(255,255,255,0.02)' }}>
                       <th style={{ padding: '0.75rem 1rem', width: 60 }}>Rank</th>
                       <th style={{ padding: '0.75rem 1rem' }}>Devotee</th>
-                      <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Time</th>
+                      <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Time Taken</th>
+                      <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Submitted At</th>
                       <th style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>Score</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {liveStats.entries.map((entry, idx) => (
-                      <tr
-                        key={entry.user_id}
-                        style={{
-                          borderBottom: '1px solid var(--color-border)',
-                          background: idx === 0 ? 'rgba(240, 199, 78, 0.08)' : undefined,
-                        }}
-                      >
-                        <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>
-                          {idx === 0 ? '🥇 1' : idx === 1 ? '🥈 2' : idx === 2 ? '🥉 3' : `#${idx + 1}`}
-                        </td>
-                        <td style={{ padding: '0.75rem 1rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                            <UserAvatar name={entry.full_name} url={entry.avatar_url} size={28} />
-                            <span style={{ fontWeight: 600 }}>{entry.full_name || 'Anonymous Devotee'}</span>
-                          </div>
-                        </td>
-                        <td style={{ padding: '0.75rem 1rem', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.85rem' }}>
-                          {entry.time_taken ? `${entry.time_taken}s` : '—'}
-                        </td>
-                        <td style={{ padding: '0.75rem 1rem', textAlign: 'right', fontWeight: 700, color: 'var(--color-gold)' }}>
-                          {entry.score} / {entry.max_score}
-                        </td>
-                      </tr>
-                    ))}
+                    {liveStats.entries.map((entry, idx) => {
+                      const durationStr = entry.time_taken != null && entry.time_taken > 0
+                        ? entry.time_taken >= 60
+                          ? `${Math.floor(entry.time_taken / 60)}m ${(entry.time_taken % 60).toString().padStart(2, '0')}s`
+                          : `${entry.time_taken}s`
+                        : '—'
+
+                      const submittedTimeStr = entry.completed_at
+                        ? new Date(entry.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                        : null
+
+                      return (
+                        <tr
+                          key={entry.user_id}
+                          style={{
+                            borderBottom: '1px solid var(--color-border)',
+                            background: idx === 0 ? 'rgba(240, 199, 78, 0.08)' : undefined,
+                          }}
+                        >
+                          <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>
+                            {idx === 0 ? '🥇 1' : idx === 1 ? '🥈 2' : idx === 2 ? '🥉 3' : `#${idx + 1}`}
+                          </td>
+                          <td style={{ padding: '0.75rem 1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                              <UserAvatar name={entry.full_name} url={entry.avatar_url} size={28} />
+                              <span style={{ fontWeight: 600 }}>{entry.full_name || 'Anonymous Devotee'}</span>
+                            </div>
+                          </td>
+                          <td style={{ padding: '0.75rem 1rem', textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.85rem' }}>
+                            {durationStr}
+                          </td>
+                          <td style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>
+                            {submittedTimeStr ? (
+                              <span
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.3rem',
+                                  padding: '0.2rem 0.55rem',
+                                  borderRadius: 6,
+                                  background: 'var(--color-surface-2)',
+                                  border: '1px solid var(--color-border)',
+                                  color: 'var(--color-text)',
+                                  fontFamily: 'monospace',
+                                  fontSize: '0.82rem',
+                                  fontWeight: 600,
+                                }}
+                                title={entry.completed_at ? new Date(entry.completed_at).toLocaleString() : ''}
+                              >
+                                🕒 {submittedTimeStr}
+                              </span>
+                            ) : (
+                              <span style={{ color: 'var(--color-muted)' }}>—</span>
+                            )}
+                          </td>
+                          <td style={{ padding: '0.75rem 1rem', textAlign: 'right', fontWeight: 700, color: 'var(--color-gold)' }}>
+                            {entry.score} / {entry.max_score}
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>

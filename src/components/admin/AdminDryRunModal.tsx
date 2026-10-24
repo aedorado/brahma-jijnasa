@@ -150,8 +150,8 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
         right: 0,
         bottom: 0,
         zIndex: 99999,
-        background: 'rgba(5, 5, 10, 0.92)',
-        backdropFilter: 'blur(12px)',
+        background: 'var(--color-bg)',
+        color: 'var(--color-text)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -162,7 +162,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
       <div
         style={{
           padding: '0.85rem 1.5rem',
-          background: 'rgba(15, 15, 25, 0.95)',
+          background: 'var(--color-surface)',
           borderBottom: '1px solid var(--color-border)',
           display: 'flex',
           justifyContent: 'space-between',
@@ -210,7 +210,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
           <div
             style={{
               display: 'inline-flex',
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: 'var(--color-surface-2)',
               padding: '0.2rem',
               borderRadius: 8,
               border: '1px solid var(--color-border)',
@@ -310,7 +310,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                   <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                       <thead>
-                        <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
+                        <tr style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
                           <th style={{ padding: '0.6rem 0.75rem' }}>#</th>
                           <th style={{ padding: '0.6rem 0.75rem' }}>Type</th>
                           <th style={{ padding: '0.6rem 0.75rem' }}>Correct Answer Key</th>
@@ -355,7 +355,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                   {/* ADMIN COMPANION TOOLBAR ABOVE QUIZ */}
                   <div
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: 'var(--color-surface)',
                       border: '1px solid var(--color-border)',
                       borderRadius: 12,
                       padding: '0.85rem 1.25rem',
@@ -380,7 +380,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                         style={{
                           padding: '0.4rem 0.75rem',
                           borderRadius: 8,
-                          background: 'rgba(0,0,0,0.4)',
+                          background: 'var(--color-surface-2)',
                           border: '1px solid var(--color-border)',
                           color: 'var(--color-text)',
                           fontSize: '0.82rem',
@@ -460,7 +460,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               <div
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'var(--color-surface)',
                   border: '1px solid var(--color-border)',
                   borderRadius: 12,
                   padding: '1rem 1.5rem',
@@ -534,8 +534,8 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                   {/* Inspector Footer: Answer Key & Explanation */}
                   <div
                     style={{
-                      background: 'rgba(0, 0, 0, 0.3)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      background: 'var(--color-surface-2)',
+                      border: '1px solid var(--color-border)',
                       borderRadius: 10,
                       padding: '1rem',
                       fontSize: '0.82rem',
