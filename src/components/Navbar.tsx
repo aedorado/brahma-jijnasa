@@ -13,7 +13,7 @@ export function Navbar() {
   const { user, loading, login, logout } = useAuth()
   const { t } = useLanguage()
   const pathname = usePathname()
-  const [theme, setThemeState] = useState<'dark' | 'light'>('dark')
+  const [theme, setThemeState] = useState<'dark' | 'light'>('light')
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)

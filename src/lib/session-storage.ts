@@ -54,9 +54,9 @@ export function clearProgress(pin: string, userId: string): void {
 // ——— Theme persistence ———
 export function getTheme(): 'dark' | 'light' {
   try {
-    return (localStorage.getItem('bj_theme') as 'dark' | 'light') || 'dark'
+    return (localStorage.getItem('bj_theme') as 'dark' | 'light') || 'light'
   } catch {
-    return 'dark'
+    return 'light'
   }
 }
 

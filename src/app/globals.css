@@ -497,7 +497,8 @@ a:hover { text-decoration: underline; }
    PROGRESS
    ============================================ */
 
-.progress-bar-track { width: 100%; height: 4px; background: var(--color-surface-2); border-radius: var(--radius-full); overflow: hidden; }
+.progress-bar-track { width: 100%; height: 7px; background: var(--color-surface-2); border-radius: var(--radius-full); overflow: hidden; }
+[data-theme="light"] .progress-bar-track { background: rgba(180, 83, 9, 0.14); border: 1px solid rgba(180, 83, 9, 0.22); }
 .progress-bar-fill  { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-gold)); border-radius: var(--radius-full); transition: width var(--transition-slow); }
 
 .q-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
@@ -730,8 +731,8 @@ a:hover { text-decoration: underline; }
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: rgba(0, 0, 0, 0.25);
+  height: 6px;
+  background: rgba(0, 0, 0, 0.35);
   z-index: 10000;
   pointer-events: none;
   overflow: visible;
@@ -739,12 +740,14 @@ a:hover { text-decoration: underline; }
 }
 
 [data-theme="light"] .quiz-ambient-time-beam-container {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(180, 83, 9, 0.16);
+  border-bottom: 1px solid rgba(180, 83, 9, 0.28);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .quiz-ambient-time-beam-fill {
   height: 100%;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 3px 3px 0;
   transition: width 1s linear, background 0.8s ease, box-shadow 0.8s ease;
 }
 
@@ -754,10 +757,20 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 0 8px rgba(212, 175, 55, 0.7), 0 0 16px rgba(212, 175, 55, 0.3);
 }
 
+[data-theme="light"] .quiz-ambient-time-beam-container.normal .quiz-ambient-time-beam-fill {
+  background: linear-gradient(90deg, #c2410c 0%, #ea580c 50%, #f59e0b 100%);
+  box-shadow: 0 0 12px rgba(234, 88, 12, 0.7), 0 2px 4px rgba(194, 65, 12, 0.5);
+}
+
 /* Warning state: Warm Amber Beam */
 .quiz-ambient-time-beam-container.warning .quiz-ambient-time-beam-fill {
   background: linear-gradient(90deg, #d97706 0%, #f59e0b 60%, #fbbf24 100%);
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.85), 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+[data-theme="light"] .quiz-ambient-time-beam-container.warning .quiz-ambient-time-beam-fill {
+  background: linear-gradient(90deg, #b91c1c 0%, #ea580c 55%, #f97316 100%);
+  box-shadow: 0 0 14px rgba(234, 88, 12, 0.85), 0 2px 6px rgba(185, 28, 28, 0.6);
 }
 
 /* Critical state: Pulsing Crimson Beam */
@@ -767,13 +780,24 @@ a:hover { text-decoration: underline; }
   animation: beamCriticalPulse 1s ease-in-out infinite;
 }
 
+[data-theme="light"] .quiz-ambient-time-beam-container.critical .quiz-ambient-time-beam-fill {
+  background: linear-gradient(90deg, #991b1b 0%, #dc2626 55%, #ef4444 100%);
+  box-shadow: 0 0 16px rgba(220, 38, 38, 0.95), 0 2px 8px rgba(153, 27, 27, 0.7);
+  animation: beamCriticalPulse 1s ease-in-out infinite;
+}
+
 /* Milestone Flash: Breathing glow when crossing milestones */
 .quiz-ambient-time-beam-container.milestone-flash {
-  height: 4.5px;
+  height: 8px;
 }
 .quiz-ambient-time-beam-container.milestone-flash .quiz-ambient-time-beam-fill {
   box-shadow: 0 0 18px rgba(240, 199, 78, 1), 0 0 36px rgba(240, 199, 78, 0.6);
   filter: brightness(1.3);
+}
+
+[data-theme="light"] .quiz-ambient-time-beam-container.milestone-flash .quiz-ambient-time-beam-fill {
+  box-shadow: 0 0 20px rgba(234, 88, 12, 1), 0 2px 10px rgba(180, 83, 9, 0.8);
+  filter: brightness(1.2);
 }
 
 @keyframes beamCriticalPulse {
@@ -2388,5 +2412,110 @@ a:hover { text-decoration: underline; }
   .flashcard-card-scene {
     min-height: 380px;
   }
+}
+
+/* ============================================
+   BOOK PURCHASE BANNER & QR COMPONENT
+   ============================================ */
+.book-purchase-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-border-gold);
+  background: linear-gradient(135deg, rgba(240, 199, 78, 0.12) 0%, rgba(28, 22, 53, 0.95) 100%);
+  box-shadow: var(--shadow-card), var(--shadow-glow-gold);
+}
+
+[data-theme="light"] .book-purchase-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAF2E3 100%);
+  border: 1.5px solid rgba(158, 117, 20, 0.35);
+  box-shadow: 0 10px 30px rgba(158, 117, 20, 0.12);
+}
+
+.book-purchase-title {
+  color: #FAF4E4;
+}
+
+[data-theme="light"] .book-purchase-title {
+  color: #1A1530;
+}
+
+.book-purchase-author {
+  color: var(--color-muted);
+}
+
+[data-theme="light"] .book-purchase-author {
+  color: #6E6578;
+}
+
+.book-store-pill {
+  font-size: 0.72rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+[data-theme="light"] .book-store-pill {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  color: #1A1530;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.book-store-pill:hover {
+  border-color: var(--color-gold);
+}
+
+.book-store-pill.selected {
+  border: 1.5px solid var(--color-gold);
+  background: rgba(240, 199, 78, 0.25);
+  color: var(--color-gold);
+  font-weight: 800;
+}
+
+[data-theme="light"] .book-store-pill.selected {
+  border: 1.5px solid #C8620A;
+  background: rgba(200, 98, 10, 0.14);
+  color: #C8620A;
+  font-weight: 800;
+}
+
+.book-store-more-btn {
+  font-size: 0.72rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: none;
+  color: var(--color-gold);
+  cursor: pointer;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+[data-theme="light"] .book-store-more-btn {
+  border-color: rgba(158, 117, 20, 0.35);
+  color: #9E7514;
+}
+
+.book-qr-box {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgba(240, 199, 78, 0.45);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .book-qr-box {
+  border: 2px solid rgba(158, 117, 20, 0.4);
+  box-shadow: 0 6px 18px rgba(158, 117, 20, 0.18);
 }
 

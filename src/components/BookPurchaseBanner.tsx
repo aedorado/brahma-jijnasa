@@ -117,18 +117,14 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
   }
 
   // Variant: Post-Quiz (Appears on ScoreCard)
+  // Variant: Post-Quiz (Appears on ScoreCard)
   if (variant === 'post-quiz') {
     return (
       <div
-        className={`card-gold animate-fadeIn ${className}`}
+        className={`book-purchase-card animate-fadeIn ${className}`}
         style={{
           padding: '1.5rem',
-          margin: '2rem 0',
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'linear-gradient(135deg, rgba(240, 199, 78, 0.09) 0%, rgba(20, 15, 38, 0.85) 100%)',
-          border: '1px solid rgba(240, 199, 78, 0.35)',
-          borderRadius: 14,
+          margin: '1.5rem 0',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -142,6 +138,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               background: 'rgba(240, 199, 78, 0.15)',
               padding: '0.2rem 0.6rem',
               borderRadius: 9999,
+              border: '1px solid rgba(240, 199, 78, 0.3)',
             }}
           >
             {labels.badge}
@@ -162,18 +159,13 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
           }}
         >
           {/* QR Code Container */}
-          <div
-            style={{
-              background: '#ffffff',
-              padding: '8px',
-              borderRadius: 12,
-              boxShadow: '0 6px 18px rgba(0, 0, 0, 0.4)',
-              display: 'inline-flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              border: '2px solid rgba(240, 199, 78, 0.4)',
-              flexShrink: 0,
-            }}
+          <a
+            href={selectedStore.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="book-qr-box"
+            style={{ textDecoration: 'none', cursor: 'pointer' }}
+            title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
           >
             <Image
               src={BOOK_QR_IMAGE}
@@ -195,37 +187,30 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             >
               {labels.scanPrompt}
             </span>
-          </div>
+          </a>
 
           {/* Book Info & Direct Button */}
           <div style={{ flex: 1, minWidth: 220 }}>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, marginBottom: '0.2rem', color: '#FAF4E4' }}>
+            <h4 className="book-purchase-title" style={{ fontSize: '1.05rem', fontWeight: 800, marginBottom: '0.2rem' }}>
               {labels.title}
             </h4>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '0.35rem' }}>
               {labels.subtitle}
             </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted)', marginBottom: '0.8rem' }}>
+            <p className="book-purchase-author" style={{ fontSize: '0.78rem', marginBottom: '0.8rem' }}>
               {labels.author}
             </p>
 
             {/* Country Selector Pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
               <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)' }}>Store:</span>
               {AMAZON_STORES.slice(0, 5).map(s => (
                 <button
                   key={s.code}
                   type="button"
                   onClick={() => setSelectedStoreCode(s.code)}
-                  style={{
-                    fontSize: '0.72rem',
-                    padding: '0.2rem 0.5rem',
-                    borderRadius: 6,
-                    border: selectedStoreCode === s.code ? '1px solid var(--color-gold)' : '1px solid var(--color-border)',
-                    background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                    color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
+                  className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
+                  title={`${s.name} (${s.code})`}
                 >
                   {s.flag} {s.code}
                 </button>
@@ -233,15 +218,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               <button
                 type="button"
                 onClick={() => setShowAllStores(prev => !prev)}
-                style={{
-                  fontSize: '0.72rem',
-                  padding: '0.2rem 0.5rem',
-                  borderRadius: 6,
-                  border: '1px solid var(--color-border)',
-                  background: 'none',
-                  color: 'var(--color-gold)',
-                  cursor: 'pointer',
-                }}
+                className="book-store-more-btn"
               >
                 {showAllStores ? '▲ Less' : '▼ More (13+ countries)'}
               </button>
@@ -256,7 +233,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                   marginBottom: '0.85rem',
                   padding: '0.5rem',
                   borderRadius: 8,
-                  background: 'rgba(0,0,0,0.3)',
+                  background: 'var(--color-surface-2)',
                   border: '1px solid var(--color-border)',
                 }}
               >
@@ -268,15 +245,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                       setSelectedStoreCode(s.code)
                       setShowAllStores(false)
                     }}
-                    style={{
-                      fontSize: '0.72rem',
-                      padding: '0.25rem 0.55rem',
-                      borderRadius: 6,
-                      border: selectedStoreCode === s.code ? '1px solid var(--color-gold)' : '1px solid rgba(255,255,255,0.1)',
-                      background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                      color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                      cursor: 'pointer',
-                    }}
+                    className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
                   >
                     {s.flag} {s.name}
                   </button>
@@ -309,15 +278,10 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
   // Variant: Standard Card (Used on Series Principles Tab)
   return (
     <div
-      className={`card-gold animate-fadeIn ${className}`}
+      className={`book-purchase-card animate-fadeIn ${className}`}
       style={{
         padding: '1.75rem',
         marginBottom: '2rem',
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'linear-gradient(135deg, rgba(240, 199, 78, 0.08) 0%, rgba(20, 15, 38, 0.9) 100%)',
-        border: '1px solid rgba(240, 199, 78, 0.35)',
-        borderRadius: 16,
       }}
     >
       {/* Top Header Row with Minimize Toggle */}
@@ -366,13 +330,13 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
       >
         {/* Left Side: Editorial Context */}
         <div>
-          <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '0.35rem', color: '#FAF4E4' }}>
+          <h3 className="book-purchase-title" style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '0.35rem' }}>
             {labels.title}
           </h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '0.35rem' }}>
             {labels.subtitle}
           </p>
-          <p style={{ fontSize: '0.82rem', color: 'var(--color-muted)', marginBottom: '0.85rem' }}>
+          <p className="book-purchase-author" style={{ fontSize: '0.82rem', marginBottom: '0.85rem' }}>
             {labels.author}
           </p>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '1.15rem' }}>
@@ -390,16 +354,8 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                   key={s.code}
                   type="button"
                   onClick={() => setSelectedStoreCode(s.code)}
-                  style={{
-                    fontSize: '0.75rem',
-                    padding: '0.3rem 0.65rem',
-                    borderRadius: 8,
-                    border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid var(--color-border)',
-                    background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.22)' : 'rgba(255, 255, 255, 0.04)',
-                    color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                    fontWeight: selectedStoreCode === s.code ? 700 : 500,
-                    cursor: 'pointer',
-                  }}
+                  className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
+                  title={`${s.name} (${s.code})`}
                 >
                   {s.flag} {s.name}
                 </button>
@@ -407,15 +363,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               <button
                 type="button"
                 onClick={() => setShowAllStores(prev => !prev)}
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.3rem 0.65rem',
-                  borderRadius: 8,
-                  border: '1px solid var(--color-border)',
-                  background: 'none',
-                  color: 'var(--color-gold)',
-                  cursor: 'pointer',
-                }}
+                className="book-store-more-btn"
               >
                 {showAllStores ? '▲ Less' : '▼ More Regions'}
               </button>
@@ -430,7 +378,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                   marginTop: '0.65rem',
                   padding: '0.75rem',
                   borderRadius: 10,
-                  background: 'rgba(0,0,0,0.3)',
+                  background: 'var(--color-surface-2)',
                   border: '1px solid var(--color-border)',
                 }}
               >
@@ -442,16 +390,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                       setSelectedStoreCode(s.code)
                       setShowAllStores(false)
                     }}
-                    style={{
-                      fontSize: '0.75rem',
-                      padding: '0.3rem 0.65rem',
-                      borderRadius: 8,
-                      border: selectedStoreCode === s.code ? '1.5px solid var(--color-gold)' : '1px solid rgba(255,255,255,0.08)',
-                      background: selectedStoreCode === s.code ? 'rgba(240, 199, 78, 0.22)' : 'rgba(255, 255, 255, 0.04)',
-                      color: selectedStoreCode === s.code ? 'var(--color-gold)' : 'var(--color-text)',
-                      fontWeight: selectedStoreCode === s.code ? 700 : 500,
-                      cursor: 'pointer',
-                    }}
+                    className={`book-store-pill ${selectedStoreCode === s.code ? 'selected' : ''}`}
                   >
                     {s.flag} {s.name}
                   </button>
@@ -490,23 +429,20 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(240, 199, 78, 0.2)',
+            background: 'var(--color-surface-2)',
+            border: '1px solid var(--color-border-gold)',
             borderRadius: 14,
             padding: '1.25rem',
             textAlign: 'center',
           }}
         >
-          <div
-            style={{
-              background: '#ffffff',
-              padding: '10px',
-              borderRadius: 12,
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.45)',
-              display: 'inline-block',
-              border: '2px solid rgba(240, 199, 78, 0.4)',
-              marginBottom: '0.65rem',
-            }}
+          <a
+            href={selectedStore.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="book-qr-box"
+            style={{ textDecoration: 'none', cursor: 'pointer', marginBottom: '0.65rem' }}
+            title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
           >
             <Image
               src={BOOK_QR_IMAGE}
@@ -516,7 +452,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               style={{ display: 'block', borderRadius: 8 }}
               priority
             />
-          </div>
+          </a>
           <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-gold)', marginBottom: '0.2rem' }}>
             📷 {labels.scanPrompt}
           </p>
