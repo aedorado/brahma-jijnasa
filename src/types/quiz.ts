@@ -180,8 +180,10 @@ export type Question =
 export interface Quiz {
   id: string
   title: string
+  titles?: Record<string, string>
   category: Category
   description: string
+  descriptions?: Record<string, string>
   difficulty: Difficulty
   timeLimit: number             // seconds; 0 = no limit
   onTimeExpiry: OnTimeExpiry
@@ -191,8 +193,10 @@ export interface Quiz {
 export interface QuizMeta {
   id: string
   title: string
+  titles?: Record<string, string>
   category: Category
   description: string
+  descriptions?: Record<string, string>
   difficulty: Difficulty
   timeLimit: number
   onTimeExpiry: OnTimeExpiry

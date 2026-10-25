@@ -461,7 +461,7 @@ export default function LiveQuizzesPage() {
             /* ACTIVE LIVE QUIZZES LIST */
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {filteredLiveItems.map(({ session, meta, attempt, isAttempted }) => {
-                const title = meta?.title || session.quiz_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                const title = (language && meta?.titles?.[language]?.trim()) || meta?.titles?.en || meta?.title || session.quiz_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
                 const category = meta?.category || 'general'
                 const totalQuestions = meta?.totalQuestions ?? 20
                 const difficulty = meta?.difficulty || 'medium'
@@ -510,7 +510,7 @@ export default function LiveQuizzesPage() {
                         </span>
 
                         <span className="badge badge-gold" style={{ fontSize: '0.72rem' }}>
-                          {CATEGORY_ICONS[category as Category] || '📜'} {CATEGORY_LABELS[category as Category] || category}
+                          {CATEGORY_ICONS[category as Category] || '📜'} {(t.categories as any)?.[category] || CATEGORY_LABELS[category as Category] || category}
                         </span>
 
                         {isAttempted ? (
@@ -637,7 +637,7 @@ export default function LiveQuizzesPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {pastAttemptsList.map(att => {
                 const meta = quizMetaMap.get(att.quiz_id)
-                const title = meta?.title || att.quiz_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                const title = (language && meta?.titles?.[language]?.trim()) || meta?.titles?.en || meta?.title || att.quiz_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
                 const category = meta?.category || 'general'
 
                 return (
@@ -657,7 +657,7 @@ export default function LiveQuizzesPage() {
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
                         <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
-                          {CATEGORY_ICONS[category as Category] || '📜'} {CATEGORY_LABELS[category as Category] || category}
+                          {CATEGORY_ICONS[category as Category] || '📜'} {(t.categories as any)?.[category] || CATEGORY_LABELS[category as Category] || category}
                         </span>
                         <span
                           className="badge"

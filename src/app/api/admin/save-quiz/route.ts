@@ -28,17 +28,32 @@ export async function POST(request: Request) {
       rawQuestionsInput = { en: mdRes.questions }
     }
 
+    // Parse multilingual titles and descriptions
+    const titles: Record<string, string> = typeof body.titles === 'object' && body.titles !== null ? { ...body.titles } : {}
+    const descriptions: Record<string, string> = typeof body.descriptions === 'object' && body.descriptions !== null ? { ...body.descriptions } : {}
+
     // 1. Validate top-level metadata (filling from markdown frontmatter if present)
     const id = typeof body.id === 'string' ? body.id.trim() : (parsedFromMarkdownMeta?.id || '')
-    const title = typeof body.title === 'string' ? body.title.trim() : (parsedFromMarkdownMeta?.title || '')
+    let rawTitle = typeof body.title === 'string' ? body.title.trim() : (parsedFromMarkdownMeta?.title || '')
     const category = typeof body.category === 'string' ? body.category.trim() : (parsedFromMarkdownMeta?.category || 'general')
-    const description = typeof body.description === 'string' ? body.description.trim() : (parsedFromMarkdownMeta?.description || '')
+    let rawDescription = typeof body.description === 'string' ? body.description.trim() : (parsedFromMarkdownMeta?.description || '')
     const difficulty = body.difficulty || parsedFromMarkdownMeta?.difficulty || 'medium'
     const time_limit = Number(body.time_limit || body.timeLimit || parsedFromMarkdownMeta?.timeLimit || 720)
     const on_time_expiry = body.on_time_expiry || body.onTimeExpiry || parsedFromMarkdownMeta?.onTimeExpiry || 'submit-partial'
     const author_name = body.author_name || body.authorName || parsedFromMarkdownMeta?.authorName || 'Brahmā-Jijñāsā Editorial'
     const is_published = body.is_published !== undefined ? Boolean(body.is_published) : true
     const tags = Array.isArray(body.tags) ? body.tags : (parsedFromMarkdownMeta?.tags || [category])
+
+    if (rawTitle && !titles.en) titles.en = rawTitle
+    if (titles.en && !rawTitle) rawTitle = titles.en
+    if (!rawTitle && Object.values(titles).length > 0) rawTitle = Object.values(titles)[0]
+
+    if (rawDescription && !descriptions.en) descriptions.en = rawDescription
+    if (descriptions.en && !rawDescription) rawDescription = descriptions.en
+    if (!rawDescription && Object.values(descriptions).length > 0) rawDescription = Object.values(descriptions)[0]
+
+    const title = rawTitle
+    const description = rawDescription
 
     if (!id) {
       return NextResponse.json({ error: 'Quiz must have a valid slug "id" (e.g. "64-day-01").' }, { status: 400 })
@@ -122,15 +137,23 @@ export async function POST(request: Request) {
     const dbPayload: Record<string, any> = {
       id,
       title,
+      titles,
       category,
       description: description || null,
+      descriptions,
       difficulty,
       time_limit,
       on_time_expiry,
       author_name,
       is_published,
       tags,
-      questions: questionsPayload,
+      questions: {
+        ...questionsPayload,
+        _meta: {
+          titles,
+          descriptions,
+        },
+      },
       updated_at,
     }
 
@@ -140,6 +163,14 @@ export async function POST(request: Request) {
     let { error: dbError } = await supabase
       .from('quizzes')
       .upsert(dbPayload, { onConflict: 'id' })
+
+    // Auto-recovery 0: if titles or descriptions columns do not exist yet in DB table schema
+    if (dbError && (dbError.message?.toLowerCase().includes('titles') || dbError.message?.toLowerCase().includes('descriptions'))) {
+      delete dbPayload.titles
+      delete dbPayload.descriptions
+      const retry = await supabase.from('quizzes').upsert(dbPayload, { onConflict: 'id' })
+      dbError = retry.error
+    }
 
     // Auto-recovery 1: if updated_by column does not exist yet (before migration 008 is run)
     if (dbError && dbError.message?.toLowerCase().includes('updated_by')) {

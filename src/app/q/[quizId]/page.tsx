@@ -315,10 +315,12 @@ export default function DirectQuizPage({ params }: Props) {
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>{quiz.description}</p>
         </div>
         <div className="divider-gold" />
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
           {[
             { label: t.quizIntro?.questions || 'Questions', value: quiz.questions.length },
             { label: t.quizIntro?.timeLimit || 'Time Limit', value: quiz.timeLimit > 0 ? `${Math.floor(quiz.timeLimit / 60)} ${t.quizIntro?.min || 'min'}` : (t.quizIntro?.noLimit || 'No limit') },
+            { label: t.quizIntro?.difficulty || 'Difficulty', value: (t.quizEngine as any)?.[quiz.difficulty] || quiz.difficulty.charAt(0).toUpperCase() + quiz.difficulty.slice(1) },
+            { label: t.quizIntro?.category || 'Category', value: (t.categories as any)?.[quiz.category] || quiz.category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) },
           ].map(({ label, value }) => (
             <div key={label} className="card" style={{ padding: '0.85rem', textAlign: 'center' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '0.2rem' }}>{label}</p>

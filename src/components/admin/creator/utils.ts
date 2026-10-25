@@ -56,10 +56,12 @@ export function formatIstDisplay(localDatetimeStr: string): string {
 }
 
 export function computeQuizSnapshot(data: {
-  title: string
+  title?: string
+  titles?: Record<SupportedLang, string>
   slug: string
   category: string
-  description: string
+  description?: string
+  descriptions?: Record<SupportedLang, string>
   difficulty: string
   timeLimitMins: number
   onTimeExpiry: string
@@ -70,11 +72,22 @@ export function computeQuizSnapshot(data: {
   unlockAtInput?: string
   questionsRaw: Record<SupportedLang, string>
 }): string {
+  const titles = data.titles || { en: data.title || '', hi: '', pt: '' }
+  const descriptions = data.descriptions || { en: data.description || '', hi: '', pt: '' }
+
   return JSON.stringify({
-    title: data.title.trim(),
+    titles: {
+      en: (titles.en || data.title || '').trim(),
+      hi: (titles.hi || '').trim(),
+      pt: (titles.pt || '').trim(),
+    },
     slug: data.slug.trim(),
     category: data.category,
-    description: data.description.trim(),
+    descriptions: {
+      en: (descriptions.en || data.description || '').trim(),
+      hi: (descriptions.hi || '').trim(),
+      pt: (descriptions.pt || '').trim(),
+    },
     difficulty: data.difficulty,
     timeLimitMins: data.timeLimitMins,
     onTimeExpiry: data.onTimeExpiry,

@@ -65,22 +65,48 @@ async function migrateAllQuizzes() {
 
   for (const cat of categories) {
     const catDir = path.join(QUIZZES_DIR, cat)
-    const files = fs.readdirSync(catDir).filter(f => f.endsWith('.json'))
+    const files = fs.readdirSync(catDir).filter(f => f.endsWith('.json') || f.endsWith('.md'))
 
     for (const f of files) {
       const fullPath = path.join(catDir, f)
       try {
-        const raw = JSON.parse(fs.readFileSync(fullPath, 'utf8'))
-        const isHi = f.endsWith('.hi.json') || f.endsWith('-hi.json')
-        const isPt = f.endsWith('.pt.json') || f.endsWith('-pt.json')
-        const baseId = raw.id || f.replace(/\.(hi|pt)\.json$/, '').replace(/\.json$/, '')
+        let raw
+        const isHi = f.endsWith('.hi.json') || f.endsWith('-hi.json') || f.endsWith('.hi.md')
+        const isPt = f.endsWith('.pt.json') || f.endsWith('-pt.json') || f.endsWith('.pt.md')
+        const currentLang = isHi ? 'hi' : isPt ? 'pt' : 'en'
+
+        if (f.endsWith('.json')) {
+          raw = JSON.parse(fs.readFileSync(fullPath, 'utf8'))
+        } else if (f.endsWith('.md')) {
+          const content = fs.readFileSync(fullPath, 'utf8')
+          const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+          raw = {}
+          if (fmMatch) {
+            for (const line of fmMatch[1].split('\n')) {
+              const colonIdx = line.indexOf(':')
+              if (colonIdx > 0) {
+                const key = line.slice(0, colonIdx).trim()
+                let val = line.slice(colonIdx + 1).trim()
+                if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+                  val = val.slice(1, -1)
+                }
+                raw[key] = val
+              }
+            }
+          }
+          raw.questions = [] // Questions from markdown will be parsed if json doesn't exist
+        }
+
+        const baseId = raw.id || f.replace(/\.(hi|pt)\.(json|md)$/, '').replace(/\.(json|md)$/, '')
 
         if (!quizMap.has(baseId)) {
           quizMap.set(baseId, {
             id: baseId,
             title: raw.title || baseId,
+            titles: {},
             category: raw.category || cat,
             description: raw.description || null,
+            descriptions: {},
             difficulty: raw.difficulty || 'medium',
             time_limit: raw.timeLimit || 720,
             on_time_expiry: raw.onTimeExpiry || 'submit-partial',
@@ -89,18 +115,26 @@ async function migrateAllQuizzes() {
         }
 
         const entry = quizMap.get(baseId)
-        if (isHi) {
-          entry.languages.hi = normalizeQuestions(raw.questions)
-        } else if (isPt) {
-          entry.languages.pt = normalizeQuestions(raw.questions)
-        } else {
+        if (raw.title) entry.titles[currentLang] = raw.title
+        if (raw.description) entry.descriptions[currentLang] = raw.description
+
+        if (Array.isArray(raw.questions) && raw.questions.length > 0) {
+          if (isHi) {
+            entry.languages.hi = normalizeQuestions(raw.questions)
+          } else if (isPt) {
+            entry.languages.pt = normalizeQuestions(raw.questions)
+          } else {
+            entry.languages.en = normalizeQuestions(raw.questions)
+          }
+        }
+
+        if (!isHi && !isPt) {
           entry.title = raw.title || entry.title
           entry.description = raw.description || entry.description
           entry.category = raw.category || entry.category
           entry.difficulty = raw.difficulty || entry.difficulty
           entry.time_limit = raw.timeLimit || entry.time_limit
           entry.on_time_expiry = raw.onTimeExpiry || entry.on_time_expiry
-          entry.languages.en = normalizeQuestions(raw.questions)
         }
       } catch (err) {
         console.warn(`Could not parse ${f}:`, err.message)
@@ -114,11 +148,18 @@ async function migrateAllQuizzes() {
   let failCount = 0
 
   for (const [quizId, item] of quizMap.entries()) {
+    const titles = { ...item.titles }
+    if (!titles.en && item.title) titles.en = item.title
+    const descriptions = { ...item.descriptions }
+    if (!descriptions.en && item.description) descriptions.en = item.description
+
     const payload = {
       id: item.id,
-      title: item.title,
+      title: titles.en || item.title,
+      titles,
       category: item.category,
-      description: item.description,
+      description: descriptions.en || item.description,
+      descriptions,
       difficulty: item.difficulty,
       time_limit: item.time_limit,
       on_time_expiry: item.on_time_expiry,
@@ -129,20 +170,33 @@ async function migrateAllQuizzes() {
         en: item.languages.en || [],
         ...(item.languages.hi && item.languages.hi.length > 0 ? { hi: item.languages.hi } : {}),
         ...(item.languages.pt && item.languages.pt.length > 0 ? { pt: item.languages.pt } : {}),
+        _meta: {
+          titles,
+          descriptions,
+        },
       },
       updated_at: new Date().toISOString(),
     }
 
-    const { error } = await supabase
+    let { error } = await supabase
       .from('quizzes')
       .upsert(payload, { onConflict: 'id' })
+
+    // Auto-recovery if titles or descriptions columns don't exist yet on DB table
+    if (error && (error.message?.toLowerCase().includes('titles') || error.message?.toLowerCase().includes('descriptions'))) {
+      delete payload.titles
+      delete payload.descriptions
+      const retry = await supabase.from('quizzes').upsert(payload, { onConflict: 'id' })
+      error = retry.error
+    }
 
     if (error) {
       console.error(`❌ Failed to migrate quiz [${quizId}]:`, error.message)
       failCount++
     } else {
-      const langKeys = Object.keys(payload.questions).join(', ')
-      console.log(`✅ Migrated [${quizId}]: "${item.title}" (${langKeys})`)
+      const titleLangs = Object.keys(titles).join(', ')
+      const qLangs = Object.keys(payload.questions).filter(k => k !== '_meta').join(', ')
+      console.log(`✅ Migrated [${quizId}]: "${payload.title}" (Titles: [${titleLangs}], Qs: [${qLangs}])`)
       successCount++
     }
   }

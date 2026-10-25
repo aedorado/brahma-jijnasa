@@ -26,11 +26,21 @@ export function AdminQuizCreator({
   const { user } = useAuth()
 
   // 1. Metadata Form State
-  const [title, setTitle] = useState('')
+  const [titles, setTitles] = useState<Record<SupportedLang, string>>({
+    en: '',
+    hi: '',
+    pt: '',
+  })
   const [slug, setSlug] = useState('')
   const [isSlugManual, setIsSlugManual] = useState(false)
   const [category, setCategory] = useState<string>('64-principles')
-  const [description, setDescription] = useState('')
+  const [descriptions, setDescriptions] = useState<Record<SupportedLang, string>>({
+    en: '',
+    hi: '',
+    pt: '',
+  })
+  const title = titles.en || ''
+  const description = descriptions.en || ''
   const [difficulty, setDifficulty] = useState<Difficulty>('medium')
   const [timeLimitMins, setTimeLimitMins] = useState(12)
   const [onTimeExpiry, setOnTimeExpiry] = useState<'submit-partial' | 'block-submit'>('submit-partial')
@@ -73,11 +83,25 @@ export function AdminQuizCreator({
       if (!res.ok) throw new Error(`Could not load quiz "${targetId}" from database.`)
       const data = await res.json()
 
-      setTitle(data.title || '')
+      const qObj = data.questions || {}
+      const metaObj = qObj._meta || {}
+
+      const loadedTitles: Record<SupportedLang, string> = {
+        en: data.titles?.en || metaObj.titles?.en || data.title || '',
+        hi: data.titles?.hi || metaObj.titles?.hi || '',
+        pt: data.titles?.pt || metaObj.titles?.pt || '',
+      }
+      const loadedDescriptions: Record<SupportedLang, string> = {
+        en: data.descriptions?.en || metaObj.descriptions?.en || data.description || '',
+        hi: data.descriptions?.hi || metaObj.descriptions?.hi || '',
+        pt: data.descriptions?.pt || metaObj.descriptions?.pt || '',
+      }
+
+      setTitles(loadedTitles)
       setSlug(data.id || targetId)
       setIsSlugManual(true)
       setCategory(data.category || 'general')
-      setDescription(data.description || '')
+      setDescriptions(loadedDescriptions)
       setDifficulty(data.difficulty || 'medium')
       setTimeLimitMins(Math.round((data.time_limit || 720) / 60))
       setOnTimeExpiry(data.on_time_expiry || 'submit-partial')
@@ -85,7 +109,6 @@ export function AdminQuizCreator({
       setIsPublished(data.is_published !== false)
       setIsEditingExisting(true)
 
-      const qObj = data.questions || {}
       const rawMap: Record<SupportedLang, string> = { en: '', hi: '', pt: '' }
       const parsedMap: Record<SupportedLang, Question[]> = { en: [], hi: [], pt: [] }
 
@@ -107,10 +130,12 @@ export function AdminQuizCreator({
       setParsedQuestions(parsedMap)
 
       const loadedSnapshot = computeQuizSnapshot({
-        title: data.title || '',
+        title: loadedTitles.en,
+        titles: loadedTitles,
         slug: data.id || targetId,
         category: data.category || 'general',
-        description: data.description || '',
+        description: loadedDescriptions.en,
+        descriptions: loadedDescriptions,
         difficulty: data.difficulty || 'medium',
         timeLimitMins: Math.round((data.time_limit || 720) / 60),
         onTimeExpiry: data.on_time_expiry || 'submit-partial',
@@ -135,11 +160,11 @@ export function AdminQuizCreator({
 
   // Reset to empty new quiz
   const handleResetToNew = () => {
-    setTitle('')
+    setTitles({ en: '', hi: '', pt: '' })
     setSlug('')
     setIsSlugManual(false)
     setCategory('64-principles')
-    setDescription('')
+    setDescriptions({ en: '', hi: '', pt: '' })
     setDifficulty('medium')
     setTimeLimitMins(12)
     setOnTimeExpiry('submit-partial')
@@ -160,16 +185,28 @@ export function AdminQuizCreator({
     }
   }, [user, authorName])
 
-  // Auto-slugify when title changes if user hasn't typed a custom slug
-  const handleTitleChange = (val: string) => {
-    setTitle(val)
-    if (!isSlugManual) {
+  // Localized title & description handlers
+  const handleLocalizedTitleChange = (lang: SupportedLang, val: string) => {
+    setTitles(prev => ({ ...prev, [lang]: val }))
+    if (lang === 'en' && !isSlugManual) {
       const autoSlug = val
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '')
       setSlug(autoSlug)
     }
+  }
+
+  const handleTitleChange = (val: string) => {
+    handleLocalizedTitleChange('en', val)
+  }
+
+  const handleLocalizedDescriptionChange = (lang: SupportedLang, val: string) => {
+    setDescriptions(prev => ({ ...prev, [lang]: val }))
+  }
+
+  const handleDescriptionChange = (val: string) => {
+    handleLocalizedDescriptionChange('en', val)
   }
 
   const handleToggleEditorFormat = (targetFormat: EditorFormat) => {
@@ -234,11 +271,13 @@ export function AdminQuizCreator({
 
   const handleDownloadMarkdown = () => {
     const list = parsedQuestions[activeLang]?.length > 0 ? parsedQuestions[activeLang] : parsedQuestions.en
+    const effectiveTitle = titles[activeLang]?.trim() || titles.en || 'Untitled Quiz'
+    const effectiveDescription = descriptions[activeLang]?.trim() || descriptions.en || ''
     const fullMd = quizToMarkdown({
       id: slug || 'quiz',
-      title: title || 'Untitled Quiz',
+      title: effectiveTitle,
       category: category as any,
-      description,
+      description: effectiveDescription,
       difficulty,
       timeLimit: timeLimitMins * 60,
       onTimeExpiry,
@@ -255,11 +294,13 @@ export function AdminQuizCreator({
 
   const handleDownloadJson = () => {
     const list = parsedQuestions[activeLang]?.length > 0 ? parsedQuestions[activeLang] : parsedQuestions.en
+    const effectiveTitle = titles[activeLang]?.trim() || titles.en || 'Untitled Quiz'
+    const effectiveDescription = descriptions[activeLang]?.trim() || descriptions.en || ''
     const fullQuiz = {
       id: slug || 'quiz',
-      title: title || 'Untitled Quiz',
+      title: effectiveTitle,
       category,
-      description,
+      description: effectiveDescription,
       difficulty,
       timeLimit: timeLimitMins * 60,
       onTimeExpiry,
@@ -281,24 +322,48 @@ export function AdminQuizCreator({
     const logs: string[] = []
 
     try {
-      if (!title.trim()) throw new Error('Please enter a Quiz Title.')
+      const canonicalTitle = titles.en?.trim() || Object.values(titles).find(t => t.trim())
+      if (!canonicalTitle) throw new Error('Please enter a Quiz Title.')
       if (!slug.trim()) throw new Error('Please enter a unique Quiz Slug / ID.')
 
       const activeText = questionsRaw[activeLang]
+      const langLabel = LANG_CONFIG.find(l => l.key === activeLang)?.label || activeLang
+
+      // Hindi and Portuguese questions are completely optional
       if (!activeText.trim()) {
-        throw new Error(`Please paste questions for ${LANG_CONFIG.find(l => l.key === activeLang)?.label || activeLang} tab.`)
+        if (activeLang === 'en') {
+          throw new Error('Please paste questions for the English tab (English is required as the baseline).')
+        } else {
+          // Clear any parsed questions for this optional language
+          setParsedQuestions(prev => ({
+            ...prev,
+            [activeLang]: [],
+          }))
+          setCleanLog([
+            `ℹ️ [${langLabel}] Questions left blank. Quiz will automatically fallback to English for ${langLabel} devotees.`,
+          ])
+          return
+        }
       }
 
       const { questions: validatedList, legacyMetadata } = cleanAndParseQuestionArray(activeText, logs)
 
       if (legacyMetadata) {
-        if (!title && legacyMetadata.title) setTitle(legacyMetadata.title)
+        if (legacyMetadata.title) {
+          setTitles(prev => ({ ...prev, [activeLang]: legacyMetadata.title || prev[activeLang] }))
+          if (activeLang === 'en' && !slug && legacyMetadata.id) {
+            setSlug(legacyMetadata.id)
+            setIsSlugManual(true)
+          }
+        }
+        if (legacyMetadata.description) {
+          setDescriptions(prev => ({ ...prev, [activeLang]: legacyMetadata.description || prev[activeLang] }))
+        }
         if (!slug && legacyMetadata.id) {
           setSlug(legacyMetadata.id)
           setIsSlugManual(true)
         }
         if (legacyMetadata.category) setCategory(legacyMetadata.category)
-        if (legacyMetadata.description) setDescription(legacyMetadata.description)
         if (legacyMetadata.difficulty) setDifficulty(legacyMetadata.difficulty)
         if (legacyMetadata.timeLimit) setTimeLimitMins(Math.round(legacyMetadata.timeLimit / 60))
         if (legacyMetadata.onTimeExpiry) setOnTimeExpiry(legacyMetadata.onTimeExpiry)
@@ -321,7 +386,8 @@ export function AdminQuizCreator({
     setParseError(null)
 
     try {
-      if (!title.trim()) throw new Error('Please provide a Quiz Title.')
+      const canonicalTitle = titles.en.trim() || Object.values(titles).find(t => t.trim()) || ''
+      if (!canonicalTitle) throw new Error('Please provide an English Quiz Title.')
       if (!slug.trim()) throw new Error('Please provide a Quiz Slug (ID).')
 
       // ALWAYS parse and strictly validate questions directly from the raw text areas
@@ -361,9 +427,19 @@ export function AdminQuizCreator({
 
       const payload = {
         id: slug.trim(),
-        title: title.trim(),
+        title: canonicalTitle,
+        titles: {
+          en: titles.en.trim() || canonicalTitle,
+          ...(titles.hi.trim() ? { hi: titles.hi.trim() } : {}),
+          ...(titles.pt.trim() ? { pt: titles.pt.trim() } : {}),
+        },
         category,
-        description: description.trim(),
+        description: descriptions.en.trim() || Object.values(descriptions).find(d => d.trim()) || '',
+        descriptions: {
+          en: descriptions.en.trim(),
+          ...(descriptions.hi.trim() ? { hi: descriptions.hi.trim() } : {}),
+          ...(descriptions.pt.trim() ? { pt: descriptions.pt.trim() } : {}),
+        },
         difficulty,
         time_limit: timeLimitMins * 60,
         on_time_expiry: onTimeExpiry,
@@ -387,10 +463,12 @@ export function AdminQuizCreator({
       setPublishedId(data.quizId)
       setIsEditingExisting(true)
       setLastSavedSnapshot(computeQuizSnapshot({
-        title,
+        title: titles.en,
+        titles,
         slug,
         category,
-        description,
+        description: descriptions.en,
+        descriptions,
         difficulty,
         timeLimitMins,
         onTimeExpiry,
@@ -421,9 +499,11 @@ export function AdminQuizCreator({
 
   const dryRunQuizCandidate: Quiz | null = activeQuestionsList.length > 0 ? {
     id: slug || 'test-preview',
-    title: title || 'Quiz Preview',
+    title: titles[activeLang]?.trim() || titles.en || 'Quiz Preview',
+    titles,
     category: category as any,
-    description: description || '',
+    description: descriptions[activeLang]?.trim() || descriptions.en || '',
+    descriptions,
     difficulty,
     timeLimit: timeLimitMins * 60,
     onTimeExpiry: onTimeExpiry,
@@ -432,10 +512,12 @@ export function AdminQuizCreator({
 
   // Change tracking & unsaved changes detection
   const currentSnapshot = computeQuizSnapshot({
-    title,
+    title: titles.en,
+    titles,
     slug,
     category,
-    description,
+    description: descriptions.en,
+    descriptions,
     difficulty,
     timeLimitMins,
     onTimeExpiry,
@@ -482,8 +564,10 @@ export function AdminQuizCreator({
 
       {/* SECTION 1: METADATA FORM */}
       <QuizMetadataForm
-        title={title}
+        title={titles.en}
+        titles={titles}
         onTitleChange={handleTitleChange}
+        onLocalizedTitleChange={handleLocalizedTitleChange}
         slug={slug}
         onSlugChange={val => {
           setIsSlugManual(true)
@@ -491,8 +575,12 @@ export function AdminQuizCreator({
         }}
         category={category}
         onCategoryChange={setCategory}
-        description={description}
-        onDescriptionChange={setDescription}
+        description={descriptions.en}
+        descriptions={descriptions}
+        onDescriptionChange={handleDescriptionChange}
+        onLocalizedDescriptionChange={handleLocalizedDescriptionChange}
+        activeLang={activeLang}
+        onActiveLangChange={setActiveLang}
         difficulty={difficulty}
         onDifficultyChange={setDifficulty}
         timeLimitMins={timeLimitMins}
@@ -538,8 +626,8 @@ export function AdminQuizCreator({
       {/* SECTION 3: VALIDATION PREVIEW */}
       <QuizPreviewList
         questions={activeQuestionsList}
-        title={title}
-        description={description}
+        title={titles[activeLang]?.trim() || title}
+        description={descriptions[activeLang]?.trim() || description}
         category={category}
         timeLimitMins={timeLimitMins}
         slug={slug}

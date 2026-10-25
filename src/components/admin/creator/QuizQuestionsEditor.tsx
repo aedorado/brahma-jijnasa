@@ -112,6 +112,7 @@ export function QuizQuestionsEditor({
           {LANG_CONFIG.map(l => {
             const count = parsedQuestions[l.key].length
             const isActive = activeLang === l.key
+            const isOptional = l.key !== 'en'
             return (
               <button
                 key={l.key}
@@ -135,6 +136,11 @@ export function QuizQuestionsEditor({
               >
                 <span>{l.flag}</span>
                 <span>{l.label}</span>
+                {isOptional && (
+                  <span style={{ fontSize: '0.68rem', opacity: isActive ? 0.9 : 0.7, fontWeight: 500 }}>
+                    (Optional)
+                  </span>
+                )}
                 {count > 0 && (
                   <span
                     style={{
@@ -155,15 +161,40 @@ export function QuizQuestionsEditor({
         </div>
       </div>
 
+      {/* Optional language notice banner */}
+      {activeLang !== 'en' && (
+        <div
+          style={{
+            padding: '0.65rem 1rem',
+            borderRadius: 8,
+            background: 'rgba(59, 130, 246, 0.08)',
+            border: '1px solid rgba(59, 130, 246, 0.22)',
+            color: 'var(--color-primary)',
+            fontSize: '0.82rem',
+            marginBottom: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.55rem',
+          }}
+        >
+          <span style={{ fontSize: '1rem' }}>💡</span>
+          <span>
+            <strong>{activeLangConfig?.label || activeLang} questions are optional.</strong> You can leave this tab completely blank — devotees choosing {activeLangConfig?.label || activeLang} will seamlessly take the quiz in English!
+          </span>
+        </div>
+      )}
+
       {/* Textarea for Current Active Language */}
       <div style={{ marginBottom: '1.25rem' }}>
         <textarea
           value={questionsRaw[activeLang]}
           onChange={e => onRawChange(e.target.value)}
           placeholder={
-            editorFormat === 'markdown'
-              ? `Paste or type ${activeLangConfig?.label || activeLang} questions in Markdown:\n\n## q1 | single-choice | easy\n\n**Q:** What was young John Favors' childhood neighborhood in Cleveland?\n\n**Options:**\n- [ ] Shaker Heights\n- [x] The Forgotten Triangle\n\n**Ref:** Chapter 1\n\n**Explanation:** John Favors was raised in 'The Forgotten Triangle'.`
-              : `Paste ONLY ${activeLangConfig?.label || activeLang} questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correctIndex": 0\n  }\n]`
+            activeLang !== 'en'
+              ? `(Optional) Paste or type ${activeLangConfig?.label || activeLang} questions here.\n\nLeave this tab completely blank to have devotees automatically take the English version of this quiz.`
+              : editorFormat === 'markdown'
+                ? `Paste or type English questions in Markdown:\n\n## q1 | single-choice | easy\n\n**Q:** What was young John Favors' childhood neighborhood in Cleveland?\n\n**Options:**\n- [ ] Shaker Heights\n- [x] The Forgotten Triangle\n\n**Ref:** Chapter 1\n\n**Explanation:** John Favors was raised in 'The Forgotten Triangle'.`
+                : `Paste ONLY English questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correctIndex": 0\n  }\n]`
           }
           rows={12}
           className="input"
@@ -210,7 +241,7 @@ export function QuizQuestionsEditor({
             onClick={onValidate}
             style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700 }}
           >
-            <span>🔍</span> Clean & Validate {activeLangConfig?.label || activeLang} Questions
+            <span>🔍</span> Clean & Validate {activeLangConfig?.label || activeLang} Questions {activeLang !== 'en' ? '(Optional)' : ''}
           </button>
 
           {questionsRaw[activeLang] && (

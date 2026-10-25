@@ -1,18 +1,27 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import type { Difficulty, QuizMeta } from '@/types/quiz'
+import type { SupportedLang } from './types'
+import { LANG_CONFIG } from './utils'
 import { QuizDropdownSelector } from './QuizDropdownSelector'
 
 interface QuizMetadataFormProps {
   title: string
+  titles?: Record<SupportedLang, string>
   onTitleChange: (val: string) => void
+  onLocalizedTitleChange?: (lang: SupportedLang, val: string) => void
   slug: string
   onSlugChange: (val: string) => void
   category: string
   onCategoryChange: (val: string) => void
   description: string
+  descriptions?: Record<SupportedLang, string>
   onDescriptionChange: (val: string) => void
+  onLocalizedDescriptionChange?: (lang: SupportedLang, val: string) => void
+  activeLang?: SupportedLang
+  onActiveLangChange?: (lang: SupportedLang) => void
   difficulty: Difficulty
   onDifficultyChange: (val: Difficulty) => void
   timeLimitMins: number
@@ -31,13 +40,19 @@ interface QuizMetadataFormProps {
 
 export function QuizMetadataForm({
   title,
+  titles,
   onTitleChange,
+  onLocalizedTitleChange,
   slug,
   onSlugChange,
   category,
   onCategoryChange,
   description,
+  descriptions,
   onDescriptionChange,
+  onLocalizedDescriptionChange,
+  activeLang = 'en',
+  onActiveLangChange,
   difficulty,
   onDifficultyChange,
   timeLimitMins,
@@ -53,6 +68,8 @@ export function QuizMetadataForm({
   catalogQuizzes,
   onSelectQuiz,
 }: QuizMetadataFormProps) {
+  const [overrideTab, setOverrideTab] = useState<'hi' | 'pt'>('hi')
+
   return (
     <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -173,7 +190,7 @@ export function QuizMetadataForm({
         {/* Title */}
         <div style={{ gridColumn: 'span 2' }}>
           <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-text)' }}>
-            Quiz Title <span style={{ color: 'var(--color-error)' }}>*</span>
+            Quiz Title (Canonical / English) <span style={{ color: 'var(--color-error)' }}>*</span>
           </label>
           <input
             type="text"
@@ -328,12 +345,12 @@ export function QuizMetadataForm({
         {/* Description */}
         <div style={{ gridColumn: 'span 2' }}>
           <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-text)' }}>
-            Description & Study References
+            Description & Study References (Canonical / English)
           </label>
           <textarea
             value={description}
             onChange={e => onDescriptionChange(e.target.value)}
-            placeholder="e.g. Life, surrender, preaching & teachings of HH Bhakti Tirtha Swami from Black Lotus..."
+            placeholder="e.g. 15 questions on the community blueprint, cooperative preaching, and devotee care principles..."
             rows={2}
             className="input"
             style={{
@@ -345,6 +362,118 @@ export function QuizMetadataForm({
               minHeight: '70px',
             }}
           />
+        </div>
+      </div>
+
+      {/* SECTION: Multilingual Overrides (Optional Translations) */}
+      <div
+        style={{
+          marginTop: '1.5rem',
+          padding: '1.25rem 1.5rem',
+          background: 'var(--color-surface-2)',
+          borderRadius: 12,
+          border: '1.5px solid var(--color-border)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '0.95rem', color: 'var(--color-text)' }}>
+              <span>🌐</span>
+              <span>Multilingual Overrides (Optional)</span>
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted)', margin: '0.2rem 0 0 0' }}>
+              Override the title & study notes for Hindi or Portuguese devotees. Unfilled fields automatically fallback to English.
+            </p>
+          </div>
+
+          {/* Override Language Switcher Tabs */}
+          <div style={{ display: 'flex', gap: '0.35rem', background: 'var(--color-surface-3, rgba(0,0,0,0.06))', padding: '0.25rem', borderRadius: 8 }}>
+            {(['hi', 'pt'] as const).map(lang => {
+              const isActive = overrideTab === lang
+              const hasOverride = Boolean(titles?.[lang]?.trim() || descriptions?.[lang]?.trim())
+              return (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => setOverrideTab(lang)}
+                  style={{
+                    padding: '0.35rem 0.85rem',
+                    borderRadius: 6,
+                    border: 'none',
+                    background: isActive ? 'var(--color-primary)' : 'transparent',
+                    color: isActive ? '#FFFFFF' : 'var(--color-text)',
+                    fontWeight: isActive ? 800 : 600,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span>{lang === 'hi' ? '🇮🇳' : '🇧🇷'}</span>
+                  <span>{lang === 'hi' ? 'Hindi (हिन्दी)' : 'Português'}</span>
+                  {hasOverride && (
+                    <span style={{ fontSize: '0.7rem', color: isActive ? '#FFFFFF' : '#4ade80', fontWeight: 900 }}>✓</span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Override Inputs for Active Tab */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-text)' }}>
+                {overrideTab === 'hi' ? '🇮🇳 Hindi Quiz Title' : '🇧🇷 Portuguese Quiz Title'}
+              </label>
+              <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.45rem', fontWeight: 600 }}>
+                Optional · Falls back to English
+              </span>
+            </div>
+            <input
+              type="text"
+              value={titles?.[overrideTab] || ''}
+              onChange={e => onLocalizedTitleChange?.(overrideTab, e.target.value)}
+              placeholder={title ? `Leave empty to use English: "${title}"` : `Optional ${overrideTab === 'hi' ? 'Hindi' : 'Portuguese'} title`}
+              className="input"
+              style={{
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                background: 'var(--color-surface)',
+                border: '1.5px solid var(--color-border)',
+                color: 'var(--color-text)',
+              }}
+            />
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-text)' }}>
+                {overrideTab === 'hi' ? '🇮🇳 Hindi Description & Study Notes' : '🇧🇷 Portuguese Description & Study Notes'}
+              </label>
+              <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.45rem', fontWeight: 600 }}>
+                Optional · Falls back to English
+              </span>
+            </div>
+            <textarea
+              value={descriptions?.[overrideTab] || ''}
+              onChange={e => onLocalizedDescriptionChange?.(overrideTab, e.target.value)}
+              placeholder={description ? 'Leave empty to use English description above' : `Optional ${overrideTab === 'hi' ? 'Hindi' : 'Portuguese'} study notes`}
+              rows={2}
+              className="input"
+              style={{
+                fontSize: '0.85rem',
+                background: 'var(--color-surface)',
+                border: '1.5px solid var(--color-border)',
+                color: 'var(--color-text)',
+                resize: 'vertical',
+                minHeight: '65px',
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

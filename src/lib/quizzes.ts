@@ -30,17 +30,39 @@ export function invalidateQuizCache(quizId?: string) {
   quizMetaCache = null
 }
 
-// Helper to convert database row to Quiz object
+// Helper to convert database row to Quiz object with language fallback
 export function mapRowToQuiz(row: any, lang?: string): Quiz {
   const questionsObj = row.questions || {}
-  const targetLang = (lang && questionsObj[lang] && questionsObj[lang].length > 0) ? lang : 'en'
-  const rawQuestions = questionsObj[targetLang] || questionsObj['en'] || []
+  const metaObj = questionsObj._meta || {}
+  const targetLang = (lang && questionsObj[lang] && Array.isArray(questionsObj[lang]) && questionsObj[lang].length > 0) ? lang : 'en'
+  const rawQuestions = Array.isArray(questionsObj[targetLang])
+    ? questionsObj[targetLang]
+    : Array.isArray(questionsObj['en'])
+      ? questionsObj['en']
+      : []
+
+  const titles: Record<string, string> = {
+    ...(row.titles || {}),
+    ...(metaObj.titles || {}),
+  }
+  if (!titles.en && row.title) titles.en = row.title
+
+  const descriptions: Record<string, string> = {
+    ...(row.descriptions || {}),
+    ...(metaObj.descriptions || {}),
+  }
+  if (!descriptions.en && row.description) descriptions.en = row.description
+
+  const resolvedTitle = (lang && titles[lang]?.trim()) || titles.en?.trim() || row.title || ''
+  const resolvedDescription = (lang && descriptions[lang]?.trim()) || descriptions.en?.trim() || row.description || undefined
 
   return normalizeQuiz({
     id: row.id,
-    title: row.title,
+    title: resolvedTitle,
+    titles,
     category: row.category,
-    description: row.description || undefined,
+    description: resolvedDescription,
+    descriptions,
     difficulty: row.difficulty || 'medium',
     timeLimit: row.time_limit || 720,
     onTimeExpiry: row.on_time_expiry || 'submit-partial',
@@ -59,7 +81,7 @@ export async function fetchAllQuizMeta(): Promise<QuizMeta[]> {
     const supabase = await createServerClient()
     const { data, error } = await supabase
       .from('quizzes')
-      .select('id, title, category, description, difficulty, time_limit, on_time_expiry, questions, updated_at')
+      .select('*')
       .eq('is_published', true)
       .order('updated_at', { ascending: false })
 
@@ -69,13 +91,33 @@ export async function fetchAllQuizMeta(): Promise<QuizMeta[]> {
     }
 
     if (data && data.length > 0) {
-      const metas = data.map((row: any) => {
-        const enQuestions = row.questions?.en || Object.values(row.questions || {})[0] || []
+      const metas: QuizMeta[] = data.map((row: any) => {
+        const metaObj = row.questions?._meta || {}
+        const titles: Record<string, string> = {
+          ...(row.titles || {}),
+          ...(metaObj.titles || {}),
+        }
+        if (!titles.en && row.title) titles.en = row.title
+
+        const descriptions: Record<string, string> = {
+          ...(row.descriptions || {}),
+          ...(metaObj.descriptions || {}),
+        }
+        if (!descriptions.en && row.description) descriptions.en = row.description
+
+        const enQuestions = Array.isArray(row.questions?.en)
+          ? row.questions.en
+          : Array.isArray(Object.values(row.questions || {}).find(v => Array.isArray(v)))
+            ? (Object.values(row.questions || {}).find(v => Array.isArray(v)) as any[])
+            : []
+
         return {
           id: row.id,
-          title: row.title,
+          title: titles.en || row.title,
+          titles,
           category: row.category,
-          description: row.description,
+          description: descriptions.en || row.description,
+          descriptions,
           difficulty: row.difficulty,
           timeLimit: row.time_limit,
           onTimeExpiry: row.on_time_expiry,
