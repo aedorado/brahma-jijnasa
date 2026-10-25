@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import type { Quiz, Question, Difficulty } from '@/types/quiz'
 import type { QuizSeriesRound } from '@/types/series'
@@ -75,25 +75,24 @@ export function AdminQuizCreator({
   const [copiedLink, setCopiedLink] = useState(false)
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState<string | null>(null)
 
-  // Fetch series rounds on mount
-  useEffect(() => {
-    let isMounted = true
-    async function fetchRounds() {
-      try {
-        const res = await fetch('/api/series/sacred-teachings-64-principles')
-        if (res.ok) {
-          const data = await res.json()
-          if (isMounted && Array.isArray(data.rounds)) {
-            setSeriesRounds(data.rounds)
-          }
+  // Fetch series rounds
+  const fetchSeriesRounds = useCallback(async () => {
+    try {
+      const res = await fetch('/api/series/sacred-teachings-64-principles')
+      if (res.ok) {
+        const data = await res.json()
+        if (Array.isArray(data.rounds)) {
+          setSeriesRounds(data.rounds)
         }
-      } catch (e) {
-        console.warn('Failed to load series rounds:', e)
       }
+    } catch (e) {
+      console.warn('Failed to load series rounds:', e)
     }
-    fetchRounds()
-    return () => { isMounted = false }
   }, [])
+
+  useEffect(() => {
+    fetchSeriesRounds()
+  }, [fetchSeriesRounds])
 
   // Handle incoming initialSeriesDay prop
   useEffect(() => {
@@ -103,7 +102,8 @@ export function AdminQuizCreator({
         setLinkToSeries(true)
         setSelectedSeriesDay(round.day_number)
         setCategory('64-principles')
-        setSlug(round.quiz_id)
+        const conventionSlug = round.day_number <= 0 ? `64-day-d${Math.abs(round.day_number) + 1}` : `64-day-${String(round.day_number).padStart(2, '0')}`
+        setSlug(round.quiz_id || conventionSlug)
         setIsSlugManual(true)
         if (!title || title.startsWith('Day ') || title === 'Untitled Quiz') {
           setTitle(round.title || `Day ${round.day_number}: Sacred Teachings`)
@@ -140,7 +140,7 @@ export function AdminQuizCreator({
       setIsEditingExisting(true)
 
       // Check if linked to series
-      const matchedRound = seriesRounds.find(r => r.quiz_id === targetId || r.quiz_id === data.id)
+      const matchedRound = seriesRounds.find(r => r.quiz_id && (r.quiz_id === targetId || r.quiz_id === data.id))
       if (matchedRound) {
         setLinkToSeries(true)
         setSelectedSeriesDay(matchedRound.day_number)
@@ -449,8 +449,9 @@ export function AdminQuizCreator({
         is_published: isPublished,
         tags: [category],
         questions: questionsPayload,
-        series_day_number: linkToSeries && selectedSeriesDay !== null ? selectedSeriesDay : undefined,
-        unlock_at: linkToSeries && unlockAtInput ? localToIsoString(unlockAtInput) : undefined,
+        link_to_series: linkToSeries,
+        series_day_number: linkToSeries && selectedSeriesDay !== null ? selectedSeriesDay : null,
+        unlock_at: linkToSeries && unlockAtInput ? localToIsoString(unlockAtInput) : null,
       }
 
       const res = await fetch('/api/admin/save-quiz', {
@@ -479,6 +480,7 @@ export function AdminQuizCreator({
         unlockAtInput,
         questionsRaw,
       }))
+      await fetchSeriesRounds()
       await onQuizPublished(data.quizId)
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Error publishing quiz.'
@@ -500,10 +502,10 @@ export function AdminQuizCreator({
   // (If currently editing an existing quiz, allow its current day)
   const existingQuizIdSet = new Set(catalogQuizzes.map(q => q.id))
   const availableSeriesRounds = seriesRounds.filter(round => {
-    if (isEditingExisting && (round.quiz_id === slug || round.day_number === selectedSeriesDay)) {
+    if (isEditingExisting && ((round.quiz_id && round.quiz_id === slug) || round.day_number === selectedSeriesDay)) {
       return true
     }
-    return !existingQuizIdSet.has(round.quiz_id)
+    return !round.quiz_id || !existingQuizIdSet.has(round.quiz_id)
   })
 
   const filteredSeriesRounds = availableSeriesRounds.filter(round => {
@@ -527,7 +529,10 @@ export function AdminQuizCreator({
 
     setSelectedSeriesDay(dayNum)
     setCategory('64-principles')
-    setSlug(round.quiz_id)
+    const conventionSlug = dayNum <= 0 ? `64-day-d${Math.abs(dayNum) + 1}` : `64-day-${String(dayNum).padStart(2, '0')}`
+    if (!slug || slug === 'untitled-quiz' || slug.startsWith('64-day-')) {
+      setSlug(round.quiz_id || conventionSlug)
+    }
     setIsSlugManual(true)
     if (!title || title.startsWith('Day ') || title === 'Untitled Quiz') {
       setTitle(round.title || `Day ${round.day_number}: Sacred Teachings`)

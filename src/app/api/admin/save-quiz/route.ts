@@ -164,8 +164,19 @@ export async function POST(request: Request) {
     // Invalidate in-memory cache so subsequent reads immediately reflect latest quiz state
     invalidateQuizCache(id)
 
-    // 3b. If linked to a series day, update quiz_series_rounds
-    if (body.series_day_number !== undefined && body.series_day_number !== null) {
+    // 3b. Manage series campaign linkage in quiz_series_rounds
+    const shouldLink = body.link_to_series === true || (body.link_to_series !== false && body.series_day_number !== undefined && body.series_day_number !== null)
+    const shouldUnlink = body.link_to_series === false || body.series_day_number === null
+
+    if (shouldLink && body.series_day_number !== undefined && body.series_day_number !== null) {
+      // 1. If this quiz was linked to another day previously, clear that day first
+      await supabase
+        .from('quiz_series_rounds')
+        .update({ quiz_id: '' })
+        .eq('quiz_id', id)
+        .neq('day_number', body.series_day_number)
+
+      // 2. Link this quiz to the specified day
       const roundUpdates: Record<string, any> = {
         quiz_id: id,
         title,
@@ -180,6 +191,16 @@ export async function POST(request: Request) {
 
       if (roundErr) {
         console.warn('[Save Quiz Series Round Warning]:', roundErr.message)
+      }
+    } else if (shouldUnlink) {
+      // Unlink this quiz from any series round
+      const { error: unlinkErr } = await supabase
+        .from('quiz_series_rounds')
+        .update({ quiz_id: '' })
+        .eq('quiz_id', id)
+
+      if (unlinkErr) {
+        console.warn('[Save Quiz Unlink Round Warning]:', unlinkErr.message)
       }
     }
 

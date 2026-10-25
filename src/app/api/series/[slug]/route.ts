@@ -73,14 +73,15 @@ export async function GET(
             DEFAULT_64_PRINCIPLES_ROUNDS.map(async (defRound) => {
               const matchDb = dbRounds.find((r: any) => r.day_number === defRound.day_number)
               const unlockAt = matchDb?.unlock_at || defRound.unlock_at || getSeriesRoundUnlockTime(defRound.day_number)
-              const quizId = matchDb?.quiz_id || defRound.quiz_id
-              let activePin = activePinMap.get(quizId) || null
+              // If matchDb exists in DB, respect its quiz_id (even if unlinked/empty). Fall back to defRound only if no DB row exists.
+              const quizId = matchDb ? (matchDb.quiz_id ?? '') : defRound.quiz_id
+              let activePin = quizId ? (activePinMap.get(quizId) || null) : null
               const isManualUnlocked = matchDb ? Boolean(matchDb.is_unlocked) : false
               const isTimeArrived = unlockAt ? new Date() >= new Date(unlockAt) : false
 
               // If scheduled release time has arrived (or manually unlocked) but no session exists,
               // auto-generate a collision-free PIN session so the series round is immediately ready for students to join!
-              if (!activePin && (isTimeArrived || isManualUnlocked)) {
+              if (quizId && !activePin && (isTimeArrived || isManualUnlocked)) {
                 try {
                   const { data: existingSession } = await supabase
                     .from('quiz_sessions')
@@ -139,6 +140,7 @@ export async function GET(
               return {
                 ...defRound,
                 id: matchDb ? matchDb.id : defRound.id,
+                quiz_id: quizId,
                 title: matchDb?.title || defRound.title,
                 description: matchDb?.description !== undefined && matchDb?.description !== null ? matchDb.description : defRound.description,
                 principles_range: matchDb?.principles_range !== undefined && matchDb?.principles_range !== null ? matchDb.principles_range : defRound.principles_range,
@@ -152,10 +154,10 @@ export async function GET(
         } else {
           rounds = await Promise.all(
             dbRounds.map(async (r: any) => {
-              let activePin = activePinMap.get(r.quiz_id) || null
+              let activePin = r.quiz_id ? (activePinMap.get(r.quiz_id) || null) : null
               const isTimeArrived = r.unlock_at ? new Date() >= new Date(r.unlock_at) : false
 
-              if (!activePin && (isTimeArrived || r.is_unlocked)) {
+              if (r.quiz_id && !activePin && (isTimeArrived || r.is_unlocked)) {
                 try {
                   const { data: existingSession } = await supabase
                     .from('quiz_sessions')
