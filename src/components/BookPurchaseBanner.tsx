@@ -22,15 +22,15 @@ export const AMAZON_STORES: AmazonStore[] = [
   { code: 'US', name: 'USA', flag: '🇺🇸', url: 'https://www.amazon.com/dp/B005F9I5TO', qrImage: '/qr-us.png' },
   { code: 'GB', name: 'UK', flag: '🇬🇧', url: 'https://www.amazon.co.uk/dp/B005F9I5TO', qrImage: '/qr-uk.png' },
   { code: 'CA', name: 'Canada', flag: '🇨🇦', url: 'https://www.amazon.ca/dp/B005F9I5TO', qrImage: '/qr-ca.png' },
+  { code: 'BR', name: 'Brazil (Brasil)', flag: '🇧🇷', url: 'https://www.amazon.com.br/dp/B005F9I5TO', qrImage: '/qr-br.png' },
   { code: 'AU', name: 'Australia', flag: '🇦🇺', url: 'https://www.amazon.com.au/dp/B005F9I5TO', qrImage: '/qr-au.png' },
   { code: 'DE', name: 'Germany', flag: '🇩🇪', url: 'https://www.amazon.de/dp/B005F9I5TO', qrImage: '/qr-de.png' },
   { code: 'FR', name: 'France', flag: '🇫🇷', url: 'https://www.amazon.fr/dp/B005F9I5TO', qrImage: '/qr-fr.png' },
   { code: 'IT', name: 'Italy', flag: '🇮🇹', url: 'https://www.amazon.it/dp/B005F9I5TO', qrImage: '/qr-it.png' },
-  { code: 'BR', name: 'Brazil (Brasil)', flag: '🇧🇷', url: 'https://www.amazon.com.br/dp/B005F9I5TO' },
-  { code: 'ES', name: 'Spain', flag: '🇪🇸', url: 'https://www.amazon.es/dp/B005F9I5TO' },
-  { code: 'NL', name: 'Netherlands', flag: '🇳🇱', url: 'https://www.amazon.nl/dp/B005F9I5TO' },
-  { code: 'MX', name: 'Mexico', flag: '🇲🇽', url: 'https://www.amazon.com.mx/dp/B005F9I5TO' },
-  { code: 'JP', name: 'Japan', flag: '🇯🇵', url: 'https://www.amazon.co.jp/dp/B005F9I5TO' },
+  { code: 'ES', name: 'Spain', flag: '🇪🇸', url: 'https://www.amazon.es/dp/B005F9I5TO', qrImage: '/qr-es.png' },
+  { code: 'NL', name: 'Netherlands', flag: '🇳🇱', url: 'https://www.amazon.nl/dp/B005F9I5TO', qrImage: '/qr-nl.png' },
+  { code: 'MX', name: 'Mexico', flag: '🇲🇽', url: 'https://www.amazon.com.mx/dp/B005F9I5TO', qrImage: '/qr-mx.png' },
+  { code: 'JP', name: 'Japan', flag: '🇯🇵', url: 'https://www.amazon.co.jp/dp/B005F9I5TO', qrImage: '/qr-jp.png' },
 ]
 
 export const BOOK_AMAZON_URL = 'https://link.amazon/B0eg8BYaj'
