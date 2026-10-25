@@ -398,7 +398,9 @@ export function parseQuizMarkdown(markdown: string): ParsedQuizMarkdownResult {
         raw.options = options
         raw.correctIndex = checkedIndices.length > 0 ? checkedIndices[0] : 0
         if (headerInfo.type === 'evidence-based') {
-          raw.principle = sections.principle || ''
+          if (sections.principle?.trim()) {
+            raw.principle = sections.principle.trim()
+          }
         }
         break
       }

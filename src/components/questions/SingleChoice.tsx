@@ -15,16 +15,20 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E']
 export function SingleChoice({ question, answer, onAnswer, disabled }: Props) {
   const { t, language } = useLanguage()
 
+  const principleText = 'principle' in question && typeof question.principle === 'string'
+    ? question.principle.trim()
+    : null
+
   return (
     <div>
-      {'principle' in question && (
+      {principleText ? (
         <div className="shloka-block" style={{ marginBottom: '1.25rem' }}>
           <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>
             {t.questions?.principleLabel || (language === 'hi' ? 'सिद्धांत:' : language === 'pt' ? 'Princípio:' : 'Principle:')}
           </p>
-          <p style={{ color: 'var(--color-lotus)', fontStyle: 'italic' }}>{question.principle}</p>
+          <p style={{ color: 'var(--color-lotus)', fontStyle: 'italic' }}>{principleText}</p>
         </div>
-      )}
+      ) : null}
 
       <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.5rem', lineHeight: 1.5 }}>
         {question.question || (question.type === 'two-truths-one-false'

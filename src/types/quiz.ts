@@ -152,7 +152,7 @@ export interface TwoTruthsOneFalseQuestion extends BaseQuestion {
 
 export interface EvidenceBasedQuestion extends BaseQuestion {
   type: 'evidence-based'
-  principle: string
+  principle?: string
   options: string[]
   correctIndex: number
 }

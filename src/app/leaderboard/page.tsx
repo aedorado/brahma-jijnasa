@@ -600,20 +600,7 @@ export default function LeaderboardPage() {
 
       {/* Sticky "My Standing" Bottom Bar */}
       {myEntry && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background: 'rgba(15, 12, 28, 0.95)',
-            backdropFilter: 'blur(12px)',
-            borderTop: '1px solid var(--color-border-gold)',
-            padding: '0.75rem 1rem',
-            zIndex: 100,
-            boxShadow: '0 -4px 20px rgba(0,0,0,0.5)',
-          }}
-        >
+        <div className="leaderboard-sticky-bar">
           <div style={{ maxWidth: 1060, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', minWidth: 0, flex: 1 }}>
               <span className="badge badge-gold" style={{ fontSize: '0.75rem', fontWeight: 800, flexShrink: 0 }}>
