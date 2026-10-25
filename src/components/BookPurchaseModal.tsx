@@ -153,8 +153,8 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
             }}
           >
             <Image
-              src={BOOK_QR_IMAGE}
-              alt="Scan QR code to buy 64 Principles Book on Amazon"
+              src={selectedStore.qrImage || BOOK_QR_IMAGE}
+              alt={`Scan QR code to buy 64 Principles Book on Amazon ${selectedStore.name}`}
               width={150}
               height={150}
               style={{ display: 'block', borderRadius: 8 }}
@@ -162,7 +162,7 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
             />
           </div>
           <p style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-gold)', marginBottom: '0.15rem' }}>
-            📷 {labels.scanTitle}
+            📷 {labels.scanTitle} ({selectedStore.flag} {selectedStore.name})
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
             {labels.scanSub}
@@ -175,7 +175,7 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
             {labels.chooseStore}
           </p>
           <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-            {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 6)).map(s => (
+            {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 8)).map(s => (
               <button
                 key={s.code}
                 type="button"
@@ -191,7 +191,7 @@ export function BookPurchaseModal({ isOpen, onClose }: Props) {
               onClick={() => setShowAllStores(prev => !prev)}
               className="book-store-more-btn"
             >
-              {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 6} More`}
+              {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 8} More`}
             </button>
           </div>
         </div>

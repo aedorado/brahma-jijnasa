@@ -14,18 +14,19 @@ export interface AmazonStore {
   name: string
   flag: string
   url: string
+  qrImage?: string
 }
 
 export const AMAZON_STORES: AmazonStore[] = [
-  { code: 'IN', name: 'India', flag: '🇮🇳', url: 'https://link.amazon/B0eg8BYaj' },
-  { code: 'US', name: 'USA', flag: '🇺🇸', url: 'https://www.amazon.com/dp/B005F9I5TO' },
+  { code: 'IN', name: 'India', flag: '🇮🇳', url: 'https://link.amazon/B0eg8BYaj', qrImage: '/qr-in.png' },
+  { code: 'US', name: 'USA', flag: '🇺🇸', url: 'https://www.amazon.com/dp/B005F9I5TO', qrImage: '/qr-us.png' },
+  { code: 'GB', name: 'UK', flag: '🇬🇧', url: 'https://www.amazon.co.uk/dp/B005F9I5TO', qrImage: '/qr-uk.png' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦', url: 'https://www.amazon.ca/dp/B005F9I5TO', qrImage: '/qr-ca.png' },
+  { code: 'AU', name: 'Australia', flag: '🇦🇺', url: 'https://www.amazon.com.au/dp/B005F9I5TO', qrImage: '/qr-au.png' },
+  { code: 'DE', name: 'Germany', flag: '🇩🇪', url: 'https://www.amazon.de/dp/B005F9I5TO', qrImage: '/qr-de.png' },
+  { code: 'FR', name: 'France', flag: '🇫🇷', url: 'https://www.amazon.fr/dp/B005F9I5TO', qrImage: '/qr-fr.png' },
+  { code: 'IT', name: 'Italy', flag: '🇮🇹', url: 'https://www.amazon.it/dp/B005F9I5TO', qrImage: '/qr-it.png' },
   { code: 'BR', name: 'Brazil (Brasil)', flag: '🇧🇷', url: 'https://www.amazon.com.br/dp/B005F9I5TO' },
-  { code: 'GB', name: 'UK', flag: '🇬🇧', url: 'https://www.amazon.co.uk/dp/B005F9I5TO' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦', url: 'https://www.amazon.ca/dp/B005F9I5TO' },
-  { code: 'AU', name: 'Australia', flag: '🇦🇺', url: 'https://www.amazon.com.au/dp/B005F9I5TO' },
-  { code: 'DE', name: 'Germany', flag: '🇩🇪', url: 'https://www.amazon.de/dp/B005F9I5TO' },
-  { code: 'FR', name: 'France', flag: '🇫🇷', url: 'https://www.amazon.fr/dp/B005F9I5TO' },
-  { code: 'IT', name: 'Italy', flag: '🇮🇹', url: 'https://www.amazon.it/dp/B005F9I5TO' },
   { code: 'ES', name: 'Spain', flag: '🇪🇸', url: 'https://www.amazon.es/dp/B005F9I5TO' },
   { code: 'NL', name: 'Netherlands', flag: '🇳🇱', url: 'https://www.amazon.nl/dp/B005F9I5TO' },
   { code: 'MX', name: 'Mexico', flag: '🇲🇽', url: 'https://www.amazon.com.mx/dp/B005F9I5TO' },
@@ -168,8 +169,8 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
           >
             <Image
-              src={BOOK_QR_IMAGE}
-              alt="Scan QR code to buy 64 Principles Book on Amazon"
+              src={selectedStore.qrImage || BOOK_QR_IMAGE}
+              alt={`Scan QR code to buy 64 Principles Book on Amazon ${selectedStore.name}`}
               width={110}
               height={110}
               style={{ display: 'block', borderRadius: 6 }}
@@ -204,7 +205,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             {/* Country Selector Pills */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
               <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)' }}>Store:</span>
-              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 5)).map(s => (
+              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 8)).map(s => (
                 <button
                   key={s.code}
                   type="button"
@@ -220,7 +221,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                 onClick={() => setShowAllStores(prev => !prev)}
                 className="book-store-more-btn"
               >
-                {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 5} More`}
+                {showAllStores ? '▲ Less' : `+${AMAZON_STORES.length - 8} More`}
               </button>
             </div>
 
@@ -320,7 +321,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
               {labels.chooseRegion}
             </p>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 6)).map(s => (
+              {(showAllStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 8)).map(s => (
                 <button
                   key={s.code}
                   type="button"
@@ -336,7 +337,7 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
                 onClick={() => setShowAllStores(prev => !prev)}
                 className="book-store-more-btn"
               >
-                {showAllStores ? '▲ Less' : `▼ More (${AMAZON_STORES.length - 6} Countries)`}
+                {showAllStores ? '▲ Less' : `▼ More (${AMAZON_STORES.length - 8} Countries)`}
               </button>
             </div>
           </div>
@@ -387,8 +388,8 @@ export function BookPurchaseBanner({ variant = 'card', className = '' }: Props) 
             title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
           >
             <Image
-              src={BOOK_QR_IMAGE}
-              alt="Scan QR code with phone camera to buy 64 Principles Book on Amazon"
+              src={selectedStore.qrImage || BOOK_QR_IMAGE}
+              alt={`Scan QR code with phone camera to buy 64 Principles Book on Amazon ${selectedStore.name}`}
               width={140}
               height={140}
               style={{ display: 'block', borderRadius: 8 }}

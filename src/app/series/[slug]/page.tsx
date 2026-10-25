@@ -315,15 +315,15 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                 title={`Scan QR or click to open ${selectedStore.name} Amazon store`}
               >
                 <Image
-                  src={BOOK_QR_IMAGE}
-                  alt="Scan QR code to buy 64 Principles Book on Amazon"
+                  src={selectedStore.qrImage || BOOK_QR_IMAGE}
+                  alt={`Scan QR code to buy 64 Principles Book on Amazon ${selectedStore.name}`}
                   width={125}
                   height={125}
                   style={{ display: 'block', borderRadius: 8 }}
                   priority
                 />
                 <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#1a102f', marginTop: 5, letterSpacing: '0.02em' }}>
-                  📷 Scan to Buy on Amazon
+                  {selectedStore.flag} Scan to Buy ({selectedStore.name})
                 </span>
               </a>
 
@@ -351,7 +351,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
 
               {/* Quick Country Pills with Inline Expansion (No Popup) */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-                {(showAllHeroStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 4)).map(s => (
+                {(showAllHeroStores ? AMAZON_STORES : AMAZON_STORES.slice(0, 8)).map(s => (
                   <button
                     key={s.code}
                     type="button"
@@ -368,7 +368,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                   className="book-store-more-btn"
                   title={showAllHeroStores ? 'Show fewer countries' : 'Show all 13 international regional stores'}
                 >
-                  {showAllHeroStores ? '▲ Less' : `+${AMAZON_STORES.length - 4} More ▾`}
+                  {showAllHeroStores ? '▲ Less' : `+${AMAZON_STORES.length - 8} More ▾`}
                 </button>
               </div>
             </div>
