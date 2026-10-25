@@ -171,6 +171,19 @@ export async function POST(request: Request) {
     if (shouldLink && body.series_day_number !== undefined && body.series_day_number !== null) {
       const targetDay = Number(body.series_day_number)
 
+      // Guard: Ensure targetDay is not already linked to another quiz
+      const { data: existingDayRound } = await supabase
+        .from('quiz_series_rounds')
+        .select('quiz_id')
+        .eq('day_number', targetDay)
+        .maybeSingle()
+
+      if (existingDayRound?.quiz_id && existingDayRound.quiz_id !== '' && existingDayRound.quiz_id !== id) {
+        return NextResponse.json({
+          error: `Day ${targetDay} is already assigned to quiz "${existingDayRound.quiz_id}". Cannot overwrite an existing series round.`,
+        }, { status: 400 })
+      }
+
       // 1. If this quiz was linked to another day previously, clear that day first
       await supabase
         .from('quiz_series_rounds')

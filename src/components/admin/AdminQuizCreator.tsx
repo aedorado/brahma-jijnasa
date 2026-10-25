@@ -456,6 +456,13 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         throw new Error('Please select which series day to link this quiz to from the dropdown.')
       }
 
+      if (linkToSeries && selectedSeriesDay !== null) {
+        const targetRound = seriesRounds.find(r => r.day_number === selectedSeriesDay)
+        if (targetRound?.quiz_id && slug && targetRound.quiz_id !== slug.trim()) {
+          throw new Error(`Day ${selectedSeriesDay} is already assigned to quiz "${targetRound.quiz_id}". Please choose an unassigned series day.`)
+        }
+      }
+
       // Fallback if only non-en was entered
       if (!questionsPayload.en) {
         const firstKey = Object.keys(questionsPayload)[0]
@@ -524,8 +531,13 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     setTimeout(() => setCopiedLink(false), 2000)
   }
 
-  // All series rounds are selectable in the linker dropdown (status annotated)
-  const availableSeriesRounds = seriesRounds
+  // Only allow unassigned series days, or the day currently linked to THIS quiz, or currently selected day
+  const availableSeriesRounds = seriesRounds.filter(round => {
+    const isUnassigned = !round.quiz_id || round.quiz_id.trim() === ''
+    const isThisQuiz = Boolean(slug && round.quiz_id && round.quiz_id === slug.trim())
+    const isCurrentSelection = selectedSeriesDay !== null && round.day_number === selectedSeriesDay
+    return isUnassigned || isThisQuiz || isCurrentSelection
+  })
 
   const filteredSeriesRounds = availableSeriesRounds.filter(round => {
     if (!seriesSearchQuery.trim()) return true
@@ -545,6 +557,12 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     const dayNum = Number(dayNumStr)
     const round = seriesRounds.find(r => r.day_number === dayNum)
     if (!round) return
+
+    // Prevent selecting a day already linked to another quiz
+    if (round.quiz_id && slug && round.quiz_id !== slug.trim()) {
+      alert(`Day ${dayNum} is already assigned to quiz "${round.quiz_id}". Cannot link this quiz to an occupied day.`)
+      return
+    }
 
     setSelectedSeriesDay(dayNum)
     setCategory('64-principles')

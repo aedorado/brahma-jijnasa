@@ -73,12 +73,12 @@ export function QuizSeriesLinker({
             <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-text)' }}>
               Select Series Day <span style={{ color: 'var(--color-error)' }}>*</span>
               <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', fontWeight: 400, marginLeft: '0.4rem' }}>
-                (Choose target day in the curriculum)
+                (Days already assigned to other quizzes are excluded)
               </span>
             </label>
             {availableSeriesRounds.length === 0 ? (
               <div style={{ fontSize: '0.82rem', color: '#f59e0b', padding: '0.6rem 0.8rem', borderRadius: 8, background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-                No series days found.
+                All series days already have quizzes assigned!
               </div>
             ) : (
               <div>
@@ -133,18 +133,13 @@ export function QuizSeriesLinker({
                     cursor: 'pointer',
                   }}
                 >
-                  <option value="">-- Choose series day ({filteredSeriesRounds.length} available) --</option>
+                  <option value="">-- Choose unassigned series day ({filteredSeriesRounds.length} available) --</option>
                   {filteredSeriesRounds.map(r => {
                     const isCurrent = Boolean(currentQuizSlug && r.quiz_id && r.quiz_id === currentQuizSlug)
-                    const statusTag = !r.quiz_id
-                      ? 'Available'
-                      : isCurrent
-                      ? 'Currently linked'
-                      : `Assigned: ${r.quiz_id}`
                     return (
                       <option key={r.day_number} value={r.day_number}>
                         {r.day_number <= 0 ? `Prep Day ${r.day_number}: ` : `Day ${r.day_number}: `}
-                        {r.title} — [{statusTag}]
+                        {r.title} {isCurrent ? '— [Currently linked]' : '— [Available]'}
                       </option>
                     )
                   })}
