@@ -75,10 +75,19 @@ export function AdminQuizCreator({
   const [copiedLink, setCopiedLink] = useState(false)
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState<string | null>(null)
 
+function parseSeriesDayFromSlug(slug: string): number | null {
+  if (slug === '64-day-d3') return -2
+  if (slug === '64-day-d2') return -1
+  if (slug === '64-day-d1') return 0
+  const match = slug.match(/^64-day-0*(\d+)$/)
+  if (match) return parseInt(match[1], 10)
+  return null
+}
+
   // Fetch series rounds
   const fetchSeriesRounds = useCallback(async () => {
     try {
-      const res = await fetch('/api/series/sacred-teachings-64-principles')
+      const res = await fetch(`/api/series/sacred-teachings-64-principles?t=${Date.now()}`, { cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
         if (Array.isArray(data.rounds)) {
@@ -123,7 +132,21 @@ export function AdminQuizCreator({
     setPublishedId(null)
 
     try {
-      const res = await fetch(`/api/quiz/${targetId}?raw=true`)
+      const roundsPromise: Promise<QuizSeriesRound[]> = fetch(`/api/series/sacred-teachings-64-principles?t=${Date.now()}`, { cache: 'no-store' })
+        .then(r => (r.ok ? r.json() : null))
+        .then(d => (d && Array.isArray(d.rounds) ? (d.rounds as QuizSeriesRound[]) : seriesRounds))
+        .catch(() => seriesRounds)
+
+      const [res, freshRounds] = await Promise.all([
+        fetch(`/api/quiz/${targetId}?raw=true&t=${Date.now()}`, { cache: 'no-store' }),
+        roundsPromise,
+      ])
+
+      const activeRounds: QuizSeriesRound[] = (freshRounds && freshRounds.length > 0) ? freshRounds : seriesRounds
+      if (freshRounds && freshRounds.length > 0) {
+        setSeriesRounds(freshRounds)
+      }
+
       if (!res.ok) throw new Error(`Could not load quiz "${targetId}" from database.`)
       const data = await res.json()
 
@@ -140,7 +163,7 @@ export function AdminQuizCreator({
       setIsEditingExisting(true)
 
       // Check if linked to series
-      const matchedRound = seriesRounds.find(r => r.quiz_id && (r.quiz_id === targetId || r.quiz_id === data.id))
+      const matchedRound = activeRounds.find((r: QuizSeriesRound) => Boolean(r.quiz_id && (r.quiz_id === targetId || r.quiz_id === data.id)))
       if (matchedRound) {
         setLinkToSeries(true)
         setSelectedSeriesDay(matchedRound.day_number)
@@ -202,7 +225,7 @@ export function AdminQuizCreator({
     if (editingQuizId) {
       loadQuizForEditing(editingQuizId)
     }
-  }, [editingQuizId, seriesRounds])
+  }, [editingQuizId])
 
   // Reset to empty new quiz
   const handleResetToNew = () => {
@@ -429,6 +452,10 @@ export function AdminQuizCreator({
         throw new Error('Please enter and validate questions for at least one language.')
       }
 
+      if (linkToSeries && selectedSeriesDay === null) {
+        throw new Error('Please select which series day to link this quiz to from the dropdown.')
+      }
+
       // Fallback if only non-en was entered
       if (!questionsPayload.en) {
         const firstKey = Object.keys(questionsPayload)[0]
@@ -497,16 +524,8 @@ export function AdminQuizCreator({
     setTimeout(() => setCopiedLink(false), 2000)
   }
 
-  // Filter available series days:
-  // Days for which a quiz is ALREADY created in the database are NOT shown!
-  // (If currently editing an existing quiz, allow its current day)
-  const existingQuizIdSet = new Set(catalogQuizzes.map(q => q.id))
-  const availableSeriesRounds = seriesRounds.filter(round => {
-    if (isEditingExisting && ((round.quiz_id && round.quiz_id === slug) || round.day_number === selectedSeriesDay)) {
-      return true
-    }
-    return !round.quiz_id || !existingQuizIdSet.has(round.quiz_id)
-  })
+  // All series rounds are selectable in the linker dropdown (status annotated)
+  const availableSeriesRounds = seriesRounds
 
   const filteredSeriesRounds = availableSeriesRounds.filter(round => {
     if (!seriesSearchQuery.trim()) return true
@@ -641,7 +660,14 @@ export function AdminQuizCreator({
         linkToSeries={linkToSeries}
         onToggleLinkToSeries={checked => {
           setLinkToSeries(checked)
-          if (!checked) setSelectedSeriesDay(null)
+          if (!checked) {
+            setSelectedSeriesDay(null)
+          } else if (selectedSeriesDay === null) {
+            const autoDay = parseSeriesDayFromSlug(slug)
+            if (autoDay !== null) {
+              handleSeriesDaySelect(String(autoDay))
+            }
+          }
         }}
         selectedSeriesDay={selectedSeriesDay}
         availableSeriesRounds={availableSeriesRounds}

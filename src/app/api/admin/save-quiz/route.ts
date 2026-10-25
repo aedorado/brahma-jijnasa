@@ -169,34 +169,37 @@ export async function POST(request: Request) {
     const shouldUnlink = body.link_to_series === false || body.series_day_number === null
 
     if (shouldLink && body.series_day_number !== undefined && body.series_day_number !== null) {
+      const targetDay = Number(body.series_day_number)
+
       // 1. If this quiz was linked to another day previously, clear that day first
       await supabase
         .from('quiz_series_rounds')
-        .update({ quiz_id: '' })
+        .update({ quiz_id: '', active_session_id: null })
         .eq('quiz_id', id)
-        .neq('day_number', body.series_day_number)
+        .neq('day_number', targetDay)
 
       // 2. Link this quiz to the specified day
       const roundUpdates: Record<string, any> = {
         quiz_id: id,
         title,
       }
-      if (body.unlock_at) {
+      if (body.unlock_at && typeof body.unlock_at === 'string' && body.unlock_at.trim()) {
         roundUpdates.unlock_at = body.unlock_at
       }
       const { error: roundErr } = await supabase
         .from('quiz_series_rounds')
         .update(roundUpdates)
-        .eq('day_number', body.series_day_number)
+        .eq('day_number', targetDay)
 
       if (roundErr) {
-        console.warn('[Save Quiz Series Round Warning]:', roundErr.message)
+        console.error('[Save Quiz Series Round Error]:', roundErr)
+        return NextResponse.json({ error: `Failed to link series round: ${roundErr.message}` }, { status: 500 })
       }
     } else if (shouldUnlink) {
       // Unlink this quiz from any series round
       const { error: unlinkErr } = await supabase
         .from('quiz_series_rounds')
-        .update({ quiz_id: '' })
+        .update({ quiz_id: '', active_session_id: null })
         .eq('quiz_id', id)
 
       if (unlinkErr) {

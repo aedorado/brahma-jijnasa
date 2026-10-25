@@ -14,6 +14,7 @@ interface QuizSeriesLinkerProps {
   unlockAtInput: string
   onUnlockAtInputChange: (val: string) => void
   formatIstDisplay: (localDatetimeStr: string) => string
+  currentQuizSlug?: string
 }
 
 export function QuizSeriesLinker({
@@ -28,6 +29,7 @@ export function QuizSeriesLinker({
   unlockAtInput,
   onUnlockAtInputChange,
   formatIstDisplay,
+  currentQuizSlug,
 }: QuizSeriesLinkerProps) {
   return (
     <div
@@ -71,12 +73,12 @@ export function QuizSeriesLinker({
             <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-text)' }}>
               Select Series Day <span style={{ color: 'var(--color-error)' }}>*</span>
               <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', fontWeight: 400, marginLeft: '0.4rem' }}>
-                (Days with existing quizzes are excluded)
+                (Choose target day in the curriculum)
               </span>
             </label>
             {availableSeriesRounds.length === 0 ? (
               <div style={{ fontSize: '0.82rem', color: '#f59e0b', padding: '0.6rem 0.8rem', borderRadius: 8, background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-                All 30 series days already have quizzes created!
+                No series days found.
               </div>
             ) : (
               <div>
@@ -131,13 +133,21 @@ export function QuizSeriesLinker({
                     cursor: 'pointer',
                   }}
                 >
-                  <option value="">-- Choose unassigned series day ({filteredSeriesRounds.length} available) --</option>
-                  {filteredSeriesRounds.map(r => (
-                    <option key={r.day_number} value={r.day_number}>
-                      {r.day_number <= 0 ? `Prep Day ${r.day_number}: ` : `Day ${r.day_number}: `}
-                      {r.title} ({r.principles_range || r.quiz_id})
-                    </option>
-                  ))}
+                  <option value="">-- Choose series day ({filteredSeriesRounds.length} available) --</option>
+                  {filteredSeriesRounds.map(r => {
+                    const isCurrent = Boolean(currentQuizSlug && r.quiz_id && r.quiz_id === currentQuizSlug)
+                    const statusTag = !r.quiz_id
+                      ? 'Available'
+                      : isCurrent
+                      ? 'Currently linked'
+                      : `Assigned: ${r.quiz_id}`
+                    return (
+                      <option key={r.day_number} value={r.day_number}>
+                        {r.day_number <= 0 ? `Prep Day ${r.day_number}: ` : `Day ${r.day_number}: `}
+                        {r.title} — [{statusTag}]
+                      </option>
+                    )
+                  })}
                 </select>
               </div>
             )}

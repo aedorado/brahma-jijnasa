@@ -388,6 +388,7 @@ export function QuizMetadataForm({
         unlockAtInput={unlockAtInput}
         onUnlockAtInputChange={onUnlockAtInputChange}
         formatIstDisplay={formatIstDisplay}
+        currentQuizSlug={slug}
       />
     </div>
   )
