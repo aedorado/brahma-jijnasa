@@ -3,14 +3,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import type { Quiz, Question, Difficulty } from '@/types/quiz'
-import type { QuizSeriesRound } from '@/types/series'
-
 import type { AdminQuizCreatorProps, SupportedLang, EditorFormat } from './creator/types'
 import {
   LANG_CONFIG,
-  toLocalDatetimeString,
-  localToIsoString,
-  formatIstDisplay,
   cleanAndParseQuestionArray,
   computeQuizSnapshot,
 } from './creator/utils'
@@ -27,8 +22,6 @@ export function AdminQuizCreator({
   editingQuizId,
   onClearEditingQuiz,
   catalogQuizzes = [],
-  initialSeriesDay,
-  onClearInitialSeriesDay,
 }: AdminQuizCreatorProps) {
   const { user } = useAuth()
 
@@ -46,14 +39,7 @@ export function AdminQuizCreator({
   const [isEditingExisting, setIsEditingExisting] = useState(false)
   const [loadingQuiz, setLoadingQuiz] = useState(false)
 
-  // 2. Series Campaign Linking State
-  const [seriesRounds, setSeriesRounds] = useState<QuizSeriesRound[]>([])
-  const [linkToSeries, setLinkToSeries] = useState(false)
-  const [selectedSeriesDay, setSelectedSeriesDay] = useState<number | null>(null)
-  const [unlockAtInput, setUnlockAtInput] = useState('')
-  const [seriesSearchQuery, setSeriesSearchQuery] = useState('')
-
-  // 3. Multilingual Questions State
+  // 2. Multilingual Questions State
   const [activeLang, setActiveLang] = useState<SupportedLang>('en')
   const [questionsRaw, setQuestionsRaw] = useState<Record<SupportedLang, string>>({
     en: '',
@@ -67,62 +53,13 @@ export function AdminQuizCreator({
   })
   const [editorFormat, setEditorFormat] = useState<EditorFormat>('markdown')
 
-  // 4. UI / Validation State
+  // 3. UI / Validation State
   const [parseError, setParseError] = useState<string | null>(null)
   const [cleanLog, setCleanLog] = useState<string[]>([])
   const [publishing, setPublishing] = useState(false)
   const [publishedId, setPublishedId] = useState<string | null>(null)
   const [copiedLink, setCopiedLink] = useState(false)
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState<string | null>(null)
-
-function parseSeriesDayFromSlug(slug: string): number | null {
-  if (slug === '64-day-d3') return -2
-  if (slug === '64-day-d2') return -1
-  if (slug === '64-day-d1') return 0
-  const match = slug.match(/^64-day-0*(\d+)$/)
-  if (match) return parseInt(match[1], 10)
-  return null
-}
-
-  // Fetch series rounds
-  const fetchSeriesRounds = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/series/sacred-teachings-64-principles?t=${Date.now()}`, { cache: 'no-store' })
-      if (res.ok) {
-        const data = await res.json()
-        if (Array.isArray(data.rounds)) {
-          setSeriesRounds(data.rounds)
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to load series rounds:', e)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchSeriesRounds()
-  }, [fetchSeriesRounds])
-
-  // Handle incoming initialSeriesDay prop
-  useEffect(() => {
-    if (initialSeriesDay !== null && initialSeriesDay !== undefined && seriesRounds.length > 0) {
-      const round = seriesRounds.find(r => r.day_number === initialSeriesDay)
-      if (round) {
-        setLinkToSeries(true)
-        setSelectedSeriesDay(round.day_number)
-        setCategory('64-principles')
-        const conventionSlug = round.day_number <= 0 ? `64-day-d${Math.abs(round.day_number) + 1}` : `64-day-${String(round.day_number).padStart(2, '0')}`
-        setSlug(round.quiz_id || conventionSlug)
-        setIsSlugManual(true)
-        if (!title || title.startsWith('Day ') || title === 'Untitled Quiz') {
-          setTitle(round.title || `Day ${round.day_number}: Sacred Teachings`)
-        }
-        if (round.unlock_at) {
-          setUnlockAtInput(toLocalDatetimeString(round.unlock_at))
-        }
-      }
-    }
-  }, [initialSeriesDay, seriesRounds])
 
   // Function to load any existing quiz for editing
   const loadQuizForEditing = async (targetId: string) => {
@@ -132,21 +69,7 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     setPublishedId(null)
 
     try {
-      const roundsPromise: Promise<QuizSeriesRound[]> = fetch(`/api/series/sacred-teachings-64-principles?t=${Date.now()}`, { cache: 'no-store' })
-        .then(r => (r.ok ? r.json() : null))
-        .then(d => (d && Array.isArray(d.rounds) ? (d.rounds as QuizSeriesRound[]) : seriesRounds))
-        .catch(() => seriesRounds)
-
-      const [res, freshRounds] = await Promise.all([
-        fetch(`/api/quiz/${targetId}?raw=true&t=${Date.now()}`, { cache: 'no-store' }),
-        roundsPromise,
-      ])
-
-      const activeRounds: QuizSeriesRound[] = (freshRounds && freshRounds.length > 0) ? freshRounds : seriesRounds
-      if (freshRounds && freshRounds.length > 0) {
-        setSeriesRounds(freshRounds)
-      }
-
+      const res = await fetch(`/api/quiz/${targetId}?raw=true&t=${Date.now()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error(`Could not load quiz "${targetId}" from database.`)
       const data = await res.json()
 
@@ -161,20 +84,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
       setAuthorName(data.author_name || '')
       setIsPublished(data.is_published !== false)
       setIsEditingExisting(true)
-
-      // Check if linked to series
-      const matchedRound = activeRounds.find((r: QuizSeriesRound) => Boolean(r.quiz_id && (r.quiz_id === targetId || r.quiz_id === data.id)))
-      if (matchedRound) {
-        setLinkToSeries(true)
-        setSelectedSeriesDay(matchedRound.day_number)
-        if (matchedRound.unlock_at) {
-          setUnlockAtInput(toLocalDatetimeString(matchedRound.unlock_at))
-        }
-      } else {
-        setLinkToSeries(false)
-        setSelectedSeriesDay(null)
-        setUnlockAtInput('')
-      }
 
       const qObj = data.questions || {}
       const rawMap: Record<SupportedLang, string> = { en: '', hi: '', pt: '' }
@@ -207,9 +116,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         onTimeExpiry: data.on_time_expiry || 'submit-partial',
         authorName: data.author_name || '',
         isPublished: data.is_published !== false,
-        linkToSeries: Boolean(matchedRound),
-        selectedSeriesDay: matchedRound ? matchedRound.day_number : null,
-        unlockAtInput: matchedRound?.unlock_at ? toLocalDatetimeString(matchedRound.unlock_at) : '',
         questionsRaw: rawMap,
       })
       setLastSavedSnapshot(loadedSnapshot)
@@ -243,11 +149,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     setLastSavedSnapshot(null)
     setQuestionsRaw({ en: '', hi: '', pt: '' })
     setParsedQuestions({ en: [], hi: [], pt: [] })
-    setLinkToSeries(false)
-    setSelectedSeriesDay(null)
-    setUnlockAtInput('')
-    setSeriesSearchQuery('')
-    onClearInitialSeriesDay?.()
     onClearEditingQuiz?.()
   }
 
@@ -452,17 +353,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         throw new Error('Please enter and validate questions for at least one language.')
       }
 
-      if (linkToSeries && selectedSeriesDay === null) {
-        throw new Error('Please select which series day to link this quiz to from the dropdown.')
-      }
-
-      if (linkToSeries && selectedSeriesDay !== null) {
-        const targetRound = seriesRounds.find(r => r.day_number === selectedSeriesDay)
-        if (targetRound?.quiz_id && slug && targetRound.quiz_id !== slug.trim()) {
-          throw new Error(`Day ${selectedSeriesDay} is already assigned to quiz "${targetRound.quiz_id}". Please choose an unassigned series day.`)
-        }
-      }
-
       // Fallback if only non-en was entered
       if (!questionsPayload.en) {
         const firstKey = Object.keys(questionsPayload)[0]
@@ -483,9 +373,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         is_published: isPublished,
         tags: [category],
         questions: questionsPayload,
-        link_to_series: linkToSeries,
-        series_day_number: linkToSeries && selectedSeriesDay !== null ? selectedSeriesDay : null,
-        unlock_at: linkToSeries && unlockAtInput ? localToIsoString(unlockAtInput) : null,
       }
 
       const res = await fetch('/api/admin/save-quiz', {
@@ -509,12 +396,8 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         onTimeExpiry,
         authorName,
         isPublished,
-        linkToSeries,
-        selectedSeriesDay,
-        unlockAtInput,
         questionsRaw,
       }))
-      await fetchSeriesRounds()
       await onQuizPublished(data.quizId)
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Error publishing quiz.'
@@ -529,54 +412,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     navigator.clipboard.writeText(`${window.location.origin}/q/${publishedId}`)
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2000)
-  }
-
-  // Only allow unassigned series days, or the day currently linked to THIS quiz, or currently selected day
-  const availableSeriesRounds = seriesRounds.filter(round => {
-    const isUnassigned = !round.quiz_id || round.quiz_id.trim() === ''
-    const isThisQuiz = Boolean(slug && round.quiz_id && round.quiz_id === slug.trim())
-    const isCurrentSelection = selectedSeriesDay !== null && round.day_number === selectedSeriesDay
-    return isUnassigned || isThisQuiz || isCurrentSelection
-  })
-
-  const filteredSeriesRounds = availableSeriesRounds.filter(round => {
-    if (!seriesSearchQuery.trim()) return true
-    const q = seriesSearchQuery.toLowerCase()
-    return (
-      String(round.day_number).includes(q) ||
-      round.title.toLowerCase().includes(q) ||
-      (round.principles_range && round.principles_range.toLowerCase().includes(q))
-    )
-  })
-
-  const handleSeriesDaySelect = (dayNumStr: string) => {
-    if (!dayNumStr) {
-      setSelectedSeriesDay(null)
-      return
-    }
-    const dayNum = Number(dayNumStr)
-    const round = seriesRounds.find(r => r.day_number === dayNum)
-    if (!round) return
-
-    // Prevent selecting a day already linked to another quiz
-    if (round.quiz_id && slug && round.quiz_id !== slug.trim()) {
-      alert(`Day ${dayNum} is already assigned to quiz "${round.quiz_id}". Cannot link this quiz to an occupied day.`)
-      return
-    }
-
-    setSelectedSeriesDay(dayNum)
-    setCategory('64-principles')
-    const conventionSlug = dayNum <= 0 ? `64-day-d${Math.abs(dayNum) + 1}` : `64-day-${String(dayNum).padStart(2, '0')}`
-    if (!slug || slug === 'untitled-quiz' || slug.startsWith('64-day-')) {
-      setSlug(round.quiz_id || conventionSlug)
-    }
-    setIsSlugManual(true)
-    if (!title || title.startsWith('Day ') || title === 'Untitled Quiz') {
-      setTitle(round.title || `Day ${round.day_number}: Sacred Teachings`)
-    }
-    if (round.unlock_at) {
-      setUnlockAtInput(toLocalDatetimeString(round.unlock_at))
-    }
   }
 
   // Construct current quiz for dry-run
@@ -606,9 +441,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
     onTimeExpiry,
     authorName,
     isPublished,
-    linkToSeries,
-    selectedSeriesDay,
-    unlockAtInput,
     questionsRaw,
   })
 
@@ -675,27 +507,6 @@ function parseSeriesDayFromSlug(slug: string): number | null {
         onResetToNew={handleResetToNew}
         catalogQuizzes={catalogQuizzes}
         onSelectQuiz={loadQuizForEditing}
-        linkToSeries={linkToSeries}
-        onToggleLinkToSeries={checked => {
-          setLinkToSeries(checked)
-          if (!checked) {
-            setSelectedSeriesDay(null)
-          } else if (selectedSeriesDay === null) {
-            const autoDay = parseSeriesDayFromSlug(slug)
-            if (autoDay !== null) {
-              handleSeriesDaySelect(String(autoDay))
-            }
-          }
-        }}
-        selectedSeriesDay={selectedSeriesDay}
-        availableSeriesRounds={availableSeriesRounds}
-        seriesSearchQuery={seriesSearchQuery}
-        onSeriesSearchQueryChange={setSeriesSearchQuery}
-        filteredSeriesRounds={filteredSeriesRounds}
-        onSeriesDaySelect={handleSeriesDaySelect}
-        unlockAtInput={unlockAtInput}
-        onUnlockAtInputChange={setUnlockAtInput}
-        formatIstDisplay={formatIstDisplay}
       />
 
       {/* SECTION 2: QUESTIONS EDITOR */}

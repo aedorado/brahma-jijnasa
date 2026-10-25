@@ -413,7 +413,7 @@ export function parseQuizMarkdown(markdown: string): ParsedQuizMarkdownResult {
         // Look at options or check True/False directly
         if (checkedIndices.length > 0 && options.length > 0) {
           const checkedText = options[checkedIndices[0]].toLowerCase()
-          raw.correct = checkedText.includes('true')
+          raw.correct = checkedText.includes('true') || checkedText.includes('सत्य') || checkedText.includes('verdadeiro') || (!checkedText.includes('false') && !checkedText.includes('असत्य') && !checkedText.includes('falso') && checkedIndices[0] === 0)
         } else {
           // Fallback check in text
           raw.correct = true
@@ -597,9 +597,11 @@ export function questionsToMarkdown(questions: Question[]): string {
         lines.push('')
       } else if (q.type === 'true-false') {
         const tf = q as any
+        const opt0 = Array.isArray(tf.options) && tf.options[0] ? tf.options[0] : 'True'
+        const opt1 = Array.isArray(tf.options) && tf.options[1] ? tf.options[1] : 'False'
         lines.push(`**Options:**`)
-        lines.push(`- [${tf.correct ? 'x' : ' '}] True`)
-        lines.push(`- [${!tf.correct ? 'x' : ' '}] False`)
+        lines.push(`- [${tf.correct ? 'x' : ' '}] ${opt0}`)
+        lines.push(`- [${!tf.correct ? 'x' : ' '}] ${opt1}`)
         lines.push('')
       } else if (q.type === 'multiple-select') {
         const ms = q as any

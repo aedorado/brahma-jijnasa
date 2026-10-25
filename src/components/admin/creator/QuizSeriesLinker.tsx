@@ -135,11 +135,12 @@ export function QuizSeriesLinker({
                 >
                   <option value="">-- Choose unassigned series day ({filteredSeriesRounds.length} available) --</option>
                   {filteredSeriesRounds.map(r => {
-                    const isCurrent = Boolean(currentQuizSlug && r.quiz_id && r.quiz_id === currentQuizSlug)
+                    const isOccupiedByOther = Boolean(r.quiz_id && r.quiz_id.trim() !== '' && (!currentQuizSlug || r.quiz_id.trim() !== currentQuizSlug.trim()))
+                    const isCurrent = Boolean(currentQuizSlug && r.quiz_id && r.quiz_id.trim() === currentQuizSlug.trim())
                     return (
-                      <option key={r.day_number} value={r.day_number}>
+                      <option key={r.day_number} value={r.day_number} disabled={isOccupiedByOther}>
                         {r.day_number <= 0 ? `Prep Day ${r.day_number}: ` : `Day ${r.day_number}: `}
-                        {r.title} {isCurrent ? '— [Currently linked]' : '— [Available]'}
+                        {r.title} {isCurrent ? '— [Currently linked]' : isOccupiedByOther ? `— [Occupied: ${r.quiz_id}]` : '— [Available]'}
                       </option>
                     )
                   })}

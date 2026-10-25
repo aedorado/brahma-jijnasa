@@ -2,9 +2,7 @@
 
 import Link from 'next/link'
 import type { Difficulty, QuizMeta } from '@/types/quiz'
-import type { QuizSeriesRound } from '@/types/series'
 import { QuizDropdownSelector } from './QuizDropdownSelector'
-import { QuizSeriesLinker } from './QuizSeriesLinker'
 
 interface QuizMetadataFormProps {
   title: string
@@ -29,19 +27,6 @@ interface QuizMetadataFormProps {
   onResetToNew: () => void
   catalogQuizzes: QuizMeta[]
   onSelectQuiz: (id: string) => void
-
-  // Series Linking
-  linkToSeries: boolean
-  onToggleLinkToSeries: (val: boolean) => void
-  selectedSeriesDay: number | null
-  availableSeriesRounds: QuizSeriesRound[]
-  seriesSearchQuery: string
-  onSeriesSearchQueryChange: (query: string) => void
-  filteredSeriesRounds: QuizSeriesRound[]
-  onSeriesDaySelect: (dayNumStr: string) => void
-  unlockAtInput: string
-  onUnlockAtInputChange: (val: string) => void
-  formatIstDisplay: (localDatetimeStr: string) => string
 }
 
 export function QuizMetadataForm({
@@ -67,18 +52,6 @@ export function QuizMetadataForm({
   onResetToNew,
   catalogQuizzes,
   onSelectQuiz,
-
-  linkToSeries,
-  onToggleLinkToSeries,
-  selectedSeriesDay,
-  availableSeriesRounds,
-  seriesSearchQuery,
-  onSeriesSearchQueryChange,
-  filteredSeriesRounds,
-  onSeriesDaySelect,
-  unlockAtInput,
-  onUnlockAtInputChange,
-  formatIstDisplay,
 }: QuizMetadataFormProps) {
   return (
     <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
@@ -374,22 +347,6 @@ export function QuizMetadataForm({
           />
         </div>
       </div>
-
-      {/* Series Campaign Linking Card */}
-      <QuizSeriesLinker
-        linkToSeries={linkToSeries}
-        onToggleLinkToSeries={onToggleLinkToSeries}
-        selectedSeriesDay={selectedSeriesDay}
-        availableSeriesRounds={availableSeriesRounds}
-        seriesSearchQuery={seriesSearchQuery}
-        onSeriesSearchQueryChange={onSeriesSearchQueryChange}
-        filteredSeriesRounds={filteredSeriesRounds}
-        onSeriesDaySelect={onSeriesDaySelect}
-        unlockAtInput={unlockAtInput}
-        onUnlockAtInputChange={onUnlockAtInputChange}
-        formatIstDisplay={formatIstDisplay}
-        currentQuizSlug={slug}
-      />
     </div>
   )
 }

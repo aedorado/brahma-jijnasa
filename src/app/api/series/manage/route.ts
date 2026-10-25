@@ -109,6 +109,78 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, session, pin })
     }
 
+    // --- Admin-only series linking and scheduling operations ---
+    if (action === 'link_round' || action === 'unlink_round' || action === 'update_schedule') {
+      if (sessionUser.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden: Only administrators can assign or reassign series campaign quizzes.' }, { status: 403 })
+      }
+
+      const { targetQuizId, unlockAt, dayNumber } = body
+
+      // 1. Unlink Round
+      if (action === 'unlink_round') {
+        let updateQuery = supabase.from('quiz_series_rounds').update({ quiz_id: '', active_session_id: null })
+        if (roundId) updateQuery = updateQuery.eq('id', roundId)
+        else if (dayNumber !== undefined && dayNumber !== null) updateQuery = updateQuery.eq('day_number', Number(dayNumber))
+        else return NextResponse.json({ error: 'Missing roundId or dayNumber' }, { status: 400 })
+
+        const { error: unlinkErr } = await updateQuery
+        if (unlinkErr) {
+          return NextResponse.json({ error: unlinkErr.message }, { status: 500 })
+        }
+        return NextResponse.json({ success: true, message: 'Quiz unlinked from round.' })
+      }
+
+      // 2. Update Schedule
+      if (action === 'update_schedule') {
+        if (!unlockAt) return NextResponse.json({ error: 'Missing unlockAt' }, { status: 400 })
+        let updateQuery = supabase.from('quiz_series_rounds').update({ unlock_at: unlockAt })
+        if (roundId) updateQuery = updateQuery.eq('id', roundId)
+        else if (dayNumber !== undefined && dayNumber !== null) updateQuery = updateQuery.eq('day_number', Number(dayNumber))
+        else return NextResponse.json({ error: 'Missing roundId or dayNumber' }, { status: 400 })
+
+        const { error: schedErr } = await updateQuery
+        if (schedErr) {
+          return NextResponse.json({ error: schedErr.message }, { status: 500 })
+        }
+        return NextResponse.json({ success: true, message: 'Schedule updated.' })
+      }
+
+      // 3. Link Round to a Quiz
+      if (action === 'link_round') {
+        if (!targetQuizId) return NextResponse.json({ error: 'Missing targetQuizId' }, { status: 400 })
+
+        // Fetch quiz title to keep round title aligned
+        const { data: qData } = await supabase
+          .from('quizzes')
+          .select('title')
+          .eq('id', targetQuizId)
+          .maybeSingle()
+
+        // Detach targetQuizId from any other round first to prevent duplicate assignments
+        await supabase
+          .from('quiz_series_rounds')
+          .update({ quiz_id: '', active_session_id: null })
+          .eq('quiz_id', targetQuizId)
+
+        // Attach targetQuizId to the specified round
+        const updates: Record<string, any> = { quiz_id: targetQuizId }
+        if (qData?.title) updates.title = qData.title
+        if (unlockAt && typeof unlockAt === 'string' && unlockAt.trim()) updates.unlock_at = unlockAt
+
+        let updateQuery = supabase.from('quiz_series_rounds').update(updates)
+        if (roundId) updateQuery = updateQuery.eq('id', roundId)
+        else if (dayNumber !== undefined && dayNumber !== null) updateQuery = updateQuery.eq('day_number', Number(dayNumber))
+        else return NextResponse.json({ error: 'Missing roundId or dayNumber' }, { status: 400 })
+
+        const { error: linkErr } = await updateQuery
+        if (linkErr) {
+          return NextResponse.json({ error: linkErr.message }, { status: 500 })
+        }
+        return NextResponse.json({ success: true, message: 'Quiz attached to series round.' })
+      }
+    }
+
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
   } catch (err: any) {
     console.error('[Series Manage API Error]:', err)

@@ -65,9 +65,9 @@ export function computeQuizSnapshot(data: {
   onTimeExpiry: string
   authorName: string
   isPublished: boolean
-  linkToSeries: boolean
-  selectedSeriesDay: number | null
-  unlockAtInput: string
+  linkToSeries?: boolean
+  selectedSeriesDay?: number | null
+  unlockAtInput?: string
   questionsRaw: Record<SupportedLang, string>
 }): string {
   return JSON.stringify({
@@ -80,9 +80,6 @@ export function computeQuizSnapshot(data: {
     onTimeExpiry: data.onTimeExpiry,
     authorName: data.authorName.trim(),
     isPublished: data.isPublished,
-    linkToSeries: data.linkToSeries,
-    selectedSeriesDay: data.selectedSeriesDay,
-    unlockAtInput: data.unlockAtInput,
     questionsRaw: {
       en: (data.questionsRaw.en || '').trim(),
       hi: (data.questionsRaw.hi || '').trim(),

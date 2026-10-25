@@ -194,19 +194,23 @@ export default function AdminPage() {
     }
 
     if (user.role === 'creator') {
-      setActivePillar('create')
+      router.replace('/admin/create')
+      return
     }
 
     const init = async () => {
-      if (user.role === 'creator') {
-        await loadQuizzes()
-      } else {
-        await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
-      }
+      await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
       setLoading(false)
 
       if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search)
+        const tab = params.get('tab') as AdminPillar | null
+        if (tab && ['live', 'series', 'catalog', 'analytics'].includes(tab)) {
+          setActivePillar(tab)
+        } else if (tab === 'create') {
+          router.replace('/admin/create')
+          return
+        }
         const dryRunId = params.get('dryRun')
         if (dryRunId) {
           handleStartDryRun(dryRunId)
@@ -522,14 +526,14 @@ export default function AdminPage() {
             </>
           )}
 
-          <button
-            onClick={() => setActivePillar('create')}
+          <Link
+            href="/admin/create"
             className={`btn btn-sm ${activePillar === 'create' ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10, textDecoration: 'none' }}
             id="admin-pillar-create"
           >
-            <span>✨</span> Create Quiz
-          </button>
+            <span>✨</span> Create Quiz ↗
+          </Link>
         </div>
 
         {/* PILLAR 1: LIVE CLASSROOM ROOM */}
@@ -560,16 +564,13 @@ export default function AdminPage() {
               setActivePillar('live')
             }}
             onDryRunQuiz={handleStartDryRun}
-            onCreateQuizForDay={(dayNum) => {
-              setEditingQuizId(null)
-              setInitialSeriesDay(dayNum)
-              setActivePillar('create')
+            onCreateQuizForDay={() => {
+              router.push('/admin/create')
             }}
             onEditQuiz={(quizId) => {
-              setInitialSeriesDay(null)
-              setEditingQuizId(quizId)
-              setActivePillar('create')
+              router.push(`/admin/create?edit=${encodeURIComponent(quizId)}`)
             }}
+            isAdmin={user?.role === 'admin'}
           />
         )}
 
@@ -585,15 +586,11 @@ export default function AdminPage() {
             }}
             starting={starting}
             onOpenCreator={() => {
-              setEditingQuizId(null)
-              setInitialSeriesDay(null)
-              setActivePillar('create')
+              router.push('/admin/create')
             }}
             onDryRunQuiz={handleStartDryRun}
             onEditQuiz={(quizId) => {
-              setInitialSeriesDay(null)
-              setEditingQuizId(quizId)
-              setActivePillar('create')
+              router.push(`/admin/create?edit=${encodeURIComponent(quizId)}`)
             }}
           />
         )}
@@ -613,15 +610,12 @@ export default function AdminPage() {
           <AdminQuizCreator
             editingQuizId={editingQuizId}
             onClearEditingQuiz={() => setEditingQuizId(null)}
-            initialSeriesDay={initialSeriesDay}
-            onClearInitialSeriesDay={() => setInitialSeriesDay(null)}
             catalogQuizzes={quizzes}
             onQuizPublished={async (quizId) => {
               await loadQuizzes()
             }}
             onSwitchToCatalog={() => {
               setEditingQuizId(null)
-              setInitialSeriesDay(null)
               if (user?.role !== 'creator') {
                 setActivePillar('catalog')
               }
