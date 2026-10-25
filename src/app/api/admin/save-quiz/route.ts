@@ -6,22 +6,39 @@ import { verifySession, SESSION_COOKIE_NAME } from '@/lib/auth'
 import type { Quiz, Question } from '@/types/quiz'
 
 import { validateQuestionsList } from '@/lib/quiz-validator'
+import { isMarkdownQuiz, parseQuizMarkdown } from '@/lib/quiz-markdown'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
 
-    // 1. Validate top-level metadata
-    const id = typeof body.id === 'string' ? body.id.trim() : ''
-    const title = typeof body.title === 'string' ? body.title.trim() : ''
-    const category = typeof body.category === 'string' ? body.category.trim() : 'general'
-    const description = typeof body.description === 'string' ? body.description.trim() : ''
-    const difficulty = body.difficulty || 'medium'
-    const time_limit = Number(body.time_limit || body.timeLimit || 720)
-    const on_time_expiry = body.on_time_expiry || body.onTimeExpiry || 'submit-partial'
-    const author_name = body.author_name || body.authorName || 'Brahmā-Jijñāsā Editorial'
+    // 0. Check if raw markdown or full markdown quiz is provided
+    let parsedFromMarkdownMeta: any = undefined
+    let rawQuestionsInput = body.questions ?? body.markdown
+
+    if (typeof rawQuestionsInput === 'string' && isMarkdownQuiz(rawQuestionsInput)) {
+      const mdRes = parseQuizMarkdown(rawQuestionsInput)
+      if (mdRes.errors.length > 0) {
+        return NextResponse.json({
+          error: `Markdown parsing failed:\n• ${mdRes.errors.join('\n• ')}`,
+          validationErrors: mdRes.errors,
+        }, { status: 400 })
+      }
+      parsedFromMarkdownMeta = mdRes.meta
+      rawQuestionsInput = { en: mdRes.questions }
+    }
+
+    // 1. Validate top-level metadata (filling from markdown frontmatter if present)
+    const id = typeof body.id === 'string' ? body.id.trim() : (parsedFromMarkdownMeta?.id || '')
+    const title = typeof body.title === 'string' ? body.title.trim() : (parsedFromMarkdownMeta?.title || '')
+    const category = typeof body.category === 'string' ? body.category.trim() : (parsedFromMarkdownMeta?.category || 'general')
+    const description = typeof body.description === 'string' ? body.description.trim() : (parsedFromMarkdownMeta?.description || '')
+    const difficulty = body.difficulty || parsedFromMarkdownMeta?.difficulty || 'medium'
+    const time_limit = Number(body.time_limit || body.timeLimit || parsedFromMarkdownMeta?.timeLimit || 720)
+    const on_time_expiry = body.on_time_expiry || body.onTimeExpiry || parsedFromMarkdownMeta?.onTimeExpiry || 'submit-partial'
+    const author_name = body.author_name || body.authorName || parsedFromMarkdownMeta?.authorName || 'Brahmā-Jijñāsā Editorial'
     const is_published = body.is_published !== undefined ? Boolean(body.is_published) : true
-    const tags = Array.isArray(body.tags) ? body.tags : [category]
+    const tags = Array.isArray(body.tags) ? body.tags : (parsedFromMarkdownMeta?.tags || [category])
 
     if (!id) {
       return NextResponse.json({ error: 'Quiz must have a valid slug "id" (e.g. "64-day-01").' }, { status: 400 })
@@ -33,11 +50,11 @@ export async function POST(request: Request) {
     // 2. Normalize and strictly validate questions object: { en: Question[], hi?: Question[], pt?: Question[] }
     let questionsPayload: Record<string, Question[]> = {}
 
-    if (Array.isArray(body.questions)) {
-      if (body.questions.length === 0) {
+    if (Array.isArray(rawQuestionsInput)) {
+      if (rawQuestionsInput.length === 0) {
         return NextResponse.json({ error: 'Quiz must have at least one question.' }, { status: 400 })
       }
-      const validation = validateQuestionsList(body.questions)
+      const validation = validateQuestionsList(rawQuestionsInput)
       if (!validation.valid) {
         return NextResponse.json({
           error: `Question validation failed:\n• ${validation.errors.join('\n• ')}`,
@@ -45,9 +62,18 @@ export async function POST(request: Request) {
         }, { status: 400 })
       }
       questionsPayload.en = validation.normalizedQuestions
-    } else if (typeof body.questions === 'object' && body.questions !== null) {
-      for (const [lang, qList] of Object.entries(body.questions)) {
-        if (Array.isArray(qList) && qList.length > 0) {
+    } else if (typeof rawQuestionsInput === 'object' && rawQuestionsInput !== null) {
+      for (const [lang, qList] of Object.entries(rawQuestionsInput)) {
+        if (typeof qList === 'string' && isMarkdownQuiz(qList)) {
+          const mdRes = parseQuizMarkdown(qList)
+          if (mdRes.errors.length > 0) {
+            return NextResponse.json({
+              error: `Validation failed for [${lang.toUpperCase()}] markdown questions:\n• ${mdRes.errors.join('\n• ')}`,
+              validationErrors: mdRes.errors,
+            }, { status: 400 })
+          }
+          questionsPayload[lang] = mdRes.questions
+        } else if (Array.isArray(qList) && qList.length > 0) {
           const validation = validateQuestionsList(qList)
           if (!validation.valid) {
             return NextResponse.json({
@@ -59,7 +85,7 @@ export async function POST(request: Request) {
         }
       }
     } else {
-      return NextResponse.json({ error: 'Invalid questions payload. Must be an array or object keyed by language.' }, { status: 400 })
+      return NextResponse.json({ error: 'Invalid questions payload. Must be an array, markdown string, or object keyed by language.' }, { status: 400 })
     }
 
     if (!questionsPayload.en || questionsPayload.en.length === 0) {

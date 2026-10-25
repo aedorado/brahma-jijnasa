@@ -161,24 +161,24 @@ export function AdminQuizCatalog({
                 }}
               >
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', minWidth: 0 }}>
-                      <span className="badge badge-gold" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                      <span className="badge badge-gold" style={{ fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
                         {CATEGORY_ICONS[quiz.category] || '📜'} {CATEGORY_LABELS[quiz.category] || quiz.category}
                       </span>
                       {activeSession && (
                         <span className="badge badge-success" style={{ fontSize: '0.68rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.15rem 0.45rem' }}>
-                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
                           LIVE PIN: {activeSession.pin}
                         </span>
                       )}
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0, marginTop: '2px' }}>
                       {quiz.totalQuestions} Questions
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem', lineHeight: 1.35 }}>
+                  <h3 style={{ fontSize: '1.08rem', fontWeight: 700, marginBottom: '0.4rem', lineHeight: 1.35 }}>
                     {quiz.title}
                   </h3>
 
@@ -188,40 +188,40 @@ export function AdminQuizCatalog({
                 </div>
 
                 <div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '0.4rem', marginBottom: '0.75rem' }}>
+                  <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', marginBottom: '0.75rem' }}>
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => handleInspectQuestions(quiz.id)}
-                      style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
+                      style={{ flex: 1, minWidth: 0, padding: '0.36rem 0.4rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.25rem' }}
                       title="Inspect question details"
                     >
-                      <span>👁</span> Preview
+                      <span style={{ fontSize: '0.82rem' }}>👁</span> <span>Preview</span>
                     </button>
 
                     {onEditQuiz && (
                       <button
                         className="btn btn-ghost btn-xs"
                         onClick={() => onEditQuiz(quiz.id)}
-                        style={{ border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem' }}
+                        style={{ flex: 1, minWidth: 0, padding: '0.36rem 0.4rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.25rem' }}
                         title="Edit quiz in CMS Studio"
                       >
-                        <span>✏️</span> Edit
+                        <span style={{ fontSize: '0.82rem' }}>✏️</span> <span>Edit</span>
                       </button>
                     )}
 
                     <button
                       className="btn btn-gold btn-xs"
                       onClick={() => onDryRunQuiz?.(quiz.id)}
-                      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem', fontWeight: 700 }}
+                      style={{ flex: 1.15, minWidth: 0, padding: '0.36rem 0.4rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.25rem', fontWeight: 700 }}
                       title="Run interactive simulation in quiz engine"
                     >
-                      <span>🧪</span> Dry Run
+                      <span style={{ fontSize: '0.82rem' }}>🧪</span> <span>Dry Run</span>
                     </button>
 
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => handleCopyLink(quiz.id)}
-                      style={{ border: '1px solid var(--color-border)', whiteSpace: 'nowrap' }}
+                      style={{ flexShrink: 0, width: 34, height: 28, padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       title="Copy student link"
                     >
                       {copiedId === quiz.id ? '✓' : '🔗'}

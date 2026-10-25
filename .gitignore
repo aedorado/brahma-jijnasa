@@ -17,6 +17,7 @@
 # misc
 .DS_Store
 *.pem
+*.epub
 
 # debug
 npm-debug.log*

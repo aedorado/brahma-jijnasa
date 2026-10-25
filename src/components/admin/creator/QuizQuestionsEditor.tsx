@@ -1,7 +1,7 @@
 'use client'
 
 import type { Quiz, Question } from '@/types/quiz'
-import type { SupportedLang } from './types'
+import type { SupportedLang, EditorFormat } from './types'
 import { LANG_CONFIG } from './utils'
 
 interface QuizQuestionsEditorProps {
@@ -19,6 +19,10 @@ interface QuizQuestionsEditorProps {
   isEditingExisting: boolean
   hasUnsavedChanges?: boolean
   onPublish: () => void
+  editorFormat: EditorFormat
+  onToggleEditorFormat: (format: EditorFormat) => void
+  onDownloadMarkdown?: () => void
+  onDownloadJson?: () => void
 }
 
 export function QuizQuestionsEditor({
@@ -36,16 +40,70 @@ export function QuizQuestionsEditor({
   isEditingExisting,
   hasUnsavedChanges = false,
   onPublish,
+  editorFormat,
+  onToggleEditorFormat,
+  onDownloadMarkdown,
+  onDownloadJson,
 }: QuizQuestionsEditorProps) {
   const activeLangConfig = LANG_CONFIG.find(l => l.key === activeLang)
+  const activeCount = parsedQuestions[activeLang]?.length || 0
 
   return (
     <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
         <div>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Questions Payload</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '0.2rem' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Questions Payload</h3>
+            {/* Format Switcher */}
+            <div style={{ display: 'flex', background: 'var(--color-surface-2)', padding: '0.2rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+              <button
+                type="button"
+                onClick={() => onToggleEditorFormat('markdown')}
+                style={{
+                  padding: '0.3rem 0.65rem',
+                  borderRadius: 6,
+                  border: 'none',
+                  background: editorFormat === 'markdown' ? 'var(--color-primary)' : 'transparent',
+                  color: editorFormat === 'markdown' ? '#FFFFFF' : 'var(--color-muted)',
+                  fontWeight: 700,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <span>📝</span> Markdown (.md)
+              </button>
+              <button
+                type="button"
+                onClick={() => onToggleEditorFormat('json')}
+                style={{
+                  padding: '0.3rem 0.65rem',
+                  borderRadius: 6,
+                  border: 'none',
+                  background: editorFormat === 'json' ? 'var(--color-primary)' : 'transparent',
+                  color: editorFormat === 'json' ? '#FFFFFF' : 'var(--color-muted)',
+                  fontWeight: 700,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <span>⚙️</span> JSON (.json)
+              </button>
+            </div>
+          </div>
           <p className="text-muted" style={{ fontSize: '0.8rem' }}>
-            Paste <strong>only</strong> the questions array <code>[&#123; ... &#125;]</code>. Switch tabs to provide localized translations.
+            {editorFormat === 'markdown' ? (
+              <>Authoring in <strong>Markdown</strong> mode with <code>## q1 | single-choice</code> and <code>- [x]</code> checkboxes.</>
+            ) : (
+              <>Authoring in <strong>JSON</strong> mode with raw question schema <code>[&#123; "type": ... &#125;]</code>.</>
+            )}
           </p>
         </div>
 
@@ -102,8 +160,12 @@ export function QuizQuestionsEditor({
         <textarea
           value={questionsRaw[activeLang]}
           onChange={e => onRawChange(e.target.value)}
-          placeholder={`Paste ONLY ${activeLangConfig?.label || activeLang} questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correctIndex": 0\n  }\n]`}
-          rows={10}
+          placeholder={
+            editorFormat === 'markdown'
+              ? `Paste or type ${activeLangConfig?.label || activeLang} questions in Markdown:\n\n## q1 | single-choice | easy\n\n**Q:** What was young John Favors' childhood neighborhood in Cleveland?\n\n**Options:**\n- [ ] Shaker Heights\n- [x] The Forgotten Triangle\n\n**Ref:** Chapter 1\n\n**Explanation:** John Favors was raised in 'The Forgotten Triangle'.`
+              : `Paste ONLY ${activeLangConfig?.label || activeLang} questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correctIndex": 0\n  }\n]`
+          }
+          rows={12}
           className="input"
           style={{
             width: '100%',
@@ -141,7 +203,7 @@ export function QuizQuestionsEditor({
 
       {/* Action Buttons */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <div style={{ display: 'flex', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             type="button"
             className="btn btn-primary btn-sm"
@@ -159,6 +221,30 @@ export function QuizQuestionsEditor({
               style={{ border: '1px solid var(--color-border)' }}
             >
               Clear
+            </button>
+          )}
+
+          {/* Export / Download Buttons */}
+          {activeCount > 0 && onDownloadMarkdown && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={onDownloadMarkdown}
+              style={{ border: '1px solid var(--color-border)', fontSize: '0.78rem' }}
+              title="Download entire quiz with metadata as Markdown (.md)"
+            >
+              📥 Export .md
+            </button>
+          )}
+          {activeCount > 0 && onDownloadJson && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={onDownloadJson}
+              style={{ border: '1px solid var(--color-border)', fontSize: '0.78rem' }}
+              title="Download entire quiz with metadata as JSON (.json)"
+            >
+              📥 Export .json
             </button>
           )}
         </div>

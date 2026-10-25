@@ -14,6 +14,10 @@ export async function GET(request: NextRequest) {
       .split(',')
       .map(e => e.trim().toLowerCase())
       .filter(Boolean)
+    const creatorEmails = (process.env.CREATOR_EMAILS || '')
+      .split(',')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean)
     const emailLower = user.email.toLowerCase()
     let shouldUpdate = false
     let targetRole = user.role

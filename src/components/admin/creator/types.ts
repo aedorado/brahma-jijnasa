@@ -13,6 +13,7 @@ export interface AdminQuizCreatorProps {
 }
 
 export type SupportedLang = 'en' | 'hi' | 'pt'
+export type EditorFormat = 'markdown' | 'json'
 
 export interface LangConfigItem {
   key: SupportedLang

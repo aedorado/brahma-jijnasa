@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import type { Quiz, Question, Difficulty } from '@/types/quiz'
 import type { QuizSeriesRound } from '@/types/series'
 
-import type { AdminQuizCreatorProps, SupportedLang } from './creator/types'
+import type { AdminQuizCreatorProps, SupportedLang, EditorFormat } from './creator/types'
 import {
   LANG_CONFIG,
   toLocalDatetimeString,
@@ -14,6 +14,7 @@ import {
   cleanAndParseQuestionArray,
   computeQuizSnapshot,
 } from './creator/utils'
+import { isMarkdownQuiz, questionsToMarkdown, quizToMarkdown } from '@/lib/quiz-markdown'
 import { QuizPublishedAlert } from './creator/QuizPublishedAlert'
 import { QuizMetadataForm } from './creator/QuizMetadataForm'
 import { QuizQuestionsEditor } from './creator/QuizQuestionsEditor'
@@ -64,6 +65,7 @@ export function AdminQuizCreator({
     hi: [],
     pt: [],
   })
+  const [editorFormat, setEditorFormat] = useState<EditorFormat>('markdown')
 
   // 4. UI / Validation State
   const [parseError, setParseError] = useState<string | null>(null)
@@ -158,7 +160,9 @@ export function AdminQuizCreator({
       for (const lang of ['en', 'hi', 'pt'] as SupportedLang[]) {
         if (Array.isArray(qObj[lang]) && qObj[lang].length > 0) {
           parsedMap[lang] = qObj[lang]
-          rawMap[lang] = JSON.stringify(qObj[lang], null, 2)
+          rawMap[lang] = editorFormat === 'markdown'
+            ? questionsToMarkdown(qObj[lang])
+            : JSON.stringify(qObj[lang], null, 2)
         }
       }
 
@@ -242,6 +246,108 @@ export function AdminQuizCreator({
         .replace(/^-+|-+$/g, '')
       setSlug(autoSlug)
     }
+  }
+
+  const handleToggleEditorFormat = (targetFormat: EditorFormat) => {
+    if (targetFormat === editorFormat) return
+    setEditorFormat(targetFormat)
+
+    const newRaw: Record<SupportedLang, string> = { ...questionsRaw }
+    for (const lang of ['en', 'hi', 'pt'] as SupportedLang[]) {
+      const currentParsed = parsedQuestions[lang]
+      const currentRaw = questionsRaw[lang].trim()
+
+      if (targetFormat === 'markdown') {
+        // Convert to Markdown
+        if (currentParsed && currentParsed.length > 0) {
+          newRaw[lang] = questionsToMarkdown(currentParsed)
+        } else if (currentRaw) {
+          try {
+            const logs: string[] = []
+            const { questions: parsedList } = cleanAndParseQuestionArray(currentRaw, logs)
+            if (parsedList.length > 0) {
+              newRaw[lang] = questionsToMarkdown(parsedList)
+              setParsedQuestions(prev => ({ ...prev, [lang]: parsedList }))
+            }
+          } catch {
+            // retain raw if unparseable
+          }
+        }
+      } else {
+        // Convert to JSON
+        if (currentParsed && currentParsed.length > 0) {
+          newRaw[lang] = JSON.stringify(currentParsed, null, 2)
+        } else if (currentRaw) {
+          try {
+            const logs: string[] = []
+            const { questions: parsedList } = cleanAndParseQuestionArray(currentRaw, logs)
+            if (parsedList.length > 0) {
+              newRaw[lang] = JSON.stringify(parsedList, null, 2)
+              setParsedQuestions(prev => ({ ...prev, [lang]: parsedList }))
+            }
+          } catch {
+            // retain raw if unparseable
+          }
+        }
+      }
+    }
+    setQuestionsRaw(newRaw)
+  }
+
+  const handleRawChange = (val: string) => {
+    setQuestionsRaw(prev => ({ ...prev, [activeLang]: val }))
+    setParsedQuestions(prev => ({ ...prev, [activeLang]: [] }))
+    if (parseError) setParseError(null)
+
+    // Auto-detect format if user pastes opposite format
+    const trimmed = val.trim()
+    if (editorFormat === 'json' && isMarkdownQuiz(trimmed)) {
+      setEditorFormat('markdown')
+    } else if (editorFormat === 'markdown' && trimmed.startsWith('[') && trimmed.includes('"type"')) {
+      setEditorFormat('json')
+    }
+  }
+
+  const handleDownloadMarkdown = () => {
+    const list = parsedQuestions[activeLang]?.length > 0 ? parsedQuestions[activeLang] : parsedQuestions.en
+    const fullMd = quizToMarkdown({
+      id: slug || 'quiz',
+      title: title || 'Untitled Quiz',
+      category: category as any,
+      description,
+      difficulty,
+      timeLimit: timeLimitMins * 60,
+      onTimeExpiry,
+      questions: list,
+    })
+    const blob = new Blob([fullMd], { type: 'text/markdown;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${slug || 'quiz'}.${activeLang}.md`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleDownloadJson = () => {
+    const list = parsedQuestions[activeLang]?.length > 0 ? parsedQuestions[activeLang] : parsedQuestions.en
+    const fullQuiz = {
+      id: slug || 'quiz',
+      title: title || 'Untitled Quiz',
+      category,
+      description,
+      difficulty,
+      timeLimit: timeLimitMins * 60,
+      onTimeExpiry,
+      questions: list,
+    }
+    const blob = new Blob([JSON.stringify(fullQuiz, null, 2)], { type: 'application/json;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${slug || 'quiz'}.${activeLang}.json`
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   // Validate the current language questions & form inputs
@@ -543,18 +649,18 @@ export function AdminQuizCreator({
         formatIstDisplay={formatIstDisplay}
       />
 
-      {/* SECTION 2: QUESTIONS JSON EDITOR */}
+      {/* SECTION 2: QUESTIONS EDITOR */}
       <QuizQuestionsEditor
         activeLang={activeLang}
         onActiveLangChange={setActiveLang}
         questionsRaw={questionsRaw}
         parsedQuestions={parsedQuestions}
         hasUnsavedChanges={hasUnsavedChanges}
-        onRawChange={val => {
-          setQuestionsRaw(prev => ({ ...prev, [activeLang]: val }))
-          setParsedQuestions(prev => ({ ...prev, [activeLang]: [] }))
-          if (parseError) setParseError(null)
-        }}
+        editorFormat={editorFormat}
+        onToggleEditorFormat={handleToggleEditorFormat}
+        onDownloadMarkdown={handleDownloadMarkdown}
+        onDownloadJson={handleDownloadJson}
+        onRawChange={handleRawChange}
         onClear={() => {
           setQuestionsRaw(prev => ({ ...prev, [activeLang]: '' }))
           setParsedQuestions(prev => ({ ...prev, [activeLang]: [] }))

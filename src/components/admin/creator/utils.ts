@@ -1,4 +1,5 @@
 import { validateQuestionsList } from '@/lib/quiz-validator'
+import { isMarkdownQuiz, parseQuizMarkdown } from '@/lib/quiz-markdown'
 import type { Question } from '@/types/quiz'
 import type { SupportedLang, LangConfigItem, ParseQuestionsResult, LegacyQuizMetadata } from './types'
 
@@ -96,6 +97,23 @@ export function computeQuizSnapshot(data: {
 export function cleanAndParseQuestionArray(input: string, logs: string[]): ParseQuestionsResult {
   let cleaned = input.trim()
   if (!cleaned) return { questions: [] }
+
+  // 0. Check for Markdown quiz format (starts with frontmatter '---' or '## q' headers)
+  if (isMarkdownQuiz(cleaned)) {
+    logs.push('Detected Markdown quiz format: parsing question blocks & frontmatter...')
+    const mdResult = parseQuizMarkdown(cleaned)
+    if (mdResult.errors.length > 0) {
+      throw new Error(`Markdown Parsing Failed:\n• ${mdResult.errors.join('\n• ')}`)
+    }
+    if (mdResult.warnings.length > 0) {
+      logs.push(...mdResult.warnings)
+    }
+    logs.push(`✅ Successfully parsed ${mdResult.questions.length} questions from Markdown format.`)
+    return {
+      questions: mdResult.questions,
+      legacyMetadata: mdResult.meta as LegacyQuizMetadata | undefined,
+    }
+  }
 
   // 1. Strip markdown fences ```json ... ```
   if (cleaned.startsWith('```')) {
