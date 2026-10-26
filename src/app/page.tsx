@@ -148,28 +148,6 @@ export default function HomePage() {
               {t.home.heroSubtitle}
             </p>
 
-            {/* Platform Highlights Metrics Bar */}
-            <div className="home-stats-bar">
-              <div className="home-stat-item">
-                <span className="home-stat-value">30+</span>
-                <span className="home-stat-label">{t.home.statsDailyRounds || 'Daily Rounds'}</span>
-              </div>
-              <div className="home-stat-divider" />
-              <div className="home-stat-item">
-                <span className="home-stat-value">16</span>
-                <span className="home-stat-label">{t.home.statsInteractiveFormats || 'Interactive Formats'}</span>
-              </div>
-              <div className="home-stat-divider" />
-              <div className="home-stat-item">
-                <span className="home-stat-value">9</span>
-                <span className="home-stat-label">{t.home.statsBhaktiStages || 'Bhakti Stages'}</span>
-              </div>
-              <div className="home-stat-divider" />
-              <div className="home-stat-item">
-                <span className="home-stat-value">3</span>
-                <span className="home-stat-label">{t.home.statsLanguages || 'Languages'}</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
