@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if role is set in Supabase profiles table
+    // Check if role, full_name, or avatar_url are set in Supabase profiles table
     try {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
       const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
@@ -52,6 +53,7 @@ export async function GET(request: NextRequest) {
         const { data: dbProfile } = await supabase
           .from('profiles')
           .select('role')
+          .select('id, role, full_name, avatar_url')
           .or(`id.eq.${user.id},email.ilike.${emailLower}`)
           .maybeSingle()
 
@@ -60,8 +62,42 @@ export async function GET(request: NextRequest) {
             if (user.role !== dbProfile.role) {
               targetRole = dbProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
               shouldUpdate = true
+        if (dbProfile) {
+          // 1. Role sync (DB takes precedence unless overridden by admin/teacher env vars)
+          if (dbProfile.role && ['admin', 'teacher', 'creator', 'student'].includes(dbProfile.role)) {
+            if (!adminEmails.includes(emailLower) && !teacherEmails.includes(emailLower) && !creatorEmails.includes(emailLower)) {
+              if (user.role !== dbProfile.role) {
+                targetRole = dbProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
+                shouldUpdate = true
+              }
             }
           }
+
+          // 2. Full name sync: DB is the permanent source of truth
+          if (dbProfile.full_name && dbProfile.full_name.trim() !== '' && dbProfile.full_name !== user.full_name) {
+            user.full_name = dbProfile.full_name
+            shouldUpdate = true
+          }
+
+          // 3. Avatar sync: DB is the permanent source of truth
+          if (dbProfile.avatar_url && dbProfile.avatar_url.trim() !== '' && dbProfile.avatar_url !== user.avatar_url) {
+            user.avatar_url = dbProfile.avatar_url
+            shouldUpdate = true
+          }
+
+          // 4. If targetRole was updated by env vars, sync only the role back to DB
+          if (dbProfile.role !== targetRole) {
+            await supabase.from('profiles').update({ role: targetRole }).eq('id', dbProfile.id)
+          }
+        } else {
+          // If profile does not exist at all in DB, insert initial record
+          await supabase.from('profiles').insert({
+            id: user.id,
+            email: user.email,
+            full_name: user.full_name,
+            avatar_url: user.avatar_url,
+            role: targetRole,
+          })
         }
 
         await supabase.from('profiles').upsert({

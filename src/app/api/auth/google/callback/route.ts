@@ -82,6 +82,7 @@ export async function GET(request: NextRequest) {
     // Generate a valid RFC4122 UUID from Google user ID
     const hash = crypto.createHash('sha256').update(googleUser.id).digest('hex')
     const userId = `${hash.slice(0, 8)}-${hash.slice(8, 12)}-4${hash.slice(13, 16)}-a${hash.slice(17, 20)}-${hash.slice(20, 32)}`
+    let userId = `${hash.slice(0, 8)}-${hash.slice(8, 12)}-4${hash.slice(13, 16)}-a${hash.slice(17, 20)}-${hash.slice(20, 32)}`
 
     const emailLower = googleUser.email.toLowerCase()
     let role: 'student' | 'teacher' | 'admin' | 'creator' = 'student'
@@ -101,19 +102,51 @@ export async function GET(request: NextRequest) {
             .or(`id.eq.${userId},email.ilike.${emailLower}`)
             .maybeSingle()
           if (existingProfile?.role && ['admin', 'teacher', 'creator', 'student'].includes(existingProfile.role)) {
+    }
+
+    let existingProfile: { id?: string; role?: string; full_name?: string; avatar_url?: string } | null = null
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+      if (supabaseUrl && supabaseKey) {
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        const { data } = await supabase
+          .from('profiles')
+          .select('id, role, full_name, avatar_url')
+          .or(`id.eq.${userId},email.ilike.${emailLower}`)
+          .maybeSingle()
+        existingProfile = data
+        if (existingProfile?.id) {
+          userId = existingProfile.id
+        }
+        if (existingProfile?.role && ['admin', 'teacher', 'creator', 'student'].includes(existingProfile.role)) {
+          if (!adminEmails.includes(emailLower) && !teacherEmails.includes(emailLower)) {
             role = existingProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
           }
         }
       } catch {
         // ignore
       }
+    } catch {
+      // ignore
     }
+
+    // Preserve existing DB full_name and avatar_url if already set; otherwise use Google profile
+    const fullName = (existingProfile?.full_name && existingProfile.full_name.trim() !== '')
+      ? existingProfile.full_name
+      : (googleUser.name || googleUser.email.split('@')[0])
+
+    const avatarUrl = (existingProfile?.avatar_url && existingProfile.avatar_url.trim() !== '')
+      ? existingProfile.avatar_url
+      : (googleUser.picture || '')
 
     const user: AuthUser = {
       id: userId,
       email: googleUser.email,
       full_name: googleUser.name || googleUser.email.split('@')[0],
       avatar_url: googleUser.picture || '',
+      full_name: fullName,
+      avatar_url: avatarUrl,
       role,
     }
 

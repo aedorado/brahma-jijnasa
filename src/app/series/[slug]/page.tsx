@@ -61,6 +61,8 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   const [series, setSeries] = useState<QuizSeries | null>(null)
   const [rounds, setRounds] = useState<QuizSeriesRound[]>([])
   const [standings, setStandings] = useState<SeriesStanding[]>([])
+  const [practiceStandings, setPracticeStandings] = useState<SeriesStanding[]>([])
+  const [showPractice, setShowPractice] = useState(false)
   const [userAttempts, setUserAttempts] = useState<Record<string, { score: number; max_score: number; time_taken: number }>>({})
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'roadmap' | 'leaderboard' | 'principles'>('roadmap')
@@ -118,6 +120,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
           setSeries(data.series)
           setRounds(data.rounds || [])
           setStandings(data.standings || [])
+          setPracticeStandings(data.practiceStandings || [])
         }
       } catch (e) {
         console.error('Failed to load series data:', e)
@@ -183,6 +186,8 @@ export default function SeriesPage({ params }: SeriesPageProps) {
   const progressPct = Math.round((unlockedCount / (rounds.length || 1)) * 100)
   const userCompletedCount = rounds.filter(r => Boolean(userAttempts[r.quiz_id])).length
   const userProgressPct = Math.round((userCompletedCount / (rounds.length || 1)) * 100)
+  const activeStandings = showPractice ? practiceStandings : standings
+  const totalRoundsCount = showPractice ? rounds.length : (rounds.filter((r) => (r.day_number ?? 1) > 0).length || 30)
 
   return (
     <div style={{ padding: '2.5rem 0 6rem' }}>
@@ -656,77 +661,110 @@ export default function SeriesPage({ params }: SeriesPageProps) {
         )}
 
         {/* TAB 2: SERIES STANDINGS */}
-        {activeTab === 'leaderboard' && (
-          <div>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>{t.series.standingsTab}</h2>
-              <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                {t.series.standingsSubtitle || 'Total points earned across all daily rounds of the series.'}
-              </p>
-            </div>
+        {activeTab === 'leaderboard' && (() => {
+          const activeStandings = showPractice ? practiceStandings : standings
+          const totalRoundsCount = showPractice ? rounds.length : (rounds.filter((r) => (r.day_number ?? 1) > 0).length || 30)
 
-            {/* Prominent Book Companion & QR Banner on Series Standings */}
-            <div style={{ marginBottom: '2rem' }}>
-              <BookPurchaseBanner variant="card" />
-            </div>
-
-            {standings.length === 0 ? (
-              <div className="card text-center" style={{ padding: '3.5rem 1.5rem' }}>
-                <p style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🏆</p>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.4rem' }}>{t.series.noSubmissions}</h3>
-                <p className="text-muted" style={{ fontSize: '0.85rem', maxWidth: 420, margin: '0 auto' }}>
-                  {t.series.noSubmissionsDesc}
-                </p>
-              </div>
-            ) : (
-              <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-                <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
-                    <thead>
-                      <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
-                        <th style={{ padding: '0.9rem 1.25rem', width: 60 }}>{t.series.rank}</th>
-                        <th style={{ padding: '0.9rem 1.25rem' }}>{t.series.participant}</th>
-                        <th style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>{t.series.daysAttended}</th>
-                        <th style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>{t.series.accuracy}</th>
-                        <th style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>{t.series.totalPoints}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {standings.map((devotee) => (
-                        <tr
-                          key={devotee.user_id}
-                          style={{
-                            borderBottom: '1px solid var(--color-border)',
-                            background: devotee.rank === 1 ? 'rgba(240, 199, 78, 0.05)' : undefined,
-                          }}
-                        >
-                          <td style={{ padding: '0.9rem 1.25rem', fontWeight: 700 }}>
-                            {devotee.rank === 1 ? '🥇 1' : devotee.rank === 2 ? '🥈 2' : devotee.rank === 3 ? '🥉 3' : `#${devotee.rank}`}
-                          </td>
-                          <td style={{ padding: '0.9rem 1.25rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                              <UserAvatar name={devotee.full_name} url={devotee.avatar_url} size={28} />
-                              <span style={{ fontWeight: 600 }}>{devotee.full_name}</span>
-                            </div>
-                          </td>
-                          <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', color: 'var(--color-gold)', fontWeight: 600 }}>
-                            {devotee.days_attended} / {rounds.length}
-                          </td>
-                          <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>
-                            {devotee.avg_accuracy}%
-                          </td>
-                          <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right', fontWeight: 700, color: 'var(--color-gold)' }}>
-                            {devotee.total_points} {t.series.pts}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          return (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div>
+                  <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>{t.series.standingsTab}</h2>
+                  <p className="text-muted" style={{ fontSize: '0.85rem' }}>
+                    {showPractice
+                      ? 'Total points earned including the 3 preparatory practice quizzes.'
+                      : (t.series.standingsSubtitle || 'Total points earned across all daily rounds of the series.')}
+                  </p>
                 </div>
+
+                <label
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    cursor: 'pointer',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid var(--color-border)',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '20px',
+                    userSelect: 'none',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={showPractice}
+                    onChange={(e) => setShowPractice(e.target.checked)}
+                    style={{ accentColor: 'var(--color-gold)', cursor: 'pointer', width: 15, height: 15 }}
+                  />
+                  <span>{showPractice ? '🌟 Practice Quizzes Included' : 'Include Practice Quizzes'}</span>
+                </label>
               </div>
-            )}
-          </div>
-        )}
+
+              {/* Prominent Book Companion & QR Banner on Series Standings */}
+              <div style={{ marginBottom: '2rem' }}>
+                <BookPurchaseBanner variant="card" />
+              </div>
+
+              {activeStandings.length === 0 ? (
+                <div className="card text-center" style={{ padding: '3.5rem 1.5rem' }}>
+                  <p style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🏆</p>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.4rem' }}>{t.series.noSubmissions}</h3>
+                  <p className="text-muted" style={{ fontSize: '0.85rem', maxWidth: 420, margin: '0 auto' }}>
+                    {t.series.noSubmissionsDesc}
+                  </p>
+                </div>
+              ) : (
+                <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                      <thead>
+                        <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
+                          <th style={{ padding: '0.9rem 1.25rem', width: 60 }}>{t.series.rank}</th>
+                          <th style={{ padding: '0.9rem 1.25rem' }}>{t.series.participant}</th>
+                          <th style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>{t.series.daysAttended}</th>
+                          <th style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>{t.series.accuracy}</th>
+                          <th style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>{t.series.totalPoints}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {activeStandings.map((devotee) => (
+                          <tr
+                            key={devotee.user_id}
+                            style={{
+                              borderBottom: '1px solid var(--color-border)',
+                              background: devotee.rank === 1 ? 'rgba(240, 199, 78, 0.05)' : undefined,
+                            }}
+                          >
+                            <td style={{ padding: '0.9rem 1.25rem', fontWeight: 700 }}>
+                              {devotee.rank === 1 ? '🥇 1' : devotee.rank === 2 ? '🥈 2' : devotee.rank === 3 ? '🥉 3' : `#${devotee.rank}`}
+                            </td>
+                            <td style={{ padding: '0.9rem 1.25rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                <UserAvatar name={devotee.full_name} url={devotee.avatar_url} size={28} />
+                                <span style={{ fontWeight: 600 }}>{devotee.full_name}</span>
+                              </div>
+                            </td>
+                            <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center', color: 'var(--color-gold)', fontWeight: 600 }}>
+                              {devotee.days_attended} / {totalRoundsCount}
+                            </td>
+                            <td style={{ padding: '0.9rem 1.25rem', textAlign: 'center' }}>
+                              {devotee.avg_accuracy}%
+                            </td>
+                            <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right', fontWeight: 700, color: 'var(--color-gold)' }}>
+                              {devotee.total_points} {t.series.pts}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
         {/* TAB 3: PRINCIPLES GUIDE */}
         {activeTab === 'principles' && (

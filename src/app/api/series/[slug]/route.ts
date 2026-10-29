@@ -7,6 +7,7 @@ import {
   isRoundEffectivelyUnlocked,
 } from '@/lib/series-data'
 import { generateUniqueActivePin } from '@/lib/pin'
+import type { SeriesStanding, QuizSeriesRound } from '@/types/series'
 
 export async function GET(
   _request: Request,
@@ -220,26 +221,91 @@ export async function GET(
       }
     }
 
-    // 3. Fetch standings from view (only when series has already started)
-    let standings: any[] = []
+    // 3. Fetch standings (both without practice and with practice)
+    let standings: SeriesStanding[] = []
+    let practiceStandings: SeriesStanding[] = []
     const hasStarted = series.start_date ? new Date() >= new Date(series.start_date) : false
     if (dbSeries && hasStarted) {
-      const { data: dbStandings } = await supabase
-        .from('series_leaderboard_view')
-        .select('*')
-        .eq('series_id', dbSeries.id)
-        .order('total_points', { ascending: false })
+      const allRoundsList = (rounds as QuizSeriesRound[] || [])
+      const allQuizIds = allRoundsList.map((r) => r.quiz_id).filter(Boolean)
+      const officialQuizIds = new Set(
+        allRoundsList.filter((r) => (r.day_number ?? 1) > 0).map((r) => r.quiz_id)
+      )
 
-      if (dbStandings) {
-        standings = dbStandings.map((s: any, idx: number) => ({
-          ...s,
-          rank: idx + 1,
-        }))
+      if (allQuizIds.length > 0) {
+        try {
+          const { data: attempts } = await supabase
+            .from('quiz_attempts')
+            .select('user_id, quiz_id, score, max_score, completed_at, profiles(full_name, avatar_url)')
+            .in('quiz_id', allQuizIds)
+            .not('user_id', 'is', null)
+
+          if (attempts && attempts.length > 0) {
+            const aggregate = (filterFn?: (id: string) => boolean): SeriesStanding[] => {
+              const bestMap = new Map<string, any>()
+              for (const a of (attempts as any[])) {
+                if (!a.user_id || String(a.user_id).startsWith('guest_')) continue
+                if (filterFn && !filterFn(a.quiz_id)) continue
+                const key = `${a.user_id}:${a.quiz_id}`
+                const cur = bestMap.get(key)
+                if (!cur || Number(a.score) > Number(cur.score)) {
+                  bestMap.set(key, a)
+                }
+              }
+
+              const userMap = new Map<string, any>()
+              for (const a of bestMap.values()) {
+                const p = Array.isArray(a.profiles) ? a.profiles[0] : a.profiles
+                let u = userMap.get(a.user_id)
+                if (!u) {
+                  u = {
+                    user_id: a.user_id,
+                    series_id: dbSeries.id,
+                    full_name: p?.full_name || 'Anonymous Seeker',
+                    avatar_url: p?.avatar_url || null,
+                    days_attended: 0,
+                    total_points: 0,
+                    total_max_points: 0,
+                    accs: [] as number[],
+                  }
+                  userMap.set(a.user_id, u)
+                }
+                u.days_attended += 1
+                u.total_points += Number(a.score) || 0
+                u.total_max_points += Number(a.max_score) || 0
+                if (Number(a.max_score) > 0) {
+                  u.accs.push((Number(a.score) / Number(a.max_score)) * 100)
+                }
+              }
+
+              return Array.from(userMap.values())
+                .map((u) => ({
+                  user_id: u.user_id,
+                  series_id: u.series_id,
+                  full_name: u.full_name,
+                  avatar_url: u.avatar_url,
+                  days_attended: u.days_attended,
+                  total_points: Math.round(u.total_points * 10) / 10,
+                  total_max_points: Math.round(u.total_max_points * 10) / 10,
+                  avg_accuracy: u.accs.length
+                    ? Math.round((u.accs.reduce((sum: number, v: number) => sum + v, 0) / u.accs.length) * 10) / 10
+                    : 0,
+                }))
+                .sort((a, b) => b.total_points - a.total_points || b.days_attended - a.days_attended)
+                .map((s, idx) => ({ ...s, rank: idx + 1 }))
+            }
+
+            standings = aggregate((id) => officialQuizIds.has(id))
+            practiceStandings = aggregate()
+          }
+        } catch (calcErr) {
+          console.warn('[Series Standings Calculation Error]:', calcErr)
+        }
       }
     }
 
     return NextResponse.json(
-      { series, rounds, standings },
+      { series, rounds, standings, practiceStandings },
       {
         headers: {
           'Cache-Control': 'no-store, max-age=0, must-revalidate',
