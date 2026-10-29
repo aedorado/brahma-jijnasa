@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
       shouldUpdate = true
     }
 
-    // Check if role is set in Supabase profiles table
     // Check if role, full_name, or avatar_url are set in Supabase profiles table
     try {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -52,16 +51,10 @@ export async function GET(request: NextRequest) {
         const supabase = createClient(supabaseUrl, supabaseKey)
         const { data: dbProfile } = await supabase
           .from('profiles')
-          .select('role')
           .select('id, role, full_name, avatar_url')
           .or(`id.eq.${user.id},email.ilike.${emailLower}`)
           .maybeSingle()
 
-        if (dbProfile?.role && ['admin', 'teacher', 'creator', 'student'].includes(dbProfile.role)) {
-          if (!adminEmails.includes(emailLower) && !teacherEmails.includes(emailLower) && !creatorEmails.includes(emailLower)) {
-            if (user.role !== dbProfile.role) {
-              targetRole = dbProfile.role as 'student' | 'teacher' | 'admin' | 'creator'
-              shouldUpdate = true
         if (dbProfile) {
           // 1. Role sync (DB takes precedence unless overridden by admin/teacher env vars)
           if (dbProfile.role && ['admin', 'teacher', 'creator', 'student'].includes(dbProfile.role)) {
@@ -99,14 +92,6 @@ export async function GET(request: NextRequest) {
             role: targetRole,
           })
         }
-
-        await supabase.from('profiles').upsert({
-          id: user.id,
-          email: user.email,
-          full_name: user.full_name,
-          avatar_url: user.avatar_url,
-          role: targetRole,
-        }, { onConflict: 'id' })
       }
     } catch {
       // ignore if foreign key constraint is active
@@ -130,4 +115,3 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ user })
 }
-
