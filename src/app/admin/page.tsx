@@ -193,12 +193,30 @@ export default function AdminPage() {
       return
     }
 
-    if (user.role === 'creator') {
-      router.replace('/admin/create')
-      return
-    }
-
     const init = async () => {
+      if (user.role === 'creator') {
+        await Promise.all([loadQuizzes(), loadActiveSessions()])
+        setLoading(false)
+
+        if (typeof window !== 'undefined') {
+          const params = new URLSearchParams(window.location.search)
+          const tab = params.get('tab') as AdminPillar | null
+          if (tab && ['series', 'catalog'].includes(tab)) {
+            setActivePillar(tab)
+          } else if (tab === 'create') {
+            router.replace('/admin/create')
+            return
+          } else {
+            setActivePillar('series')
+          }
+          const dryRunId = params.get('dryRun')
+          if (dryRunId) {
+            handleStartDryRun(dryRunId)
+          }
+        }
+        return
+      }
+
       await Promise.all([loadQuizzes(), loadActiveSessions(), loadAllAttempts()])
       setLoading(false)
 
@@ -473,57 +491,57 @@ export default function AdminPage() {
           }}
         >
           {user?.role !== 'creator' && (
-            <>
-              <button
-                onClick={() => setActivePillar('live')}
-                className={`btn btn-sm ${activePillar === 'live' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-                id="admin-pillar-live"
-              >
-                <span>⚡</span> Live Rooms
-                {activeSessions.length > 0 && (
-                  <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-                    {activeSessions.length} Live
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => setActivePillar('series')}
-                className={`btn btn-sm ${activePillar === 'series' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-                id="admin-pillar-series"
-              >
-                <span>📚</span> 64 Principles Series
-                <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-                  Kārtika
+            <button
+              onClick={() => setActivePillar('live')}
+              className={`btn btn-sm ${activePillar === 'live' ? 'btn-primary' : 'btn-ghost'}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+              id="admin-pillar-live"
+            >
+              <span>⚡</span> Live Rooms
+              {activeSessions.length > 0 && (
+                <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                  {activeSessions.length} Live
                 </span>
-              </button>
+              )}
+            </button>
+          )}
 
-              <button
-                onClick={() => setActivePillar('catalog')}
-                className={`btn btn-sm ${activePillar === 'catalog' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-                id="admin-pillar-catalog"
-              >
-                <span>📑</span> Quiz Library
-                <span className="badge badge-ghost" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-                  {quizzes.length}
-                </span>
-              </button>
+          <button
+            onClick={() => setActivePillar('series')}
+            className={`btn btn-sm ${activePillar === 'series' ? 'btn-primary' : 'btn-ghost'}`}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+            id="admin-pillar-series"
+          >
+            <span>📚</span> 64 Principles Series
+            <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+              Kārtika
+            </span>
+          </button>
 
-              <button
-                onClick={() => setActivePillar('analytics')}
-                className={`btn btn-sm ${activePillar === 'analytics' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
-                id="admin-pillar-analytics"
-              >
-                <span>📊</span> Analytics & Grading
-                <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
-                  {allAttempts.length}
-                </span>
-              </button>
-            </>
+          <button
+            onClick={() => setActivePillar('catalog')}
+            className={`btn btn-sm ${activePillar === 'catalog' ? 'btn-primary' : 'btn-ghost'}`}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+            id="admin-pillar-catalog"
+          >
+            <span>📑</span> Quiz Library
+            <span className="badge badge-ghost" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+              {quizzes.length}
+            </span>
+          </button>
+
+          {user?.role !== 'creator' && (
+            <button
+              onClick={() => setActivePillar('analytics')}
+              className={`btn btn-sm ${activePillar === 'analytics' ? 'btn-primary' : 'btn-ghost'}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: 10 }}
+              id="admin-pillar-analytics"
+            >
+              <span>📊</span> Analytics & Grading
+              <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}>
+                {allAttempts.length}
+              </span>
+            </button>
           )}
 
           <Link
@@ -571,6 +589,7 @@ export default function AdminPage() {
               router.push(`/admin/create?edit=${encodeURIComponent(quizId)}`)
             }}
             isAdmin={user?.role === 'admin'}
+            canManageSeries={user?.role === 'admin' || user?.role === 'creator'}
           />
         )}
 

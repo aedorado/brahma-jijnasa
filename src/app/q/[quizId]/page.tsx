@@ -32,6 +32,7 @@ export default function DirectQuizPage({ params }: Props) {
   const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
+  const [attemptSessionId, setAttemptSessionId] = useState<string | null>(null)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
   const { language, t } = useLanguage()
@@ -85,6 +86,7 @@ export default function DirectQuizPage({ params }: Props) {
 
           if (existingAttempts && existingAttempts.length > 0) {
             const attempt = existingAttempts[0]
+            setAttemptSessionId(attempt.session_id || null)
             setTimeTaken(attempt.time_taken || 0)
             setFinalAnswers(attempt.answers || {})
             answersRef.current = attempt.answers || {}
@@ -379,7 +381,7 @@ export default function DirectQuizPage({ params }: Props) {
         quiz={quiz}
         result={scoreResult}
         timeTaken={timeTaken}
-        sessionId={null}
+        sessionId={attemptSessionId}
         pin=""
         userAnswers={finalAnswers}
       />

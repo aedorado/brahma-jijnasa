@@ -8,8 +8,8 @@ export async function POST(request: NextRequest) {
     const token = request.cookies.get(SESSION_COOKIE_NAME)?.value
     const sessionUser = await verifySession(token)
 
-    if (!sessionUser || (sessionUser.role !== 'admin' && sessionUser.role !== 'teacher')) {
-      return NextResponse.json({ error: 'Unauthorized: Admin or Teacher role required' }, { status: 403 })
+    if (!sessionUser || (sessionUser.role !== 'admin' && sessionUser.role !== 'teacher' && sessionUser.role !== 'creator')) {
+      return NextResponse.json({ error: 'Unauthorized: Admin, Teacher, or Creator role required' }, { status: 403 })
     }
 
     const body = await request.json()
@@ -109,10 +109,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, session, pin })
     }
 
-    // --- Admin-only series linking and scheduling operations ---
+    // --- Admin & Creator series linking and scheduling operations ---
     if (action === 'link_round' || action === 'unlink_round' || action === 'update_schedule') {
-      if (sessionUser.role !== 'admin') {
-        return NextResponse.json({ error: 'Forbidden: Only administrators can assign or reassign series campaign quizzes.' }, { status: 403 })
+      if (sessionUser.role !== 'admin' && sessionUser.role !== 'creator') {
+        return NextResponse.json({ error: 'Forbidden: Only administrators and quiz creators can assign or reassign series campaign quizzes.' }, { status: 403 })
       }
 
       const { targetQuizId, unlockAt, dayNumber } = body

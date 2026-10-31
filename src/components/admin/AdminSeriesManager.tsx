@@ -23,6 +23,7 @@ interface AdminSeriesManagerProps {
   onCreateQuizForDay?: (dayNumber: number) => void
   onEditQuiz?: (quizId: string) => void
   isAdmin?: boolean
+  canManageSeries?: boolean
 }
 
 function formatAdminSchedule(iso?: string): string {
@@ -51,7 +52,9 @@ export function AdminSeriesManager({
   onCreateQuizForDay,
   onEditQuiz,
   isAdmin = false,
+  canManageSeries = false,
 }: AdminSeriesManagerProps) {
+  const canManage = isAdmin || canManageSeries
   const [seriesList, setSeriesList] = useState<QuizSeries[]>([])
   const [selectedSeries, setSelectedSeries] = useState<string>('sacred-teachings-64-principles')
   const [rounds, setRounds] = useState<QuizSeriesRound[]>([])
@@ -391,7 +394,7 @@ export function AdminSeriesManager({
                             <span className="badge badge-gold" style={{ fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                               🔗 Quiz: <strong>{round.quiz_id}</strong>
                             </span>
-                            {isAdmin && (
+                            {canManage && (
                               <>
                                 <button
                                   type="button"
@@ -416,7 +419,7 @@ export function AdminSeriesManager({
                             )}
                           </div>
                         ) : (
-                          isAdmin && (
+                          canManage && (
                             <div style={{ marginTop: '0.4rem' }}>
                               <button
                                 type="button"
@@ -434,7 +437,7 @@ export function AdminSeriesManager({
                       <td style={{ padding: '0.85rem 1rem', fontSize: '0.8rem', color: '#f6ad55', fontWeight: 600, whiteSpace: 'nowrap' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                           <span>🕒 {formatAdminSchedule(round.unlock_at)}</span>
-                          {isAdmin && (
+                          {canManage && (
                             <button
                               type="button"
                               onClick={() => setLinkingRound(round)}
@@ -627,7 +630,7 @@ export function AdminSeriesManager({
         )}
       </div>
 
-      {isAdmin && (
+      {canManage && (
         <SeriesDayLinkModal
           isOpen={Boolean(linkingRound)}
           onClose={() => setLinkingRound(null)}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { createClient } from '@/lib/supabase/client'
@@ -30,6 +31,7 @@ export default function SessionPage({ params }: Props) {
   const [initialElapsed, setInitialElapsed] = useState(0)
   const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
+  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading, login } = useAuth()
   const { language, t } = useLanguage()
@@ -166,18 +168,47 @@ export default function SessionPage({ params }: Props) {
         }
       }
 
-      // Check for existing attempt
+      // Check for existing attempt (load previous attempt summary & leaderboard if already completed)
       const { data: existing } = await supabase
         .from('quiz_attempts')
-        .select('id')
+        .select('*')
         .eq('user_id', user.id)
         .eq('session_id', session.id)
+        .order('completed_at', { ascending: false })
         .limit(1)
 
-      if (existing && existing.length > 0) {
-        setErrorMsg("You've already completed this quiz session.")
-        setPhase('error')
-        return
+      let prevAttempt = existing && existing.length > 0 ? existing[0] : null
+      if (!prevAttempt) {
+        // Also check if user already completed this quiz directly
+        const { data: existingQuiz } = await supabase
+          .from('quiz_attempts')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('quiz_id', session.quiz_id)
+          .order('completed_at', { ascending: false })
+          .limit(1)
+        if (existingQuiz && existingQuiz.length > 0) {
+          prevAttempt = existingQuiz[0]
+        }
+      }
+
+      if (prevAttempt) {
+        setSessionId(session.id)
+        activeQuizIdRef.current = session.quiz_id
+
+        const res = await fetch(`/api/quiz/${session.quiz_id}?lang=${language}`)
+        if (res.ok) {
+          const quizData: Quiz = await res.json()
+          setQuiz(quizData)
+          setTimeTaken(prevAttempt.time_taken || 0)
+          setFinalAnswers(prevAttempt.answers || {})
+          answersRef.current = prevAttempt.answers || {}
+          const result = scoreQuiz(quizData.questions, prevAttempt.answers || {})
+          setScoreResult(result)
+          setIsAlreadyCompleted(true)
+          setPhase('submitted')
+          return
+        }
       }
 
       setSessionId(session.id)
@@ -406,15 +437,41 @@ export default function SessionPage({ params }: Props) {
 
   if (phase === 'submitted' && quiz && scoreResult) {
     return (
-      <ScoreCard
-        quiz={quiz}
-        result={scoreResult}
-        timeTaken={timeTaken}
-        sessionId={sessionId}
-        pin={pin}
-        userAnswers={finalAnswers}
-        onRetry={pin === '000' || pin === '0000' ? handleRetry : undefined}
-      />
+      <div>
+        {isAlreadyCompleted && (
+          <div className="container" style={{ paddingTop: '1.5rem', maxWidth: 700 }}>
+            <div
+              style={{
+                padding: '0.85rem 1.25rem',
+                borderRadius: 10,
+                background: 'rgba(56, 189, 248, 0.1)',
+                border: '1px solid rgba(56, 189, 248, 0.3)',
+                color: '#38bdf8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+              }}
+            >
+              <span>{t.quizIntro?.alreadyCompletedNotice || '✅ You have already completed this round. Showing your recorded scorecard and answer review.'}</span>
+              <Link href="/series/sacred-teachings-64-principles" style={{ color: 'var(--color-gold)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+                {t.quizIntro?.seriesRoadmap || 'Series Roadmap'} →
+              </Link>
+            </div>
+          </div>
+        )}
+        <ScoreCard
+          quiz={quiz}
+          result={scoreResult}
+          timeTaken={timeTaken}
+          sessionId={sessionId}
+          pin={pin}
+          userAnswers={finalAnswers}
+          onRetry={pin === '000' || pin === '0000' ? handleRetry : undefined}
+        />
+      </div>
     )
   }
 

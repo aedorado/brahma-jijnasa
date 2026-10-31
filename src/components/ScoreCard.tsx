@@ -26,6 +26,8 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
   const [displayScore, setDisplayScore] = useState(0)
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<number | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [leaderboardScope, setLeaderboardScope] = useState<'session' | 'all'>(sessionId ? 'session' : 'all')
   const [showReviewModal, setShowReviewModal] = useState(false)
   const [mounted, setMounted] = useState(false)
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -75,14 +77,14 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
     return () => { if (animRef.current) clearTimeout(animRef.current) }
   }, [result.totalEarned, result.totalMax])
 
-  // Load leaderboard
+  // Load leaderboard (top scores with tie-breaking)
   useEffect(() => {
     const load = async () => {
       let query = supabase
         .from('quiz_attempts')
         .select('user_id, score, max_score, time_taken, profiles(full_name, avatar_url)')
 
-      if (sessionId) {
+      if (sessionId && leaderboardScope === 'session') {
         query = query.eq('session_id', sessionId)
       } else if (quiz?.id) {
         query = query.eq('quiz_id', quiz.id)
@@ -124,13 +126,14 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
         const { data: { user } } = await supabase.auth.getUser()
         if (user) {
+          setCurrentUserId(user.id)
           const myEntry = entries.find(e => e.user_id === user.id)
           if (myEntry) setUserRank(myEntry.rank)
         }
       }
     }
     load()
-  }, [sessionId])
+  }, [sessionId, quiz?.id, leaderboardScope])
 
   const scrollToReview = () => {
     const el = document.getElementById('review-section')
@@ -138,6 +141,22 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
       el.scrollIntoView({ behavior: 'smooth' })
     } else {
       setShowReviewModal(true)
+    }
+  }
+
+  const scrollToQuestion = (index: number) => {
+    const targetId = showReviewModal ? `modal-review-question-${index}` : `review-question-${index}`
+    const el = document.getElementById(targetId) || document.getElementById(`review-question-${index}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      el.style.borderColor = 'var(--color-gold)'
+      el.style.boxShadow = '0 0 24px rgba(245, 158, 11, 0.45)'
+      el.style.transform = 'scale(1.015)'
+      setTimeout(() => {
+        el.style.borderColor = ''
+        el.style.boxShadow = ''
+        el.style.transform = ''
+      }, 1800)
     }
   }
 
@@ -474,12 +493,17 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
     return null
   }
 
-  const renderQuestionReviewCard = (q: Question, i: number) => {
+  const renderQuestionReviewCard = (q: Question, i: number, isModal = false) => {
     const r = result.questionResults.find(x => x.questionId === q.id)!
     const userAns = userAnswers[q.id]
 
     return (
-      <div key={q.id} className="card review-question-card">
+      <div
+        key={q.id}
+        id={isModal ? `modal-review-question-${i}` : `review-question-${i}`}
+        className="card review-question-card"
+        style={{ scrollMarginTop: '5rem', transition: 'box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease' }}
+      >
         {/* Header */}
         <div className="flex justify-between items-center" style={{ marginBottom: '0.85rem' }}>
           <span className="badge badge-primary" style={{ fontSize: '0.78rem' }}>
@@ -571,13 +595,33 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
       {/* Per-category breakdown */}
       <div className="card score-card-section">
-        <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1.15rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {t.scoreCard.scoreBreakdown}
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {t.scoreCard.scoreBreakdown}
+          </h3>
+          <span style={{ fontSize: '0.74rem', color: 'var(--color-muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+            <span>👇</span> {t.scoreCard.tapToReview || 'Tap to review question'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           {result.questionResults.map((r, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <span style={{ fontSize: '0.88rem', color: 'var(--color-muted)', minWidth: 28, fontWeight: 700 }}>Q{i + 1}</span>
+            <div
+              key={i}
+              role="button"
+              tabIndex={0}
+              onClick={() => scrollToQuestion(i)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  scrollToQuestion(i)
+                }
+              }}
+              className="score-breakdown-row"
+              title={`Jump to Question ${i + 1} review`}
+            >
+              <span style={{ fontSize: '0.88rem', color: 'var(--color-muted)', minWidth: 32, fontWeight: 700 }}>
+                Q{i + 1}
+              </span>
               <div style={{ flex: 1 }}>
                 <div className="progress-bar-track" style={{ height: 9, background: 'rgba(255,255,255,0.1)' }}>
                   <div
@@ -592,31 +636,95 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
                 color: r.correct ? 'var(--color-success)' : r.earned > 0 ? 'var(--color-gold)' : 'var(--color-error)',
                 minWidth: 56,
                 textAlign: 'right',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                gap: '0.35rem',
               }}>
-                {r.earned > 0 ? '+' : ''}{r.earned}/{r.max}
+                <span>{r.earned > 0 ? '+' : ''}{r.earned}/{r.max}</span>
+                <span style={{ fontSize: '0.75rem', opacity: 0.5 }}>➔</span>
               </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Leaderboard snippet */}
+      {/* Leaderboard snippet (Top 10) */}
       {leaderboard.length > 0 && (
         <div className="card score-card-section">
-          <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1.15rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {t.scoreCard.leaderboard}
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {leaderboard.slice(0, 5).map(entry => (
-              <div key={entry.user_id} className="leaderboard-row">
-                <span className={`rank-badge rank-${entry.rank <= 3 ? entry.rank : 'n'}`}>{entry.rank}</span>
-                <UserAvatar name={entry.full_name} url={entry.avatar_url} size={28} />
-                <span className="leaderboard-name">{entry.full_name || 'Anonymous'}</span>
-                <span className="leaderboard-score">
-                  {entry.score}/{entry.max_score}
-                </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.15rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {t.scoreCard.leaderboard} {leaderboard.length > 10 ? '(Top 10)' : ''}
+            </h3>
+            {sessionId && (
+              <div style={{ display: 'flex', gap: '0.3rem', background: 'rgba(255, 255, 255, 0.05)', padding: '0.2rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+                <button
+                  type="button"
+                  onClick={() => setLeaderboardScope('session')}
+                  className={`btn btn-xs ${leaderboardScope === 'session' ? 'btn-primary' : 'btn-ghost'}`}
+                  style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem', borderRadius: 6 }}
+                >
+                  ⚡ Live Session
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeaderboardScope('all')}
+                  className={`btn btn-xs ${leaderboardScope === 'all' ? 'btn-primary' : 'btn-ghost'}`}
+                  style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem', borderRadius: 6 }}
+                >
+                  🌐 Quiz Leaderboard
+                </button>
               </div>
-            ))}
+            )}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {leaderboard.slice(0, 10).map(entry => {
+              const isCurrentUser = currentUserId && entry.user_id === currentUserId
+              return (
+                <div
+                  key={entry.user_id}
+                  className="leaderboard-row"
+                  style={isCurrentUser ? { border: '1.5px solid var(--color-gold)', background: 'rgba(245, 158, 11, 0.08)' } : undefined}
+                >
+                  <span className={`rank-badge rank-${entry.rank <= 3 ? entry.rank : 'n'}`}>{entry.rank}</span>
+                  <UserAvatar name={entry.full_name} url={entry.avatar_url} size={28} />
+                  <span className="leaderboard-name" style={isCurrentUser ? { fontWeight: 800, color: 'var(--color-gold)' } : undefined}>
+                    {entry.full_name || 'Anonymous'}
+                    {isCurrentUser && <span style={{ fontSize: '0.75rem', marginLeft: '0.35rem', opacity: 0.85 }}>(You)</span>}
+                  </span>
+                  <span className="leaderboard-score">
+                    {entry.score}/{entry.max_score}
+                  </span>
+                </div>
+              )
+            })}
+
+            {/* If current user rank is outside top 10, show their position below */}
+            {userRank && userRank > 10 && (() => {
+              const myEntry = leaderboard.find(e => e.user_id === currentUserId)
+              if (!myEntry) return null
+              return (
+                <>
+                  <div style={{ textAlign: 'center', color: 'var(--color-muted)', fontSize: '0.75rem', padding: '0.2rem 0', letterSpacing: '0.2em' }}>
+                    ••••••
+                  </div>
+                  <div
+                    key={myEntry.user_id}
+                    className="leaderboard-row"
+                    style={{ border: '1.5px solid var(--color-gold)', background: 'rgba(245, 158, 11, 0.12)' }}
+                  >
+                    <span className="rank-badge rank-n">#{myEntry.rank}</span>
+                    <UserAvatar name={myEntry.full_name} url={myEntry.avatar_url} size={28} />
+                    <span className="leaderboard-name" style={{ fontWeight: 800, color: 'var(--color-gold)' }}>
+                      {myEntry.full_name || 'You'} <span style={{ fontSize: '0.75rem', opacity: 0.85 }}>(You)</span>
+                    </span>
+                    <span className="leaderboard-score">
+                      {myEntry.score}/{myEntry.max_score}
+                    </span>
+                  </div>
+                </>
+              )
+            })()}
           </div>
         </div>
       )}
@@ -698,7 +806,7 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              {quiz.questions.map((q, i) => renderQuestionReviewCard(q, i))}
+              {quiz.questions.map((q, i) => renderQuestionReviewCard(q, i, true))}
             </div>
 
             <button className="btn btn-primary btn-lg w-full mt-4" onClick={() => setShowReviewModal(false)} id="close-review-bottom-btn">
