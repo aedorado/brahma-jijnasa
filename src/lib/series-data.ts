@@ -266,11 +266,13 @@ export const BHAKTISIDDHANTA_64_PRINCIPLES: BhaktisiddhantaPrinciple[] = [
 
 // 26th October 2026, 18:55:00 IST (+05:30) is 13:25:00 UTC
 export const SERIES_64_START_ISO = '2026-10-26T13:25:00.000Z'
-export const SERIES_64_END_ISO = '2026-11-25T00:00:00.000Z'
+export const SERIES_64_END_ISO = '2026-11-26T00:00:00.000Z'
 
 export function getSeriesRoundUnlockTime(dayNumber: number, startIso: string = SERIES_64_START_ISO): string {
   const startDate = new Date(startIso)
-  const unlockDate = new Date(startDate.getTime() + (dayNumber - 1) * 24 * 60 * 60 * 1000)
+  // Day 20 onwards shifted +1 day due to no class on Saturday, Nov 14, 2026
+  const offsetDays = dayNumber >= 20 ? dayNumber : dayNumber - 1
+  const unlockDate = new Date(startDate.getTime() + offsetDays * 24 * 60 * 60 * 1000)
   return unlockDate.toISOString()
 }
 

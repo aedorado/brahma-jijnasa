@@ -90,15 +90,27 @@ export default function AdminPage() {
 
   const loadAllAttempts = async () => {
     try {
-      const { data } = await supabase
-        .from('quiz_attempts')
-        .select('*, profiles(full_name, avatar_url, email)')
-        .order('completed_at', { ascending: false })
+      const all: AttemptRecord[] = []
+      const pageSize = 1000
+      let from = 0
 
-      if (data) {
+      while (true) {
+        const { data, error } = await supabase
+          .from('quiz_attempts')
+          .select('*, profiles(full_name, avatar_url, email)')
+          .order('completed_at', { ascending: false })
+          .range(from, from + pageSize - 1)
+
+        if (error || !data || data.length === 0) break
+        all.push(...(data as AttemptRecord[]))
+        if (data.length < pageSize) break
+        from += pageSize
+      }
+
+      if (all.length > 0) {
         const uniqueAttempts: AttemptRecord[] = []
         const seen = new Set<string>()
-        for (const att of (data as AttemptRecord[])) {
+        for (const att of all) {
           const key = att.session_id ? `${att.user_id}_${att.session_id}` : att.id
           if (seen.has(key)) continue
           seen.add(key)
@@ -621,6 +633,7 @@ export default function AdminPage() {
             quizzes={quizzes}
             quizDetailsCache={quizDetailsCache}
             onFetchQuizDetails={fetchQuizDetails}
+            onAttemptReset={loadAllAttempts}
           />
         )}
 

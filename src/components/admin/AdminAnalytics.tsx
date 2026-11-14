@@ -112,6 +112,7 @@ interface AdminAnalyticsProps {
   quizzes: QuizMeta[]
   quizDetailsCache: Record<string, Quiz>
   onFetchQuizDetails: (quizId: string) => Promise<void>
+  onAttemptReset?: () => Promise<void> | void
 }
 
 function calculateMedian(numbers: number[]): number {
@@ -127,32 +128,113 @@ export function AdminAnalytics({
   quizzes,
   quizDetailsCache,
   onFetchQuizDetails,
+  onAttemptReset,
 }: AdminAnalyticsProps) {
   const [selectedQuizFilter, setSelectedQuizFilter] = useState<string>('all')
   const [searchStudent, setSearchStudent] = useState<string>('')
   const [inspectAttempt, setInspectAttempt] = useState<AttemptRecord | null>(null)
   const [showRawJson, setShowRawJson] = useState(false)
+  const [archiveTab, setArchiveTab] = useState<'active' | 'archived'>('active')
+  const [resettingId, setResettingId] = useState<string | null>(null)
+  const [confirmResetAttempt, setConfirmResetAttempt] = useState<AttemptRecord | null>(null)
+  const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  const isAttemptArchived = (att: AttemptRecord) =>
+    Boolean(att.quiz_id?.startsWith('archived:') || att.quiz_id?.startsWith('reset:'))
+
+  const getCleanQuizId = (att: AttemptRecord) => {
+    if (!isAttemptArchived(att)) return att.quiz_id
+    return att.answers?._archive_meta?.original_quiz_id || att.quiz_id.replace(/^archived:\d+:/, '').replace(/^archived:/, '')
+  }
+
+  const activeAttempts = useMemo(() => allAttempts.filter(a => !isAttemptArchived(a)), [allAttempts])
+  const archivedAttempts = useMemo(() => allAttempts.filter(a => isAttemptArchived(a)), [allAttempts])
+
+  const handleExecuteReset = async (att: AttemptRecord) => {
+    setResettingId(att.id)
+    try {
+      const res = await fetch('/api/admin/reset-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attemptId: att.id, userId: att.user_id, quizId: att.quiz_id, action: 'archive' }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to archive attempt')
+      }
+      setActionMessage({
+        type: 'success',
+        text: `Attempt for ${att.profiles?.full_name || 'devotee'} has been archived safely. They can now retake this quiz from scratch.`,
+      })
+      if (inspectAttempt?.id === att.id) {
+        setInspectAttempt(null)
+      }
+      setConfirmResetAttempt(null)
+      if (onAttemptReset) {
+        await onAttemptReset()
+      }
+    } catch (e: any) {
+      setActionMessage({ type: 'error', text: e.message || 'Error archiving attempt' })
+    } finally {
+      setResettingId(null)
+    }
+  }
+
+  const handleExecuteRestore = async (att: AttemptRecord) => {
+    setResettingId(att.id)
+    try {
+      const res = await fetch('/api/admin/reset-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attemptId: att.id, action: 'restore' }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to restore attempt')
+      }
+      setActionMessage({
+        type: 'success',
+        text: `Attempt for ${att.profiles?.full_name || 'devotee'} has been restored to active status.`,
+      })
+      if (inspectAttempt?.id === att.id) {
+        setInspectAttempt(null)
+      }
+      if (onAttemptReset) {
+        await onAttemptReset()
+      }
+    } catch (e: any) {
+      setActionMessage({ type: 'error', text: e.message || 'Error restoring attempt' })
+    } finally {
+      setResettingId(null)
+    }
+  }
 
   // Auto-fetch quiz questions if inspecting attempt and not in cache
   useEffect(() => {
-    if (inspectAttempt?.quiz_id && !quizDetailsCache[inspectAttempt.quiz_id]) {
-      onFetchQuizDetails(inspectAttempt.quiz_id)
+    if (inspectAttempt) {
+      const cleanQuizId = getCleanQuizId(inspectAttempt)
+      if (cleanQuizId && !quizDetailsCache[cleanQuizId]) {
+        onFetchQuizDetails(cleanQuizId)
+      }
     }
   }, [inspectAttempt, quizDetailsCache, onFetchQuizDetails])
 
-  const inspectQuiz = inspectAttempt ? quizDetailsCache[inspectAttempt.quiz_id] : null
+  const inspectQuizCleanId = inspectAttempt ? getCleanQuizId(inspectAttempt) : null
+  const inspectQuiz = inspectQuizCleanId ? quizDetailsCache[inspectQuizCleanId] : null
 
-  // Filtered attempts
+  // Filtered attempts based on active pool vs archived pool
+  const currentPool = archiveTab === 'active' ? activeAttempts : archivedAttempts
   const filteredAttempts = useMemo(() => {
-    return allAttempts.filter(att => {
-      const matchQuiz = selectedQuizFilter === 'all' || att.quiz_id === selectedQuizFilter
+    return currentPool.filter(att => {
+      const cleanId = getCleanQuizId(att)
+      const matchQuiz = selectedQuizFilter === 'all' || att.quiz_id === selectedQuizFilter || cleanId === selectedQuizFilter
       const studentName = (att.profiles?.full_name || '').toLowerCase()
       const studentEmail = (att.profiles?.email || '').toLowerCase()
       const q = searchStudent.toLowerCase().trim()
-      const matchSearch = !q || studentName.includes(q) || studentEmail.includes(q) || att.quiz_id.toLowerCase().includes(q)
+      const matchSearch = !q || studentName.includes(q) || studentEmail.includes(q) || cleanId.toLowerCase().includes(q)
       return matchQuiz && matchSearch
     })
-  }, [allAttempts, selectedQuizFilter, searchStudent])
+  }, [currentPool, selectedQuizFilter, searchStudent])
 
   // Aggregate Metrics
   const analyticsMetrics = useMemo(() => {
@@ -193,12 +275,12 @@ export function AdminAnalytics({
   const questionDiagnostics = useMemo(() => {
     const targetQuizId = selectedQuizFilter !== 'all'
       ? selectedQuizFilter
-      : (filteredAttempts[0]?.quiz_id || allAttempts[0]?.quiz_id)
+      : (activeAttempts[0]?.quiz_id || allAttempts[0]?.quiz_id)
 
     if (!targetQuizId || !quizDetailsCache[targetQuizId]) return null
 
     const quizObj = quizDetailsCache[targetQuizId]
-    const quizAttempts = allAttempts.filter(a => a.quiz_id === targetQuizId)
+    const quizAttempts = activeAttempts.filter(a => a.quiz_id === targetQuizId)
     if (quizAttempts.length === 0) return { quiz: quizObj, questionsData: [], attemptsCount: 0 }
 
     const questionsData = quizObj.questions.map((q: Question) => {
@@ -246,7 +328,7 @@ export function AdminAnalytics({
       toughestId,
       easiestId,
     }
-  }, [selectedQuizFilter, filteredAttempts, allAttempts, quizDetailsCache])
+  }, [selectedQuizFilter, activeAttempts, allAttempts, quizDetailsCache])
 
   // CSV Export
   const handleExportCSV = () => {
@@ -439,10 +521,58 @@ export function AdminAnalytics({
         </div>
       )}
 
+      {actionMessage && (
+        <div
+          style={{
+            padding: '0.85rem 1.25rem',
+            borderRadius: 8,
+            marginBottom: '1rem',
+            background: actionMessage.type === 'success' ? 'rgba(74, 222, 128, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+            border: actionMessage.type === 'success' ? '1px solid rgba(74, 222, 128, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
+            color: actionMessage.type === 'success' ? '#4ade80' : '#f87171',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '0.9rem',
+          }}
+        >
+          <span>{actionMessage.type === 'success' ? '✅' : '⚠️'} {actionMessage.text}</span>
+          <button
+            onClick={() => setActionMessage(null)}
+            style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: '1rem' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Submissions Table */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Devotee Submission Log</h3>
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Devotee Submission Log</h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginTop: '0.15rem' }}>
+              Non-destructive audit log with instant retake unblocking & soft-archiving.
+            </p>
+          </div>
+
+          {/* TAB SWITCHER: Active vs Archived */}
+          <div style={{ display: 'flex', gap: '0.4rem', background: 'var(--color-surface-2)', padding: '0.25rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+            <button
+              className={`btn btn-xs ${archiveTab === 'active' ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setArchiveTab('active')}
+              style={{ fontWeight: 600 }}
+            >
+              Active Submissions ({activeAttempts.length})
+            </button>
+            <button
+              className={`btn btn-xs ${archiveTab === 'archived' ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setArchiveTab('archived')}
+              style={{ fontWeight: 600, color: archiveTab === 'archived' ? undefined : (archivedAttempts.length > 0 ? '#f59e0b' : 'var(--color-muted)') }}
+            >
+              📦 Archived / Reset ({archivedAttempts.length})
+            </button>
+          </div>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
@@ -471,8 +601,11 @@ export function AdminAnalytics({
                   ? new Date(att.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
                   : null
 
+                const isArchived = isAttemptArchived(att)
+                const cleanQuizId = getCleanQuizId(att)
+
                 return (
-                  <tr key={att.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  <tr key={att.id} style={{ borderBottom: '1px solid var(--color-border)', background: isArchived ? 'rgba(245, 158, 11, 0.02)' : undefined }}>
                     <td style={{ padding: '0.85rem 1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                         <UserAvatar name={att.profiles?.full_name} url={att.profiles?.avatar_url} size={28} />
@@ -483,7 +616,23 @@ export function AdminAnalytics({
                       </div>
                     </td>
                     <td style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.82rem' }}>
-                      {att.quiz_id}
+                      <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>{cleanQuizId}</span>
+                      {isArchived && (
+                        <span
+                          style={{
+                            marginLeft: '0.45rem',
+                            fontSize: '0.68rem',
+                            fontWeight: 600,
+                            padding: '0.1rem 0.4rem',
+                            borderRadius: 4,
+                            background: 'rgba(245, 158, 11, 0.15)',
+                            color: '#f59e0b',
+                            border: '1px solid rgba(245, 158, 11, 0.3)',
+                          }}
+                        >
+                          📦 Archived
+                        </span>
+                      )}
                     </td>
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'center', color: 'var(--color-muted)' }}>
                       {durationStr}
@@ -518,13 +667,45 @@ export function AdminAnalytics({
                       {att.score} / {att.max_score}
                     </td>
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                      <button
-                        className="btn btn-ghost btn-xs"
-                        onClick={() => setInspectAttempt(att)}
-                        style={{ border: '1px solid var(--color-border)' }}
-                      >
-                        Inspect
-                      </button>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                        <button
+                          className="btn btn-ghost btn-xs"
+                          onClick={() => setInspectAttempt(att)}
+                          style={{ border: '1px solid var(--color-border)' }}
+                        >
+                          Inspect
+                        </button>
+                        {isArchived ? (
+                          <button
+                            className="btn btn-ghost btn-xs"
+                            onClick={() => handleExecuteRestore(att)}
+                            disabled={resettingId === att.id}
+                            title="Restore this archived attempt back to active"
+                            style={{
+                              border: '1px solid rgba(74, 222, 128, 0.4)',
+                              color: '#4ade80',
+                              background: 'rgba(74, 222, 128, 0.08)',
+                              fontWeight: 600,
+                            }}
+                          >
+                            {resettingId === att.id ? '...' : '♻️ Restore'}
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-ghost btn-xs"
+                            onClick={() => setConfirmResetAttempt(att)}
+                            disabled={resettingId === att.id}
+                            title="Reset / archive this quiz attempt to allow devotee to retake"
+                            style={{
+                              border: '1px solid rgba(239, 68, 68, 0.35)',
+                              color: '#f87171',
+                              background: 'rgba(239, 68, 68, 0.06)',
+                            }}
+                          >
+                            {resettingId === att.id ? '...' : '🔄 Reset'}
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 )
@@ -570,10 +751,68 @@ export function AdminAnalytics({
                   {inspectAttempt.profiles?.full_name || 'Anonymous'} • {inspectQuiz?.title || inspectAttempt.quiz_id}
                 </p>
               </div>
-              <button className="btn btn-ghost btn-sm" onClick={() => setInspectAttempt(null)}>
-                ✕
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                {isAttemptArchived(inspectAttempt) ? (
+                  <button
+                    className="btn btn-xs"
+                    onClick={() => handleExecuteRestore(inspectAttempt)}
+                    disabled={resettingId === inspectAttempt.id}
+                    style={{
+                      border: '1px solid rgba(74, 222, 128, 0.4)',
+                      color: '#4ade80',
+                      background: 'rgba(74, 222, 128, 0.1)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {resettingId === inspectAttempt.id ? 'Restoring...' : '♻️ Restore Attempt'}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-xs"
+                    onClick={() => setConfirmResetAttempt(inspectAttempt)}
+                    disabled={resettingId === inspectAttempt.id}
+                    style={{
+                      border: '1px solid rgba(239, 68, 68, 0.4)',
+                      color: '#f87171',
+                      background: 'rgba(239, 68, 68, 0.08)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {resettingId === inspectAttempt.id ? 'Archiving...' : '🔄 Reset (Archive)'}
+                  </button>
+                )}
+                <button className="btn btn-ghost btn-sm" onClick={() => setInspectAttempt(null)}>
+                  ✕
+                </button>
+              </div>
             </div>
+
+            {isAttemptArchived(inspectAttempt) && (
+              <div
+                style={{
+                  padding: '0.85rem 1rem',
+                  borderRadius: 8,
+                  background: 'rgba(245, 158, 11, 0.08)',
+                  border: '1px solid rgba(245, 158, 11, 0.25)',
+                  marginBottom: '1.25rem',
+                  fontSize: '0.82rem',
+                  color: 'var(--color-text)',
+                  lineHeight: 1.5,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, color: '#f59e0b', marginBottom: '0.2rem' }}>
+                  <span>📦 Soft-Archived Submission</span>
+                </div>
+                <p style={{ color: 'var(--color-muted)' }}>
+                  This attempt was archived to unblock a fresh retake for the devotee. It is excluded from the devotee's public ratings and the series leaderboard, but safely preserved here for administrative audit.
+                </p>
+                {inspectAttempt.answers?._archive_meta?.archived_at && (
+                  <p style={{ marginTop: '0.4rem', fontSize: '0.78rem', color: 'var(--color-text-secondary)', fontFamily: 'monospace' }}>
+                    Archived: {new Date(inspectAttempt.answers._archive_meta.archived_at).toLocaleString()} by {inspectAttempt.answers._archive_meta.archived_by || 'Admin'}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="card" style={{ padding: '1rem', marginBottom: '1.5rem', background: 'rgba(255,255,255,0.02)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', textAlign: 'center' }}>
@@ -746,6 +985,94 @@ export function AdminAnalytics({
                 })}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* CONFIRM RESET ATTEMPT MODAL */}
+      {confirmResetAttempt && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.75)',
+            zIndex: 1001,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem',
+          }}
+          onClick={() => !resettingId && setConfirmResetAttempt(null)}
+        >
+          <div
+            className="card"
+            style={{
+              maxWidth: 480,
+              width: '100%',
+              padding: '1.75rem',
+              background: 'var(--color-bg)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 12,
+              boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <span style={{ fontSize: '1.75rem' }}>📦</span>
+              <div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Reset & Archive Quiz Attempt?</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
+                  Non-destructive soft-archive: Devotee can retake, while data is preserved for audit.
+                </p>
+              </div>
+            </div>
+
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                padding: '1rem',
+                borderRadius: 8,
+                marginBottom: '1.25rem',
+                fontSize: '0.85rem',
+                lineHeight: 1.6,
+                border: '1px solid var(--color-border)',
+              }}
+            >
+              <p><strong>Devotee:</strong> {confirmResetAttempt.profiles?.full_name || 'Anonymous'} ({confirmResetAttempt.profiles?.email || 'No email'})</p>
+              <p><strong>Quiz:</strong> {getCleanQuizId(confirmResetAttempt)}</p>
+              <p><strong>Recorded Score:</strong> {confirmResetAttempt.score} / {confirmResetAttempt.max_score}</p>
+              <p style={{ marginTop: '0.5rem', color: '#f59e0b', fontSize: '0.8rem' }}>
+                ℹ️ This attempt will be safely soft-archived. Their answers, score, and timestamps are preserved in your records, but excluded from devotee rankings and leaderboards. They can immediately retake the quiz afresh.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => setConfirmResetAttempt(null)}
+                disabled={Boolean(resettingId)}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-sm"
+                onClick={() => handleExecuteReset(confirmResetAttempt)}
+                disabled={Boolean(resettingId)}
+                style={{
+                  background: '#f59e0b',
+                  color: '#000',
+                  border: 'none',
+                  fontWeight: 700,
+                  padding: '0.4rem 1rem',
+                  borderRadius: 6,
+                }}
+              >
+                {resettingId ? 'Archiving...' : 'Archive & Allow Retake'}
+              </button>
+            </div>
           </div>
         </div>
       )}

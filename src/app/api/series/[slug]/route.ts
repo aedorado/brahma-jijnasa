@@ -234,17 +234,34 @@ export async function GET(
 
       if (allQuizIds.length > 0) {
         try {
-          const { data: attempts } = await supabase
-            .from('quiz_attempts')
-            .select('user_id, quiz_id, score, max_score, completed_at, profiles(full_name, avatar_url)')
-            .in('quiz_id', allQuizIds)
-            .not('user_id', 'is', null)
+          const attempts: any[] = []
+          const pageSize = 1000
+          let from = 0
 
-          if (attempts && attempts.length > 0) {
+          while (true) {
+            const { data: batch, error: batchError } = await supabase
+              .from('quiz_attempts')
+              .select('user_id, quiz_id, score, max_score, completed_at, profiles(full_name, avatar_url)')
+              .in('quiz_id', allQuizIds)
+              .not('user_id', 'is', null)
+              .range(from, from + pageSize - 1)
+
+            if (batchError) {
+              console.warn('[Series Standings Fetch Error]:', batchError)
+              break
+            }
+
+            if (!batch || batch.length === 0) break
+            attempts.push(...batch)
+            if (batch.length < pageSize) break
+            from += pageSize
+          }
+
+          if (attempts.length > 0) {
             const aggregate = (filterFn?: (id: string) => boolean): SeriesStanding[] => {
               const bestMap = new Map<string, any>()
               for (const a of (attempts as any[])) {
-                if (!a.user_id || String(a.user_id).startsWith('guest_')) continue
+                if (!a.user_id || String(a.user_id).startsWith('guest_') || a.quiz_id?.startsWith('archived:') || a.quiz_id?.startsWith('reset:')) continue
                 if (filterFn && !filterFn(a.quiz_id)) continue
                 const key = `${a.user_id}:${a.quiz_id}`
                 const cur = bestMap.get(key)

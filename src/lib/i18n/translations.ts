@@ -352,6 +352,8 @@ export const translations = {
       lvlPrefix: 'Lvl',
       youBadge: 'YOU',
       takeNextQuiz: 'Take Next Quiz ➔',
+      allTimeTab: 'All-Time Master',
+      weeklyTab: 'This Week’s Sādhana',
     },
     // User Profile & Devotee Standing
     profile: {
@@ -383,6 +385,14 @@ export const translations = {
       startMahabharata: '🏹 Start Mahābhārata Quiz',
       reviewFlashcards: '🎴 Review Flashcards',
       retake: '🏹 Retake',
+      viewCompleteProfile: 'View Complete Profile ➔',
+      publicDevoteeProfile: 'Devotee Profile',
+      backToLeaderboard: '← Back to Leaderboard',
+      allQuizzes: 'All Quizzes',
+      notTakenByMe: 'Quizzes Not Taken by Me',
+      takeThisQuiz: '🏹 Take This Quiz ➔',
+      completedByYou: 'Completed by You',
+      signInToCompare: 'Sign in to compare quizzes you haven’t taken yet',
     },
     // Universal Footer
     footer: {
@@ -736,6 +746,8 @@ export const translations = {
       lvlPrefix: 'स्तर',
       youBadge: 'आप',
       takeNextQuiz: 'अगली क्विज़ आरंभ करें ➔',
+      allTimeTab: 'सर्वकालिक तालिका',
+      weeklyTab: 'इस सप्ताह की साधना',
     },
     // User Profile & Devotee Standing
     profile: {
@@ -767,6 +779,14 @@ export const translations = {
       startMahabharata: '🏹 महाभारत क्विज़ आरंभ करें',
       reviewFlashcards: '🎴 फ़्लैशकार्ड समीक्षा',
       retake: '🏹 पुनः प्रयास',
+      viewCompleteProfile: 'पूरी प्रोफ़ाइल देखें ➔',
+      publicDevoteeProfile: 'साधक प्रोफ़ाइल',
+      backToLeaderboard: '← लीडरबोर्ड पर वापस जाएं',
+      allQuizzes: 'सभी क्विज़',
+      notTakenByMe: 'मेरे द्वारा शेष क्विज़',
+      takeThisQuiz: '🏹 यह क्विज़ दें ➔',
+      completedByYou: 'आपके द्वारा पूर्ण',
+      signInToCompare: 'यह देखने के लिए साइन इन करें कि आपने कौन से क्विज़ नहीं दिए हैं',
     },
     // Universal Footer
     footer: {
@@ -1120,6 +1140,8 @@ export const translations = {
       lvlPrefix: 'Nvl',
       youBadge: 'VOCÊ',
       takeNextQuiz: 'Fazer Próximo Quiz ➔',
+      allTimeTab: 'Classificação Geral',
+      weeklyTab: 'Sādhana Desta Semana',
     },
     // User Profile & Devotee Standing
     profile: {
@@ -1151,6 +1173,14 @@ export const translations = {
       startMahabharata: '🏹 Iniciar Quiz do Mahābhārata',
       reviewFlashcards: '🎴 Revisar Flashcards',
       retake: '🏹 Refazer',
+      viewCompleteProfile: 'Ver Perfil Completo ➔',
+      publicDevoteeProfile: 'Perfil do Devoto',
+      backToLeaderboard: '← Voltar à Tabela de Classificação',
+      allQuizzes: 'Todos os Questionários',
+      notTakenByMe: 'Questionários Não Realizados por Mim',
+      takeThisQuiz: '🏹 Fazer Este Questionário ➔',
+      completedByYou: 'Concluído por você',
+      signInToCompare: 'Faça login para comparar os questionários que você ainda não fez',
     },
     // Universal Footer
     footer: {

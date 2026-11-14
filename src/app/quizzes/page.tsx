@@ -120,7 +120,9 @@ export default function LiveQuizzesPage() {
         .order('completed_at', { ascending: false })
 
       if (!error && data) {
-        const list: UserAttemptSummary[] = data.map(att => {
+        const list: UserAttemptSummary[] = data
+          .filter(att => !att.quiz_id?.startsWith('archived:') && !att.quiz_id?.startsWith('reset:'))
+          .map(att => {
           const score = Number(att.score || 0)
           const max = Number(att.max_score || 0)
           const percentage = max > 0 ? Math.round((score / max) * 100) : 0

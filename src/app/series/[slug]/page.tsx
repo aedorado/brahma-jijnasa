@@ -146,7 +146,7 @@ export default function SeriesPage({ params }: SeriesPageProps) {
         if (data) {
           const map: Record<string, { score: number; max_score: number; time_taken: number }> = {}
           data.forEach((a: any) => {
-            if (a.quiz_id) {
+            if (a.quiz_id && !a.quiz_id.startsWith('archived:') && !a.quiz_id.startsWith('reset:')) {
               map[a.quiz_id] = { score: a.score, max_score: a.max_score, time_taken: a.time_taken }
             }
           })
