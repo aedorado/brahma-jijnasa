@@ -63,7 +63,7 @@ function DevoteeAvatar({
 }
 
 export default function LeaderboardPage() {
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const { t, language } = useLanguage()
   const [devotees, setDevotees] = useState<LeaderboardDevotee[]>([])
   const [loading, setLoading] = useState(true)
@@ -279,89 +279,122 @@ export default function LeaderboardPage() {
       </div>
 
       {/* FEATURE 1: "DEVOTEES NEAR YOU" (RIVALRY & MOTIVATION CALLOUT) */}
-      <div style={{ marginBottom: '2rem' }}>
-        {myEntry ? (
-          <div
-            className="card animate-fadeIn"
-            style={{
-              padding: '1.25rem 1.5rem',
-              background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, var(--color-surface-2) 100%)',
-              border: '1px solid var(--color-border-gold)',
-              borderRadius: 12,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 260, flex: 1 }}>
-                <span style={{ fontSize: '2rem' }}>{myEntry.rank === 1 ? '👑' : '🎯'}</span>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
-                    <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {myEntry.rank === 1 ? 'Global Champion' : 'Your Sacred Horizon'}
-                    </span>
-                    <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
-                      Rank #{myEntry.rank}
-                    </span>
+      {!loading && !authLoading && (
+        <div style={{ marginBottom: '2rem' }}>
+          {myEntry ? (
+            <div
+              className="card animate-fadeIn"
+              style={{
+                padding: '1.25rem 1.5rem',
+                background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, var(--color-surface-2) 100%)',
+                border: '1px solid var(--color-border-gold)',
+                borderRadius: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 260, flex: 1 }}>
+                  <span style={{ fontSize: '2rem' }}>{myEntry.rank === 1 ? '👑' : '🎯'}</span>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+                      <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {myEntry.rank === 1 ? 'Global Champion' : 'Your Sacred Horizon'}
+                      </span>
+                      <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
+                        Rank #{myEntry.rank}
+                      </span>
+                    </div>
+                    {myEntry.rank === 1 ? (
+                      <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
+                        You are leading the global standings with <strong>{myEntry.rating.toLocaleString()} pts</strong>!
+                        {devotees[1] && ` Rank #2 (${devotees[1].fullName}) is ${myEntry.rating - devotees[1].rating} pts behind you.`} Keep your daily sādhana blazing!
+                      </p>
+                    ) : devoteeAhead ? (
+                      <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
+                        You have <strong>{myEntry.rating.toLocaleString()} pts</strong>. You are only{' '}
+                        <strong style={{ color: '#10b981' }}>
+                          {(devoteeAhead.rating - myEntry.rating + 1).toLocaleString()} pts behind Rank #{devoteeAhead.rank} ({devoteeAhead.fullName})
+                        </strong>! Complete 1 more quiz with high accuracy to overtake!
+                      </p>
+                    ) : (
+                      <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
+                        You are at Rank #{myEntry.rank}. Keep taking daily quizzes to climb the devotional ladder!
+                      </p>
+                    )}
                   </div>
-                  {myEntry.rank === 1 ? (
-                    <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
-                      You are leading the global standings with <strong>{myEntry.rating.toLocaleString()} pts</strong>!
-                      {devotees[1] && ` Rank #2 (${devotees[1].fullName}) is ${myEntry.rating - devotees[1].rating} pts behind you.`} Keep your daily sādhana blazing!
-                    </p>
-                  ) : devoteeAhead ? (
-                    <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
-                      You have <strong>{myEntry.rating.toLocaleString()} pts</strong>. You are only{' '}
-                      <strong style={{ color: '#10b981' }}>
-                        {(devoteeAhead.rating - myEntry.rating + 1).toLocaleString()} pts behind Rank #{devoteeAhead.rank} ({devoteeAhead.fullName})
-                      </strong>! Complete 1 more quiz with high accuracy to overtake!
-                    </p>
-                  ) : (
-                    <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-text)' }}>
-                      You are at Rank #{myEntry.rank}. Keep taking daily quizzes to climb the devotional ladder!
-                    </p>
-                  )}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <button
+                    onClick={() => setShareDevotee(myEntry)}
+                    className="btn btn-ghost btn-sm"
+                    style={{ border: '1px solid var(--color-border)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}
+                  >
+                    <span>📲</span> Share Standing
+                  </button>
+                  <Link href="/" className="btn btn-primary btn-sm">
+                    Take Next Quiz ➔
+                  </Link>
                 </div>
               </div>
-
+            </div>
+          ) : user ? (
+            /* User is logged in, but has not completed any quizzes yet */
+            <div
+              className="card animate-fadeIn"
+              style={{
+                padding: '1rem 1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1rem',
+                flexWrap: 'wrap',
+                background: 'var(--color-surface-2)',
+                border: '1px solid var(--color-border-gold)',
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <button
-                  onClick={() => setShareDevotee(myEntry)}
-                  className="btn btn-ghost btn-sm"
-                  style={{ border: '1px solid var(--color-border)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}
-                >
-                  <span>📲</span> Share Standing
-                </button>
-                <Link href="/" className="btn btn-primary btn-sm">
-                  Take Next Quiz ➔
-                </Link>
+                <span style={{ fontSize: '1.5rem' }}>🌺</span>
+                <div>
+                  <p style={{ fontSize: '0.92rem', fontWeight: 700, margin: '0 0 0.15rem', color: 'var(--color-text)' }}>
+                    Welcome to the Global Standings, {user.full_name}!
+                  </p>
+                  <p style={{ fontSize: '0.82rem', margin: 0, color: 'var(--color-muted)' }}>
+                    Complete your first sacred quiz to establish your standing and unlock your Bhakti Level!
+                  </p>
+                </div>
               </div>
+              <Link href="/" className="btn btn-primary btn-sm">
+                🏹 Take Your First Quiz ➔
+              </Link>
             </div>
-          </div>
-        ) : (
-          <div
-            className="card"
-            style={{
-              padding: '1rem 1.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1rem',
-              flexWrap: 'wrap',
-              background: 'var(--color-surface-2)',
-              border: '1px solid var(--color-border)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span style={{ fontSize: '1.5rem' }}>✨</span>
-              <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-muted)' }}>
-                Sign in with Google to view your personal rank, track level progress, and compete in the sacred standings!
-              </p>
+          ) : (
+            /* Visitor is genuinely not logged in */
+            <div
+              className="card animate-fadeIn"
+              style={{
+                padding: '1rem 1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1rem',
+                flexWrap: 'wrap',
+                background: 'var(--color-surface-2)',
+                border: '1px solid var(--color-border)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ fontSize: '1.5rem' }}>✨</span>
+                <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--color-muted)' }}>
+                  Sign in with Google to view your personal rank, track level progress, and compete in the sacred standings!
+                </p>
+              </div>
+              <Link href="/api/auth/google" className="btn btn-primary btn-sm">
+                Sign In to View Rank ➔
+              </Link>
             </div>
-            <Link href="/api/auth/google" className="btn btn-primary btn-sm">
-              Sign In to View Rank ➔
-            </Link>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {/* Top 3 Podium Cards */}
       {!loading && devotees.length > 0 && (

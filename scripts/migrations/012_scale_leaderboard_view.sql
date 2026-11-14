@@ -14,7 +14,7 @@
 -- 1. High-Performance Composite Index for fast deduplication & scoring
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_dedup_scoring 
 ON quiz_attempts(user_id, quiz_id, score DESC, completed_at DESC)
-WHERE user_id IS NOT NULL AND user_id NOT LIKE 'guest_%';
+WHERE user_id IS NOT NULL;
 
 -- 2. Drop existing view cleanly
 DROP VIEW IF EXISTS devotee_global_leaderboard CASCADE;
@@ -31,7 +31,6 @@ WITH best_attempts AS (
     completed_at
   FROM quiz_attempts
   WHERE user_id IS NOT NULL 
-    AND user_id::text NOT LIKE 'guest_%'
     AND quiz_id NOT LIKE 'archived:%'
     AND quiz_id NOT LIKE 'reset:%'
   ORDER BY 
@@ -48,7 +47,7 @@ user_scores AS (
     max_score,
     time_taken,
     completed_at,
-    LEAST(1.0, GREATEST(0.0, score::numeric / NULLIF(max_score, 0)::numeric)) AS acc
+    LEAST(1.0::numeric, GREATEST(0.0::numeric, score::numeric / NULLIF(max_score, 0)::numeric)) AS acc
   FROM best_attempts
 ),
 user_aggregates AS (
@@ -84,4 +83,3 @@ LEFT JOIN profiles p ON p.id = ua.user_id;
 
 -- 4. Re-grant permissions for public reading
 GRANT SELECT ON devotee_global_leaderboard TO anon, authenticated, service_role;
-
