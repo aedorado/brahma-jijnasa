@@ -590,32 +590,55 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                       )}
                     </div>
 
-                    {/* Action Button: Series rounds ONLY run via Live Session PIN */}
+                    {/* Action Button: Series rounds with Practice and Live Session access */}
                     <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)' }}>
                       {isCompleted ? (
-                        <Link
-                          href={`/q/${round.quiz_id}`}
-                          className="btn btn-ghost btn-sm w-full"
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            border: '1px solid rgba(74, 222, 128, 0.4)',
-                            color: '#4ade80',
-                            background: 'rgba(74, 222, 128, 0.05)',
-                          }}
-                        >
-                          <span>📜</span> {t.series.viewScorecard}
-                        </Link>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                          <Link
+                            href={`/q/${round.quiz_id}`}
+                            className="btn btn-ghost btn-sm"
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '0.35rem',
+                              border: '1px solid rgba(74, 222, 128, 0.4)',
+                              color: '#4ade80',
+                              background: 'rgba(74, 222, 128, 0.05)',
+                              fontSize: '0.8rem',
+                              padding: '0.45rem 0.5rem',
+                            }}
+                          >
+                            <span>📜</span> {t.series.viewScorecard || 'Scorecard'}
+                          </Link>
+                          <Link
+                            href={`/q/${round.quiz_id}?mode=practice`}
+                            className="btn btn-primary btn-sm"
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '0.35rem',
+                              fontSize: '0.8rem',
+                              padding: '0.45rem 0.5rem',
+                              background: 'rgba(240, 199, 78, 0.15)',
+                              border: '1px solid rgba(240, 199, 78, 0.4)',
+                              color: 'var(--color-gold)',
+                            }}
+                          >
+                            <span>🔄</span> {t.series.practiceAgain || 'Practice'}
+                          </Link>
+                        </div>
                       ) : isLive ? (
-                        <Link
-                          href={`/session/${activePin}`}
-                          className="btn btn-primary btn-sm w-full"
-                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
-                        >
-                          <span>⚡</span> {t.series.joinLive} (PIN: {activePin})
-                        </Link>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                          <Link
+                            href={`/session/${activePin}`}
+                            className="btn btn-primary btn-sm w-full"
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem' }}
+                          >
+                            <span>⚡</span> {t.series.joinLive} (PIN: {activePin})
+                          </Link>
+                        </div>
                       ) : hasScheduledPin ? (
                         <button
                           disabled
@@ -635,13 +658,22 @@ export default function SeriesPage({ params }: SeriesPageProps) {
                             <span>🚀</span> {launchingRoundId === (round.id || round.quiz_id) ? 'Launching Live Room...' : 'Start Live Session (Create PIN)'}
                           </button>
                         ) : (
-                          <button
-                            disabled
-                            className="btn btn-ghost btn-sm w-full"
-                            style={{ opacity: 0.75, cursor: 'not-allowed', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', border: '1px solid rgba(240, 199, 78, 0.3)' }}
-                          >
-                            <span>⏳</span> Waiting for Teacher to Start Live Room
-                          </button>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem' }}>
+                            <button
+                              disabled
+                              className="btn btn-ghost btn-sm"
+                              style={{ opacity: 0.75, cursor: 'not-allowed', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', border: '1px solid rgba(240, 199, 78, 0.3)', padding: '0.4rem 0.2rem' }}
+                            >
+                              <span>⏳</span> Waiting Room
+                            </button>
+                            <Link
+                              href={`/q/${round.quiz_id}?mode=practice`}
+                              className="btn btn-primary btn-sm"
+                              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', background: 'rgba(240, 199, 78, 0.15)', border: '1px solid rgba(240, 199, 78, 0.4)', color: 'var(--color-gold)', padding: '0.4rem 0.2rem' }}
+                            >
+                              <span>🔄</span> {t.series.practiceSolo || 'Practice Solo'}
+                            </Link>
+                          </div>
                         )
                       ) : (
                         <button

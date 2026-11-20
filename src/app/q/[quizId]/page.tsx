@@ -33,6 +33,9 @@ export default function DirectQuizPage({ params }: Props) {
   const [userId, setUserId] = useState<string | null>(null)
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
   const [attemptSessionId, setAttemptSessionId] = useState<string | null>(null)
+  const [isPracticeMode, setIsPracticeMode] = useState(false)
+  const [isPracticeRun, setIsPracticeRun] = useState(false)
+  const [officialScore, setOfficialScore] = useState<{ score: number; maxScore: number } | null>(null)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
   const { language, t } = useLanguage()
@@ -73,7 +76,11 @@ export default function DirectQuizPage({ params }: Props) {
       setQuiz(quizData)
       initDoneRef.current = true
 
+      // Check if user came specifically for practice mode via ?mode=practice
+      const isPracticeQuery = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'practice'
+
       // If user is logged in, check if they already submitted this quiz
+      let prevAttempt: any = null
       if (user) {
         try {
           const { data: existingAttempts } = await supabase
@@ -85,23 +92,35 @@ export default function DirectQuizPage({ params }: Props) {
             .limit(1)
 
           if (existingAttempts && existingAttempts.length > 0) {
-            const attempt = existingAttempts[0]
-            setAttemptSessionId(attempt.session_id || null)
-            setTimeTaken(attempt.time_taken || 0)
-            setFinalAnswers(attempt.answers || {})
-            answersRef.current = attempt.answers || {}
-            const result = scoreQuiz(quizData.questions, attempt.answers || {})
-            setScoreResult(result)
-            setIsAlreadyCompleted(true)
-            setPhase('submitted')
-            return
+            prevAttempt = existingAttempts[0]
+            setOfficialScore({ score: Number(prevAttempt.score), maxScore: Number(prevAttempt.max_score) })
           }
         } catch (err) {
           console.warn('Could not check existing quiz attempts:', err)
         }
       }
 
-      // Series quizzes ALWAYS run in live PIN mode only (no solo practice mode)
+      // If explicit practice mode is requested:
+      if (isPracticeQuery) {
+        setIsPracticeMode(true)
+        setPhase('intro')
+        return
+      }
+
+      // If user already completed the quiz and did NOT request practice, show recorded scorecard:
+      if (prevAttempt) {
+        setAttemptSessionId(prevAttempt.session_id || null)
+        setTimeTaken(prevAttempt.time_taken || 0)
+        setFinalAnswers(prevAttempt.answers || {})
+        answersRef.current = prevAttempt.answers || {}
+        const result = scoreQuiz(quizData.questions, prevAttempt.answers || {})
+        setScoreResult(result)
+        setIsAlreadyCompleted(true)
+        setPhase('submitted')
+        return
+      }
+
+      // Series quizzes logic
       if (quizId.startsWith('64-day-')) {
         let dayNum: number | null = null
         if (quizId === '64-day-d3') dayNum = -2
@@ -168,15 +187,15 @@ export default function DirectQuizPage({ params }: Props) {
           return
         }
 
-        // If active PIN exists but release time has not arrived yet:
-        if (activePin && !isTimeArrived) {
-          setErrorMsg(`${label} is scheduled to go live on ${formattedTime}. A live PIN session is registered, but it will activate only at the scheduled time.`)
-          setPhase('error')
+        // If scheduled time has arrived but no live classroom PIN exists: allow taking in self-study / practice mode!
+        if (isTimeArrived) {
+          setIsPracticeMode(true)
+          setPhase('intro')
           return
         }
 
-        // If no active PIN exists: Series rounds cannot be taken in practice mode!
-        setErrorMsg(`${label} is an official series competition round and can only be taken during an active live session via PIN. Practice mode is disabled for series rounds. Please return at ${formattedTime} for the live class.`)
+        // If release time has not arrived yet:
+        setErrorMsg(`${label} is scheduled to go live on ${formattedTime}. Please return at the scheduled time.`)
         setPhase('error')
         return
       }
@@ -230,6 +249,19 @@ export default function DirectQuizPage({ params }: Props) {
     reloadLanguage()
   }, [language, quizId])
 
+  const handleStartPractice = () => {
+    setIsPracticeMode(true)
+    setIsPracticeRun(false)
+    setInitialAnswers({})
+    setInitialElapsed(0)
+    setInitialQuestionIndex(0)
+    setFinalAnswers({})
+    setScoreResult(null)
+    setTimeTaken(0)
+    submittingRef.current = false
+    setPhase('quiz')
+  }
+
   const handleSubmit = useCallback(async (answers: AnswerMap, elapsed: number) => {
     if (!quiz || !userId || submittingRef.current) return
     submittingRef.current = true
@@ -238,7 +270,10 @@ export default function DirectQuizPage({ params }: Props) {
     const result = scoreQuiz(quiz.questions, answers)
     setScoreResult(result)
 
-    if (!userId.startsWith('guest_')) {
+    if (isPracticeMode) {
+      // In practice mode, do NOT write to database — keep leaderboards 100% untouched!
+      setIsPracticeRun(true)
+    } else if (!userId.startsWith('guest_')) {
       try {
         await supabase.from('quiz_attempts').insert({
           user_id: userId,
@@ -255,8 +290,9 @@ export default function DirectQuizPage({ params }: Props) {
     }
 
     clearProgress(quizId, userId)
+    submittingRef.current = false
     setPhase('submitted')
-  }, [quiz, userId, quizId])
+  }, [quiz, userId, quizId, isPracticeMode])
 
   const handleProgress = useCallback(
     (answers: AnswerMap, elapsed: number, currentIndex: number) => {
@@ -312,10 +348,29 @@ export default function DirectQuizPage({ params }: Props) {
     <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <div className="card-gold animate-scaleIn" style={{ padding: '2.5rem', maxWidth: 480, width: '100%' }}>
         <div className="text-center" style={{ marginBottom: '2rem' }}>
-          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>{t.quizIntro?.practiceMode || 'Practice Mode'}</span>
+          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>
+            {isPracticeMode ? (t.scoreCard?.practiceScoreLabel || 'Self-Study & Revision Mode') : (t.quizIntro?.practiceMode || 'Practice Mode')}
+          </span>
           <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{quiz.title}</h1>
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>{quiz.description}</p>
         </div>
+        {isPracticeMode && (
+          <div
+            style={{
+              padding: '0.75rem 1rem',
+              borderRadius: 8,
+              background: 'rgba(240, 199, 78, 0.1)',
+              border: '1px solid rgba(240, 199, 78, 0.3)',
+              marginBottom: '1.5rem',
+              textAlign: 'center',
+              fontSize: '0.82rem',
+              color: 'var(--color-gold)',
+              fontWeight: 600,
+            }}
+          >
+            {t.quizIntro?.practiceModeBanner || '🌟 Self-Study & Revision Mode: Your official leaderboard score is safely locked and preserved.'}
+          </div>
+        )}
         <div className="divider-gold" />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
           {[
@@ -338,22 +393,47 @@ export default function DirectQuizPage({ params }: Props) {
   )
 
   if (phase === 'quiz' && quiz) return (
-    <QuizEngine
-      questions={quiz.questions}
-      timeLimit={quiz.timeLimit}
-      onTimeExpiry={quiz.onTimeExpiry}
-      onSubmit={handleSubmit}
-      initialAnswers={initialAnswers}
-      initialElapsed={initialElapsed}
-      initialQuestionIndex={initialQuestionIndex}
-      onProgress={handleProgress}
-      quizTitle={quiz.title}
-    />
+    <div>
+      {isPracticeMode && (
+        <div style={{
+          background: 'linear-gradient(90deg, rgba(240, 199, 78, 0.15), rgba(240, 199, 78, 0.05))',
+          borderBottom: '1px solid rgba(240, 199, 78, 0.35)',
+          padding: '0.65rem 1rem',
+          textAlign: 'center',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          color: 'var(--color-gold)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          position: 'sticky',
+          top: 0,
+          zIndex: 40,
+        }}>
+          <span>🔄</span>
+          <span>
+            {t.quizIntro?.practiceModeBanner || '🌟 Self-Study & Revision Mode: Your official leaderboard score is safely locked and preserved.'}
+          </span>
+        </div>
+      )}
+      <QuizEngine
+        questions={quiz.questions}
+        timeLimit={quiz.timeLimit}
+        onTimeExpiry={quiz.onTimeExpiry}
+        onSubmit={handleSubmit}
+        initialAnswers={initialAnswers}
+        initialElapsed={initialElapsed}
+        initialQuestionIndex={initialQuestionIndex}
+        onProgress={handleProgress}
+        quizTitle={quiz.title}
+      />
+    </div>
   )
 
   if (phase === 'submitted' && quiz && scoreResult) return (
     <div>
-      {isAlreadyCompleted && (
+      {isAlreadyCompleted && !isPracticeRun && (
         <div className="container" style={{ paddingTop: '1.5rem', maxWidth: 700 }}>
           <div
             style={{
@@ -384,6 +464,9 @@ export default function DirectQuizPage({ params }: Props) {
         sessionId={attemptSessionId}
         pin=""
         userAnswers={finalAnswers}
+        onPracticeAgain={handleStartPractice}
+        isPracticeRun={isPracticeRun}
+        officialScore={officialScore}
       />
     </div>
   )

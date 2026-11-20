@@ -18,11 +18,25 @@ interface Props {
   pin: string
   userAnswers?: AnswerMap
   onRetry?: () => void
+  onPracticeAgain?: () => void
+  isPracticeRun?: boolean
+  officialScore?: { score: number; maxScore: number } | null
 }
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
 
-export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers = {}, onRetry }: Props) {
+export function ScoreCard({
+  quiz,
+  result,
+  timeTaken,
+  sessionId,
+  pin,
+  userAnswers = {},
+  onRetry,
+  onPracticeAgain,
+  isPracticeRun,
+  officialScore,
+}: Props) {
   const [displayScore, setDisplayScore] = useState(0)
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<number | null>(null)
@@ -555,6 +569,77 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
   return (
     <div className="score-card-page">
+      {/* Prominent Practice Again Card right at the Very Top */}
+      {onPracticeAgain && (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(240, 199, 78, 0.16), rgba(240, 199, 78, 0.05))',
+            border: '1.5px solid rgba(240, 199, 78, 0.45)',
+            borderRadius: 14,
+            padding: '1.25rem 1.5rem',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, minWidth: 260 }}>
+            <span style={{ fontSize: '2.2rem' }}>🔄</span>
+            <div>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--color-gold)', margin: 0, lineHeight: 1.3 }}>
+                {t.scoreCard?.practiceAgainHeading || 'Want to Practice This Quiz Again?'}
+              </h3>
+              <p style={{ fontSize: '0.83rem', color: 'var(--color-text-secondary)', margin: '0.25rem 0 0', lineHeight: 1.45 }}>
+                {t.scoreCard?.practiceAgainDesc || 'Deepen your scriptural understanding with a self-study revision run. Your official score remains safely locked on the leaderboard!'}
+              </p>
+            </div>
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={onPracticeAgain}
+            id="practice-again-top-btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              padding: '0.75rem 1.5rem',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span>🚀</span> {t.scoreCard?.practiceAgainBtn || 'Start Practice Run'}
+          </button>
+        </div>
+      )}
+
+      {/* Practice Mode Banner */}
+      {isPracticeRun && (
+        <div
+          style={{
+            marginBottom: '1.25rem',
+            padding: '0.9rem 1.25rem',
+            borderRadius: 12,
+            background: 'rgba(56, 189, 248, 0.1)',
+            border: '1.5px solid rgba(56, 189, 248, 0.4)',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ fontWeight: 800, color: '#38bdf8', fontSize: '0.95rem', marginBottom: '0.2rem' }}>
+            🔄 {t.scoreCard?.practiceRunNotice || 'Revision & Practice Run: This self-study attempt does not alter your official leaderboard standing.'}
+          </div>
+          {officialScore && (
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginTop: '0.35rem' }}>
+              {t.scoreCard?.officialScoreLabel || 'Official Leaderboard Score'}: <strong style={{ color: 'var(--color-gold)' }}>{officialScore.score} / {officialScore.maxScore} pts</strong> (Preserved)
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Score hero card */}
       <div className="card-gold text-center animate-scaleIn score-card-hero">
         {(pin === '000' || pin === '0000') && (
@@ -731,7 +816,24 @@ export function ScoreCard({ quiz, result, timeTaken, sessionId, pin, userAnswers
 
       {/* Quick Action Navigation */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2.5rem' }}>
-        {onRetry && (
+        {onPracticeAgain && (
+          <button
+            className="btn btn-primary btn-lg w-full"
+            onClick={onPracticeAgain}
+            id="practice-again-bottom-btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              fontWeight: 700,
+            }}
+          >
+            <span>🔄</span> {t.scoreCard?.practiceAgainBtn || 'Practice Quiz Again'}
+          </button>
+        )}
+
+        {onRetry && !onPracticeAgain && (
           <button
             className="btn btn-primary btn-lg w-full"
             onClick={onRetry}

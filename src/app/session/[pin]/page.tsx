@@ -32,6 +32,9 @@ export default function SessionPage({ params }: Props) {
   const [initialQuestionIndex, setInitialQuestionIndex] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false)
+  const [isPracticeMode, setIsPracticeMode] = useState(false)
+  const [isPracticeRun, setIsPracticeRun] = useState(false)
+  const [officialScore, setOfficialScore] = useState<{ score: number; maxScore: number } | null>(null)
   const router = useRouter()
   const { user, loading: authLoading, login } = useAuth()
   const { language, t } = useLanguage()
@@ -193,6 +196,7 @@ export default function SessionPage({ params }: Props) {
       }
 
       if (prevAttempt) {
+        setOfficialScore({ score: Number(prevAttempt.score), maxScore: Number(prevAttempt.max_score) })
         setSessionId(session.id)
         activeQuizIdRef.current = session.quiz_id
 
@@ -268,6 +272,19 @@ export default function SessionPage({ params }: Props) {
 
   const handleStart = () => setPhase('quiz')
 
+  const handleStartPractice = () => {
+    setIsPracticeMode(true)
+    setIsPracticeRun(false)
+    setInitialAnswers({})
+    setInitialElapsed(0)
+    setInitialQuestionIndex(0)
+    setFinalAnswers({})
+    setScoreResult(null)
+    setTimeTaken(0)
+    submittingRef.current = false
+    setPhase('quiz')
+  }
+
   const handleRetry = () => {
     if (userId) {
       clearProgress(pin, userId)
@@ -309,6 +326,16 @@ export default function SessionPage({ params }: Props) {
     submittingRef.current = true
     setTimeTaken(elapsed)
     setFinalAnswers(answers)
+
+    if (isPracticeMode) {
+      const result = scoreQuiz(quiz.questions, answers)
+      setScoreResult(result)
+      setIsPracticeRun(true)
+      setPhase('submitted')
+      submittingRef.current = false
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitError(null)
 
@@ -421,24 +448,49 @@ export default function SessionPage({ params }: Props) {
 
   if (phase === 'quiz' && quiz) {
     return (
-      <QuizEngine
-        questions={quiz.questions}
-        timeLimit={quiz.timeLimit}
-        onTimeExpiry={quiz.onTimeExpiry}
-        onSubmit={handleSubmit}
-        initialAnswers={initialAnswers}
-        initialElapsed={initialElapsed}
-        initialQuestionIndex={initialQuestionIndex}
-        onProgress={handleProgress}
-        quizTitle={quiz.title}
-      />
+      <div>
+        {isPracticeMode && (
+          <div style={{
+            background: 'linear-gradient(90deg, rgba(240, 199, 78, 0.15), rgba(240, 199, 78, 0.05))',
+            borderBottom: '1px solid rgba(240, 199, 78, 0.35)',
+            padding: '0.65rem 1rem',
+            textAlign: 'center',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: 'var(--color-gold)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            position: 'sticky',
+            top: 0,
+            zIndex: 40,
+          }}>
+            <span>🔄</span>
+            <span>
+              {t.quizIntro?.practiceModeBanner || '🌟 Self-Study & Revision Mode: Your official leaderboard score is safely locked and preserved.'}
+            </span>
+          </div>
+        )}
+        <QuizEngine
+          questions={quiz.questions}
+          timeLimit={quiz.timeLimit}
+          onTimeExpiry={quiz.onTimeExpiry}
+          onSubmit={handleSubmit}
+          initialAnswers={initialAnswers}
+          initialElapsed={initialElapsed}
+          initialQuestionIndex={initialQuestionIndex}
+          onProgress={handleProgress}
+          quizTitle={quiz.title}
+        />
+      </div>
     )
   }
 
   if (phase === 'submitted' && quiz && scoreResult) {
     return (
       <div>
-        {isAlreadyCompleted && (
+        {isAlreadyCompleted && !isPracticeRun && (
           <div className="container" style={{ paddingTop: '1.5rem', maxWidth: 700 }}>
             <div
               style={{
@@ -470,6 +522,9 @@ export default function SessionPage({ params }: Props) {
           pin={pin}
           userAnswers={finalAnswers}
           onRetry={pin === '000' || pin === '0000' ? handleRetry : undefined}
+          onPracticeAgain={handleStartPractice}
+          isPracticeRun={isPracticeRun}
+          officialScore={officialScore}
         />
       </div>
     )

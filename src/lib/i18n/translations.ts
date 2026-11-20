@@ -213,6 +213,12 @@ export const translations = {
       perfJijnasu: 'Good — Jijñāsu!',
       perfSisya: 'Keep Learning — Śiṣya!',
       perfAbhyasa: 'Seek Guidance — Abhyāsa!',
+      practiceAgainHeading: 'Want to Practice This Quiz Again?',
+      practiceAgainDesc: 'Deepen your scriptural understanding with a self-study revision run. Your official score remains safely locked on the leaderboard!',
+      practiceAgainBtn: 'Start Practice Run (Revision Mode)',
+      practiceRunNotice: 'Revision & Practice Run: This self-study attempt does not alter your official leaderboard standing.',
+      officialScoreLabel: 'Official Leaderboard Score',
+      practiceScoreLabel: 'Practice Score',
     },
     // Quiz Intro / Practice & Session Setup
     quizIntro: {
@@ -234,6 +240,7 @@ export const translations = {
       answerAllNotice: 'Answer all questions before submitting',
       alreadyCompletedNotice: '✅ You have already completed this round. Showing your recorded scorecard and answer review.',
       dailyRoundScheduled: 'Daily Round Scheduled',
+      practiceModeBanner: '🌟 Self-Study & Revision Mode: Your official leaderboard score is safely locked and preserved.',
     },
     // Series Hub & Roadmap
     series: {
@@ -250,6 +257,8 @@ export const translations = {
       liveClassNow: 'Live Class Now',
       takePractice: 'Take Practice Round',
       viewScorecard: 'View Scorecard & Review',
+      practiceAgain: 'Practice Again',
+      practiceSolo: 'Practice Solo (Revision)',
       joinLive: 'Join Live',
       roadmapTab: 'Curriculum & Rounds',
       standingsTab: 'Series Standings',
@@ -607,6 +616,12 @@ export const translations = {
       perfJijnasu: 'अच्छा — जिज्ञासु!',
       perfSisya: 'सीखते रहें — शिष्य!',
       perfAbhyasa: 'मार्गदर्शन लें — अभ्यास!',
+      practiceAgainHeading: 'क्या आप इस प्रश्नोत्तरी का पुनः अभ्यास करना चाहते हैं?',
+      practiceAgainDesc: 'स्वाध्याय और पुनरावृत्ति के माध्यम से शास्त्रों के सिद्धांतों को सुदृढ़ करें। आपका आधिकारिक अंक लीडरबोर्ड पर सुरक्षित रहेगा!',
+      practiceAgainBtn: 'पुनः अभ्यास प्रारंभ करें (स्वाध्याय मोड)',
+      practiceRunNotice: 'स्वाध्याय अभ्यास: इस अभ्यास से आपकी आधिकारिक लीडरबोर्ड स्थिति पर कोई प्रभाव नहीं पड़ेगा।',
+      officialScoreLabel: 'आधिकारिक लीडरबोर्ड अंक',
+      practiceScoreLabel: 'अभ्यास अंक',
     },
     // Quiz Intro / Practice & Session Setup
     quizIntro: {
@@ -628,6 +643,7 @@ export const translations = {
       answerAllNotice: 'जमा करने से पूर्व सभी प्रश्नों के उत्तर दें',
       alreadyCompletedNotice: '✅ आप यह चक्र पहले ही पूर्ण कर चुके हैं। आपका सहेजा गया अंक-पत्र व समीक्षा प्रदर्शित की जा रही है।',
       dailyRoundScheduled: 'दैनिक चक्र निर्धारित है',
+      practiceModeBanner: '🌟 स्वाध्याय एवं पुनरावृत्ति मोड: आपका आधिकारिक लीडरबोर्ड अंक पूर्णतः सुरक्षित है।',
     },
     // Series Hub & Roadmap
     series: {
@@ -644,6 +660,8 @@ export const translations = {
       liveClassNow: 'सक्रिय लाइव कक्षा',
       takePractice: 'अभ्यास चक्र प्रारंभ करें',
       viewScorecard: 'अंक-तालिका एवं समीक्षा देखें',
+      practiceAgain: 'पुनः अभ्यास करें',
+      practiceSolo: 'स्वाध्याय अभ्यास',
       joinLive: 'लाइव कक्षा में जुड़ें',
       roadmapTab: 'पाठ्यक्रम एवं दैनिक चक्र',
       standingsTab: 'श्रृंखला अंक-तालिका',
@@ -1001,6 +1019,12 @@ export const translations = {
       perfJijnasu: 'Bom — Jijñāsu!',
       perfSisya: 'Continue Aprendendo — Śiṣya!',
       perfAbhyasa: 'Busque Orientação — Abhyāsa!',
+      practiceAgainHeading: 'Deseja Praticar Este Questionário Novamente?',
+      practiceAgainDesc: 'Aprofunde seu entendimento das escrituras com uma rodada de revisão pessoal. Sua pontuação oficial permanecerá preservada na classificação!',
+      practiceAgainBtn: 'Iniciar Prática (Modo de Revisão)',
+      practiceRunNotice: 'Modo de Prática e Revisão: Esta tentativa de autoestudo não altera sua posição oficial na classificação.',
+      officialScoreLabel: 'Pontuação Oficial na Classificação',
+      practiceScoreLabel: 'Pontuação de Prática',
     },
     // Quiz Intro / Practice & Session Setup
     quizIntro: {
@@ -1022,6 +1046,7 @@ export const translations = {
       answerAllNotice: 'Responda a todas as questões antes de enviar',
       alreadyCompletedNotice: '✅ Você já concluiu esta rodada. Exibindo seu gabarito e pontuação registrados.',
       dailyRoundScheduled: 'Rodada Diária Agendada',
+      practiceModeBanner: '🌟 Modo de Autoestudo e Revisão: Sua pontuação oficial na classificação está protegida e preservada.',
     },
     // Series Hub & Roadmap
     series: {
@@ -1038,6 +1063,8 @@ export const translations = {
       liveClassNow: 'Aula ao Vivo Agora',
       takePractice: 'Iniciar Rodada de Prática',
       viewScorecard: 'Ver Pontuação e Revisão',
+      practiceAgain: 'Praticar Novamente',
+      practiceSolo: 'Praticar Individualmente',
       joinLive: 'Entrar na Aula ao Vivo',
       roadmapTab: 'Currículo e Rodadas',
       standingsTab: 'Classificação da Série',

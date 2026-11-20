@@ -559,26 +559,45 @@ export default function LiveQuizzesPage() {
                     {/* Right: Actions */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 200 }}>
                       {isAttempted ? (
-                        <button
-                          className="btn btn-gold w-full"
-                          onClick={() => {
-                            setSelectedReview({
-                              quizId: session.quiz_id,
-                              title,
-                              answers: attempt?.answers,
-                            })
-                          }}
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            fontWeight: 800,
-                            fontSize: '0.88rem',
-                          }}
-                        >
-                          <span>🎴</span> Review My Answers
-                        </button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                          <button
+                            className="btn btn-gold w-full btn-sm"
+                            onClick={() => {
+                              setSelectedReview({
+                                quizId: session.quiz_id,
+                                title,
+                                answers: attempt?.answers,
+                              })
+                            }}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              fontWeight: 800,
+                              fontSize: '0.82rem',
+                            }}
+                          >
+                            <span>🎴</span> Review Answers
+                          </button>
+                          <Link
+                            href={`/q/${session.quiz_id}?mode=practice`}
+                            className="btn btn-primary w-full btn-sm"
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              fontWeight: 800,
+                              fontSize: '0.82rem',
+                              background: 'rgba(240, 199, 78, 0.15)',
+                              border: '1px solid rgba(240, 199, 78, 0.4)',
+                              color: 'var(--color-gold)',
+                            }}
+                          >
+                            <span>🔄</span> Practice Again
+                          </Link>
+                        </div>
                       ) : (
                         <Link
                           href={`/session/${session.pin}`}
@@ -691,7 +710,7 @@ export default function LiveQuizzesPage() {
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                       <button
                         className="btn btn-gold btn-sm"
                         onClick={() => {
@@ -703,8 +722,24 @@ export default function LiveQuizzesPage() {
                         }}
                         style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 700, fontSize: '0.82rem' }}
                       >
-                        <span>🎴</span> Review Flashcards
+                        <span>🎴</span> Review Answers
                       </button>
+                      <Link
+                        href={`/q/${att.quiz_id}?mode=practice`}
+                        className="btn btn-primary btn-sm"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          fontWeight: 700,
+                          fontSize: '0.82rem',
+                          background: 'rgba(240, 199, 78, 0.15)',
+                          border: '1px solid rgba(240, 199, 78, 0.4)',
+                          color: 'var(--color-gold)',
+                        }}
+                      >
+                        <span>🔄</span> Practice Again
+                      </Link>
                     </div>
                   </div>
                 )
