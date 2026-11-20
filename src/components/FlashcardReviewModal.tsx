@@ -527,6 +527,18 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
               ))}
             </div>
           )}
+
+          {/* Crossword Correct Words */}
+          {q.type === 'crossword' && 'words' in q && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              {((q as any).words || []).map((w: any, idx: number) => (
+                <div key={idx} style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>
+                  <span style={{ color: 'var(--color-success)', fontWeight: 800 }}>✓</span>{' '}
+                  <strong style={{ color: 'var(--color-gold)' }}>{w.word}:</strong> {w.clue}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Scriptural Citation (Śāstra Pramāṇa) */}

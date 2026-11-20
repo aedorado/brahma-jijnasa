@@ -1,6 +1,6 @@
 import type { Question, QuestionType, Difficulty } from '@/types/quiz'
 
-export function getStandardQuestionPoints(type: QuestionType, difficulty: Difficulty): number {
+export function getStandardQuestionPoints(type: QuestionType, difficulty: Difficulty, raw?: any): number {
   // Tier 1: Direct Recognition (1 pick / boolean)
   if (['single-choice', 'true-false', 'who-said-this', 'odd-one-out', 'missing-link'].includes(type)) {
     return difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3
@@ -9,7 +9,13 @@ export function getStandardQuestionPoints(type: QuestionType, difficulty: Diffic
   if (['assertion-reason', 'cause-effect', 'spot-the-error', 'two-truths-one-false', 'evidence-based', 'case-study', 'what-would-you-do'].includes(type)) {
     return difficulty === 'easy' ? 1.5 : difficulty === 'medium' ? 2.5 : 3.5
   }
-  // Tier 3: Multi-Element & Interactive (match-pairs, sequence, multiple-select, who-am-i)
+  // Tier 3: Multi-Element & Interactive (match-pairs, sequence, multiple-select, who-am-i, crossword)
+  if (type === 'crossword') {
+    if (raw && Array.isArray(raw.words) && raw.words.length > 0) {
+      return raw.words.length
+    }
+    return difficulty === 'easy' ? 5 : difficulty === 'medium' ? 9 : 15
+  }
   return difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4
 }
 
@@ -30,6 +36,7 @@ export const VALID_QUESTION_TYPES: readonly QuestionType[] = [
   'spot-the-error',
   'two-truths-one-false',
   'evidence-based',
+  'crossword',
 ] as const
 
 export interface ValidationResult {
@@ -80,6 +87,7 @@ export function validateQuestion(raw: any, index: number): { question: Question 
     else if (type === 'missing-link') questionText = 'Identify the missing link in this sequence:'
     else if (type === 'odd-one-out') questionText = 'Identify the item that does not belong with the others:'
     else if (type === 'two-truths-one-false') questionText = 'Which of the following statements is FALSE?'
+    else if (type === 'crossword') questionText = 'Solve this crossword puzzle:'
     else {
       errors.push(`${prefix}: "question" prompt text is required and cannot be empty.`)
     }
@@ -101,9 +109,10 @@ export function validateQuestion(raw: any, index: number): { question: Question 
   }
 
   // 5. Points validation
-  let points: number = typeof raw.points === 'number' && raw.points >= 1 && raw.points <= 5
+  const maxAllowedPoints = type === 'crossword' ? 100 : 20
+  let points: number = typeof raw.points === 'number' && raw.points >= 1 && raw.points <= maxAllowedPoints
     ? raw.points
-    : getStandardQuestionPoints(type, difficulty)
+    : getStandardQuestionPoints(type, difficulty, raw)
 
   const normalized: any = {
     ...raw,
@@ -280,6 +289,32 @@ export function validateQuestion(raw: any, index: number): { question: Question 
       } else {
         normalized.correctPairs = raw.correctPairs
       }
+    }
+  } else if (type === 'crossword') {
+    if (!Array.isArray(raw.words) || raw.words.length < 2) {
+      errors.push(`${prefix} (crossword): "words" must be an array of at least 2 clue/answer items.`)
+    } else {
+      const cleanWords: any[] = []
+      for (let i = 0; i < raw.words.length; i++) {
+        const w = raw.words[i]
+        const cleanWord = String(w.word || w.answer || '').toUpperCase().replace(/[^A-Z]/g, '')
+        const clue = String(w.clue || '').trim()
+        if (!cleanWord || cleanWord.length < 2) {
+          errors.push(`${prefix} (crossword): Word #${i + 1} must contain at least 2 letters (A-Z).`)
+        }
+        if (!clue) {
+          errors.push(`${prefix} (crossword): Word #${i + 1} is missing a "clue".`)
+        }
+        cleanWords.push({
+          word: cleanWord,
+          clue,
+          ...(w.reference ? { reference: String(w.reference).trim() } : {}),
+          ...(w.verseText ? { verseText: String(w.verseText).trim() } : {}),
+        })
+      }
+      normalized.words = cleanWords
+      if (raw.variant) normalized.variant = raw.variant
+      if (raw.precompiledLayout) normalized.precompiledLayout = raw.precompiledLayout
     }
   }
 

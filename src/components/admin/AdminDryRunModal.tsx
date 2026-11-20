@@ -17,6 +17,7 @@ import { AssertionReason } from '@/components/questions/AssertionReason'
 import { SpotTheError } from '@/components/questions/SpotTheError'
 import { ScenarioQuestion } from '@/components/questions/ScenarioQuestion'
 import { MissingLink } from '@/components/questions/MissingLink'
+import { CrosswordQuestion } from '@/components/questions/CrosswordQuestion'
 
 interface AdminDryRunModalProps {
   quiz: Quiz
@@ -106,6 +107,8 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
           <ScenarioQuestion question={q as any} answer={qAnswer as number | null} onAnswer={handleAnswer} />
         ) : type === 'missing-link' ? (
           <MissingLink question={q as any} answer={qAnswer as number | null} onAnswer={handleAnswer} />
+        ) : type === 'crossword' ? (
+          <CrosswordQuestion question={q as any} answer={(qAnswer as any) || null} onAnswer={handleAnswer} revealAnswerKey={revealAnswerKey} />
         ) : (
           <div style={{ color: 'var(--color-error)' }}>Unknown question type: {type}</div>
         )}
@@ -135,6 +138,10 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
     if (q.type === 'match-pairs') {
       const pairs = anyQ.correctPairs || []
       return pairs.map(([l, r]: [number, number]) => `[${anyQ.left?.[l]}] ↔ [${anyQ.right?.[r]}]`).join('; ')
+    }
+    if (q.type === 'crossword') {
+      const words = anyQ.words || []
+      return words.map((w: any) => `${w.word} (${w.clue})`).join(' • ')
     }
     return 'N/A'
   }
@@ -271,7 +278,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
 
       {/* BODY CONTENT */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 840 }}>
+        <div style={{ width: '100%', maxWidth: currentQuestion?.type === 'crossword' || viewMode === 'walkthrough' ? 1080 : 840, transition: 'max-width 0.2s ease' }}>
 
           {/* VIEW MODE 1: INTERACTIVE SIMULATION */}
           {viewMode === 'interactive' && (

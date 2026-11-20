@@ -125,6 +125,107 @@ export function QuizPreviewList({
               </div>
             )}
 
+            {/* True / False Question Options */}
+            {q.type === 'true-false' && 'correct' in q && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(140px, 1fr))', gap: '0.4rem', marginBottom: '0.5rem' }}>
+                {[true, false].map((val) => {
+                  const isCorrect = (q as { correct: boolean }).correct === val
+                  const label = val ? 'True / Verdadeiro' : 'False / Falso'
+                  return (
+                    <div
+                      key={String(val)}
+                      style={{
+                        padding: '0.4rem 0.6rem',
+                        borderRadius: 6,
+                        fontSize: '0.8rem',
+                        background: isCorrect ? 'rgba(74, 222, 128, 0.15)' : 'var(--glass-bg)',
+                        border: isCorrect ? '1.5px solid rgba(74, 222, 128, 0.5)' : '1px solid var(--color-border)',
+                        color: isCorrect ? 'var(--color-success)' : 'var(--color-text)',
+                        fontWeight: isCorrect ? 700 : 400,
+                      }}
+                    >
+                      {isCorrect ? '✓ ' : '• '} {label}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Sequence Scrambled Items & Correct Order */}
+            {q.type === 'sequence' && 'items' in q && Array.isArray((q as any).items) && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', fontWeight: 600 }}>Correct Order:</span>
+                {(((q as any).correctOrder || (q as any).items.map((_: any, i: number) => i)) as number[]).map((itemIdx: number, step: number) => (
+                  <div
+                    key={step}
+                    style={{
+                      padding: '0.35rem 0.6rem',
+                      borderRadius: 6,
+                      fontSize: '0.8rem',
+                      background: 'rgba(74, 222, 128, 0.15)',
+                      border: '1.5px solid rgba(74, 222, 128, 0.5)',
+                      color: 'var(--color-success)',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <span>{step + 1}.</span>
+                    <span>{(q as any).items[itemIdx]}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Match Pairs Correct Pairings */}
+            {q.type === 'match-pairs' && 'left' in q && 'right' in q && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.35rem', marginBottom: '0.5rem' }}>
+                {(((q as any).correctPairs || []) as [number, number][]).map(([l, r]: [number, number], pIdx: number) => (
+                  <div
+                    key={pIdx}
+                    style={{
+                      padding: '0.35rem 0.6rem',
+                      borderRadius: 6,
+                      fontSize: '0.8rem',
+                      background: 'rgba(74, 222, 128, 0.15)',
+                      border: '1.5px solid rgba(74, 222, 128, 0.5)',
+                      color: 'var(--color-success)',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                    }}
+                  >
+                    <span>✓</span>
+                    <span>{(q as any).left[l]} ↔ {(q as any).right[r]}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Crossword Words Preview */}
+            {q.type === 'crossword' && Array.isArray((q as any).words) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.5rem' }}>
+                {((q as any).words as any[]).map((w: any, wIdx: number) => (
+                  <span
+                    key={wIdx}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: 4,
+                      fontSize: '0.75rem',
+                      background: 'rgba(212, 160, 23, 0.15)',
+                      border: '1px solid rgba(212, 160, 23, 0.4)',
+                      color: 'var(--color-gold)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    🧩 {w.word}: {w.clue}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {q.explanation && (
               <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontStyle: 'italic', marginTop: '0.3rem' }}>
                 💡 {q.explanation}

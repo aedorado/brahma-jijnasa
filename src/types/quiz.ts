@@ -34,6 +34,7 @@ export type QuestionType =
   | 'spot-the-error'
   | 'two-truths-one-false'
   | 'evidence-based'
+  | 'crossword'
 
 // ——— Base Question ———
 
@@ -157,6 +158,41 @@ export interface EvidenceBasedQuestion extends BaseQuestion {
   correctIndex: number
 }
 
+export interface CrosswordClueItem {
+  id?: string | number
+  word: string
+  clue: string
+  reference?: string
+  verseText?: string
+  translations?: {
+    [lang in 'en' | 'hi' | 'pt']?: {
+      clue?: string
+      verseText?: string
+    }
+  }
+}
+
+export interface CrosswordPlacedWord extends CrosswordClueItem {
+  row: number
+  col: number
+  direction: 'across' | 'down'
+  number: number
+}
+
+export interface CrosswordLayout {
+  rows: number
+  cols: number
+  placedWords: CrosswordPlacedWord[]
+  grid: Record<string, { letter: string; number?: number }>
+}
+
+export interface CrosswordQuestion extends BaseQuestion {
+  type: 'crossword'
+  variant?: 'mini' | 'standard'
+  words: CrosswordClueItem[]
+  precompiledLayout?: CrosswordLayout
+}
+
 export type Question =
   | SingleChoiceQuestion
   | MultipleSelectQuestion
@@ -174,6 +210,7 @@ export type Question =
   | SpotTheErrorQuestion
   | TwoTruthsOneFalseQuestion
   | EvidenceBasedQuestion
+  | CrosswordQuestion
 
 // ——— Quiz File ———
 
@@ -212,6 +249,7 @@ export type TFAnswer = boolean | null
 export type SequenceAnswer = number[]               // ordered indices
 export type PairsAnswer = [number, number][]     // [leftIndex, rightIndex]
 export type WhoAmIAnswer = { selectedIndex: number | null; cluesRevealed: number }
+export type CrosswordAnswer = Record<string, string> | { cells: Record<string, string>; hintsUsed?: number }
 
 export type Answer =
   | SingleAnswer
@@ -220,6 +258,7 @@ export type Answer =
   | SequenceAnswer
   | PairsAnswer
   | WhoAmIAnswer
+  | CrosswordAnswer
   | null
 
 export type AnswerMap = Record<number, Answer>      // questionId -> answer

@@ -1398,11 +1398,21 @@ a:hover { text-decoration: underline; }
   box-sizing: border-box;
 }
 
+.quiz-engine-wrapper:has(.cw-wrapper),
+.quiz-engine-wrapper.crossword-mode {
+  max-width: 1080px;
+  transition: max-width 0.25s ease;
+}
+
 .quiz-card {
   padding: 2rem;
   margin-bottom: 1.5rem;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+.quiz-card:has(.cw-wrapper) {
+  padding: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -1452,6 +1462,10 @@ a:hover { text-decoration: underline; }
   .quiz-card {
     padding: 1.15rem 0.85rem !important;
     border-radius: var(--radius-md) !important;
+  }
+
+  .quiz-card:has(.cw-wrapper) {
+    padding: 0.75rem 0.4rem !important;
   }
 
   .match-item {

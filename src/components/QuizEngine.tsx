@@ -16,6 +16,7 @@ import { AssertionReason } from './questions/AssertionReason'
 import { SpotTheError } from './questions/SpotTheError'
 import { ScenarioQuestion } from './questions/ScenarioQuestion'
 import { MissingLink } from './questions/MissingLink'
+import { CrosswordQuestion } from './questions/CrosswordQuestion'
 import { QuestionErrorBoundary } from './QuestionErrorBoundary'
 
 interface QuizEngineProps {
@@ -47,6 +48,7 @@ const TYPE_LABELS: Record<string, string> = {
   'spot-the-error': 'Spot the Error',
   'two-truths-one-false': 'Two Truths, One False',
   'evidence-based': 'Evidence-Based',
+  'crossword': 'Crossword Puzzle',
 }
 
 const TYPE_ICONS: Record<string, string> = {
@@ -66,6 +68,7 @@ const TYPE_ICONS: Record<string, string> = {
   'spot-the-error': '🔎',
   'two-truths-one-false': '🕵️',
   'evidence-based': '📜',
+  'crossword': '🧩',
 }
 
 export function QuizEngine({
@@ -262,6 +265,9 @@ export function QuizEngine({
     if (type === 'missing-link') {
       return <MissingLink question={q as any} answer={answers[q.id] as number | null} onAnswer={a => setAnswer(q.id, a)} />
     }
+    if (type === 'crossword') {
+      return <CrosswordQuestion question={q as any} answer={(answers[q.id] as any) || null} onAnswer={a => setAnswer(q.id, a)} />
+    }
     return null
   }
 
@@ -272,7 +278,7 @@ export function QuizEngine({
   }
 
   return (
-    <div className="quiz-engine-wrapper">
+    <div className={`quiz-engine-wrapper ${q?.type === 'crossword' ? 'crossword-mode' : ''}`}>
       {/* Ambient Pervasive Top Time Beam (Always present, 0px intrusive height) */}
       {hasTimeLimit && (
         <div

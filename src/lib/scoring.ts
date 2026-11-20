@@ -106,6 +106,35 @@ export function scoreQuestion(question: Question, answer: Answer): QuestionResul
       break
     }
 
+    case 'crossword': {
+      const userCells: Record<string, string> =
+        answer && typeof answer === 'object'
+          ? 'cells' in answer && answer.cells && typeof answer.cells === 'object'
+            ? (answer.cells as Record<string, string>)
+            : (answer as Record<string, string>)
+          : {}
+
+      const targetGrid = question.precompiledLayout?.grid
+      if (targetGrid && Object.keys(targetGrid).length > 0) {
+        const totalCells = Object.keys(targetGrid).length
+        let matchedLetters = 0
+        for (const [coord, cellObj] of Object.entries(targetGrid)) {
+          const userChar = (userCells[coord] || '').toUpperCase().trim()
+          if (userChar === cellObj.letter.toUpperCase().trim()) {
+            matchedLetters++
+          }
+        }
+        correct = matchedLetters === totalCells
+        earned = correct ? max : totalCells > 0 ? Math.round((matchedLetters / totalCells) * max * 2) / 2 : 0
+      } else {
+        // If not precompiled, check if any answers filled
+        const filled = Object.keys(userCells).length
+        correct = filled > 0
+        earned = correct ? max : 0
+      }
+      break
+    }
+
     default:
       earned = 0; correct = false
   }

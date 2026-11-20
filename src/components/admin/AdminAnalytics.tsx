@@ -75,6 +75,12 @@ function renderAnswerComparison(q: Question, rawAns: any): { studentText: React.
         .join(' → ') || 'N/A'
       return { studentText, correctText }
     }
+    case 'crossword': {
+      const words = (q as any).words || []
+      const studentText = rawAns && typeof rawAns === 'object' ? `${Object.keys(rawAns).length} letters entered` : 'Unanswered'
+      const correctText = `${words.length} words: ${words.map((w: any) => w.word).join(', ')}`
+      return { studentText, correctText }
+    }
     default: {
       if (typeof rawAns === 'number' && q.options?.[rawAns]) {
         return {

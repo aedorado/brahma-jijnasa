@@ -94,6 +94,7 @@ export const translations = {
       'spot-the-error': 'Spot the Error',
       'two-truths-one-false': 'Two Truths, One False',
       'evidence-based': 'Evidence-Based',
+      'crossword': 'Crossword Puzzle',
     },
     // Scripture Categories
     categories: {
@@ -148,6 +149,24 @@ export const translations = {
       reasonLabel: 'Reason (R)',
       principleLabel: 'Principle:',
       revealClue: 'Reveal',
+    },
+    // Crossword Puzzle
+    crossword: {
+      title: 'Crossword Puzzle',
+      across: 'Across',
+      down: 'Down',
+      letters: 'letters',
+      prevClue: '‹ Prev',
+      nextClue: 'Next ›',
+      direction: 'Direction',
+      selectCell: 'Select Cell',
+      tapCellPrompt: 'Tap any cell in the crossword or select a clue below.',
+      viewVerseContext: '📜 View Verse Context',
+      verseContextTitle: 'Verse Context',
+      close: 'Close',
+      hintFooter: 'Tip: Press Space or tap a cell to switch direction • Arrows to navigate',
+      solutionsTitle: 'Crossword Solutions ({count} Clues)',
+      lettersMatched: 'Letters matched: {matched} / {total}',
     },
     // Quiz Engine
     quizEngine: {
@@ -497,6 +516,7 @@ export const translations = {
       'spot-the-error': 'त्रुटि पहचानें',
       'two-truths-one-false': 'दो सत्य, एक असत्य',
       'evidence-based': 'प्रमाण-आधारित प्रश्न',
+      'crossword': 'शब्द पहेली (क्रॉसवर्ड)',
     },
     // Scripture Categories
     categories: {
@@ -551,6 +571,24 @@ export const translations = {
       reasonLabel: 'कारण (R)',
       principleLabel: 'सिद्धांत:',
       revealClue: 'देखें',
+    },
+    // Crossword Puzzle
+    crossword: {
+      title: 'शब्द पहेली (क्रॉसवर्ड)',
+      across: 'बाएँ से दाएँ (Across)',
+      down: 'ऊपर से नीचे (Down)',
+      letters: 'अक्षर',
+      prevClue: '‹ पिछला',
+      nextClue: 'अगला ›',
+      direction: 'दिशा',
+      selectCell: 'सेल चुनें',
+      tapCellPrompt: 'पहेली के किसी सेल पर टैप करें या नीचे से संकेत चुनें।',
+      viewVerseContext: '📜 श्लोक संदर्भ देखें',
+      verseContextTitle: 'श्लोक संदर्भ',
+      close: 'बंद करें',
+      hintFooter: 'सुझाव: दिशा बदलने के लिए स्पेस दबाएँ या सेल पर टैप करें • नेविगेट करने के लिए तीर कुंजियाँ',
+      solutionsTitle: 'क्रॉसवर्ड समाधान ({count} संकेत)',
+      lettersMatched: 'सुमेलित अक्षर: {matched} / {total}',
     },
     // Quiz Engine
     quizEngine: {
@@ -900,6 +938,7 @@ export const translations = {
       'spot-the-error': 'Identifique o Erro',
       'two-truths-one-false': 'Duas Verdades, Uma Falsa',
       'evidence-based': 'Baseado em Evidência',
+      'crossword': 'Palavras Cruzadas',
     },
     // Scripture Categories
     categories: {
@@ -954,6 +993,24 @@ export const translations = {
       reasonLabel: 'Razão (R)',
       principleLabel: 'Princípio:',
       revealClue: 'Revelar',
+    },
+    // Crossword Puzzle
+    crossword: {
+      title: 'Palavras Cruzadas',
+      across: 'Horizontal (Across)',
+      down: 'Vertical (Down)',
+      letters: 'letras',
+      prevClue: '‹ Anterior',
+      nextClue: 'Próximo ›',
+      direction: 'Direção',
+      selectCell: 'Selecionar Célula',
+      tapCellPrompt: 'Toque em uma célula ou selecione uma dica abaixo.',
+      viewVerseContext: '📜 Ver Contexto do Verso',
+      verseContextTitle: 'Contexto do Verso',
+      close: 'Fechar',
+      hintFooter: 'Dica: Pressione Espaço ou toque na célula para alternar a direção • Setas para navegar',
+      solutionsTitle: 'Soluções das Palavras Cruzadas ({count} Dicas)',
+      lettersMatched: 'Letras corretas: {matched} / {total}',
     },
     // Quiz Engine
     quizEngine: {

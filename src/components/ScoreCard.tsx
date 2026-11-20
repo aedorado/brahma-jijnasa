@@ -46,7 +46,7 @@ export function ScoreCard({
   const [mounted, setMounted] = useState(false)
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const supabase = createClient()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   useEffect(() => {
     setMounted(true)
@@ -413,7 +413,60 @@ export function ScoreCard({
       )
     }
 
-    // 5. Single Choice & all single-choice variants (MCQ, case-study, who-am-i, assertion-reason, etc.)
+    // 5. Crossword
+    if (q.type === 'crossword') {
+      const userCells: Record<string, string> =
+        userAns && typeof userAns === 'object'
+          ? ((userAns as any).cells ? (userAns as any).cells : (userAns as Record<string, string>))
+          : {}
+      const words = (q as any).words || []
+      const grid = (q as any).precompiledLayout?.grid || {}
+      const totalCells = Object.keys(grid).length
+      let correctCount = 0
+      for (const [coord, cObj] of Object.entries(grid)) {
+        if ((userCells[coord] || '').toUpperCase() === (cObj as any).letter.toUpperCase()) {
+          correctCount++
+        }
+      }
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', margin: '0.9rem 0' }}>
+          <div style={{
+            background: 'rgba(82, 196, 133, 0.16)',
+            border: '1.5px solid var(--color-success)',
+            padding: '0.85rem 1.15rem',
+            borderRadius: 10,
+          }}>
+            <p style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-success)', marginBottom: '0.45rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              {(t.crossword?.solutionsTitle || 'Crossword Solutions ({count} Clues)').replace('{count}', String(words.length))}
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.4rem' }}>
+              {words.map((w: any, idx: number) => {
+                const clueText = w.translations?.[language]?.clue || w.clue
+                return (
+                  <div key={idx} style={{ fontSize: '0.88rem', color: 'var(--color-text)' }}>
+                    <strong style={{ color: 'var(--color-gold)' }}>{w.word}:</strong> {clueText}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          <div style={{
+            background: 'var(--color-surface-2)',
+            border: '1px solid var(--color-border)',
+            padding: '0.75rem 1.15rem',
+            borderRadius: 10,
+            fontSize: '0.9rem',
+            color: 'var(--color-muted)'
+          }}>
+            {(t.crossword?.lettersMatched || 'Letters matched: {matched} / {total}')
+              .replace('{matched}', String(correctCount))
+              .replace('{total}', String(totalCells || 'total'))}
+          </div>
+        </div>
+      )
+    }
+
+    // 6. Single Choice & all single-choice variants (MCQ, case-study, who-am-i, assertion-reason, etc.)
     if ('options' in q && typeof (q as any).correctIndex === 'number') {
       const correctIdx = (q as any).correctIndex as number
       const userIdx = typeof userAns === 'number' ? userAns : (userAns as any)?.selectedIndex ?? null
