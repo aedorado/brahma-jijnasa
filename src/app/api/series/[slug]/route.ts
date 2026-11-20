@@ -308,7 +308,13 @@ export async function GET(
                     ? Math.round((u.accs.reduce((sum: number, v: number) => sum + v, 0) / u.accs.length) * 10) / 10
                     : 0,
                 }))
-                .sort((a, b) => b.total_points - a.total_points || b.days_attended - a.days_attended)
+                .sort(
+                  (a, b) =>
+                    b.total_points - a.total_points ||
+                    b.days_attended - a.days_attended ||
+                    b.avg_accuracy - a.avg_accuracy ||
+                    a.full_name.localeCompare(b.full_name)
+                )
                 .map((s, idx) => ({ ...s, rank: idx + 1 }))
             }
 
