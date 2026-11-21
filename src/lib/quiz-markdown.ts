@@ -36,7 +36,8 @@ export function isMarkdownQuiz(text: string): boolean {
  * Parse frontmatter block from markdown
  */
 function parseFrontmatter(markdown: string): { frontmatterText: string; bodyText: string } {
-  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
+  const trimmed = (markdown || '').trimStart()
+  const match = trimmed.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
   if (!match) {
     return { frontmatterText: '', bodyText: markdown }
   }
@@ -344,12 +345,23 @@ export function parseQuizMarkdown(markdown: string): ParsedQuizMarkdownResult {
   const { frontmatterText, bodyText } = parseFrontmatter(markdown)
   const yamlMeta = parseYamlProperties(frontmatterText)
 
+  // Also check if bodyText starts with a top-level '# Title' before question blocks
+  let parsedTitle = yamlMeta.title
+  let effectiveBodyText = bodyText
+  if (!parsedTitle) {
+    const h1Match = effectiveBodyText.match(/^\s*#\s+([^\r\n]+)\r?\n?/)
+    if (h1Match) {
+      parsedTitle = h1Match[1].trim()
+      effectiveBodyText = effectiveBodyText.replace(/^\s*#\s+[^\r\n]+\r?\n?/, '')
+    }
+  }
+
   let meta: ParsedQuizMarkdownResult['meta'] = undefined
-  if (Object.keys(yamlMeta).length > 0) {
+  if (Object.keys(yamlMeta).length > 0 || parsedTitle) {
     const timeLimitVal = parseInt(yamlMeta.timeLimit || yamlMeta.time_limit || '720', 10)
     meta = {
       id: yamlMeta.id,
-      title: yamlMeta.title,
+      title: parsedTitle || yamlMeta.title,
       category: yamlMeta.category as Category,
       description: yamlMeta.description,
       difficulty: (yamlMeta.difficulty as Difficulty) || 'medium',
@@ -360,7 +372,7 @@ export function parseQuizMarkdown(markdown: string): ParsedQuizMarkdownResult {
     }
   }
 
-  const questionBlocks = splitQuestionBlocks(bodyText)
+  const questionBlocks = splitQuestionBlocks(effectiveBodyText)
   if (questionBlocks.length === 0) {
     return { meta, questions: [], errors: ['No questions found. Questions must begin with "## q1 | single-choice" headers.'], warnings: [] }
   }

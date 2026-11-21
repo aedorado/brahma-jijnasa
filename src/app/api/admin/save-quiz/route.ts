@@ -122,12 +122,32 @@ export async function POST(request: Request) {
     }
     const currentUserId = sessionUser.id
 
+    const mode = typeof body.mode === 'string' ? body.mode.trim().toLowerCase() : undefined
+
     // Check if the quiz already exists to preserve original created_by
     const { data: existingQuiz } = await supabase
       .from('quizzes')
-      .select('id, created_by')
+      .select('id, title, created_by')
       .eq('id', id)
       .maybeSingle()
+
+    // Safety Guard: In 'create' mode, forbid overwriting an existing quiz
+    if (mode === 'create' && existingQuiz) {
+      return NextResponse.json({
+        error: `Cannot create quiz: a quiz with slug "${id}" already exists ("${existingQuiz.title || id}"). To prevent accidental overwrites, please choose a unique slug or switch to Edit mode to update it.`,
+        code: 'SLUG_ALREADY_EXISTS',
+        existingQuizId: id,
+        existingQuizTitle: existingQuiz.title,
+      }, { status: 409 })
+    }
+
+    // Safety Guard: In 'update' mode, ensure the target quiz actually exists
+    if (mode === 'update' && !existingQuiz) {
+      return NextResponse.json({
+        error: `Cannot update quiz: quiz with slug "${id}" does not exist in the database.`,
+        code: 'QUIZ_NOT_FOUND',
+      }, { status: 404 })
+    }
 
     const isUpdate = Boolean(existingQuiz)
     const created_by = isUpdate ? (existingQuiz?.created_by || currentUserId) : currentUserId

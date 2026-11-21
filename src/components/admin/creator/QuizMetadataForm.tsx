@@ -36,6 +36,11 @@ interface QuizMetadataFormProps {
   onResetToNew: () => void
   catalogQuizzes: QuizMeta[]
   onSelectQuiz: (id: string) => void
+  onCloneAsNewQuiz?: () => void
+  isSlugDuplicate?: boolean
+  duplicateQuizMatch?: QuizMeta | null
+  titleError?: string | null
+  slugError?: string | null
 }
 
 export function QuizMetadataForm({
@@ -67,6 +72,11 @@ export function QuizMetadataForm({
   onResetToNew,
   catalogQuizzes,
   onSelectQuiz,
+  onCloneAsNewQuiz,
+  isSlugDuplicate = false,
+  duplicateQuizMatch = null,
+  titleError = null,
+  slugError = null,
 }: QuizMetadataFormProps) {
   const [overrideTab, setOverrideTab] = useState<'hi' | 'pt'>('hi')
 
@@ -77,9 +87,13 @@ export function QuizMetadataForm({
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem', flexWrap: 'wrap' }}>
             <h2 style={{ fontSize: '1.35rem', fontWeight: 800 }}>Quiz Studio & CMS Manager</h2>
             <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>Supabase Powered</span>
-            {isEditingExisting && (
-              <span className="badge badge-success" style={{ fontSize: '0.7rem' }}>
-                ✏️ Editing: {slug}
+            {isEditingExisting ? (
+              <span className="badge badge-gold" style={{ fontSize: '0.72rem', fontWeight: 800 }}>
+                ✏️ Mode: Editing Existing ({slug})
+              </span>
+            ) : (
+              <span className="badge" style={{ fontSize: '0.72rem', fontWeight: 800, background: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.35)' }}>
+                ✨ Mode: Create New Quiz
               </span>
             )}
             {hasUnsavedChanges ? (
@@ -132,8 +146,8 @@ export function QuizMetadataForm({
           </div>
           <p className="text-muted" style={{ fontSize: '0.85rem' }}>
             {isEditingExisting
-              ? `Currently editing "${title}". Modify fields or questions below and click Update.`
-              : 'Enter quiz details below or choose an existing quiz from the dropdown to edit it.'}
+              ? `Currently editing "${title}". Quiz ID is locked to safeguard past devotee attempts and series links.`
+              : 'Compose a new quiz. Real-time duplicate checking ensures no existing quizzes are accidentally overwritten.'}
           </p>
         </div>
 
@@ -151,20 +165,33 @@ export function QuizMetadataForm({
           )}
 
           {isEditingExisting && (
-            <button
-              type="button"
-              className="btn btn-ghost btn-xs"
-              onClick={() => {
-                if (hasUnsavedChanges) {
-                  const confirmed = window.confirm('You have unsaved changes in the current quiz. Discard changes and start a new quiz?')
-                  if (!confirmed) return
-                }
-                onResetToNew()
-              }}
-              style={{ border: '1px solid var(--color-border)', padding: '0.4rem 0.75rem' }}
-            >
-              + New Quiz
-            </button>
+            <>
+              {onCloneAsNewQuiz && (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-xs"
+                  onClick={onCloneAsNewQuiz}
+                  style={{ border: '1px solid var(--color-border)', padding: '0.4rem 0.75rem', fontWeight: 600 }}
+                  title="Duplicate questions and metadata into a new quiz with a new slug"
+                >
+                  📋 Clone to New
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn btn-ghost btn-xs"
+                onClick={() => {
+                  if (hasUnsavedChanges) {
+                    const confirmed = window.confirm('You have unsaved changes in the current quiz. Discard changes and start a new quiz?')
+                    if (!confirmed) return
+                  }
+                  onResetToNew()
+                }}
+                style={{ border: '1px solid var(--color-border)', padding: '0.4rem 0.75rem' }}
+              >
+                + New Quiz
+              </button>
+            </>
           )}
 
           <Link
@@ -202,32 +229,148 @@ export function QuizMetadataForm({
               fontSize: '0.95rem',
               fontWeight: 600,
               background: 'var(--color-surface-2)',
-              border: '1.5px solid var(--color-border)',
+              border: titleError ? '1.5px solid var(--color-error, #ef4444)' : '1.5px solid var(--color-border)',
               color: 'var(--color-text)',
             }}
           />
+          {titleError && (
+            <div style={{ color: 'var(--color-error, #ef4444)', fontSize: '0.78rem', marginTop: '0.35rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span>⚠️</span>
+              <span>{titleError}</span>
+            </div>
+          )}
         </div>
 
         {/* Slug */}
         <div>
-          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-text)' }}>
-            Slug / ID (URL path) <span style={{ color: 'var(--color-error)' }}>*</span>
-          </label>
-          <input
-            type="text"
-            value={slug}
-            onChange={e => onSlugChange(e.target.value)}
-            placeholder="e.g. 64-day-01"
-            className="input"
-            style={{
-              background: 'var(--color-surface-2)',
-              border: '1.5px solid var(--color-border)',
-              color: 'var(--color-gold)',
-              fontFamily: 'monospace',
-              fontSize: '0.9rem',
-              fontWeight: 600,
-            }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem', flexWrap: 'wrap', gap: '0.3rem' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              {isEditingExisting && <span>🔒</span>}
+              <span>Slug / ID (URL path)</span> <span style={{ color: 'var(--color-error)' }}>*</span>
+            </label>
+            {isEditingExisting ? (
+              <span className="badge" style={{ fontSize: '0.68rem', padding: '0.1rem 0.45rem', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                🔒 Locked in Edit Mode
+              </span>
+            ) : isSlugDuplicate ? (
+              <span className="badge" style={{ fontSize: '0.68rem', padding: '0.1rem 0.45rem', background: 'rgba(239, 68, 68, 0.15)', color: 'var(--color-error)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                ⚠️ Already Taken
+              </span>
+            ) : slug.trim() ? (
+              <span className="badge" style={{ fontSize: '0.68rem', padding: '0.1rem 0.45rem', background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
+                ✓ Available
+              </span>
+            ) : null}
+          </div>
+
+          {isEditingExisting ? (
+            <div>
+              <input
+                type="text"
+                value={slug}
+                readOnly
+                disabled
+                className="input"
+                style={{
+                  background: 'var(--color-surface-3, rgba(255, 255, 255, 0.04))',
+                  border: '1.5px dashed var(--color-border)',
+                  color: 'var(--color-gold)',
+                  fontFamily: 'monospace',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'not-allowed',
+                  opacity: 0.85,
+                }}
+                title="Quiz ID / Slug cannot be modified to protect past student attempts, scores, and series links."
+              />
+              <div style={{ marginTop: '0.4rem', fontSize: '0.74rem', color: 'var(--color-muted)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span>Slug is immutable to protect devotee scores &amp; series links.</span>
+                {onCloneAsNewQuiz && (
+                  <button
+                    type="button"
+                    onClick={onCloneAsNewQuiz}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-gold)',
+                      fontSize: '0.74rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      padding: 0,
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    Need a new quiz? Clone as New →
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <input
+                type="text"
+                value={slug}
+                onChange={e => onSlugChange(e.target.value)}
+                placeholder="e.g. 64-day-01"
+                className="input"
+                style={{
+                  background: 'var(--color-surface-2)',
+                  border: (isSlugDuplicate || slugError) ? '1.5px solid var(--color-error, #ef4444)' : '1.5px solid var(--color-border)',
+                  color: (isSlugDuplicate || slugError) ? 'var(--color-error, #ef4444)' : 'var(--color-gold)',
+                  fontFamily: 'monospace',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                }}
+              />
+              {slugError && !isSlugDuplicate && (
+                <div style={{ color: 'var(--color-error, #ef4444)', fontSize: '0.78rem', marginTop: '0.35rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <span>⚠️</span>
+                  <span>{slugError}</span>
+                </div>
+              )}
+              {isSlugDuplicate && duplicateQuizMatch && (
+                <div
+                  style={{
+                    marginTop: '0.45rem',
+                    padding: '0.55rem 0.8rem',
+                    borderRadius: 8,
+                    background: 'rgba(239, 68, 68, 0.12)',
+                    border: '1px solid rgba(239, 68, 68, 0.35)',
+                    color: 'var(--color-error, #ef4444)',
+                    fontSize: '0.78rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ fontSize: '0.9rem' }}>⚠️</span>
+                    <span>
+                      <strong>Slug &quot;{slug}&quot; already exists:</strong> &quot;{duplicateQuizMatch.title}&quot;
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onSelectQuiz(duplicateQuizMatch.id)}
+                    className="btn btn-xs"
+                    style={{
+                      background: 'var(--color-surface)',
+                      border: '1px solid rgba(239, 68, 68, 0.4)',
+                      color: 'var(--color-text)',
+                      fontSize: '0.72rem',
+                      padding: '0.2rem 0.55rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    ✏️ Edit that quiz instead
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Category */}

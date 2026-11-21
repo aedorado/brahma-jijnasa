@@ -34,7 +34,6 @@ export default function AdminPage() {
   const [dryRunQuiz, setDryRunQuiz] = useState<Quiz | null>(null)
   const [loadingDryRun, setLoadingDryRun] = useState(false)
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null)
-  const [initialSeriesDay, setInitialSeriesDay] = useState<number | null>(null)
 
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
@@ -75,7 +74,7 @@ export default function AdminPage() {
         .select('*')
         .eq('is_active', true)
         .order('started_at', { ascending: false })
-      
+
       const list = data || []
       setActiveSessions(list)
       if (list.length > 0) {

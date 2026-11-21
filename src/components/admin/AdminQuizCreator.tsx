@@ -65,6 +65,8 @@ export function AdminQuizCreator({
 
   // 3. UI / Validation State
   const [parseError, setParseError] = useState<string | null>(null)
+  const [titleError, setTitleError] = useState<string | null>(null)
+  const [slugError, setSlugError] = useState<string | null>(null)
   const [cleanLog, setCleanLog] = useState<string[]>([])
   const [publishing, setPublishing] = useState(false)
   const [publishedId, setPublishedId] = useState<string | null>(null)
@@ -76,6 +78,8 @@ export function AdminQuizCreator({
     if (!targetId) return
     setLoadingQuiz(true)
     setParseError(null)
+    setTitleError(null)
+    setSlugError(null)
     setPublishedId(null)
 
     try {
@@ -172,8 +176,25 @@ export function AdminQuizCreator({
     setIsEditingExisting(false)
     setPublishedId(null)
     setLastSavedSnapshot(null)
+    setParseError(null)
+    setTitleError(null)
+    setSlugError(null)
     setQuestionsRaw({ en: '', hi: '', pt: '' })
     setParsedQuestions({ en: [], hi: [], pt: [] })
+    onClearEditingQuiz?.()
+  }
+
+  // Clone current quiz content into a new quiz
+  const handleCloneAsNewQuiz = () => {
+    setIsEditingExisting(false)
+    setPublishedId(null)
+    setLastSavedSnapshot(null)
+    setParseError(null)
+    setTitleError(null)
+    setSlugError(null)
+    setIsSlugManual(true)
+    const baseSlug = slug.trim() ? `${slug.trim()}-copy` : ''
+    setSlug(baseSlug)
     onClearEditingQuiz?.()
   }
 
@@ -188,12 +209,14 @@ export function AdminQuizCreator({
   // Localized title & description handlers
   const handleLocalizedTitleChange = (lang: SupportedLang, val: string) => {
     setTitles(prev => ({ ...prev, [lang]: val }))
+    if (titleError) setTitleError(null)
     if (lang === 'en' && !isSlugManual) {
       const autoSlug = val
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '')
       setSlug(autoSlug)
+      if (slugError) setSlugError(null)
     }
   }
 
@@ -322,10 +345,6 @@ export function AdminQuizCreator({
     const logs: string[] = []
 
     try {
-      const canonicalTitle = titles.en?.trim() || Object.values(titles).find(t => t.trim())
-      if (!canonicalTitle) throw new Error('Please enter a Quiz Title.')
-      if (!slug.trim()) throw new Error('Please enter a unique Quiz Slug / ID.')
-
       const activeText = questionsRaw[activeLang]
       const langLabel = LANG_CONFIG.find(l => l.key === activeLang)?.label || activeLang
 
@@ -351,9 +370,11 @@ export function AdminQuizCreator({
       if (legacyMetadata) {
         if (legacyMetadata.title) {
           setTitles(prev => ({ ...prev, [activeLang]: legacyMetadata.title || prev[activeLang] }))
+          setTitleError(null)
           if (activeLang === 'en' && !slug && legacyMetadata.id) {
             setSlug(legacyMetadata.id)
             setIsSlugManual(true)
+            setSlugError(null)
           }
         }
         if (legacyMetadata.description) {
@@ -362,6 +383,7 @@ export function AdminQuizCreator({
         if (!slug && legacyMetadata.id) {
           setSlug(legacyMetadata.id)
           setIsSlugManual(true)
+          setSlugError(null)
         }
         if (legacyMetadata.category) setCategory(legacyMetadata.category)
         if (legacyMetadata.difficulty) setDifficulty(legacyMetadata.difficulty)
@@ -374,6 +396,12 @@ export function AdminQuizCreator({
         [activeLang]: validatedList,
       }))
       setCleanLog(logs)
+
+      const effectiveTitle = titles.en?.trim() || legacyMetadata?.title?.trim()
+      if (!effectiveTitle) {
+        logs.push('💡 Tip: Questions validated successfully! Remember to enter a Quiz Title at the top before publishing.')
+        setCleanLog([...logs])
+      }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Invalid JSON syntax. Please check the pasted questions.'
       setParseError(msg)
@@ -384,11 +412,37 @@ export function AdminQuizCreator({
   const handlePublish = async () => {
     setPublishing(true)
     setParseError(null)
+    setTitleError(null)
+    setSlugError(null)
 
     try {
       const canonicalTitle = titles.en.trim() || Object.values(titles).find(t => t.trim()) || ''
-      if (!canonicalTitle) throw new Error('Please provide an English Quiz Title.')
-      if (!slug.trim()) throw new Error('Please provide a Quiz Slug (ID).')
+      if (!canonicalTitle) {
+        setTitleError('Please enter an English Quiz Title above before publishing.')
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+        setPublishing(false)
+        return
+      }
+
+      if (!slug.trim()) {
+        setSlugError('Please enter a Quiz Slug (ID) above before publishing.')
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+        setPublishing(false)
+        return
+      }
+
+      if (!isEditingExisting && isSlugDuplicate) {
+        setSlugError(`A quiz with slug "${slug.trim()}" already exists ("${duplicateQuizMatch?.title || slug}"). Please choose a unique slug or switch to Edit mode to update it.`)
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+        setPublishing(false)
+        return
+      }
 
       // ALWAYS parse and strictly validate questions directly from the raw text areas
       const questionsPayload: Record<string, Question[]> = {}
@@ -426,6 +480,7 @@ export function AdminQuizCreator({
       }
 
       const payload = {
+        mode: isEditingExisting ? 'update' : 'create',
         id: slug.trim(),
         title: canonicalTitle,
         titles: {
@@ -491,6 +546,13 @@ export function AdminQuizCreator({
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2000)
   }
+
+  // Check if slug is duplicated in catalog (only in Create mode)
+  const normalizedSlug = slug.trim().toLowerCase()
+  const duplicateQuizMatch = (!isEditingExisting && normalizedSlug)
+    ? (catalogQuizzes.find(q => q.id.toLowerCase() === normalizedSlug) || null)
+    : null
+  const isSlugDuplicate = Boolean(duplicateQuizMatch)
 
   // Construct current quiz for dry-run
   const activeQuestionsList = parsedQuestions[activeLang].length > 0
@@ -572,6 +634,7 @@ export function AdminQuizCreator({
         onSlugChange={val => {
           setIsSlugManual(true)
           setSlug(val)
+          if (slugError) setSlugError(null)
         }}
         category={category}
         onCategoryChange={setCategory}
@@ -595,6 +658,11 @@ export function AdminQuizCreator({
         onResetToNew={handleResetToNew}
         catalogQuizzes={catalogQuizzes}
         onSelectQuiz={loadQuizForEditing}
+        onCloneAsNewQuiz={handleCloneAsNewQuiz}
+        isSlugDuplicate={isSlugDuplicate}
+        duplicateQuizMatch={duplicateQuizMatch}
+        titleError={titleError}
+        slugError={slugError}
       />
 
       {/* SECTION 2: QUESTIONS EDITOR */}
@@ -621,6 +689,7 @@ export function AdminQuizCreator({
         publishing={publishing}
         isEditingExisting={isEditingExisting}
         onPublish={handlePublish}
+        isSlugDuplicate={isSlugDuplicate}
       />
 
       {/* SECTION 3: VALIDATION PREVIEW */}

@@ -25,6 +25,7 @@ interface QuizQuestionsEditorProps {
   onToggleEditorFormat: (format: EditorFormat) => void
   onDownloadMarkdown?: () => void
   onDownloadJson?: () => void
+  isSlugDuplicate?: boolean
 }
 
 export function QuizQuestionsEditor({
@@ -46,6 +47,7 @@ export function QuizQuestionsEditor({
   onToggleEditorFormat,
   onDownloadMarkdown,
   onDownloadJson,
+  isSlugDuplicate = false,
 }: QuizQuestionsEditorProps) {
   const activeLangConfig = LANG_CONFIG.find(l => l.key === activeLang)
   const activeCount = parsedQuestions[activeLang]?.length || 0
@@ -556,15 +558,30 @@ export function QuizQuestionsEditor({
             </button>
           )}
 
-          <button
-            type="button"
-            className="btn btn-gold btn-sm"
-            onClick={onPublish}
-            disabled={publishing}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800 }}
-          >
-            <span>🚀</span> {publishing ? 'Saving...' : isEditingExisting ? '🚀 Update Quiz in Supabase CMS' : '🚀 Publish to Supabase CMS'}
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
+            <button
+              type="button"
+              className="btn btn-gold btn-sm"
+              onClick={onPublish}
+              disabled={publishing || (!isEditingExisting && isSlugDuplicate)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontWeight: 800,
+                opacity: (!isEditingExisting && isSlugDuplicate) ? 0.6 : 1,
+                cursor: (!isEditingExisting && isSlugDuplicate) ? 'not-allowed' : 'pointer',
+              }}
+              title={(!isEditingExisting && isSlugDuplicate) ? 'Cannot publish: Slug already exists. Choose a unique slug.' : undefined}
+            >
+              <span>{isEditingExisting ? '💾' : '🚀'}</span> {publishing ? 'Saving...' : isEditingExisting ? 'Update Quiz in Supabase CMS' : 'Publish New Quiz to Supabase CMS'}
+            </button>
+            {!isEditingExisting && isSlugDuplicate && (
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-error, #ef4444)', fontWeight: 700 }}>
+                ⚠️ Cannot publish: slug already in use.
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

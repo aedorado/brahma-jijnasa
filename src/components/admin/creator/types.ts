@@ -8,8 +8,6 @@ export interface AdminQuizCreatorProps {
   editingQuizId?: string | null
   onClearEditingQuiz?: () => void
   catalogQuizzes?: QuizMeta[]
-  initialSeriesDay?: number | null
-  onClearInitialSeriesDay?: () => void
 }
 
 export type SupportedLang = 'en' | 'hi' | 'pt'
