@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import type { Quiz, Question, AnswerMap, Answer } from '@/types/quiz'
 import { CATEGORY_ICONS, CATEGORY_LABELS } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 interface Props {
   quizId: string
@@ -218,7 +219,7 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
 
         {/* Question Prompt */}
         <h3 style={{ fontSize: '1.12rem', fontWeight: 700, lineHeight: 1.5, marginBottom: '1.15rem', color: 'var(--color-text)' }}>
-          {q.question}
+          <FormattedText text={q.question} inline />
         </h3>
 
         {/* Who Said This Quote Box */}
@@ -577,9 +578,10 @@ export function FlashcardReviewModal({ quizId, quizTitle, userAnswers = {}, isOp
             <p style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.4rem' }}>
               {t.flashcards?.tatparya || 'Tātparya (Philosophical Purport & Insight):'}
             </p>
-            <p style={{ fontSize: '0.92rem', lineHeight: 1.6, color: 'var(--color-text-secondary)', margin: 0 }}>
-              {q.explanation}
-            </p>
+            <FormattedText
+              text={q.explanation}
+              style={{ fontSize: '0.92rem', lineHeight: 1.6, color: 'var(--color-text-secondary)', margin: 0 }}
+            />
           </div>
         )}
 

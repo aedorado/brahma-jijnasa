@@ -2,6 +2,7 @@
 
 import type { SpotTheErrorQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: SpotTheErrorQuestion
@@ -17,8 +18,8 @@ export function SpotTheError({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem' }}>
-        {question.question || t.questions?.spotErrorDefaultPrompt || 'Spot the error in the passage below:'}
+      <h2 style={{ fontSize: '1rem', fontWeight: 500, marginBottom: '1.25rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question || t.questions?.spotErrorDefaultPrompt || 'Spot the error in the passage below:'} inline />
       </h2>
 
       {/* Passage */}
@@ -36,7 +37,7 @@ export function SpotTheError({ question, answer, onAnswer, disabled }: Props) {
         <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
           {t.questions?.passageBadge || '📜 Passage'}
         </p>
-        <p>{question.passage}</p>
+        <FormattedText text={question.passage} />
       </div>
 
       <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '1rem' }}>

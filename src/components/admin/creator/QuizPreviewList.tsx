@@ -2,6 +2,7 @@
 
 import type { Question, Category } from '@/types/quiz'
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
+import { FormattedText } from '@/components/FormattedText'
 
 interface QuizPreviewListProps {
   questions: Question[]
@@ -95,9 +96,10 @@ export function QuizPreviewList({
               )}
             </div>
 
-            <p style={{ fontWeight: 600, fontSize: '0.92rem', marginBottom: '0.5rem', lineHeight: 1.4, color: 'var(--color-text)' }}>
-              {q.question}
-            </p>
+            <FormattedText
+              text={q.question}
+              style={{ fontWeight: 500, fontSize: '0.92rem', marginBottom: '0.5rem', lineHeight: 1.45, color: 'var(--color-text)' }}
+            />
 
             {'options' in q && Array.isArray((q as { options?: string[] }).options) && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.4rem', marginBottom: '0.5rem' }}>
@@ -227,9 +229,10 @@ export function QuizPreviewList({
             )}
 
             {q.explanation && (
-              <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontStyle: 'italic', marginTop: '0.3rem' }}>
-                💡 {q.explanation}
-              </p>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontStyle: 'italic', marginTop: '0.3rem', display: 'flex', gap: '0.35rem' }}>
+                <span>💡</span>
+                <FormattedText text={q.explanation} style={{ flex: 1 }} />
+              </div>
             )}
           </div>
         ))}

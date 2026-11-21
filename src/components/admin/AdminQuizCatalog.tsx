@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Quiz, QuizMeta, Category, QuizSession } from '@/types/quiz'
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/types/quiz'
+import { FormattedText } from '@/components/FormattedText'
 
 interface AdminQuizCatalogProps {
   quizzes: QuizMeta[]
@@ -481,9 +482,10 @@ export function AdminQuizCatalog({
                     </span>
                   </div>
 
-                  <p style={{ fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.75rem' }}>
-                    {q.question}
-                  </p>
+                  <FormattedText
+                    text={q.question}
+                    style={{ fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.75rem' }}
+                  />
 
                   {q.reference && (
                     <p style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontStyle: 'italic', marginBottom: '0.5rem' }}>
@@ -492,7 +494,7 @@ export function AdminQuizCatalog({
                   )}
 
                   <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', background: 'rgba(0,0,0,0.2)', padding: '0.75rem', borderRadius: 8 }}>
-                    <strong>Explanation:</strong> {q.explanation}
+                    <strong>Explanation:</strong> <FormattedText text={q.explanation} inline />
                   </div>
                 </div>
               ))}

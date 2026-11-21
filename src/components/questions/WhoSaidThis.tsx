@@ -2,6 +2,7 @@
 
 import type { WhoSaidThisQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: WhoSaidThisQuestion
@@ -17,15 +18,15 @@ export function WhoSaidThis({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.25rem' }}>
-        {question.question}
+      <h2 style={{ fontSize: '1rem', fontWeight: 500, marginBottom: '1.25rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question} inline />
       </h2>
 
       {/* Quote block */}
       <div className="shloka-block" style={{ marginBottom: '0.75rem' }}>
         {question.quote && (
           <p className="shloka-text" style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>
-            &ldquo;{question.quote}&rdquo;
+            &ldquo;<FormattedText text={question.quote} inline />&rdquo;
           </p>
         )}
         {question.context && (

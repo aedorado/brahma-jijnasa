@@ -6,6 +6,7 @@ import type { Quiz, Question, AnswerMap, ScoreResult, WhoAmIAnswer, PairsAnswer 
 import { scoreQuiz, formatTime } from '@/lib/scoring'
 import { QuizEngine } from '@/components/QuizEngine'
 import { QuestionErrorBoundary } from '@/components/QuestionErrorBoundary'
+import { FormattedText } from '@/components/FormattedText'
 import { SingleChoice } from '@/components/questions/SingleChoice'
 import { MultipleSelect } from '@/components/questions/MultipleSelect'
 import { TrueFalse } from '@/components/questions/TrueFalse'
@@ -438,7 +439,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                         {getAnswerKeyText(currentQuestion)}
                       </div>
                       <div style={{ color: 'var(--color-muted)' }}>
-                        <strong>Explanation:</strong> {currentQuestion.explanation}
+                        <strong>Explanation:</strong> <FormattedText text={currentQuestion.explanation} inline />
                       </div>
                     </div>
                   )}
@@ -563,7 +564,7 @@ export function AdminDryRunModal({ quiz, onClose }: AdminDryRunModalProps) {
                     </div>
 
                     <div style={{ color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-                      <strong>Explanation:</strong> {q.explanation}
+                      <strong>Explanation:</strong> <FormattedText text={q.explanation} inline />
                     </div>
                   </div>
                 </div>

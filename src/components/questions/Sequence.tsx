@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import type { SequenceQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
@@ -205,8 +206,8 @@ export function Sequence({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1.15rem', fontWeight: 600, marginBottom: '0.4rem', lineHeight: 1.5 }}>
-        {question.question}
+      <h2 style={{ fontSize: '1.15rem', fontWeight: 500, marginBottom: '0.4rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question} inline />
       </h2>
       <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
         <span>↕</span> {t.questions?.dragInstruction || t.quizEngine.dragInstruction || 'Use arrows or drag handle (⠿) to arrange in correct order.'}

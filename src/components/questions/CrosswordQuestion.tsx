@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 import type {
   CrosswordQuestion as CrosswordQuestionType,
   CrosswordClueItem,
@@ -330,12 +331,11 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
 
   const [showVerseModal, setShowVerseModal] = useState<CrosswordPlacedWord | null>(null)
 
-  // Find the word matching cell & direction
-  const findCoveringWord = useCallback(
-    (r: number, c: number, dir: 'across' | 'down'): CrosswordPlacedWord | undefined => {
-      return layout.placedWords.find(w => {
-        if (w.direction !== dir) return false
-        if (dir === 'across') {
+  // Find all words covering cell & direction helpers
+  const getWordsAtCell = useCallback(
+    (r: number, c: number): CrosswordPlacedWord[] => {
+      return layout.placedWords.filter(w => {
+        if (w.direction === 'across') {
           return w.row === r && c >= w.col && c < w.col + w.word.length
         } else {
           return w.col === c && r >= w.row && r < w.row + w.word.length
@@ -343,6 +343,29 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
       })
     },
     [layout]
+  )
+
+  const findCoveringWord = useCallback(
+    (r: number, c: number, dir?: 'across' | 'down'): CrosswordPlacedWord | undefined => {
+      const words = getWordsAtCell(r, c)
+      if (words.length === 0) return undefined
+      if (dir) {
+        return words.find(w => w.direction === dir)
+      }
+      return words.find(w => w.direction === activeDirection) || words[0]
+    },
+    [getWordsAtCell, activeDirection]
+  )
+
+  const getActiveWordForCell = useCallback(
+    (r: number, c: number): CrosswordPlacedWord | undefined => {
+      const words = getWordsAtCell(r, c)
+      if (words.length === 0) return undefined
+      const matching = words.find(w => w.direction === activeDirection)
+      if (matching) return matching
+      return words[0]
+    },
+    [getWordsAtCell, activeDirection]
   )
 
   // Derived Active Word & Highlights
@@ -355,11 +378,7 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
       }
     }
 
-    let word = findCoveringWord(activeCell.r, activeCell.c, activeDirection)
-    if (!word) {
-      const otherDir = activeDirection === 'across' ? 'down' : 'across'
-      word = findCoveringWord(activeCell.r, activeCell.c, otherDir)
-    }
+    const word = getActiveWordForCell(activeCell.r, activeCell.c)
 
     if (word) {
       const letters = new Set<string>()
@@ -380,7 +399,7 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
       activeWordLetters: new Set<string>(),
       activeClueNumber: null,
     }
-  }, [activeCell, activeDirection, findCoveringWord])
+  }, [activeCell, getActiveWordForCell])
 
   // Focus cell helper
   const focusCellInput = useCallback((r: number, c: number) => {
@@ -391,44 +410,92 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     }
   }, [])
 
-  // Move active cell along word
-  const moveActiveCell = useCallback(
-    (step: 1 | -1) => {
-      if (!activeCell) return
-      const currentWord = findCoveringWord(activeCell.r, activeCell.c, activeDirection)
-      if (!currentWord) return
+  // Auto-advance cursor to next cell in word or next word
+  const advanceCursor = useCallback(
+    (r: number, c: number, currentAnswers: Record<string, string>) => {
+      const word = getActiveWordForCell(r, c)
+      if (!word) return
 
-      const wordStart = activeDirection === 'across' ? currentWord.col : currentWord.row
-      const cellPos = activeDirection === 'across' ? activeCell.c : activeCell.r
+      // Keep active direction in sync with current word
+      if (word.direction !== activeDirection) {
+        setActiveDirection(word.direction)
+        setMobileTab(word.direction)
+      }
+
+      const wordStart = word.direction === 'across' ? word.col : word.row
+      const cellPos = word.direction === 'across' ? c : r
       const relativeIdx = cellPos - wordStart
-      const nextIdx = relativeIdx + step
 
-      if (nextIdx >= 0 && nextIdx < currentWord.word.length) {
-        const nextR = activeDirection === 'across' ? currentWord.row : currentWord.row + nextIdx
-        const nextC = activeDirection === 'across' ? currentWord.col + nextIdx : currentWord.col
+      // 1. Advance to next letter along current word
+      if (relativeIdx < word.word.length - 1) {
+        const nextR = word.direction === 'across' ? word.row : word.row + relativeIdx + 1
+        const nextC = word.direction === 'across' ? word.col + relativeIdx + 1 : word.col
         setActiveCell({ r: nextR, c: nextC })
         focusCellInput(nextR, nextC)
+        return
+      }
+
+      // 2. If at end of word, check if any earlier letter in this word is still unfilled
+      for (let i = 0; i < word.word.length; i++) {
+        const cr = word.direction === 'across' ? word.row : word.row + i
+        const cc = word.direction === 'across' ? word.col + i : word.col
+        if (!currentAnswers[`${cr},${cc}`]) {
+          setActiveCell({ r: cr, c: cc })
+          focusCellInput(cr, cc)
+          return
+        }
+      }
+
+      // 3. Current word is completely filled! Auto-advance to next incomplete clue
+      const nextWord = layout.placedWords
+        .sort((a, b) => a.number - b.number)
+        .find(w => {
+          for (let i = 0; i < w.word.length; i++) {
+            const cr = w.direction === 'across' ? w.row : w.row + i
+            const cc = w.direction === 'across' ? w.col + i : w.col
+            if (!currentAnswers[`${cr},${cc}`]) return true
+          }
+          return false
+        })
+
+      if (nextWord) {
+        let targetR = nextWord.row
+        let targetC = nextWord.col
+        for (let i = 0; i < nextWord.word.length; i++) {
+          const cr = nextWord.direction === 'across' ? nextWord.row : nextWord.row + i
+          const cc = nextWord.direction === 'across' ? nextWord.col + i : nextWord.col
+          if (!currentAnswers[`${cr},${cc}`]) {
+            targetR = cr
+            targetC = cc
+            break
+          }
+        }
+        setActiveDirection(nextWord.direction)
+        setMobileTab(nextWord.direction)
+        setActiveCell({ r: targetR, c: targetC })
+        focusCellInput(targetR, targetC)
       }
     },
-    [activeCell, activeDirection, findCoveringWord, focusCellInput]
+    [getActiveWordForCell, activeDirection, focusCellInput, layout]
   )
 
   // Cell Click / Focus Handler
   const handleCellClick = (r: number, c: number) => {
     if (!layout.grid[`${r},${c}`]) return
 
+    const words = getWordsAtCell(r, c)
+    if (words.length === 0) return
+
     if (activeCell && activeCell.r === r && activeCell.c === c) {
-      const hasAcross = findCoveringWord(r, c, 'across')
-      const hasDown = findCoveringWord(r, c, 'down')
-      if (hasAcross && hasDown) {
+      if (words.length > 1) {
         const newDir = activeDirection === 'across' ? 'down' : 'across'
         setActiveDirection(newDir)
         setMobileTab(newDir)
       }
     } else {
       setActiveCell({ r, c })
-      const hasAcross = findCoveringWord(r, c, 'across')
-      const hasDown = findCoveringWord(r, c, 'down')
+      const hasAcross = words.some(w => w.direction === 'across')
+      const hasDown = words.some(w => w.direction === 'down')
       if (hasAcross && !hasDown) {
         setActiveDirection('across')
         setMobileTab('across')
@@ -464,10 +531,22 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     }
   }
 
-  // Key Down Handler
+  // Key Down Handler (Supports direct A-Z typing, Backspace navigation, and Arrows)
   const handleInputKeyDown = (r: number, c: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key
 
+    // Physical Keyboard A-Z Typing
+    if (/^[a-zA-Z]$/.test(key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault()
+      const char = key.toUpperCase()
+      const coord = `${r},${c}`
+      const next = { ...userCells, [coord]: char }
+      onAnswer(next)
+      advanceCursor(r, c, next)
+      return
+    }
+
+    // Backspace Navigation
     if (key === 'Backspace') {
       e.preventDefault()
       const coord = `${r},${c}`
@@ -476,7 +555,22 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
         delete next[coord]
         onAnswer(next)
       } else {
-        moveActiveCell(-1)
+        const word = getActiveWordForCell(r, c)
+        if (word) {
+          const wordStart = word.direction === 'across' ? word.col : word.row
+          const cellPos = word.direction === 'across' ? c : r
+          const relativeIdx = cellPos - wordStart
+          if (relativeIdx > 0) {
+            const prevR = word.direction === 'across' ? word.row : word.row + relativeIdx - 1
+            const prevC = word.direction === 'across' ? word.col + relativeIdx - 1 : word.col
+            const prevCoord = `${prevR},${prevC}`
+            const next = { ...userCells }
+            delete next[prevCoord]
+            onAnswer(next)
+            setActiveCell({ r: prevR, c: prevC })
+            focusCellInput(prevR, prevC)
+          }
+        }
       }
       return
     }
@@ -484,9 +578,14 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     if (key === 'ArrowRight') {
       e.preventDefault()
       if (activeDirection === 'down') {
-        setActiveDirection('across')
-        setMobileTab('across')
-      } else if (layout.grid[`${r},${c + 1}`]) {
+        const words = getWordsAtCell(r, c)
+        if (words.some(w => w.direction === 'across')) {
+          setActiveDirection('across')
+          setMobileTab('across')
+          return
+        }
+      }
+      if (layout.grid[`${r},${c + 1}`]) {
         setActiveCell({ r, c: c + 1 })
         focusCellInput(r, c + 1)
       }
@@ -496,9 +595,14 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     if (key === 'ArrowLeft') {
       e.preventDefault()
       if (activeDirection === 'down') {
-        setActiveDirection('across')
-        setMobileTab('across')
-      } else if (layout.grid[`${r},${c - 1}`]) {
+        const words = getWordsAtCell(r, c)
+        if (words.some(w => w.direction === 'across')) {
+          setActiveDirection('across')
+          setMobileTab('across')
+          return
+        }
+      }
+      if (layout.grid[`${r},${c - 1}`]) {
         setActiveCell({ r, c: c - 1 })
         focusCellInput(r, c - 1)
       }
@@ -508,9 +612,14 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     if (key === 'ArrowDown') {
       e.preventDefault()
       if (activeDirection === 'across') {
-        setActiveDirection('down')
-        setMobileTab('down')
-      } else if (layout.grid[`${r + 1},${c}`]) {
+        const words = getWordsAtCell(r, c)
+        if (words.some(w => w.direction === 'down')) {
+          setActiveDirection('down')
+          setMobileTab('down')
+          return
+        }
+      }
+      if (layout.grid[`${r + 1},${c}`]) {
         setActiveCell({ r: r + 1, c })
         focusCellInput(r + 1, c)
       }
@@ -520,9 +629,14 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
     if (key === 'ArrowUp') {
       e.preventDefault()
       if (activeDirection === 'across') {
-        setActiveDirection('down')
-        setMobileTab('down')
-      } else if (layout.grid[`${r - 1},${c}`]) {
+        const words = getWordsAtCell(r, c)
+        if (words.some(w => w.direction === 'down')) {
+          setActiveDirection('down')
+          setMobileTab('down')
+          return
+        }
+      }
+      if (layout.grid[`${r - 1},${c}`]) {
         setActiveCell({ r: r - 1, c })
         focusCellInput(r - 1, c)
       }
@@ -531,20 +645,24 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
 
     if (key === ' ' || key === 'Enter') {
       e.preventDefault()
-      const newDir = activeDirection === 'across' ? 'down' : 'across'
-      setActiveDirection(newDir)
-      setMobileTab(newDir)
+      const words = getWordsAtCell(r, c)
+      if (words.length > 1) {
+        const newDir = activeDirection === 'across' ? 'down' : 'across'
+        setActiveDirection(newDir)
+        setMobileTab(newDir)
+      }
     }
   }
 
-  // Input Change Handler
+  // Input Change Handler (Mobile virtual keyboards & fallback)
   const handleInputChange = (r: number, c: number, value: string) => {
-    const char = value.slice(-1).toUpperCase()
-    if (/^[A-Z]$/.test(char)) {
+    const cleaned = value.toUpperCase().replace(/[^A-Z]/g, '')
+    if (cleaned.length > 0) {
+      const char = cleaned.slice(-1)
       const coord = `${r},${c}`
       const next = { ...userCells, [coord]: char }
       onAnswer(next)
-      moveActiveCell(1)
+      advanceCursor(r, c, next)
     }
   }
 
@@ -1093,7 +1211,11 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
               </div>
 
               <p className="cw-active-clue-text">
-                {getClueText(currentActiveWord) || t.crossword?.tapCellPrompt || 'Tap any cell or select a clue below.'}
+                <FormattedText
+                  text={getClueText(currentActiveWord) || t.crossword?.tapCellPrompt || 'Tap any cell or select a clue below.'}
+                  inline
+                  as="span"
+                />
               </p>
 
               {getVerseText(currentActiveWord) && (
@@ -1138,7 +1260,7 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
                           <input
                             id={`cw-cell-${coord}`}
                             type="text"
-                            maxLength={1}
+                            maxLength={2}
                             autoComplete="off"
                             autoCorrect="off"
                             autoCapitalize="characters"
@@ -1214,7 +1336,9 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
                           </span>
                         )}
                       </div>
-                      <p className="cw-clue-desc">{getClueText(w)}</p>
+                      <p className="cw-clue-desc">
+                        <FormattedText text={getClueText(w)} inline as="span" />
+                      </p>
                     </div>
                   )
                 })}
@@ -1247,7 +1371,9 @@ export function CrosswordQuestion({ question, answer, onAnswer, revealAnswerKey 
                           </span>
                         )}
                       </div>
-                      <p className="cw-clue-desc">{getClueText(w)}</p>
+                      <p className="cw-clue-desc">
+                        <FormattedText text={getClueText(w)} inline as="span" />
+                      </p>
                     </div>
                   )
                 })}

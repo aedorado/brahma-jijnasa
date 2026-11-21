@@ -2,6 +2,7 @@
 
 import type { CaseStudyQuestion, WhatWouldYouDoQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: CaseStudyQuestion | WhatWouldYouDoQuestion
@@ -53,13 +54,14 @@ export function ScenarioQuestion({ question, answer, onAnswer, disabled }: Props
           <span>{question.type === 'case-study' ? '📖' : '🤔'}</span>
           <span>{defaultBadgeText}</span>
         </p>
-        <p style={{ color: 'var(--color-lotus)', fontSize: '0.98rem', lineHeight: 1.7, margin: 0 }}>
-          {question.scenario}
-        </p>
+        <FormattedText
+          text={question.scenario}
+          style={{ color: 'var(--color-lotus)', fontSize: '0.98rem', lineHeight: 1.7, margin: 0 }}
+        />
       </div>
 
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.25rem', lineHeight: 1.5, color: 'var(--color-text)' }}>
-        {question.question || defaultPromptText}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '1.25rem', lineHeight: 1.55, color: 'var(--color-text)' }}>
+        <FormattedText text={question.question || defaultPromptText} inline />
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

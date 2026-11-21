@@ -2,6 +2,7 @@
 
 import type { SingleChoiceQuestion, CauseEffectQuestion, OddOneOutQuestion, TwoTruthsOneFalseQuestion, EvidenceBasedQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: SingleChoiceQuestion | CauseEffectQuestion | OddOneOutQuestion | TwoTruthsOneFalseQuestion | EvidenceBasedQuestion
@@ -26,16 +27,22 @@ export function SingleChoice({ question, answer, onAnswer, disabled }: Props) {
           <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>
             {t.questions?.principleLabel || (language === 'hi' ? 'सिद्धांत:' : language === 'pt' ? 'Princípio:' : 'Principle:')}
           </p>
-          <p style={{ color: 'var(--color-lotus)', fontStyle: 'italic' }}>{principleText}</p>
+          <FormattedText
+            text={principleText}
+            style={{ color: 'var(--color-lotus)', fontStyle: 'italic' }}
+          />
         </div>
       ) : null}
 
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.5rem', lineHeight: 1.5 }}>
-        {question.question || (question.type === 'two-truths-one-false'
-          ? (language === 'hi' ? 'असत्य कथन की पहचान करें:' : language === 'pt' ? 'Identifique a declaração FALSA:' : 'Identify the FALSE statement:')
-          : question.type === 'odd-one-out'
-          ? (language === 'hi' ? 'बेमेल विकल्प की पहचान करें:' : language === 'pt' ? 'Identifique a opção incompatível:' : 'Identify the odd one out:')
-          : '')}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '1.5rem', lineHeight: 1.55 }}>
+        <FormattedText
+          text={question.question || (question.type === 'two-truths-one-false'
+            ? (language === 'hi' ? 'असत्य कथन की पहचान करें:' : language === 'pt' ? 'Identifique a declaração FALSA:' : 'Identify the FALSE statement:')
+            : question.type === 'odd-one-out'
+            ? (language === 'hi' ? 'बेमेल विकल्प की पहचान करें:' : language === 'pt' ? 'Identifique a opção incompatível:' : 'Identify the odd one out:')
+            : '')}
+          inline
+        />
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

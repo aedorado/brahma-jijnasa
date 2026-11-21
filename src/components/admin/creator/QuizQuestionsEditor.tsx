@@ -1,8 +1,10 @@
 'use client'
 
+import { useState, useRef } from 'react'
 import type { Quiz, Question } from '@/types/quiz'
 import type { SupportedLang, EditorFormat } from './types'
 import { LANG_CONFIG } from './utils'
+import { FormattedText } from '@/components/FormattedText'
 
 interface QuizQuestionsEditorProps {
   activeLang: SupportedLang
@@ -47,6 +49,65 @@ export function QuizQuestionsEditor({
 }: QuizQuestionsEditorProps) {
   const activeLangConfig = LANG_CONFIG.find(l => l.key === activeLang)
   const activeCount = parsedQuestions[activeLang]?.length || 0
+  const [showFormattingGuide, setShowFormattingGuide] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const insertFormatting = (prefix: string, suffix: string, defaultText: string) => {
+    const textarea = textareaRef.current
+    if (!textarea) return
+
+    // 1. Snapshot cursor and both internal & window scroll positions
+    const start = textarea.selectionStart ?? 0
+    const end = textarea.selectionEnd ?? 0
+    const savedTextareaScroll = textarea.scrollTop
+    const savedWindowScroll = typeof window !== 'undefined' ? window.scrollY : 0
+
+    const current = questionsRaw[activeLang] || ''
+    const hasSelection = start !== end
+    const rawSelected = hasSelection ? current.slice(start, end) : ''
+
+    let replacement = ''
+    let newCursorStart = start + prefix.length
+    let newCursorEnd = start + prefix.length
+
+    // Multiline handling for list items and blockquotes when selecting multiple lines
+    if (hasSelection && (prefix === '- ' || prefix === '1. ' || prefix === '> ')) {
+      const lines = rawSelected.split('\n')
+      if (prefix === '- ') {
+        replacement = lines.map(line => line.trim() ? `- ${line.replace(/^[-*•]\s+/, '')}` : line).join('\n')
+      } else if (prefix === '1. ') {
+        let num = 1
+        replacement = lines.map(line => {
+          if (!line.trim()) return line
+          const cleaned = line.replace(/^\d+[\.\)]\s+/, '')
+          return `${num++}. ${cleaned}`
+        }).join('\n')
+      } else if (prefix === '> ') {
+        replacement = lines.map(line => line.trim() ? `> ${line.replace(/^>\s?/, '')}` : line).join('\n')
+      }
+      newCursorStart = start
+      newCursorEnd = start + replacement.length
+    } else {
+      const selected = hasSelection ? rawSelected : defaultText
+      replacement = `${prefix}${selected}${suffix}`
+      newCursorStart = start + prefix.length
+      newCursorEnd = start + prefix.length + selected.length
+    }
+
+    const updated = current.slice(0, start) + replacement + current.slice(end)
+    onRawChange(updated)
+
+    // 2. Restore focus, selection, and viewport scroll smoothly without jumping to the end
+    requestAnimationFrame(() => {
+      if (!textarea) return
+      textarea.focus({ preventScroll: true })
+      textarea.setSelectionRange(newCursorStart, newCursorEnd)
+      textarea.scrollTop = savedTextareaScroll
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: savedWindowScroll, behavior: 'instant' as ScrollBehavior })
+      }
+    })
+  }
 
   return (
     <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
@@ -100,9 +161,9 @@ export function QuizQuestionsEditor({
           </div>
           <p className="text-muted" style={{ fontSize: '0.8rem' }}>
             {editorFormat === 'markdown' ? (
-              <>Authoring in <strong>Markdown</strong> mode with <code>## q1 | single-choice</code> and <code>- [x]</code> checkboxes.</>
+              <>Authoring in <strong>Markdown</strong> mode with <code>## q1 | single-choice</code> and <code>- [x]</code> checkboxes. Rich formatting supported: <strong>bold</strong>, <em>italics</em>, lists, quotes, and newlines.</>
             ) : (
-              <>Authoring in <strong>JSON</strong> mode with raw question schema <code>[&#123; "type": ... &#125;]</code>.</>
+              <>Authoring in <strong>JSON</strong> mode with raw question schema <code>[&#123; "type": ... &#125;]</code>. Markdown strings supported in <code>question</code> and <code>explanation</code>.</>
             )}
           </p>
         </div>
@@ -184,26 +245,209 @@ export function QuizQuestionsEditor({
         </div>
       )}
 
+      {/* Collapsible Formatting Cheat Sheet / Guide */}
+      {showFormattingGuide && (
+        <div
+          style={{
+            marginBottom: '1rem',
+            padding: '1.1rem 1.25rem',
+            borderRadius: 12,
+            background: 'var(--color-surface-2)',
+            border: '1.5px solid var(--color-border-gold)',
+            boxShadow: 'var(--shadow-card)',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+            <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800, color: 'var(--color-gold)', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+              <span>📖</span> Text Formatting Quick Guide & Cheatsheet
+            </h4>
+            <button
+              type="button"
+              onClick={() => setShowFormattingGuide(false)}
+              className="btn btn-ghost btn-sm"
+              style={{ padding: '0.15rem 0.5rem', fontSize: '0.75rem', opacity: 0.8 }}
+            >
+              ✕ Close
+            </button>
+          </div>
+
+          <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginBottom: '0.85rem', lineHeight: 1.5 }}>
+            Formatting works automatically in <strong>Questions</strong>, <strong>Explanations</strong>, <strong>Scenarios</strong>, and <strong>Clues</strong> using intuitive Markdown:
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '0.75rem',
+              fontSize: '0.8rem',
+            }}
+          >
+            <div style={{ background: 'rgba(0,0,0,0.15)', padding: '0.65rem 0.85rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.3rem' }}>Bold & Italics</div>
+              <div><code>**bold text**</code> &rarr; <strong>bold text</strong></div>
+              <div style={{ marginTop: '0.2rem' }}><code>*italic text*</code> &rarr; <em>italic text</em> (ideal for Sanskrit: <em>jīva</em>, <em>Bhagavad-gītā</em>)</div>
+              <div style={{ marginTop: '0.2rem' }}><code>***bold + italic***</code> &rarr; <strong><em>bold + italic</em></strong></div>
+            </div>
+
+            <div style={{ background: 'rgba(0,0,0,0.15)', padding: '0.65rem 0.85rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--color-gold)', marginBottom: '0.3rem' }}>Bullet & Numbered Lists</div>
+              <div><code>- Item 1\n- Item 2</code> &rarr; • Item 1, • Item 2</div>
+              <div style={{ marginTop: '0.2rem' }}><code>1. First\n2. Second</code> &rarr; 1. First, 2. Second</div>
+              <div style={{ marginTop: '0.2rem', color: 'var(--color-muted)', fontSize: '0.74rem' }}>Indenting lines under items continues the list item.</div>
+            </div>
+
+            <div style={{ background: 'rgba(0,0,0,0.15)', padding: '0.65rem 0.85rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--color-accent-2)', marginBottom: '0.3rem' }}>Quotes & Key Terms</div>
+              <div><code>&gt; Scriptural quote</code> &rarr; Shloka quote block callout</div>
+              <div style={{ marginTop: '0.2rem' }}><code>`om tat sat`</code> &rarr; <code style={{ background: 'rgba(255,255,255,0.1)', padding: '0.1rem 0.3rem', borderRadius: 4 }}>om tat sat</code> badge</div>
+            </div>
+
+            <div style={{ background: 'rgba(0,0,0,0.15)', padding: '0.65rem 0.85rem', borderRadius: 8, border: '1px solid var(--color-border)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--color-success)', marginBottom: '0.3rem' }}>Newlines & Paragraphs</div>
+              <div>Single <code>Enter</code> (<code>\n</code>) &rarr; breaks onto new line (<code>&lt;br /&gt;</code>)</div>
+              <div style={{ marginTop: '0.2rem' }}>Double <code>Enter</code> (<code>\n\n</code>) &rarr; separates into distinct paragraphs</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Formatting Toolbar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.4rem',
+          padding: '0.45rem 0.75rem',
+          background: 'var(--color-surface-2)',
+          borderRadius: '10px 10px 0 0',
+          border: '1.5px solid var(--color-border)',
+          borderBottom: 'none',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', marginRight: '0.25rem' }}>
+            Formatting:
+          </span>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('**', '**', 'bold text')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontWeight: 800, fontSize: '0.78rem' }}
+            title="Bold (**text**)"
+          >
+            <strong>B</strong>
+          </button>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('*', '*', 'italic text')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontStyle: 'italic', fontSize: '0.78rem' }}
+            title="Italic (*text*)"
+          >
+            <em>I</em>
+          </button>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('***', '***', 'bold italic text')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontWeight: 800, fontStyle: 'italic', fontSize: '0.78rem' }}
+            title="Bold + Italic (***text***)"
+          >
+            <em><strong>BI</strong></em>
+          </button>
+          <span style={{ width: '1px', height: '14px', background: 'var(--color-border)', margin: '0 0.15rem' }} />
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('- ', '', 'Bullet item')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontSize: '0.78rem' }}
+            title="Bullet List (- item)"
+          >
+            • List
+          </button>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('1. ', '', 'Numbered item')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontSize: '0.78rem' }}
+            title="Numbered List (1. item)"
+          >
+            1. List
+          </button>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('> ', '', 'Scriptural verse or quote')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontSize: '0.78rem' }}
+            title="Verse / Quote (> quote)"
+          >
+            “ Quote
+          </button>
+          <button
+            type="button"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => insertFormatting('`', '`', 'key-term')}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 'unset', fontSize: '0.75rem', fontFamily: 'monospace' }}
+            title="Key Term / Code (`term`)"
+          >
+            `Code`
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowFormattingGuide(prev => !prev)}
+          className="btn btn-ghost btn-sm"
+          style={{
+            padding: '0.2rem 0.55rem',
+            height: 'auto',
+            minHeight: 'unset',
+            fontSize: '0.76rem',
+            color: showFormattingGuide ? 'var(--color-gold)' : 'var(--color-muted)',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.35rem',
+            border: showFormattingGuide ? '1px solid var(--color-border-gold)' : '1px solid transparent',
+          }}
+        >
+          <span>✨</span>
+          <span>{showFormattingGuide ? 'Hide Formatting Guide' : 'Formatting Guide'}</span>
+        </button>
+      </div>
+
       {/* Textarea for Current Active Language */}
       <div style={{ marginBottom: '1.25rem' }}>
         <textarea
+          ref={textareaRef}
           value={questionsRaw[activeLang]}
           onChange={e => onRawChange(e.target.value)}
           placeholder={
             activeLang !== 'en'
               ? `(Optional) Paste or type ${activeLangConfig?.label || activeLang} questions here.\n\nLeave this tab completely blank to have devotees automatically take the English version of this quiz.`
               : editorFormat === 'markdown'
-                ? `Paste or type English questions in Markdown:\n\n## q1 | single-choice | easy\n\n**Q:** What was young John Favors' childhood neighborhood in Cleveland?\n\n**Options:**\n- [ ] Shaker Heights\n- [x] The Forgotten Triangle\n\n**Ref:** Chapter 1\n\n**Explanation:** John Favors was raised in 'The Forgotten Triangle'.`
-                : `Paste ONLY English questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correctIndex": 0\n  }\n]`
+                ? `Paste or type English questions in Markdown:\n\n## q1 | single-choice | easy\n\n**Q:** Which principle describes the eternal nature of the soul according to *Bhagavad-gītā* 2.20?\n\n**Options:**\n- [x] The soul is **unborn** (*ajaḥ*) and indestructible\n- [ ] The soul is created at physical birth\n- [ ] The soul dies when the physical body dies\n\n**Ref:** BG 2.20\n\n**Explanation:** In **Bhagavad-gītā 2.20**, Lord Krishna explains:\n> *na jāyate mriyate vā kadācin...*\nKey principles:\n- The soul is eternal (*śāśvataḥ*)\n- Weapons cannot harm it`
+                : `Paste ONLY English questions array here:\n[\n  {\n    "type": "single-choice",\n    "question": "Which principle describes the soul according to *Bhagavad-gītā* 2.20?",\n    "options": ["The soul is **unborn** and eternal", "The soul is created at birth"],\n    "correctIndex": 0,\n    "explanation": "According to **Bhagavad-gītā 2.20**:\n- The soul is eternal\n- It undergoes no changes"\n  }\n]`
           }
           rows={12}
           className="input"
           style={{
             width: '100%',
             padding: '1rem',
-            borderRadius: 12,
+            borderRadius: '0 0 12px 12px',
             background: 'var(--color-surface-2)',
             border: parseError ? '1.5px solid var(--color-error)' : '1.5px solid var(--color-border)',
+            borderTop: 'none',
             color: 'var(--color-text)',
             fontFamily: 'monospace',
             fontSize: '0.85rem',

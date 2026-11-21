@@ -2,6 +2,7 @@
 
 import type { TrueFalseQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: TrueFalseQuestion
@@ -15,8 +16,8 @@ export function TrueFalse({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '2rem', lineHeight: 1.5, color: 'var(--color-text)' }}>
-        {question.question}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '2rem', lineHeight: 1.55, color: 'var(--color-text)' }}>
+        <FormattedText text={question.question} inline />
       </h2>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>

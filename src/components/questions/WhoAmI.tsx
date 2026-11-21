@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { WhoAmIQuestion } from '@/types/quiz'
 import type { WhoAmIAnswer } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: WhoAmIQuestion
@@ -40,8 +41,8 @@ export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.25rem', lineHeight: 1.5 }}>
-        {question.question}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '1.25rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question} inline />
       </h2>
 
       {/* Points indicator */}
@@ -61,7 +62,7 @@ export function WhoAmI({ question, answer, onAnswer, disabled }: Props) {
             <span className="clue-number">
               {t.questions?.cluePrefix || 'Clue'} {i + 1} {i === 0 ? `(+${MAX_POINTS} ${t.questions?.pts || 'pts'})` : i === 1 ? `(+${MAX_POINTS - 1} ${t.questions?.pts || 'pts'})` : `(+${MAX_POINTS - 2} ${t.questions?.pts || 'pts'})`}
             </span>
-            <p style={{ color: 'var(--color-lotus)', lineHeight: 1.6 }}>{clue}</p>
+            <FormattedText text={clue} style={{ color: 'var(--color-lotus)', lineHeight: 1.6 }} />
           </div>
         ))}
       </div>

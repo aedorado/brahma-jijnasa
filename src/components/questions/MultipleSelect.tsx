@@ -2,6 +2,7 @@
 
 import type { MultipleSelectQuestion } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: MultipleSelectQuestion
@@ -25,8 +26,8 @@ export function MultipleSelect({ question, answer, onAnswer, disabled }: Props) 
 
   return (
     <div>
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem', lineHeight: 1.5 }}>
-        {question.question}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question} inline />
       </h2>
       <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
         {t.questions?.multipleSelectScoring || 'Select all that apply. Scoring: +1 per correct, −0.5 per wrong selection.'}

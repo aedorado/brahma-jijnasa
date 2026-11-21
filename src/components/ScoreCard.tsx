@@ -9,6 +9,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { UserAvatar } from '@/components/UserAvatar'
 import type { Quiz, ScoreResult, LeaderboardEntry, AnswerMap, Question, Answer } from '@/types/quiz'
 import { BookPurchaseBanner } from '@/components/BookPurchaseBanner'
+import { FormattedText } from '@/components/FormattedText'
 
 interface Props {
   quiz: Quiz
@@ -585,9 +586,10 @@ export function ScoreCard({
         </div>
 
         {/* Question text */}
-        <p style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.85rem', lineHeight: 1.55, color: 'var(--color-text)' }}>
-          {r.correct ? '✅' : r.earned > 0 ? '⚡' : '❌'} {q.question}
-        </p>
+        <div style={{ fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.85rem', lineHeight: 1.55, color: 'var(--color-text)', display: 'flex', alignItems: 'flex-start', gap: '0.45rem' }}>
+          <span>{r.correct ? '✅' : r.earned > 0 ? '⚡' : '❌'}</span>
+          <FormattedText text={q.question} style={{ flex: 1 }} />
+        </div>
 
         {/* Actual Answer & User Answer Comparison */}
         {renderAnswerDetails(q, userAns)}
@@ -598,9 +600,10 @@ export function ScoreCard({
             <p style={{ fontSize: '0.82rem', color: 'var(--color-gold)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
               {t.scoreCard.explanationTitle}
             </p>
-            <p style={{ fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--color-lotus)' }}>
-              {q.explanation}
-            </p>
+            <FormattedText
+              text={q.explanation}
+              style={{ fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--color-lotus)' }}
+            />
           </div>
         )}
 

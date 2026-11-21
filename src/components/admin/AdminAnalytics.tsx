@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { UserAvatar } from '@/components/UserAvatar'
 import { scoreQuestion } from '@/lib/scoring'
 import type { Quiz, QuizMeta, Question } from '@/types/quiz'
+import { FormattedText } from '@/components/FormattedText'
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
@@ -978,7 +979,7 @@ export function AdminAnalytics({
                       {/* Explanation & Reference */}
                       {q.explanation && (
                         <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.5rem', lineHeight: 1.4 }}>
-                          💡 <strong style={{ color: 'var(--color-text-secondary)' }}>Explanation:</strong> {q.explanation}
+                          💡 <strong style={{ color: 'var(--color-text-secondary)' }}>Explanation:</strong> <FormattedText text={q.explanation} inline />
                           {q.reference && (
                             <span style={{ display: 'block', marginTop: '0.2rem', color: 'var(--color-gold)', fontSize: '0.75rem' }}>
                               📖 Reference: {q.reference}

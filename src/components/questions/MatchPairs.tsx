@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { MatchPairsQuestion } from '@/types/quiz'
 import type { PairsAnswer } from '@/types/quiz'
 import { useLanguage } from '@/context/LanguageContext'
+import { FormattedText } from '@/components/FormattedText'
 
 type Props = {
   question: MatchPairsQuestion
@@ -106,8 +107,8 @@ export function MatchPairs({ question, answer, onAnswer, disabled }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem', lineHeight: 1.5 }}>
-        {question.question}
+      <h2 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem', lineHeight: 1.55 }}>
+        <FormattedText text={question.question} inline />
       </h2>
       <p style={{ fontSize: '0.82rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
         {t.questions?.matchPairsInstructionDetailed || 'Tap an item in Column A, then tap its match in Column B. Tap any matched item or ✕ to unpair or change.'}
